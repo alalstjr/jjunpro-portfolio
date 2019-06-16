@@ -1,8 +1,9 @@
 import React from "react";
+import MainTitleSlide from "../../widget/mainTitleSlide";
 
 const FirstSection = ({ intl }) => (
   <section>
-    {intl.formatMessage({ id: "HOME.FIRST.subtitle" })}
+    <MainTitleSlide/>
   </section>
 );
 

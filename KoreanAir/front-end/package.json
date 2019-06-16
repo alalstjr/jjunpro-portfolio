@@ -34,6 +34,7 @@
     ]
   },
   "devDependencies": {
+    "react-slick": "^0.24.0",
     "styled-components": "^4.3.1"
   }
 }

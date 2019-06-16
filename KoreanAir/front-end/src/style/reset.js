@@ -4,7 +4,8 @@ const reset = `
         font-smoothing:antialiased;
     }
     body, form, div, p, h1, h2, h3, h4, h5, h6, dl, dt, dd, ul, ol, li, fieldset, th, td, input, textarea,button,select { 
-        margin:0; padding:0;
+        margin:0;
+        padding:0;
     }
     article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary { 
         display:block; 
