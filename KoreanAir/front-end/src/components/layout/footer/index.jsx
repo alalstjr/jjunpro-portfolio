@@ -6,7 +6,7 @@ import SecondSection from "./secondSection";
 import ThirdSection from "./thirdSection";
 
 import { Container } from "../../../style/globalStyles";
-import { FooterBox, FooterLeft } from "./styleFooter";
+import { FooterBox, FooterLeft } from "./style";
 
 const Footer = ({ intl }) => (
   <FooterBox>

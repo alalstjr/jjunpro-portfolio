@@ -1,13 +1,7 @@
 const theme = {
-    backColor: '#fafafa',
-    borderSet: '1px solid #dbdbdb',
-    contentColor: '#ffffff',
-    fontSizeSm: '14px',
-    borderRadius: '8px',
-    btnColor: '#f5f6f7',
-    PostBtnOn: '#ff3b80',
-    PostBtnOff: '#f8a5c2',
-    PostBtnHover: '#f11b66'
+    backgroundColor: '#ffffff',
+    fontColor: '#333333',
+    fontSizeSm: '0.875rem'
 }
   
 export default theme;

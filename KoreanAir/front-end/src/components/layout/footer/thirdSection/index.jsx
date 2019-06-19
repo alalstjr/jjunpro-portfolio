@@ -1,5 +1,5 @@
 import React from "react";
-import { FooterRight } from "../styleFooter";
+import { FooterRight } from "../style";
 
 import FooterLogo from "../../../../details/images/footer-logo.png";
 

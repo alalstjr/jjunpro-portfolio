@@ -1,6 +1,6 @@
 import React from "react";
 
-import { FooterAbout, FooterAboutUl, Copyright } from "../styleFooter";
+import { FooterAbout, FooterAboutUl, Copyright } from "../style";
 
 const SecondSection = ({ intl }) => (
   <FooterAbout>

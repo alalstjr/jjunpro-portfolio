@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ClearFix } from "../../../style/globalStyles";
+import { ClearFix, FlexContainer } from "../../../style/globalStyles";
 
 export const FooterBox = styled.footer`
     ${ClearFix};
@@ -24,6 +24,9 @@ export const FooterList = styled.div`
     flex-basis: 25%;
     display: flex;
     flex-direction: column;
+`;
+export const FooterContainer = styled.div`
+    ${FlexContainer};
 `;
 export const FooterListTitle = styled.div`
     font-size: 18px;

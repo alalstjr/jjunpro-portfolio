@@ -1,10 +1,12 @@
 import React from "react";
 import MainTitleSlide from "../../widget/mainTitleSlide";
 
+import { MainSection } from "../../../style/globalStyles";
+
 const FirstSection = ({ intl }) => (
-  <section>
+  <MainSection>
     <MainTitleSlide/>
-  </section>
+  </MainSection>
 );
 
 export default FirstSection;

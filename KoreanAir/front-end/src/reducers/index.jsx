@@ -1,11 +1,11 @@
 import { combineReducers } from "redux"
 import errorsReducer from "./errorsReducer"
-import projectTaskReducer from "./projectTaskReducer";
+import boardTaskReducer from "./boardTaskReducer";
 
 import { reducer as localeReducer } from "../connectedIntlProvider/reducer";
 
 export default combineReducers({
     errors: errorsReducer,
-    project_task: projectTaskReducer,
+    board_task: boardTaskReducer,
     locale: localeReducer
 });

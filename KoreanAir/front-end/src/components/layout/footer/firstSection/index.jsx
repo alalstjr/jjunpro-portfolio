@@ -1,12 +1,11 @@
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
-import { FooterList, FooterListTitle, FooterListUl } from "../styleFooter";
-import { FlexContainer } from "../../../../style/globalStyles";
+import { FooterContainer, FooterList, FooterListTitle, FooterListUl } from "../style";
 
 {/* {intl.formatMessage({ id: "HOME.FIRST.subtitle" })} */}
 
 const FirstSection = ({ intl }) => (
-    <FlexContainer>
+    <FooterContainer>
         <FooterList>
             <FooterListTitle>
                 약관 및 규정
@@ -63,7 +62,7 @@ const FirstSection = ({ intl }) => (
                 </li>
             </FooterListUl>
         </FooterList>
-    </FlexContainer> 
+    </FooterContainer> 
 );
 
 export default FirstSection;
