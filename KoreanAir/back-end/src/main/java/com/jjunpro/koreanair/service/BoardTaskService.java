@@ -15,17 +15,17 @@ public class BoardTaskService {
 	private BoardTaskRepository boardTaskRepository;
 	
 	public BoardTask saveOrUpdateBoardTask(BoardTask boardTask, String ip) {
-		
-		if(boardTask.getReg_date() == null || boardTask.getReg_date() == "") 
-		{	// 데이터 생성시 현재시간
-			SimpleDateFormat format = new SimpleDateFormat("yyyy년 MM월dd일 HH시mm분ss초");
-			Calendar time = Calendar.getInstance();
-			String format_time = format.format(time.getTime());
-			
-			format = null;
-			
-			boardTask.setReg_date(format_time);
-		}
+	
+//		if(boardTask.getReg_date() == null || boardTask.getReg_date() == "") 
+//		{	// 데이터 생성시 현재시간
+//			SimpleDateFormat format = new SimpleDateFormat("yyyy년 MM월dd일 HH시mm분ss초");
+//			Calendar time = Calendar.getInstance();
+//			String format_time = format.format(time.getTime());
+//			
+//			format = null;
+//			
+//			boardTask.setReg_date(format_time);
+//		}
 		
 		if(boardTask.getIp() == null || boardTask.getIp() == "") 
 		{	// 클라이언트 ip

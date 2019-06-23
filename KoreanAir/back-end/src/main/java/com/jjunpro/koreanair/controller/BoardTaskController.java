@@ -30,7 +30,11 @@ public class BoardTaskController {
 	private BoardTaskService boardTaskService;
 	
 	@PostMapping("/insert")
-	public ResponseEntity<?> addPTToBoard(@Valid @RequestBody BoardTask boardTask, BindingResult result, HttpServletRequest request) {
+	public ResponseEntity<?> addPTToBoard(
+			@Valid @RequestBody BoardTask boardTask, 
+			BindingResult result, 
+			HttpServletRequest request
+	) {
 		
 		// IP 정보
 		String ip = request.getHeader("X-Forwarded-For");  
@@ -48,8 +52,8 @@ public class BoardTaskController {
         }  
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
             ip = request.getRemoteAddr();  
-        } 
-
+        }
+        
 		if(result.hasErrors()) {
 			Map<String, String> errorMap = new HashMap<String, String>();
 			

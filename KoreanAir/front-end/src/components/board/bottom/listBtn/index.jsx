@@ -36,11 +36,9 @@ class ListBtn extends Component {
             return(
                 <ListBtnWrap>
                     <Container>
-                        <Link to="/boardEvent/write">
-                            <Btn>
-                                작성 완료
-                            </Btn>
-                        </Link>
+                        <Btn type="submit">
+                            작성 완료
+                        </Btn>
                     </Container>
                 </ListBtnWrap>
             );

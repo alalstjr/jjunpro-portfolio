@@ -16,6 +16,9 @@ export const GlobalStyle = createGlobalStyle`
         font-weight:300; 
         font-size: ${props => props.theme.fontSizeSm};
     }
+    :before, :after, * {
+        box-sizing: border-box;
+    }
 `;
 export const ClearFix = css`
     &:after {
@@ -55,12 +58,7 @@ export const Container = styled.div`
     max-width: 1200px;
     margin: 0 auto;
 `;
-export const DataNone  = styled.div`
-    text-align: center;
-    padding: 2.5rem 0;
-    border: 1px solid #ddd;
-    border-radius: 0.4rem;
-`;
+
 
 /*******************
     Botton Style
@@ -69,6 +67,13 @@ export const Btn  = styled.button`
     border: 0.0625rem solid #ddd;
     padding: 0.3125rem 0.9375rem;
     background-color: #f2f2f2;
+`;
+export const DataNone  = styled.div`
+    text-align: center;
+    padding: 2.5rem 0;
+    border: 1px solid #ddd;
+    border-radius: 0.4rem;
+    width: 100%;
 `;
 
 /*******************
@@ -86,7 +91,7 @@ export const FormCss = css`
     border: 1px solid #e4e7ea;
     border-radius: .25rem;
 `;
-export const Form = styled.div`
+export const Form = styled.form`
     padding 1.25rem 0;
 `;
 export const FormGroup = styled.div`
@@ -105,6 +110,9 @@ export const Input = styled.input.attrs({
 export const Textarea = styled.textarea`
     ${FormCss};
     height: calc(9rem + 2px);
+`;
+export const SelectBox = styled.select`
+    ${FormCss};
 `;
 
 

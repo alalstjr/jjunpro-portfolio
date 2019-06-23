@@ -46,8 +46,6 @@ export const ListBg = styled.div`
 `;
 export const ListWrap = styled.div`
     ${FlexContainer};
-    margin-left: -0.9375rem;
-    margin-right: -0.9375rem;
     padding: 1.875rem 0;
 `;
 export const ItemWrap = styled.div`

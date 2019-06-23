@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 
 import Slider from "react-slick";
 
-import slick from "../../../details/css/slickSlider/slick.css";
-import slickTheme from "../../../details/css/slickSlider/slick-theme.css";
+import "../../../details/css/slickSlider/slick.css";
+import "../../../details/css/slickSlider/slick-theme.css";
 
 import { SliderImg, SliderWrap, SliderContent, SlideTitle, SlideContent, SlideLink } from "./styleWidget";
 

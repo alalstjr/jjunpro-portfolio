@@ -35,6 +35,9 @@
     ]
   },
   "devDependencies": {
+    "filepond": "^4.4.9",
+    "react-dropzone": "^10.1.5",
+    "react-filepond": "^7.0.1",
     "react-slick": "^0.24.0",
     "styled-components": "^4.3.1"
   }
