@@ -51,6 +51,34 @@ https://countryxide.tistory.com/16
 date 시간 날짜 관련 어노테이션
 https://medium.com/@SlackBeck/java-8-date-time-%EC%99%80-jpa-%EA%B7%B8%EB%A6%AC%EA%B3%A0-%EC%8A%A4%ED%94%84%EB%A7%81-%EB%B6%80%ED%8A%B8-7a02eea23d29
 
+# FILE UPLOAD 관련 정리
+
+## PATH, PATHS 클래스 정리
+
+JAVA : https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html
+https://java.ihoney.pe.kr/342
+
+## File 클래스 정리
+
+JAVA : https://docs.oracle.com/javase/7/docs/api/java/nio/file/Files.html
+reactjs-kr.firebaseapp.com/docs/typechecking-with-proptypes.html
+
+## JAP FILE UPLOAD 
+https://www.callicoder.com/spring-boot-file-upload-download-rest-api-example/
+
+# FilePond 
+
+## 서버로 부터 받아온 response 값 전달받는 방법
+server = {
+    {
+        url: 'http://localhost:8080/uploadMultipleFiles',
+        process: { 
+            onload: (response) => console.log(response)
+        }
+    }
+}
+server.process.onload 활용한다.
+https://github.com/pqina/vue-filepond/issues/51
+
 ## 참고만
 http://www.libqa.com/wiki/730
-파일업로드 영상 https://www.youtube.com/watch?v=MPRSBfJVNAk

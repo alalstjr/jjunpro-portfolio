@@ -1,4 +1,4 @@
-package com.jjunpro.koreanair.board;
+package com.jjunpro.koreanair.board.dto;
 
 import java.time.LocalDateTime;
 
@@ -57,6 +57,6 @@ public class BoardTask {
 	@Column(name = "bo_ip", length = 255)
 	private String ip;
 	
-	@Column(name = "bo_file", length = 255)
-	private String file;
+	@Column(name = "bo_files")
+	private int files;
 }

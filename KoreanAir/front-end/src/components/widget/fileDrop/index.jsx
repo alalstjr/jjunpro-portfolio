@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 const FileDrop = ({ fileState }) => {
-    const maxSize = 1048576;
+    const maxSize = 99999999999;
 
     const onDrop = useCallback(acceptedFiles => {
         fileState(acceptedFiles);
@@ -44,10 +44,10 @@ const FileDrop = ({ fileState }) => {
 export default FileDrop;
 
 /*  File State Function
-    // File setup
+    // File Setup
     fileState = (target) => {
         this.setState({
-            file: target
+            files: target[0]
         });
     }
  */

@@ -11,38 +11,47 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.jjunpro.koreanair.board.dto.BoardTask;
+import com.jjunpro.koreanair.file.dto.DBFile;
 import com.jjunpro.koreanair.file.payload.UploadFileResponse;
 import com.jjunpro.koreanair.file.service.FileStorageService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin
 public class StoreFileController {
 
-    private static final Logger logger = LoggerFactory.getLogger(FileController.class);
+    private static final Logger logger = LoggerFactory.getLogger(StoreFileController.class);
 
     @Autowired
     private FileStorageService fileStorageService;
     
     @PostMapping("/uploadFile")
     public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
-        String fileName = fileStorageService.storeFile(file);
-
+        String fileId = fileStorageService.storeFile(file);
+        
+        
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/downloadFile/")
-                .path(fileName)
+                .path(fileId)
                 .toUriString();
-
-        return new UploadFileResponse(fileName, fileDownloadUri,
+        
+        return new UploadFileResponse(fileId, fileDownloadUri,
                 file.getContentType(), file.getSize());
     }
 
     @PostMapping("/uploadMultipleFiles")
-    public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
+    public List<UploadFileResponse> uploadMultipleFiles(
+    		@RequestParam("files") MultipartFile[] files,
+    		@RequestParam("bo_num") int boNum
+    		) {
         return Arrays.asList(files)
                 .stream()
                 .map(file -> uploadFile(file))

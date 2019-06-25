@@ -1,13 +1,15 @@
-package com.jjunpro.koreanair.service;
+package com.jjunpro.koreanair.board.service;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.jjunpro.koreanair.board.BoardTask;
-import com.jjunpro.koreanair.repository.BoardTaskRepository;
+import com.jjunpro.koreanair.board.dto.BoardTask;
+import com.jjunpro.koreanair.board.repository.BoardTaskRepository;
 
 @Service
 public class BoardTaskService {
@@ -16,17 +18,6 @@ public class BoardTaskService {
 	
 	public BoardTask saveOrUpdateBoardTask(BoardTask boardTask, String ip) {
 	
-//		if(boardTask.getReg_date() == null || boardTask.getReg_date() == "") 
-//		{	// 데이터 생성시 현재시간
-//			SimpleDateFormat format = new SimpleDateFormat("yyyy년 MM월dd일 HH시mm분ss초");
-//			Calendar time = Calendar.getInstance();
-//			String format_time = format.format(time.getTime());
-//			
-//			format = null;
-//			
-//			boardTask.setReg_date(format_time);
-//		}
-		
 		if(boardTask.getIp() == null || boardTask.getIp() == "") 
 		{	// 클라이언트 ip
 			boardTask.setIp(ip);

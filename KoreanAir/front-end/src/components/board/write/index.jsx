@@ -19,7 +19,8 @@ class BoardWrite extends Component {
             category: "",
             subject: "",
             content: "",
-            file: null,
+            fileCount: 0,
+            files: [],
             errors: {}
         };
     }
@@ -43,22 +44,35 @@ class BoardWrite extends Component {
     // File Setup
     fileState = (target) => {
         this.setState({
-            file: target
+            files: target.map(fileItem => fileItem),
+            fileCount: target.length
         });
-        console.log(this.state.file);
     }
 
     // Form Submit
     onSubmit = (e) => {
         e.preventDefault();
+
+        const { 
+            writer, 
+            password, 
+            category, 
+            subject, 
+            content,
+            files,
+            fileCount
+        } = this.state;
+
         const newBoardTask = {
-            writer: this.state.writer,
-            password: this.state.password,
-            category: this.state.category,
-            subject: this.state.subject,
-            content: this.state.content
+            writer: writer,
+            password: password,
+            category: category,
+            subject: subject,
+            content: content,
+            files: fileCount
         };
-        this.props.insertBoardTask(newBoardTask, this.props.history);
+
+        this.props.insertBoardTask(newBoardTask, this.props.history, files);
     }
 
     render() {
@@ -117,7 +131,7 @@ class BoardWrite extends Component {
                         </FormGroup>
                         <FormGroup>
                             <Formlabel htmlFor="file">이미지</Formlabel>
-                            <FilePondBox
+                            <FileDrop
                                 fileState={this.fileState}
                             />
                         </FormGroup>

@@ -36,6 +36,8 @@
   },
   "devDependencies": {
     "filepond": "^4.4.9",
+    "filepond-plugin-image-exif-orientation": "^1.0.6",
+    "filepond-plugin-image-preview": "^4.2.1",
     "react-dropzone": "^10.1.5",
     "react-filepond": "^7.0.1",
     "react-slick": "^0.24.0",

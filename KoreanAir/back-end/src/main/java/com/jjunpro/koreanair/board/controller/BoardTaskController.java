@@ -1,4 +1,4 @@
-package com.jjunpro.koreanair.controller;
+package com.jjunpro.koreanair.board.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,13 +13,16 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.jjunpro.koreanair.board.BoardTask;
-import com.jjunpro.koreanair.service.BoardTaskService;
+import com.jjunpro.koreanair.board.dto.BoardTask;
+import com.jjunpro.koreanair.board.service.BoardTaskService;
 
 @RestController
 @RequestMapping("/api/board")
@@ -31,11 +34,11 @@ public class BoardTaskController {
 	
 	@PostMapping("/insert")
 	public ResponseEntity<?> addPTToBoard(
-			@Valid @RequestBody BoardTask boardTask, 
+			@Valid @RequestParam("board_task") BoardTask boardTask, 
 			BindingResult result, 
 			HttpServletRequest request
 	) {
-		
+		System.out.print(boardTask);
 		// IP 정보
 		String ip = request.getHeader("X-Forwarded-For");  
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
