@@ -1,5 +1,12 @@
 package com.jjunpro.koreanair.file.controller;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,22 +14,19 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.jjunpro.koreanair.board.dto.BoardTask;
-import com.jjunpro.koreanair.file.dto.DBFile;
+import com.jjunpro.koreanair.board.service.BoardTaskService;
 import com.jjunpro.koreanair.file.payload.UploadFileResponse;
 import com.jjunpro.koreanair.file.service.FileStorageService;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
@@ -33,9 +37,15 @@ public class StoreFileController {
     @Autowired
     private FileStorageService fileStorageService;
     
+    @Autowired
+	private BoardTaskService boardTaskService;
+    
     @PostMapping("/uploadFile")
-    public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
-        String fileId = fileStorageService.storeFile(file);
+    public UploadFileResponse uploadFile(
+    		@RequestParam("file") MultipartFile file,
+    		@RequestParam("num") long num
+    	) {
+        String fileId = fileStorageService.storeFile(file, num);
         
         
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -43,18 +53,24 @@ public class StoreFileController {
                 .path(fileId)
                 .toUriString();
         
+        /*
+         * 파일 업로드 동시에 게시판의 미리보기 이미지 업로드
+         */
+        fileStorageService.thumbUpdate(num, fileDownloadUri);
+        
         return new UploadFileResponse(fileId, fileDownloadUri,
                 file.getContentType(), file.getSize());
     }
-
+    
     @PostMapping("/uploadMultipleFiles")
     public List<UploadFileResponse> uploadMultipleFiles(
     		@RequestParam("files") MultipartFile[] files,
-    		@RequestParam("bo_num") int boNum
-    		) {
+    		@RequestParam("num") long num
+    	) {
+    	
         return Arrays.asList(files)
                 .stream()
-                .map(file -> uploadFile(file))
+                .map(file -> uploadFile(file, num))
                 .collect(Collectors.toList());
     }
 

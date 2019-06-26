@@ -50,13 +50,12 @@ public class BoardTask {
 	@Column(name = "bo_reg_date")
 	private LocalDateTime reg_date;
 	
-//	@Temporal(TemporalType.TIMESTAMP)
-//	@Column(name = "bo_reg_date")
-//	private Date reg_date;
-	
 	@Column(name = "bo_ip", length = 255)
 	private String ip;
 	
 	@Column(name = "bo_files")
 	private int files;
+	
+	@Column(name = "bo_thumb")
+	private String thumb;
 }

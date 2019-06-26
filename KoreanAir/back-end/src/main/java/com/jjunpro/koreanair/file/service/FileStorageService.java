@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -14,6 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.jjunpro.koreanair.board.dto.BoardTask;
+import com.jjunpro.koreanair.board.repository.BoardTaskRepository;
+import com.jjunpro.koreanair.board.service.BoardTaskService;
 import com.jjunpro.koreanair.file.dto.DBFile;
 import com.jjunpro.koreanair.file.exception.FileStorageException;
 import com.jjunpro.koreanair.file.exception.MyFileNotFoundException;
@@ -25,6 +29,13 @@ public class FileStorageService {
 
 	@Autowired
     private DBFileRepository dbFileRepository;
+	
+	@Autowired
+	private BoardTaskRepository boardTaskRepository;
+	
+	@Autowired
+	private BoardTaskService boardTaskService;
+	
 	
     private final Path fileStorageLocation;
 
@@ -50,7 +61,7 @@ public class FileStorageService {
         }
     }
 
-    public String storeFile(MultipartFile file) {
+    public String storeFile(MultipartFile file, long num) {
         // 파일 이름 표준화
     	/*
     	 * { Class StringUtils }
@@ -69,7 +80,7 @@ public class FileStorageService {
             }
 
             // DB Save Code
-            DBFile dbFile = new DBFile(fileName, file.getSize(), file.getContentType());
+            DBFile dbFile = new DBFile(fileName, file.getSize(), file.getContentType(), num);
             dbFileRepository.save(dbFile);
             
             // 대상 위치로 파일 복사 (기존 파일을 같은 이름으로 바꾸기)
@@ -103,4 +114,14 @@ public class FileStorageService {
             throw new MyFileNotFoundException("File not found " + fileName, e);
         }
     }
+    
+    /*
+     * 게시판 미리보기 이미지 업데이트 함수 
+     */
+    public void thumbUpdate(long num, String fileDownloadUri) {
+		BoardTask boardTask = boardTaskService.findById(num);
+		boardTask.setThumb(fileDownloadUri);
+		
+		boardTaskRepository.save(boardTask);
+	}
 }

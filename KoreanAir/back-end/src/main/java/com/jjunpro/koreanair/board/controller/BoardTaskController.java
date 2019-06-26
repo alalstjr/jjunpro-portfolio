@@ -34,11 +34,10 @@ public class BoardTaskController {
 	
 	@PostMapping("/insert")
 	public ResponseEntity<?> addPTToBoard(
-			@Valid @RequestParam("board_task") BoardTask boardTask, 
+			@Valid @RequestBody BoardTask boardTask, 
 			BindingResult result, 
 			HttpServletRequest request
 	) {
-		System.out.print(boardTask);
 		// IP 정보
 		String ip = request.getHeader("X-Forwarded-For");  
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  

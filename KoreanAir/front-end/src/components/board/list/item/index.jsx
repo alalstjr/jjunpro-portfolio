@@ -5,18 +5,16 @@ import { Link } from "react-router-dom";
 import { ImgBox } from "../../../../style/globalStyles";
 import { ItemWrap, ItemBox, ItemTitle, ItemContent } from "../../style";
 
-import exImg from "../../../../details/images/main-slide-ex.jpg";
-
 class Item extends Component {
     render() {
 
         const { board_task } = this.props;
-
+        console.log(board_task);
         return (
             <ItemWrap>
                 <Link to="/">
                     <ImgBox 
-                        bgImg={exImg}
+                        bgImg={board_task.thumb}
                         bgSize={"90%"}
                     />
                     <ItemBox>

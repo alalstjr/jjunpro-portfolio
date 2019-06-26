@@ -29,4 +29,11 @@ public class BoardTaskService {
 	public Iterable<BoardTask> findAll() {
 		return boardTaskRepository.findAll();
 	}
+	
+	/*
+	 * 게시판의 원하는 ID 값을 찾아 하나만 반환합니다. 
+	 */
+	public BoardTask findById(Long id) {
+		return boardTaskRepository.getByNum(id);
+	}
 }

@@ -23,7 +23,7 @@ public class DBFile {
 	private String id;
 	
 	@Column(name = "bf_bo_num")
-	private String fileBoNum;
+	private long fileBoNum;
 	
 	@Column(name = "bf_file_name", length = 255)
 	private String fileName;
@@ -45,10 +45,11 @@ public class DBFile {
 		super();
 	}
 
-	public DBFile(String fileName, long fileSize, String fileType) {
+	public DBFile(String fileName, long fileSize, String fileType, long fileBoNum) {
 		super();
 		this.fileName = fileName;
 		this.fileSize = fileSize;
 		this.fileType = fileType;
+		this.fileBoNum = fileBoNum;
 	}
 }
