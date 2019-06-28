@@ -6,7 +6,6 @@ import { insertBoardTask } from "../../../actions/boardTaskActions";
 import BoardHead from "../header";
 import ListBtn from "../bottom/listBtn"; 
 import FileDrop from "../../widget/fileDrop";
-import FilePondBox from "../../widget/filePond";
 
 import { Form, FormGroup, Formlabel, Container, Input, Textarea, SelectBox } from "../../../style/globalStyles";
 
@@ -80,7 +79,7 @@ class BoardWrite extends Component {
             <Fragment>
                 <BoardHead/>
                 <Container>
-                    <form
+                    <Form
                         onSubmit={this.onSubmit}
                         method="post" 
 		                enctype="multipart/form-data"
@@ -138,7 +137,7 @@ class BoardWrite extends Component {
                         <ListBtn
                             option={"write"}
                         />
-                    </form>
+                    </Form>
                 </Container>
             </Fragment>
         )

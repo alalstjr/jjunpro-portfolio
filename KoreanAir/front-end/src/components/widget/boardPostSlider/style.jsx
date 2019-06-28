@@ -1,24 +1,30 @@
 import styled from 'styled-components';
-import { ClearFix } from "../../../style/globalStyles";
+import { ClearFix, Ellipsis } from "../../../style/globalStyles";
 
+export const SliderGap = styled.div`
+    margin-left: -0.625rem;
+    margin-right: -0.625rem;
+`;
 export const SliderWrap = styled.div`
     a {
-        padding: 10px;
+        padding: 0.625rem;
         display:block
     }
 `;
 export const SliderBox = styled.div`
     background-color: #434343;
     color: #fff;
-    padding: 15px 10px;
+    padding: 0.9375rem 0.625rem;
 `;
 export const SlideTitle = styled.div`
-    font-size: 16px;
+    ${Ellipsis};
+    font-size: 1rem ;
 `;
 export const SlideContent = styled.div`
+    ${Ellipsis};
     color: #3cbede;
     font-weight: 400;
-    font-size: 15px;
+    font-size: 0.9375rem;
 `;
 export const NoSlider = styled.div`
     ${ClearFix};

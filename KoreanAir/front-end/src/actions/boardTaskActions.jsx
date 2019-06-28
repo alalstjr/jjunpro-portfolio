@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_ERRORS, GET_BOARD_TASKS } from "./types";
+import { GET_ERRORS, GET_BOARD_TASKS, GET_BOARD_TASK } from "./types";
 
 export const insertBoardTask = (board_task, history, files) => async dispatch => {
     try {
@@ -29,12 +29,33 @@ export const insertBoardTask = (board_task, history, files) => async dispatch =>
     }
 }
 
+/*
+ *  모든 게시판 목록을 불러옵니다. (리스트)
+ */
 export const getBoardTasks = () => async dispatch => {
     const res = await axios.get("http://localhost:8080/api/board/all");
     dispatch({
         type: GET_BOARD_TASKS,
         payload: res.data
     });
+}
+
+/*
+ *  특정 게시판 목록을 불러옵니다. (상세페이지)
+ */
+export const getBoardTask = (bo_num, history) => async dispatch => {
+    try {
+        const res = await axios.get(`http://localhost:8080/api/board/${bo_num}`);
+        dispatch({
+            type: GET_BOARD_TASK,
+            payload: res.data
+        });
+    } catch (error) {
+        dispatch({
+            type: GET_ERRORS,
+            payload: error.response.data
+        });
+    }
 }
 
 export const fileUpload = (Num, files) => async dispatch => {

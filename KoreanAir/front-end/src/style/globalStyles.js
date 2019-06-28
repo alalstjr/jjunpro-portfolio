@@ -1,5 +1,7 @@
 import styled, { createGlobalStyle, css } from 'styled-components';
 import reset from './reset';
+import gyeonggiOTF from '../details/fonts/gyeonggi/Title_Medium.otf';
+import gyeonggiWOFF from '../details/fonts/gyeonggi/Title_Medium.woff';
 
 /*******************
     Global Style
@@ -7,13 +9,24 @@ import reset from './reset';
 export const GlobalStyle = createGlobalStyle`
     ${reset};
     @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,300,400,500,700,900&display=swap&subset=korean');
+
+    @font-face {
+        font-family: 'gyeonggi-ligth';
+        font-style: normal;
+        font-weight: 400;
+        src: url('${gyeonggiOTF}');
+        src: url('${gyeonggiWOFF}') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+    }
+
     html {
         background-color: ${props => props.theme.backgroundColor};
         color: ${props => props.theme.fontColor};
     }
     body { 
         font-family:'Noto Sans KR', sans-serif;
-        font-weight:300; 
+        font-weight: 300; 
         font-size: ${props => props.theme.fontSizeSm};
     }
     :before, :after, * {
@@ -177,4 +190,10 @@ export const ImgBox = styled.div`
     padding-bottom: ${props => props.bgSize};
     background-size: cover;
     background-position: center center;
+`;
+export const Image = styled.img`
+    max-width: 100%;
+    display: block;
+    vertical-align: top;
+    margin: 0.625rem auto;
 `;

@@ -1,2 +1,3 @@
 export const GET_ERRORS = "GET_ERRORS"
 export const GET_BOARD_TASKS = "GET_BOARD_TASKS"
+export const GET_BOARD_TASK = "GET_BOARD_TASK"

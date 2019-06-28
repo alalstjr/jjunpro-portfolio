@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Optional;
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -14,6 +14,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.jjunpro.koreanair.board.dto.BoardTask;
 import com.jjunpro.koreanair.board.repository.BoardTaskRepository;
@@ -78,9 +79,21 @@ public class FileStorageService {
             if(fileName.contains("..")) {
                 throw new FileStorageException("\r\n" + "오류! 파일 이름에 잘못된 경로 시퀀스가 ​​있습니다. " + fileName);
             }
-
+            
+            // 같은 게시판의 각각의 이미지 업로드 순서 
+            long fileCount = dbFileRepository.countByFileBoNum(num);
+            
+            /*
+             * 파일타입을 구분합니다.
+             * 이미지일경우 1 
+             * 이외 다른 파일인 경우 0 으로 구분하여 저장합니다.
+             */
+            String thisfileType = file.getContentType();
+            int fileDivision = 0;
+            fileDivision = thisfileType.split("/")[0].equals("image") ? 1 : 0;
+            
             // DB Save Code
-            DBFile dbFile = new DBFile(fileName, file.getSize(), file.getContentType(), num);
+            DBFile dbFile = new DBFile(fileName, file.getSize(), file.getContentType(), num, fileCount, fileDivision);
             dbFileRepository.save(dbFile);
             
             // 대상 위치로 파일 복사 (기존 파일을 같은 이름으로 바꾸기)
@@ -118,10 +131,35 @@ public class FileStorageService {
     /*
      * 게시판 미리보기 이미지 업데이트 함수 
      */
-    public void thumbUpdate(long num, String fileDownloadUri) {
+    public void thumbUpdate(long num) {
 		BoardTask boardTask = boardTaskService.findById(num);
+		DBFile fileOne = dbFileRepository.findTop1ByFileBoNumAndFileDivisionOrderByFileNoAsc(num, 1);
+		
+		String fileOneType = "";
+		if(fileOne.getFileType().split("/")[1].equals("jpeg")) {
+			// jpeg 확장자 조정
+			fileOneType = "jpg";
+		} else {
+			fileOneType = fileOne.getFileType().split("/")[1];
+		}
+		
+		String fileOneName = fileOne.getId() +"."+ fileOneType; 
+		
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/downloadFile/")
+                .path(fileOneName)
+                .toUriString();
+		
 		boardTask.setThumb(fileDownloadUri);
 		
 		boardTaskRepository.save(boardTask);
 	}
+    
+    /*
+     * 게시판의 이미지 file 목록을 가져오는 함수
+     * Division 값을 1로 설정함으로서 이미지 파일만 가져오는것을 명시함
+     */
+    public DBFile[] findByImgFile(long bo_num) {
+    	return dbFileRepository.findByFileBoNumAndFileDivisionOrderByFileNoAsc(bo_num, 1);
+    }
 }

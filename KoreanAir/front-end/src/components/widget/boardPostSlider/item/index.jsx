@@ -5,8 +5,6 @@ import { Link } from "react-router-dom";
 import { ImgBox } from "../../../../style/globalStyles";
 import { SliderBox, SlideTitle, SlideContent, SliderWrap } from "../style";
 
-import exImg from "../../../../details/images/main-slide-ex.jpg";
-
 class Item extends Component {
     render() {
 
@@ -14,9 +12,9 @@ class Item extends Component {
 
         return (
             <SliderWrap>
-                <Link to="/">
+                <Link to={`/boardEvent/view/${board_task.num}`}>
                     <ImgBox 
-                        bgImg={exImg}
+                        bgImg={board_task.thumb}
                         bgSize={"90%"}
                     />
                     <SliderBox>

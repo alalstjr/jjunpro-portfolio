@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Type;
 
 import lombok.Data;
 
@@ -36,6 +37,7 @@ public class BoardTask {
 	private String password;
 	
 	@Column(name = "bo_content")
+	@Type(type = "text")
 	@NotBlank(message = "내용은 비워 둘 수 없습니다.")
 	private String content;
 	

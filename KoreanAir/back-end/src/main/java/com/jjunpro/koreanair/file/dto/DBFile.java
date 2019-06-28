@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -22,6 +23,9 @@ public class DBFile {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
 	private String id;
 	
+	@Column(name = "bf_no")
+	private long fileNo;
+	
 	@Column(name = "bf_bo_num")
 	private long fileBoNum;
 	
@@ -34,6 +38,9 @@ public class DBFile {
 	@Column(name = "bf_file_type")
 	private String fileType;
 	
+	@Column(name = "bf_file_division")
+	private int fileDivision;
+	
 	@Column(name = "bf_file_download")
 	private int fileDownload;
 	
@@ -45,11 +52,13 @@ public class DBFile {
 		super();
 	}
 
-	public DBFile(String fileName, long fileSize, String fileType, long fileBoNum) {
+	public DBFile(String fileName, long fileSize, String fileType, long fileBoNum, long fileNo, int fileDivision) {
 		super();
 		this.fileName = fileName;
 		this.fileSize = fileSize;
 		this.fileType = fileType;
 		this.fileBoNum = fileBoNum;
+		this.fileNo = fileNo;
+		this.fileDivision = fileDivision;
 	}
 }

@@ -13,16 +13,16 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.jjunpro.koreanair.board.dto.BoardTask;
 import com.jjunpro.koreanair.board.service.BoardTaskService;
+import com.jjunpro.koreanair.file.dto.DBFile;
+import com.jjunpro.koreanair.file.service.FileStorageService;
 
 @RestController
 @RequestMapping("/api/board")
@@ -31,6 +31,9 @@ public class BoardTaskController {
 	
 	@Autowired
 	private BoardTaskService boardTaskService;
+	
+	@Autowired
+    private FileStorageService fileStorageService;
 	
 	@PostMapping("/insert")
 	public ResponseEntity<?> addPTToBoard(
@@ -75,4 +78,26 @@ public class BoardTaskController {
 	public Iterable<BoardTask> getAllPTs() {
 		return boardTaskService.findAll();
 	}
+	
+	@GetMapping("/{bo_num}")
+	public ResponseEntity<?> getPTById(@PathVariable Long bo_num) {
+		// 게시판 목록
+		BoardTask boardTask = boardTaskService.findById(bo_num);
+		
+		// 해당 게시판의 이미지 파일 목록
+		DBFile[] imgFiles = fileStorageService.findByImgFile(bo_num);
+
+		Map<Object, Object> boardView = new HashMap<Object, Object>();
+		boardView.put("boardTask", boardTask);
+		boardView.put("files", imgFiles);
+		
+		return new ResponseEntity<Map>(boardView, HttpStatus.OK);
+	}
+	
+//	@DeleteMapping("/{pt_id}")
+//	public ResponseEntity<?> deleteProjectTask(@PathVariable Long pt_id) {
+//		boardTaskService.delete(pt_id);
+//		
+//		return new ResponseEntity<String>("Project Task delete", HttpStatus.OK);
+//	}
 }

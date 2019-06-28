@@ -77,7 +77,50 @@ export const ListBtnWrap = styled.div`
     padding: 1.875rem 0;
     text-align: right;
 `;
+export const ListLink = styled.div`
+    a {
+        font-weight: 500;
+        font-size: 1.125rem;
+        color: #0080cc;
+    }
+`;
 
 /*******************
     View Style
 ********************/
+export const ContainerView = styled.div`
+    width: 100%;
+    max-width: 48.75rem;
+    margin: 0 auto;
+`;
+export const ViewWrap = styled.div`
+    padding: 1.875rem 0;
+`;
+export const TitleWrap = styled.div`
+    ${Ellipsis};
+    margin: 0.3125rem 0 1.875rem 0;
+    display: block;
+    color: rgb(59, 62, 67);
+    letter-spacing: -0.0625rem;
+    text-align: center;
+    margin-top: 1.875rem;
+    border-bottom: 0.0625rem solid #000;
+    padding-bottom: 0.625rem;
+`;
+export const ViewTitle = styled.h2`
+    font-weight: 500;
+    line-height: 3.125rem;
+    font-size: 1.75rem;
+    margin-bottom: 10px;
+`;
+export const ViewWriter = styled.div`
+    padding: 0.0625rem 0;
+    font-size: 0.875rem;
+`;
+export const ViewDate = styled.div`
+    padding: 0.0625rem 0;
+    font-size: 0.875rem;
+`;
+export const ViewContent = styled.div`
+    font-size: 1rem;
+`;

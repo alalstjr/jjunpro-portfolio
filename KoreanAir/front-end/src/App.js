@@ -7,6 +7,7 @@ import Footer from "./components/layout/footer";
 import MainPage from "./components/mainPage";
 import Board from "./components/board";
 import BoardWrite from "./components/board/write";
+import BoardView from "./components/board/view";
 
 class App extends Component {
   render() {
@@ -14,9 +15,12 @@ class App extends Component {
     <Router>
       <Header/>
       <Switch>
+        {/* 메인페이지 */}
         <Route exact path="/" component={MainPage} />
+        {/* 게시판 */}
         <Route exact path="/boardEvent" component={Board} />
         <Route exact path="/boardEvent/write" component={BoardWrite} />
+        <Route exact path="/boardEvent/view/:bo_num" component={BoardView} />
         <Redirect from="*" to="/" />
       </Switch>
       <Footer/>

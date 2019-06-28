@@ -10,7 +10,7 @@ const FileDrop = ({ fileState }) => {
 
     const { isDragActive, getRootProps, getInputProps, isDragReject, acceptedFiles, rejectedFiles } = useDropzone({
         onDrop,
-        accept: 'image/png',
+        // accept: 'image/png',
         minSize: 0,
         maxSize
     });

@@ -8,7 +8,7 @@ import Slider from "react-slick";
 import "../../../details/css/slickSlider/slick.css";
 import "../../../details/css/slickSlider/slick-theme.css";
 
-import { NoSlider } from "./style";
+import { NoSlider, SliderGap } from "./style";
 
 import { getBoardTasks } from "../../../actions/boardTaskActions";
 import Item from "./item";
@@ -53,14 +53,18 @@ class BoardPostSlider extends Component {
                 }
 
                 const SliderItem = (
-                    <Slider {...settings}>
-                        {items}
-                    </Slider>
+                    <SliderGap>
+                        <Slider {...settings}>
+                            {items}
+                        </Slider>
+                    </SliderGap>
                 );
                 const noSliderItem = (
-                    <NoSlider>
-                        {items}
-                    </NoSlider>
+                    <SliderGap>
+                        <NoSlider>
+                            {items}
+                        </NoSlider>
+                    </SliderGap>
                 );
                 
                 return (
