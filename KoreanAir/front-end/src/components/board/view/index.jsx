@@ -24,13 +24,32 @@ class BoardView extends Component {
 
         // Variables Init
         let items = [];
+        let contentResult = [];
 
-        // 줄바꿈 치환
-        if(board_task.content != undefined) {
-            const br = /(\n|\r\n)/g;
-            board_task.content = board_task.content.replace(br, "<br/>");
+        // 줄바꿈 치환 함수
+        const contentReplac = (content) => {
+            if(content != undefined) {
+                // DB값의 \n(줄바꿈) 값을 기준으로 배열을 나눠 저장합니다.
+                const contentArr = content.split('\n').map( (line, index) => (
+                    <Fragment key={index}>{line}<br/></Fragment>
+                ));
+                
+                // console.log(contentArr);
+                
+                // 변환된 값을 최종 배열에 넣습니다.
+                for(let i = 0; i<contentArr.length; i++) {
+                    contentResult.push(contentArr[i]);
+                }
+
+                // console.log(contentResult);
+
+                return(
+                    <Fragment>{contentResult}</Fragment>
+                );
+            }
         }
 
+        // 이미지 파일 출력 함수
         const imageView = (board_task_files) => {
             const files = board_task_files.map(file => (
                 <ImageItem
@@ -63,7 +82,7 @@ class BoardView extends Component {
                     </TitleWrap>    
                     {imageView(board_task_files)}
                     <ViewContent>
-                        {board_task.content}
+                        {contentReplac(board_task.content)}
                     </ViewContent>
                 </ContainerView>
             </ViewWrap>
