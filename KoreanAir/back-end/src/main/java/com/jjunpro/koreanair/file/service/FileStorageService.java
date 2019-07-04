@@ -135,25 +135,36 @@ public class FileStorageService {
 		BoardTask boardTask = boardTaskService.findById(num);
 		DBFile fileOne = dbFileRepository.findTop1ByFileBoNumAndFileDivisionOrderByFileNoAsc(num, 1);
 		
-		String fileOneType = "";
-		if(fileOne.getFileType().split("/")[1].equals("jpeg")) {
-			// jpeg 확장자 조정
-			fileOneType = "jpg";
-		} else {
-			fileOneType = fileOne.getFileType().split("/")[1];
+		// thumb 쿼리 검색시 결과가 나올때만 코드 실행
+		// null 값 방지
+		if(fileOne != null) {
+			String fileOneType = "";
+			if(fileOne.getFileType().split("/")[1].equals("jpeg")) {
+				// jpeg 확장자 조정
+				fileOneType = "jpg";
+			} else {
+				fileOneType = fileOne.getFileType().split("/")[1];
+			}
+			
+			String fileOneName = fileOne.getId() +"."+ fileOneType; 
+			
+	        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+	                .path("/downloadFile/")
+	                .path(fileOneName)
+	                .toUriString();
+			
+			boardTask.setThumb(fileDownloadUri);
+			
+			boardTaskRepository.save(boardTask);
 		}
-		
-		String fileOneName = fileOne.getId() +"."+ fileOneType; 
-		
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/downloadFile/")
-                .path(fileOneName)
-                .toUriString();
-		
-		boardTask.setThumb(fileDownloadUri);
-		
-		boardTaskRepository.save(boardTask);
 	}
+    
+    /*
+     * 게시판의 모든 file 목록을 가져오는 함수
+     */
+    public DBFile[] findByFile(long bo_num) { 
+    	return dbFileRepository.findByFileBoNumOrderByFileNoAsc(bo_num);
+    }
     
     /*
      * 게시판의 이미지 file 목록을 가져오는 함수
@@ -161,5 +172,14 @@ public class FileStorageService {
      */
     public DBFile[] findByImgFile(long bo_num) {
     	return dbFileRepository.findByFileBoNumAndFileDivisionOrderByFileNoAsc(bo_num, 1);
+    }
+    
+    /*
+     * 게시판글 수정시 파일 삭제(숨김처리) 함수
+     */
+    public void removeFile(long num, String file) {
+    	DBFile registerFile = dbFileRepository.findByFileBoNumAndId(num, file);
+    	registerFile.setFileBoNum(0);
+    	dbFileRepository.save(registerFile);
     }
 }

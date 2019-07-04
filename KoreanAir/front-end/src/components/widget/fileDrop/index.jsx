@@ -1,43 +1,73 @@
-import React, { useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 
-const FileDrop = ({ fileState }) => {
-    const maxSize = 99999999999;
+import { DropZoneWrap, DropZone, FileList, FileRemove } from "./style";
 
+const FileDrop = ({ fileState, registerFiles, registerFileState }) => {
+    const [myFiles, setMyFiles] = useState([]);
+    const maxSize = 10000000;
     const onDrop = useCallback(acceptedFiles => {
-        fileState(acceptedFiles);
+        setMyFiles([...myFiles, ...acceptedFiles]);
+        fileState(acceptedFiles);        
     }, []);    
-
-    const { isDragActive, getRootProps, getInputProps, isDragReject, acceptedFiles, rejectedFiles } = useDropzone({
+    const { isDragActive, getRootProps, getInputProps, isDragReject, rejectedFiles } = useDropzone({
         onDrop,
-        // accept: 'image/png',
+        // accept: 'image/jpeg, image/png, .pdf',
         minSize: 0,
         maxSize
     });
 
     const isFileTooLarge = rejectedFiles.length > 0 && rejectedFiles[0].size > maxSize;
 
+    // 등록된 file 제거
+    const fileDelete = file => () => {
+        const newFiles = [...myFiles];
+        newFiles.splice(newFiles.indexOf(file), 1);
+        setMyFiles(newFiles);
+        fileState(newFiles);
+    }
+
+    // 등록된 모든 file 제거
+    const removeAll = () => {
+        setMyFiles([]);
+    }
+
     return (
-        <div>
-            <div {...getRootProps()}>
+        <DropZoneWrap>
+            <DropZone {...getRootProps()}>
                 <input {...getInputProps()}/>
-                {!isDragActive && 'Click here or drop a file to upload!'}
-                {isDragActive && !isDragReject && "Drop it like it's hot!"}
-                {isDragReject && "File type not accepted, sorry!"}
+                {!isDragActive && '여기를 클릭하거나 업로드 파일을 드롭하세요. (PDF, JPG, PNG)'}
+                {isDragActive && !isDragReject && "파일 업로드가 가능합니다."}
+                {isDragReject && "업로드가 불가능한 파일입니다."}
                 {isFileTooLarge && (
                 <div className="text-danger mt-2">
-                    File is too large.
+                    파일의 크기가 너무 큽니다.
                 </div>
                 )}
-            </div>
-            <ul className="list-group mt-2">
-                {acceptedFiles.length > 0 && acceptedFiles.map(acceptedFile => (
-                    <li key={acceptedFile.lastModified} className="list-group-item list-group-item-success">
-                    {acceptedFile.name}
-                    </li>
+            </DropZone>
+            <ul>
+                {myFiles.length > 0 && myFiles.map(acceptedFile => (
+                    <FileList key={acceptedFile.lastModified}>
+                        {acceptedFile.path} - {acceptedFile.size} bytes{" "}
+                        <FileRemove 
+                            type="button" 
+                            onClick={fileDelete(acceptedFile)}
+                        />
+                    </FileList>
+                ))}
+
+                {/* 게시글 수정시 등록된 파일 목록 */}
+                {registerFiles.length > 0 && registerFiles.map(acceptedFile => (
+                    <FileList key={acceptedFile.fileNo}>
+                        {acceptedFile.fileName} - {acceptedFile.fileSize} bytes{" "}
+                        <FileRemove 
+                            type="button" 
+                            onClick={registerFileState.bind(this, acceptedFile)}
+                        />
+                    </FileList>
                 ))}
             </ul>
-        </div>
+        </DropZoneWrap>
     )
 }
 

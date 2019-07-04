@@ -64,6 +64,11 @@ https://countryxide.tistory.com/16
 date 시간 날짜 관련 어노테이션
 https://medium.com/@SlackBeck/java-8-date-time-%EC%99%80-jpa-%EA%B7%B8%EB%A6%AC%EA%B3%A0-%EC%8A%A4%ED%94%84%EB%A7%81-%EB%B6%80%ED%8A%B8-7a02eea23d29
 
+## 정렬관련 
+https://cnpnote.tistory.com/entry/SPRING-Spring-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%97%90%EC%84%9C-OrderBy%EB%A5%BC-findAll%EA%B3%BC-%ED%95%A8%EA%BB%98-%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95
+
+https://jistol.github.io/java/2017/02/11/jpa-sort/
+
 # FILE UPLOAD 관련 정리
 
 ## PATH, PATHS 클래스 정리
@@ -105,3 +110,10 @@ https://velopert.com/1896
 ## react HOC
 https://www.vobour.com/%EB%A6%AC%EC%95%A1%ED%8A%B8-react-%EC%9D%B4%ED%95%B4-4-higher-order-component
 https://reactjs-kr.firebaseapp.com/docs/higher-order-components.html
+https://merong.city/p/react-hoc
+
+## react event
+https://reactjs.org/docs/events.html
+
+## react file dropzone file 삭제
+https://github.com/react-dropzone/react-dropzone/issues/805

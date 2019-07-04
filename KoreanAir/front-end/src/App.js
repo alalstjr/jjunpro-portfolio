@@ -6,7 +6,8 @@ import Header from "./components/layout/header";
 import Footer from "./components/layout/footer";
 import MainPage from "./components/mainPage";
 import Board from "./components/board";
-import BoardWrite from "./components/board/write";
+import BoardWriteInsert from "./components/board/write/writeInsert";
+import BoardWriteUpdate from "./components/board/write/writeUpdate";
 import BoardView from "./components/board/view";
 
 class App extends Component {
@@ -19,7 +20,8 @@ class App extends Component {
         <Route exact path="/" component={MainPage} />
         {/* 게시판 */}
         <Route exact path="/boardEvent" component={Board} />
-        <Route exact path="/boardEvent/write" component={BoardWrite} />
+        <Route exact path="/boardEvent/write" component={BoardWriteInsert} />
+        <Route exact path="/boardEvent/write/:bo_num" component={BoardWriteUpdate} />
         <Route exact path="/boardEvent/view/:bo_num" component={BoardView} />
         <Redirect from="*" to="/" />
       </Switch>

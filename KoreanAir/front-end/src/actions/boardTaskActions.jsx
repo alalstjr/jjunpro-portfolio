@@ -1,7 +1,15 @@
 import axios from "axios";
-import { GET_ERRORS, GET_BOARD_TASKS, GET_BOARD_TASK } from "./types";
+import { 
+    GET_ERRORS, 
+    GET_BOARD_TASKS,
+    GET_BOARD_TASK,
+    DELETE_BOARD_TASK
+} from "./types";
 
-export const insertBoardTask = (board_task, history, files) => async dispatch => {
+/*
+ *  게시판 게시글을 추가합니다.
+ */
+export const boardTaskInsert = (board_task, history, files, removeFiles) => async dispatch => {
     try {
         /*
          * Write Update Set
@@ -11,22 +19,34 @@ export const insertBoardTask = (board_task, history, files) => async dispatch =>
             /*
             * File Upload Set
             */
-            if( files.length !== 0 ) { 
+            if( board_task.files !== 0 || removeFiles.length !== 0) {
                 let boNum = 0;
                 boNum = res.data.num;
                 dispatch(
-                    fileUpload(boNum, files)
+                    fileUpload(boNum, files, removeFiles, history)
                 );
+            } else {
+                history.push("/");
             }
         });
-
-        history.push("/");
     } catch (error) {
         dispatch({
             type: GET_ERRORS,
             payload: error.response.data
         });
     }
+}
+
+/*
+ *  게시판 게시글을 삭제합니다.
+ */
+export const boardTaskDelete = (bo_num, history) => async dispatch => {
+    await axios.delete(`http://localhost:8080/api/board/delete/${bo_num}`);
+    dispatch({
+        type: DELETE_BOARD_TASK,
+        payload: bo_num
+    });
+    history.push("../");
 }
 
 /*
@@ -41,6 +61,21 @@ export const getBoardTasks = () => async dispatch => {
 }
 
 /*
+ *  특정 카테고리 게시판 목록을 불러옵니다.
+ */
+export const getBoardTasksCate = (bo_cate, history) => async dispatch => {
+    try {
+        const res = await axios.get(`http://localhost:8080/api/board/cate/${bo_cate}`);
+        dispatch({
+            type: GET_BOARD_TASKS,
+            payload: res.data
+        });
+    } catch (error) {
+        history.push("/");
+    }
+}
+
+/*
  *  특정 게시판 목록을 불러옵니다. (상세페이지)
  */
 export const getBoardTask = (bo_num, history) => async dispatch => {
@@ -51,14 +86,15 @@ export const getBoardTask = (bo_num, history) => async dispatch => {
             payload: res.data
         });
     } catch (error) {
-        dispatch({
-            type: GET_ERRORS,
-            payload: error.response.data
-        });
+        alert(error.response.data.error);
+        history.push("/");
     }
 }
 
-export const fileUpload = (Num, files) => async dispatch => {
+/*
+ *  파일을 업로드 합니다.
+ */
+export const fileUpload = (Num, files, removeFiles, history) => async dispatch => {
     try {
         const formData = new FormData();
         const config = {
@@ -76,10 +112,12 @@ export const fileUpload = (Num, files) => async dispatch => {
             formData.append('files', file);
         });
         formData.append('num', Num);
+        formData.append('removeFiles', removeFiles);
 
         await axios.post("http://localhost:8080/uploadMultipleFiles", formData, config)
         .then(res => {
             console.log(res);
+            history.push("/");
         });
     } catch (error) {
         dispatch({

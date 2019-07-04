@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import { ListBg, ListBtnWrap } from "../../style";
-import { Container, Btn } from "../../../../style/globalStyles";
+import { Container, WriteBtn } from "../../../../style/globalStyles";
 
 class ListBtn extends Component {
     render() {
@@ -21,9 +21,9 @@ class ListBtn extends Component {
                     <ListBtnWrap>
                         <Container>
                             <Link to="/boardEvent/write">
-                                <Btn>
+                                <WriteBtn>
                                     글쓰기
-                                </Btn>
+                                </WriteBtn>
                             </Link>
                         </Container>
                     </ListBtnWrap>
@@ -36,9 +36,9 @@ class ListBtn extends Component {
             return(
                 <ListBtnWrap>
                     <Container>
-                        <Btn type="submit">
+                        <WriteBtn type="submit">
                             작성 완료
-                        </Btn>
+                        </WriteBtn>
                     </Container>
                 </ListBtnWrap>
             );

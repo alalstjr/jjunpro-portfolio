@@ -45,7 +45,7 @@ public class DBFile {
 	private int fileDownload;
 	
 	@CreationTimestamp
-	@Column(name = "bf_datetime")
+	@Column(name = "bf_datetime", nullable = false, updatable = false)
 	private LocalDateTime dateTime;
 
 	public DBFile() {

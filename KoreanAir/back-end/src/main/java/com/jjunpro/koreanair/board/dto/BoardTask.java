@@ -49,8 +49,8 @@ public class BoardTask {
 	private int readcount;
 	
 	@CreationTimestamp
-	@Column(name = "bo_reg_date")
-	private LocalDateTime reg_date;
+	@Column(name = "bo_reg_date", nullable = false, updatable = false)
+	private LocalDateTime regDate;
 	
 	@Column(name = "bo_ip", length = 255)
 	private String ip;

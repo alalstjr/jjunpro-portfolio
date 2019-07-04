@@ -1,5 +1,8 @@
 import styled from 'styled-components';
-import { ClearFix, Ellipsis } from "../../../style/globalStyles";
+import { 
+    ClearFix, 
+    Ellipsis
+} from "../../../style/globalStyles";
 
 export const SliderGap = styled.div`
     margin-left: -0.625rem;

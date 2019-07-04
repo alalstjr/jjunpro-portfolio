@@ -6,9 +6,7 @@ class ImageItem extends Component {
         // props Init
         const { file } = this.props;
 
-        /*
-         * file URL
-         */
+        // file URL
         // Server Url
         const serverUrl = "http://localhost:8080/downloadFile/";
 

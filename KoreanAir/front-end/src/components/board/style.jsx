@@ -1,5 +1,10 @@
 import styled from 'styled-components';
-import { FlexContainer, FlexCol4, Ellipsis } from "../../style/globalStyles";
+import { 
+    FlexContainer, 
+    FlexCol4, 
+    Ellipsis,
+    Btn
+} from "../../style/globalStyles";
 
 /*******************
     Header Style
@@ -24,15 +29,16 @@ export const CateGoryWrap = styled.div`
 `;
 export const CateGoryUl = styled.ul`
     ${FlexContainer};
-    li a {
+    li {
         font-size: 1rem;
         padding: 0.625rem 1.25rem;
         display: inline-block;
         background-color: #ededed;
         margin-right: 0.3125rem;
+        cursor: pointer;
     };
-    li a.active,
-    li a:hover {
+    li.active,
+    li:hover {
         background-color: #434343;
         color: #fff;
     };
@@ -78,7 +84,7 @@ export const ListBtnWrap = styled.div`
     text-align: right;
 `;
 export const ListLink = styled.div`
-    a {
+    > a {
         font-weight: 500;
         font-size: 1.125rem;
         color: #0080cc;
@@ -123,4 +129,10 @@ export const ViewDate = styled.div`
 `;
 export const ViewContent = styled.div`
     font-size: 1rem;
+`;
+export const EditWrap = styled.div`
+    float: right;
+    button {
+        margin: 0 0.1875rem;
+    }
 `;

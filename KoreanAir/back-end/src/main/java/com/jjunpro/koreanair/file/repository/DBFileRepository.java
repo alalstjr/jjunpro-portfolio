@@ -13,8 +13,14 @@ public interface DBFileRepository extends JpaRepository<DBFile, String>{
 	// 게시판 미리보기 이미지 업데이트 쿼리
 	DBFile findTop1ByFileBoNumAndFileDivisionOrderByFileNoAsc(long num, int division);
 	
-	// 게시판 모든 이미지 파일만 가져오는 쿼리
+	// 게시판 모든 파일 가져오는 쿼리
+	DBFile[] findByFileBoNumOrderByFileNoAsc(long num);
+	
+	// 게시글의 이미지 파일만 가져오는 쿼리
 	DBFile[] findByFileBoNumAndFileDivisionOrderByFileNoAsc(long num, int division);
+	
+	// 게시글 수정시 파일 삭제가 전송된경우 bo_num 값을 확인하여 파일 삭제(숨김) 처리
+	DBFile findByFileBoNumAndId(long num, String file);
 }
 
 //fileBoNum 1 이고

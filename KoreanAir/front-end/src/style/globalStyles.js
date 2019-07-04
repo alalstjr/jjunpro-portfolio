@@ -76,10 +76,42 @@ export const Container = styled.div`
 /*******************
     Botton Style
 ********************/
-export const Btn  = styled.button`
-    border: 0.0625rem solid #ddd;
-    padding: 0.3125rem 0.9375rem;
-    background-color: #f2f2f2;
+export const Btn = css`
+    display: inline-block;
+    padding: 0.375rem 0.75rem;
+    margin-bottom: 0;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    user-select: none;
+    background-image: none;
+    border: 0.0625rem solid transparent;
+    border-radius: 0.25rem;
+    color: #fff;
+    
+    &:hover {
+        opacity: 0.7;
+    }
+    a {
+        color: #fff;
+    }
+`;
+export const EditBtn = styled.button`
+    ${Btn};
+    background-color: #ec971f;
+`;
+export const RemoveBtn = styled.button`
+    ${Btn};
+    background-color: #c9302c;
+`;
+export const WriteBtn = styled.button`
+    ${Btn};
+    background-color: #286090;
 `;
 export const DataNone  = styled.div`
     text-align: center;
@@ -128,6 +160,22 @@ export const SelectBox = styled.select`
     ${FormCss};
 `;
 
+/*******************
+    Active&Hover Style
+********************/
+export const ActiveList = css`
+    transition: 0.2s cubic-bezier(0.91, 0.35, 0.21, 0.72);
+    
+    a.active,
+    .active,
+    &:hover {
+        box-shadow: 0 0 0 5px rgba(0,0,0,0.03);
+        border-radius: 5px;
+    }
+`;
+export const WrapActive = styled.div`
+    ${ActiveList};
+`;
 
 // export const BoxGap = css`
 //     padding-left: 10px;
