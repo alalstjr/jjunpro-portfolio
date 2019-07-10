@@ -6,11 +6,15 @@ import ListBtn from "./bottom/listBtn";
 
 class Board extends Component {
     render() {
+        const { page_num } = this.props.match.params;
+
         return (
             <div>
                 <BoardHead/>
                 <CateGory/>
-                <BoardList/>
+                <BoardList
+                    pageNum={page_num}
+                />
                 <ListBtn
                     option={"list"}
                 />

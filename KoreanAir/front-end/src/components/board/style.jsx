@@ -136,3 +136,20 @@ export const EditWrap = styled.div`
         margin: 0 0.1875rem;
     }
 `;
+
+/*******************
+    Paging Style
+********************/
+export const PagingWrap = styled.div`
+    text-align: center;
+
+    a,
+    span {
+        font-size: 16px;
+        padding: 0 10px;
+    }
+    a:hover,
+    span {
+        font-weight: bold;
+    }
+`;

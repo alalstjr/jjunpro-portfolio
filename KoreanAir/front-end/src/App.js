@@ -21,6 +21,7 @@ class App extends Component {
         {/* 게시판 */}
         <Route exact path="/boardEvent" component={Board} />
         <Route exact path="/boardEvent/write" component={BoardWriteInsert} />
+        <Route exact path="/boardEvent/:page_num" component={Board} />
         <Route exact path="/boardEvent/write/:bo_num" component={BoardWriteUpdate} />
         <Route exact path="/boardEvent/view/:bo_num" component={BoardView} />
         <Redirect from="*" to="/" />

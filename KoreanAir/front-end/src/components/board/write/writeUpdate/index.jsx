@@ -29,7 +29,7 @@ class BoardWriteUpdate extends Component {
         
         // 전달받은 props 객체 존재여부
         let board_task_check = Object.keys(nextProps.board_task).length > 0;
-        console.log(nextProps);
+
         if(bo_num && board_task_check) {
             const {
                 num,

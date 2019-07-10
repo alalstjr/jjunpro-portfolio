@@ -1,6 +1,5 @@
 package com.jjunpro.koreanair.board.controller;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,7 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -38,7 +41,8 @@ public class BoardTaskController {
 	@Autowired
     private FileStorageService fileStorageService;
 	
-	@PostMapping("/insert")
+	// 생성 CREATE or UADATE
+	@PostMapping("/")
 	public ResponseEntity<?> addPTToBoard(
 			@Valid @RequestBody BoardTask boardTask, 
 			BindingResult result, 
@@ -77,12 +81,14 @@ public class BoardTaskController {
 		return new ResponseEntity<BoardTask>(newBT, HttpStatus.CREATED);
 	}
 	
-	@GetMapping("/all")
+	// READ 모든 게시글 조회
+	@GetMapping("/")
 	public Iterable<BoardTask> getAllPTs(Sort sort) {
 		sort = sort.and(new Sort(Sort.Direction.DESC, "regDate"));
 		return boardTaskService.findAll(sort);
 	}
 	
+	// READ 특정 게시글 조회
 	@GetMapping("/{bo_num}")
 	public ResponseEntity<?> getPTById(@PathVariable Long bo_num) {
 		// 게시판 목록
@@ -111,19 +117,27 @@ public class BoardTaskController {
 		return new ResponseEntity<Map>(boardView, HttpStatus.OK);
 	}
 	
-	/*
-	 * 카테고리 검색 리스트
-	 */
+	// READ 카테고리 조회
 	@GetMapping("/cate/{bo_category}")
 	public Iterable<?> getBTByCa(@PathVariable String bo_category) {
 		// 카테고리 게시판 목록
 		return boardTaskService.findByCate(bo_category);
 	}
 	
-	@DeleteMapping("/delete/{bo_num}")
+	// DELETE 게시글 삭제
+	@DeleteMapping("/{bo_num}")
 	public ResponseEntity<?> deleteProjectTask(@PathVariable Long bo_num) {
 		boardTaskService.delete(bo_num);
 		
 		return new ResponseEntity<String>("Board Task delete", HttpStatus.OK);
 	}
+	
+	// 페이징 & 게시글 조회
+	@GetMapping("/page")
+	public Page<BoardTask> getAccounts(
+			@PageableDefault(sort = { "regDate" }, direction = Direction.DESC, size = 2)
+			Pageable pageable 
+		) {
+        return boardTaskService.findAll(pageable);
+    }
 }

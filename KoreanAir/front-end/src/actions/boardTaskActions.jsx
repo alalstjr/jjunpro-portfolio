@@ -3,7 +3,8 @@ import {
     GET_ERRORS, 
     GET_BOARD_TASKS,
     GET_BOARD_TASK,
-    DELETE_BOARD_TASK
+    DELETE_BOARD_TASK,
+    GET_BOARD_PAGING
 } from "./types";
 
 /*
@@ -14,7 +15,7 @@ export const boardTaskInsert = (board_task, history, files, removeFiles) => asyn
         /*
          * Write Update Set
          */
-        await axios.post("http://localhost:8080/api/board/insert", board_task)
+        await axios.post("http://localhost:8080/api/board/", board_task)
         .then(res => {
             /*
             * File Upload Set
@@ -41,7 +42,7 @@ export const boardTaskInsert = (board_task, history, files, removeFiles) => asyn
  *  게시판 게시글을 삭제합니다.
  */
 export const boardTaskDelete = (bo_num, history) => async dispatch => {
-    await axios.delete(`http://localhost:8080/api/board/delete/${bo_num}`);
+    await axios.delete(`http://localhost:8080/api/board/${bo_num}`);
     dispatch({
         type: DELETE_BOARD_TASK,
         payload: bo_num
@@ -53,7 +54,7 @@ export const boardTaskDelete = (bo_num, history) => async dispatch => {
  *  모든 게시판 목록을 불러옵니다. (리스트)
  */
 export const getBoardTasks = () => async dispatch => {
-    const res = await axios.get("http://localhost:8080/api/board/all");
+    const res = await axios.get("http://localhost:8080/api/board/");
     dispatch({
         type: GET_BOARD_TASKS,
         payload: res.data
@@ -123,6 +124,26 @@ export const fileUpload = (Num, files, removeFiles, history) => async dispatch =
         dispatch({
             type: GET_ERRORS,
             payload: error.response.data
+        });
+    }
+}
+
+/*
+ *  게시판 페이징
+ */
+
+export const getPaging = (page) => async dispatch => {
+    if(page) {
+        const res = await axios.get(`http://localhost:8080/api/board/page?page=${page}`);
+        dispatch({
+            type: GET_BOARD_PAGING,
+            payload: res.data
+        });
+    } else {
+        const res = await axios.get("http://localhost:8080/api/board/page");
+        dispatch({
+            type: GET_BOARD_PAGING,
+            payload: res.data
         });
     }
 }

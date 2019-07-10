@@ -1,13 +1,20 @@
 package com.jjunpro.koreanair.board.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jjunpro.koreanair.board.dto.BoardTask;
 import com.jjunpro.koreanair.board.repository.BoardTaskRepository;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@Transactional
+@AllArgsConstructor
 public class BoardTaskService {
 	@Autowired
 	private BoardTaskRepository boardTaskRepository;
@@ -48,4 +55,9 @@ public class BoardTaskService {
 		BoardTask boardTask = findById(id);
 		boardTaskRepository.delete(boardTask);
 	}
+	
+	@Transactional(readOnly = true)
+    public Page<BoardTask> findAll(Pageable pageable) {
+        return boardTaskRepository.findAll(pageable);
+    }
 }

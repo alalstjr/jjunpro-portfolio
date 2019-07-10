@@ -2,31 +2,44 @@ import React, { Component, Fragment } from 'react';
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import { getBoardTasks } from "../../../actions/boardTaskActions";
+import { getPaging } from "../../../actions/boardTaskActions";
 
 import { ListWrap, ListBg } from "../style";
 import { Container, DataNone } from "../../../style/globalStyles";
 
 import Item from "./item";
+import Paging from "./paging";
+
 
 class BoardList extends Component {
 
     componentDidMount() {
-        this.props.getBoardTasks();
+        // 처음 화면 출력시 페이징 출력
+        const { pageNum } = this.props;
+        this.props.getPaging(pageNum - 1);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        // 페이징시 뒤로가기 혹은 앞으로가기 클릭시 이전페이지 출력
+        const { pageNum } = this.props;
+        if(nextProps.pageNum !== pageNum) {
+            this.props.getPaging(nextProps.pageNum - 1);
+        }
     }
 
     render() {
         // props Init
-        const { board_tasks } = this.props.board_tasks;
+        const { board_paging } = this.props;
+        const board_paging_content = board_paging.content;
 
         // Variables Init
         let BoardContent;
         let items = [];
 
         // Board Get List
-        const BoardGetList = board_tasks => {
-            if(board_tasks.length > 0) {
-                const tasks = board_tasks.map(board_task => (
+        const BoardGetList = board_paging => {
+            if(board_paging_content !== undefined && board_paging_content.length > 0) {
+                const tasks = board_paging.map(board_task => (
                     <Item
                         key={board_task.num}
                         board_task={board_task}
@@ -52,7 +65,7 @@ class BoardList extends Component {
         };
 
         // Board Get List View
-        BoardContent = BoardGetList(board_tasks);
+        BoardContent = BoardGetList(board_paging_content);
 
         return (
             <ListBg>
@@ -60,6 +73,17 @@ class BoardList extends Component {
                     <ListWrap>
                         {BoardContent}
                     </ListWrap>
+                    {
+                        // 게시글이 존재하면 페이징 표시
+                        (board_paging.content !== undefined && !board_paging.empty) &&
+                        <Paging
+                            first={board_paging.first}
+                            last={board_paging.last}
+                            totalPages={board_paging.totalPages}
+                            pageable={board_paging.pageable}
+                            getPaging={this.props.getPaging}
+                        />
+                    }
                 </Container>
             </ListBg>
         )
@@ -67,15 +91,15 @@ class BoardList extends Component {
 }
 
 BoardList.propTypes = {
-    getBoardTasks: PropTypes.func.isRequired,
-    board_tasks: PropTypes.object.isRequired
+    getPaging: PropTypes.func.isRequired,
+    board_paging: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
-    board_tasks: state.board_task
+    board_paging: state.board_task.board_paging
 });
 
 export default connect(
     mapStateToProps,
-    { getBoardTasks }
+    { getPaging }
 )(BoardList);

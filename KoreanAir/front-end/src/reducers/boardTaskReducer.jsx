@@ -1,14 +1,16 @@
 import { 
     GET_BOARD_TASKS, 
     GET_BOARD_TASK,
-    DELETE_BOARD_TASK
+    DELETE_BOARD_TASK,
+    GET_BOARD_PAGING
 } from "../actions/types"
 
 const initialState = {
     board_tasks : [],
     board_task: {},
     board_task_files: [],
-    board_task_img_files: []
+    board_task_img_files: [],
+    board_paging: {}
 }
 
 export default function(state=initialState, action) {
@@ -32,6 +34,11 @@ export default function(state=initialState, action) {
                 board_tasks: state.board_tasks.filter(
                     board_task => board_task.num !== action.payload
                 )
+            };
+        case GET_BOARD_PAGING:
+            return {
+                ...state,
+                board_paging: action.payload
             };
         default:
             return state;
