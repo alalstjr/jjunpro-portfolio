@@ -117,3 +117,9 @@ https://reactjs.org/docs/events.html
 
 ## react file dropzone file 삭제
 https://github.com/react-dropzone/react-dropzone/issues/805
+
+# Spring Security
+
+PreAuthenticatedAuthenticationToken 인증 시작단계에서 만들어 주고 만들어진 Token을 provider에 전송하는 방식의 인증
+
+PreAuthorizationToken -> FormLoginAuthenticationProvider 순으로 진행
