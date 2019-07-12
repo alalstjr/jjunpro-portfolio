@@ -16,10 +16,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.jjunpro.koreanair.board.dto.BoardTask;
+import com.jjunpro.koreanair.board.domain.BoardTask;
 import com.jjunpro.koreanair.board.repository.BoardTaskRepository;
 import com.jjunpro.koreanair.board.service.BoardTaskService;
-import com.jjunpro.koreanair.file.dto.DBFile;
+import com.jjunpro.koreanair.file.domain.DBFile;
 import com.jjunpro.koreanair.file.exception.FileStorageException;
 import com.jjunpro.koreanair.file.exception.MyFileNotFoundException;
 import com.jjunpro.koreanair.file.repository.DBFileRepository;

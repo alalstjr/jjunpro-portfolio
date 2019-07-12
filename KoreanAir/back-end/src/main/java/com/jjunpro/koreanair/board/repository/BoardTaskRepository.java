@@ -6,7 +6,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.jjunpro.koreanair.board.dto.BoardTask;
+import com.jjunpro.koreanair.board.domain.BoardTask;
 
 // REST API 입니다.
 @Repository
@@ -23,6 +23,7 @@ public interface BoardTaskRepository extends CrudRepository<BoardTask, Long>{
 	 * BoardTask 페이징 
 	 */
 	Page<BoardTask> findAll(Pageable pageable);
+	Page<BoardTask> findByCategory(String bo_category, Pageable pageable);
 }
 
 /*

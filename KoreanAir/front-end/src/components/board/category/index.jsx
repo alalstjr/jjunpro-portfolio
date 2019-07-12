@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
  
 import { 
-    getBoardTasksCate, 
-    getBoardTasks 
+    getPagingCate, 
+    getPaging 
 } from "../../../actions/boardTaskActions";
 
 import { 
@@ -29,10 +29,10 @@ class CateGory extends Component {
     onClick = (cate) => {
         switch(cate) {
             case 0 : 
-                this.props.getBoardTasks();        
+                this.props.getPaging(this.props.pageNum - 1);        
                 break;
             default :
-                this.props.getBoardTasksCate(cate);        
+                this.props.getPagingCate(cate);        
                 break;
         }
 
@@ -72,8 +72,8 @@ class CateGory extends Component {
 }
 
 CateGory.propTypes = {
-    getBoardTasks: PropTypes.func.isRequired,
-    getBoardTasksCate: PropTypes.func.isRequired,
+    getPaging: PropTypes.func.isRequired,
+    getPagingCate: PropTypes.func.isRequired,
     board_tasks: PropTypes.object.isRequired
 }
 
@@ -84,7 +84,7 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps,
     { 
-        getBoardTasksCate, 
-        getBoardTasks
+        getPagingCate, 
+        getPaging
     }
 )(CateGory);

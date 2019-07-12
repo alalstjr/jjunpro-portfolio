@@ -66,7 +66,7 @@ export const getBoardTasks = () => async dispatch => {
  */
 export const getBoardTasksCate = (bo_cate, history) => async dispatch => {
     try {
-        const res = await axios.get(`http://localhost:8080/api/board/cate/${bo_cate}`);
+        const res = await axios.get(`http://localhost:8080/api/board/all/cate/${bo_cate}`);
         dispatch({
             type: GET_BOARD_TASKS,
             payload: res.data
@@ -129,9 +129,8 @@ export const fileUpload = (Num, files, removeFiles, history) => async dispatch =
 }
 
 /*
- *  게시판 페이징
+ *  페이징 & 게시글 조회
  */
-
 export const getPaging = (page) => async dispatch => {
     if(page) {
         const res = await axios.get(`http://localhost:8080/api/board/page?page=${page}`);
@@ -146,4 +145,15 @@ export const getPaging = (page) => async dispatch => {
             payload: res.data
         });
     }
+}
+
+/*
+ *  페이징 & 특정 카테고리 게시글 조회
+ */
+export const getPagingCate = (bo_cate) => async dispatch => {
+    const res = await axios.get(`http://localhost:8080/api/board/cate/${bo_cate}`);
+    dispatch({
+        type: GET_BOARD_PAGING,
+        payload: res.data
+    });
 }

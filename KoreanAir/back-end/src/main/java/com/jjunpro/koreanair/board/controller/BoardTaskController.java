@@ -25,9 +25,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jjunpro.koreanair.board.dto.BoardTask;
+import com.jjunpro.koreanair.board.domain.BoardTask;
 import com.jjunpro.koreanair.board.service.BoardTaskService;
-import com.jjunpro.koreanair.file.dto.DBFile;
+import com.jjunpro.koreanair.file.domain.DBFile;
 import com.jjunpro.koreanair.file.service.FileStorageService;
 
 @RestController
@@ -118,7 +118,7 @@ public class BoardTaskController {
 	}
 	
 	// READ 카테고리 조회
-	@GetMapping("/cate/{bo_category}")
+	@GetMapping("/all/cate/{bo_category}")
 	public Iterable<?> getBTByCa(@PathVariable String bo_category) {
 		// 카테고리 게시판 목록
 		return boardTaskService.findByCate(bo_category);
@@ -136,8 +136,18 @@ public class BoardTaskController {
 	@GetMapping("/page")
 	public Page<BoardTask> getAccounts(
 			@PageableDefault(sort = { "regDate" }, direction = Direction.DESC, size = 2)
-			Pageable pageable 
+			Pageable pageable
 		) {
         return boardTaskService.findAll(pageable);
+    }
+	
+	// 페이징 & 특정 카테고리 게시글 조회
+	@GetMapping("/cate/{bo_category}")
+	public Page<BoardTask> getBTByCaPaging(
+			@PageableDefault(sort = { "regDate" }, direction = Direction.DESC, size = 2)
+			Pageable pageable,
+			@PathVariable String bo_category
+		) {
+        return boardTaskService.findByCate(bo_category, pageable);
     }
 }

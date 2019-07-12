@@ -1,4 +1,4 @@
-package com.jjunpro.koreanair.file.dto;
+package com.jjunpro.koreanair.file.domain;
 
 import java.time.LocalDateTime;
 

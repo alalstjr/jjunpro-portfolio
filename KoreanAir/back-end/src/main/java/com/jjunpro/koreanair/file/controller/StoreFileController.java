@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.jjunpro.koreanair.board.dto.BoardTask;
+import com.jjunpro.koreanair.board.domain.BoardTask;
 import com.jjunpro.koreanair.board.service.BoardTaskService;
 import com.jjunpro.koreanair.file.payload.UploadFileResponse;
 import com.jjunpro.koreanair.file.service.FileStorageService;

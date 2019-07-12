@@ -7,7 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jjunpro.koreanair.board.dto.BoardTask;
+import com.jjunpro.koreanair.board.domain.BoardTask;
 import com.jjunpro.koreanair.board.repository.BoardTaskRepository;
 
 import lombok.AllArgsConstructor;
@@ -60,4 +60,8 @@ public class BoardTaskService {
     public Page<BoardTask> findAll(Pageable pageable) {
         return boardTaskRepository.findAll(pageable);
     }
+	@Transactional(readOnly = true)
+	public Page<BoardTask> findByCate(String bo_category, Pageable pageable) {
+		return boardTaskRepository.findByCategory(bo_category, pageable);
+	}
 }

@@ -11,7 +11,9 @@ class Board extends Component {
         return (
             <div>
                 <BoardHead/>
-                <CateGory/>
+                <CateGory
+                    pageNum={page_num}
+                />
                 <BoardList
                     pageNum={page_num}
                 />
