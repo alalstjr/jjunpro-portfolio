@@ -119,7 +119,62 @@ https://reactjs.org/docs/events.html
 https://github.com/react-dropzone/react-dropzone/issues/805
 
 # Spring Security
+https://postitforhooney.tistory.com/entry/SpringSecurity-%EC%B4%88%EB%B3%B4%EC%9E%90%EA%B0%80-%EC%9D%B4%ED%95%B4%ED%95%98%EB%8A%94-Spring-Security-%ED%8D%BC%EC%98%B4
 
 PreAuthenticatedAuthenticationToken 인증 시작단계에서 만들어 주고 만들어진 Token을 provider에 전송하는 방식의 인증
 
 PreAuthorizationToken -> FormLoginAuthenticationProvider 순으로 진행
+
+## 진행 방향
+
+Provider 의 authenticate 메서드를 호출해서 인증을 시도합니다. 그러면 어떠한 결과 값이 제공됩니다.
+성공하면 인증 객체가 실패하면 NoSuchElementException 을 반환하도록 설계 되어있습니다.
+
+
+## JPA JWT DOMAIN
+https://stackoverflow.com/questions/1281952/jpa-fastest-way-to-ignore-a-field-during-persistence
+
+## test 설명
+https://javaengine.tistory.com/331
+
+## static 함수 설명
+https://ifcontinue.tistory.com/2
+
+## 스프링 시큐리티 설명
+https://coding-start.tistory.com/153
+http://springmvc.egloos.com/504862
+https://ryudung.tistory.com/20
+
+## 스프링을 통한 의존성 주입 - @Autowired 를 통한 속성 주입
+https://expert0226.tistory.com/195
+
+## java 캐스팅
+https://mommoo.tistory.com/40
+
+## ObjectMapper 란
+https://soulduse.tistory.com/22
+
+## 생성자가 private으로 선언된 경우/의미
+https://story.stevenmin.info/107
+
+https://medium.com/@okihouse16/%EB%B3%84%EB%B3%84-%EC%82%BD%EC%A7%88%ED%95%98%EB%8B%A4%EA%B0%80-%EC%97%AC%EA%B8%B0%EA%B9%8C%EC%A7%80-%EC%99%94%EB%84%A4%EC%9A%94-%E3%85%8E%E3%85%8E-%ED%8F%AC%EC%8A%A4%ED%8C%85-%EB%B3%B4%EA%B3%A0-%EC%89%BD%EA%B2%8C-%ED%95%B4%EA%B2%B0%ED%95%A0-%EA%B1%B8-%EA%B1%B0%EC%9D%98-2%EC%9D%BC%EA%B0%84-%EB%B6%99%EB%93%A4%EA%B3%A0-%EC%9E%88%EC%97%88%EC%8A%B5%EB%8B%88%EB%8B%A4-94ff6977a76b
+
+## 발급받은 JWT Token 확인
+
+filter -  JwtAuthenticationFilter 클레스 생성
+
+### 지워 민석 당일 할것
+
+@Service 알아보고 오류 원인
+
+## Spring bean 이란
+https://endorphin0710.tistory.com/93
+
+## 로그인 성공후 부가 작업
+https://to-dy.tistory.com/94 [todyDev]
+
+## spring json 변환
+https://engaspect.tistory.com/27
+
+## Spring Security Custom AuthenticationProvider
+출처: https://micropilot.tistory.com/2884 []
