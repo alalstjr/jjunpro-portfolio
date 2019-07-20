@@ -4,8 +4,10 @@ import PropTypes from "prop-types"
 
 import { changeLocale } from "../../../../connectedIntlProvider/action";
 
-import { Utilnav, LangLink } from "../styleHeader";
+import { Utilnav, LangLink } from "../style";
 import { Container, LeftBox, RightBox, ListUl } from "../../../../style/globalStyles";
+
+import Member from "../../../member";
 
 class Nav extends Component {
 
@@ -37,8 +39,18 @@ class Nav extends Component {
                     </LeftBox>
                     <RightBox>
                         <ListUl>
-                            <li>{intl.formatMessage({ id: "HEADER.UTILNAV.login" })}</li>
-                            <li>{intl.formatMessage({ id: "HEADER.UTILNAV.register" })}</li>
+                            <li>
+                                <Member
+                                    txt = {intl.formatMessage({ id: "HEADER.UTILNAV.login" })}
+                                    req = {"login"}
+                                />
+                            </li>
+                            <li>
+                                <Member
+                                    txt = {intl.formatMessage({ id: "HEADER.UTILNAV.register" })}
+                                    req = {"register"}
+                                />
+                            </li>
                             <li>{intl.formatMessage({ id: "HEADER.UTILNAV.reservation" })}</li>
                             <li>{intl.formatMessage({ id: "HEADER.UTILNAV.wishList" })}</li>
                             <li>{intl.formatMessage({ id: "HEADER.UTILNAV.search" })}</li>

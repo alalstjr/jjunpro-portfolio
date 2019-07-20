@@ -20,12 +20,13 @@ public class JwtDecoder {
 
     public AccountContext decodeJwt(String token) 
     {
-        DecodedJWT decodedJWT = isValidToken(token).orElseThrow(() -> new InvalidJwtException("유효한 토큰아 아닙니다."));
+        DecodedJWT decodedJWT = isValidToken(token)
+        		.orElseThrow(() -> new InvalidJwtException("유효한 토큰아 아닙니다."));
 
         String username = decodedJWT.getClaim("USERNAME").asString();
         String role = decodedJWT.getClaim("USER_ROLE").asString();
 
-        return new AccountContext(username, "1234", role);
+        return new AccountContext(username, "$2a$10$p/ibqZb28DvK7vHk6s2WYO1ZGTIAgjCqI/knBlpyuLa8in6c8uiZa", role);
     }
 
     private Optional<DecodedJWT> isValidToken(String token) 

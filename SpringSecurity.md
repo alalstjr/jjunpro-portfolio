@@ -264,6 +264,63 @@ TokenDto(token) 를 생성하여 반환합니다.
 - 8. JwtDecoder
 - 9. JwtAuthenticationFilter- successfulAuthentication
 
+
+### 3. FilterSkipMatcher
+
+생성자로 2가지를 받아야 합니다.
+- 첫번째는 건너띄는 주소경로를 묶음으로 받아내고
+- 두번째는 특정 전달받은 경로로 들어오면 검증을 하겠다는 링크주소
+
+FilterSkipMatcher matcher = new FilterSkipMatcher(Arrays.asList("/" ,"/login" ,"/social"), "/api/member/**");
+
+두개를 받는다면 첫번째가 건너띄는 다른 필터 주소 <br/>
+두번째가 해당 필터로 들어가 검증을 하겠다는 링크가 되겠다
+
+## Matcher 란
+https://developer88.tistory.com/90
+
+## test code
+
+BackEndApplication 
+
+	@Bean
+	CommandLineRunner bootstrapTestAccount(
+			AccountRepository accountRepository,
+			PasswordEncoder passwordEncoder
+			) 
+	{
+		return args -> {
+			Account account = new Account();
+			
+			account.setPassword(passwordEncoder.encode("asd"));
+			
+			accountRepository.save(account);
+		};
+	}
+
 # docs
 https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/web/authentication/AbstractAuthenticationProcessingFilter.html
 https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/
+
+https://www.callicoder.com/spring-boot-spring-security-jwt-mysql-react-app-part-2/
+
+# Spring Security CORS 설정
+https://oddpoet.net/blog/2017/04/27/cors-with-spring-security/ - 읽어봐야함
+https://howtodoinjava.com/spring5/webmvc/spring-mvc-cors-configuration/
+
+# react redux jwt session 저장소
+https://github.com/SuwonStudy/spomatch/wiki/JWT-%EC%86%8C%EA%B0%9C-%EB%B0%8F-ReactJS-WebApp%EC%97%90%EC%84%9C%EC%9D%98-%EA%B5%AC%ED%98%84
+
+# 어노테이션 빈 등록 순서 
+## 빈 등록 순서에 따라서 오류가 있고 없고가 존재
+service 단에서 bean 을 등록하는것과 
+config
+https://jeong-pro.tistory.com/167
+#Annotation을 이용한 Bean 등록
+https://smallgiant.tistory.com/11
+
+# JWT TOKEN 관련 블로그 글
+https://blog.outsider.ne.kr/1160
+
+# MVC 인터페이스 사용하는 이유
+https://multifrontgarden.tistory.com/97

@@ -16,10 +16,6 @@ import org.springframework.stereotype.Component;
 public class JwtAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
 	private static final Logger log = LoggerFactory.getLogger(JwtAuthenticationFailureHandler.class);
-	
-	public JwtAuthenticationFailureHandler() {
-		// TODO Auto-generated constructor stub
-	}
 
 	@Override
 	public void onAuthenticationFailure(
@@ -28,7 +24,6 @@ public class JwtAuthenticationFailureHandler implements AuthenticationFailureHan
 			AuthenticationException e
 			) throws IOException, ServletException 
 	{
-		System.out.println("onAuthenticationFailure");
 		log.error(e.getMessage());
 	}
 

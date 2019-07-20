@@ -15,6 +15,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.CorsUtils;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jjunpro.koreanair.account.security.filters.FilterSkipMatcher;
@@ -29,7 +34,7 @@ import com.jjunpro.koreanair.account.security.providers.JwtAuthenticationProvide
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled=true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter
 {
 
@@ -52,11 +57,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
     private HeaderTokenExtractor headerTokenExtractor;
 	
 	@Bean
-	public PasswordEncoder getPasswordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-
-	@Bean
 	public ObjectMapper getObjectMapper() {
 		return new ObjectMapper();
 	}
@@ -69,7 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 	
 	protected FormLoginFilter formLoginFilter() throws Exception 
 	{
-		FormLoginFilter filter = new FormLoginFilter("/formlogin", formLoginAuthenticationSuccessHandler, fromLoginFailuerHandler);
+		FormLoginFilter filter = new FormLoginFilter("/api/member/login", formLoginAuthenticationSuccessHandler, fromLoginFailuerHandler);
 		filter.setAuthenticationManager(super.authenticationManagerBean());
 		
 		return filter;
@@ -78,7 +78,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 
     protected JwtAuthenticationFilter jwtFilter() throws Exception 
     {
-        FilterSkipMatcher matcher = new FilterSkipMatcher(Arrays.asList("/formlogin", "/social"), "/api/**");
+        FilterSkipMatcher matcher = new FilterSkipMatcher(Arrays.asList("/api/member", "/login" ,"/social"), "/api/member/**");
         JwtAuthenticationFilter filter = new JwtAuthenticationFilter(matcher, jwtFailureHandler, headerTokenExtractor);
         filter.setAuthenticationManager(super.authenticationManagerBean());
         return filter;
@@ -101,6 +101,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 		.sessionManagement()
 		.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		
+		// CORS 설정 
+		http
+		.cors().and();
+		
 		http
 		.csrf()
 		.disable();
@@ -114,4 +118,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 		.addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class)
 		.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
+	
+    @Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+    	CorsConfiguration configuration = new CorsConfiguration();
+	       configuration.addAllowedMethod("*");
+	       configuration.addAllowedOrigin("*");
+	       configuration.addAllowedHeader("*");
+	       configuration.setAllowCredentials(true);
+	       configuration.setMaxAge(3600L);
+	       UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+	       source.registerCorsConfiguration("/**", configuration);
+	       return source;
+	}
+    
 }

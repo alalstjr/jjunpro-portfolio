@@ -1,11 +1,10 @@
 package com.jjunpro.koreanair.account.security.jwt;
 
 import java.io.UnsupportedEncodingException;
-import java.util.List;
+import java.sql.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import com.auth0.jwt.JWT;
@@ -26,8 +25,8 @@ public class JwtFactory {
 					.withIssuer("jjunpro")
 					.withClaim("USERNAME", context.getAccount().getUserId())
 					.withClaim("USER_ROLE", context.getAccount().getUserRole().getRoleName())
+					.withClaim("EXP", new Date(System.currentTimeMillis() + 864000000))
 					.sign(generateAlgorithm());
-			
 		} catch(Exception e) {
 			log.error(e.getMessage());
 		}

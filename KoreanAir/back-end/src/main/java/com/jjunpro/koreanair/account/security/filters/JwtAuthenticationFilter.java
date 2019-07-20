@@ -52,7 +52,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 	{
 		String TokenPayload = req.getHeader("Authorization");
 		
-		JwtPreProcessingToken token = new JwtPreProcessingToken(extractor.extract(TokenPayload)); 
+		JwtPreProcessingToken token = new JwtPreProcessingToken(extractor.extract(TokenPayload));
 		
 		return super.getAuthenticationManager().authenticate(token);
 	}

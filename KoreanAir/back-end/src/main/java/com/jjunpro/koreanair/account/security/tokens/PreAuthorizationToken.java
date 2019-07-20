@@ -13,12 +13,11 @@ public class PreAuthorizationToken extends UsernamePasswordAuthenticationToken {
 	
 	public PreAuthorizationToken(FormLoginDto dto) 
 	{
-		this(dto.getUserid(), dto.getPassword());
+		this(dto.getUserId(), dto.getPassword());
 	}
 	
 	public String getUsername() 
 	{
-		System.out.println("pretoken");
 		return (String)super.getPrincipal();
 	}
 	

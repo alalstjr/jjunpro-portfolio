@@ -49,7 +49,6 @@ public class AccountContext extends User {
 	
 	public static AccountContext fromJwtPostToken(JwtPostProcessingToken token)
 	{
-		System.out.println("AccountContext");
 		return new AccountContext(
 				null, 
 				token.getUserid(), 

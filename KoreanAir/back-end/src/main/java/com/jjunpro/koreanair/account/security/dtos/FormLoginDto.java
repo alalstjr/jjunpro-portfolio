@@ -11,7 +11,7 @@ public class FormLoginDto {
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	@Transient
-	private String userid;
+	private String userId;
 	
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	@Transient

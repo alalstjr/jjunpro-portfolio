@@ -8,8 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.ColumnDefault;
+import javax.validation.constraints.NotBlank;
 
 import lombok.Data;
 
@@ -23,13 +22,15 @@ public class Account {
 	private Long id;
 	
 	@Column(name = "ACCOUNT_USERNAME")
-	private String username = "asd";
+	private String username;
 
 	@Column(name = "ACCOUNT_LOGINID")
-	public String userId = "asd";
+	@NotBlank(message = "아이디는 비워 둘 수 없습니다.")
+	public String userId;
 	
 	@Column(name = "ACCOUNT_PASSWORD")
-	public String password = "asd";
+	@NotBlank(message = "비밀번호는 비워 둘 수 없습니다.")
+	public String password;
 	
 	@Column(name = "ACCOUNT_ROLE")
 	@Enumerated(value = EnumType.STRING)

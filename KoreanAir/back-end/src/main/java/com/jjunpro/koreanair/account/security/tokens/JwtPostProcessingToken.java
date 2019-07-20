@@ -21,7 +21,7 @@ public class JwtPostProcessingToken extends UsernamePasswordAuthenticationToken 
 	}
 
     public JwtPostProcessingToken(String username, UserRole role) {
-        super(username, "1234", parseAuthorities(role));
+        super(username, "asd", parseAuthorities(role));
     }
 
     private static Collection<? extends GrantedAuthority> parseAuthorities(UserRole role) 

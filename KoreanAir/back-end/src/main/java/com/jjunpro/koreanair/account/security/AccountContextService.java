@@ -19,7 +19,6 @@ public class AccountContextService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-		System.out.println("accountcontextserice");
 		Account account = accountRepository
 				.findByUserId(userId)
 				.orElseThrow(
