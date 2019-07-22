@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from 'react';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { memberTaskLogin } from "../../../actions/memberTaskActions";
+import { accountInsert } from "../../../actions/accountActions";
 
 import ReactTransitionGroup from 'react-addons-css-transition-group';
 
@@ -16,16 +16,18 @@ import {
     Form,
     Input,
     Formlabel,
-    FormGroup
+    FormGroup,
+    SubmitBtn
 } from "../../../style/globalStyles";
 
-class LoginModal extends Component {
+class SingUpModal extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             userId: "",
-            password: ""
+            password: "",
+            username: ""
         }
     }
 
@@ -42,20 +44,22 @@ class LoginModal extends Component {
 
         const { 
             userId,
-            password
+            password,
+            username
         } = this.state;
 
         const account = {
             userId,
-            password
+            password,
+            username
         };
 
-        this.props.memberTaskLogin(account, this.props.history);
+        this.props.accountInsert(account, this.props.history);
     }
 
     render(){
         const { isOpen, close } = this.props;
-        const { userId, password } = this.state;
+        const { userId, password, username } = this.state;
 
         return (
             <Fragment>
@@ -72,14 +76,25 @@ class LoginModal extends Component {
                             onSubmit={this.onSubmit}
                         >
                             <Title>
-                                로그인
+                                회원 가입
                             </Title>
                             <Content>
+                                <FormGroup>
+                                    <Formlabel>이름</Formlabel>
+                                    <Input
+                                        id="username"
+                                        name="username"
+                                        type="text"
+                                        value={username}
+                                        onChange={this.onChange}
+                                    />
+                                </FormGroup>
                                 <FormGroup>
                                     <Formlabel>아이디</Formlabel>
                                     <Input                                    
                                         id="userId"
                                         name="userId"
+                                        type="text"
                                         value={userId}
                                         onChange={this.onChange}
                                     />
@@ -89,19 +104,17 @@ class LoginModal extends Component {
                                     <Input
                                         id="password"
                                         name="password"
+                                        type="password"
                                         value={password}
                                         onChange={this.onChange}
                                     />
                                 </FormGroup>
                             </Content>
-                            <div className="button-wrap">
-                                <button 
-                                    // onClick={close}
-                                    type="submit"
-                                >
-                                    Confirm
-                                </button>
-                            </div>
+                            <SubmitBtn
+                                type="submit"
+                            >
+                                    회원가입
+                            </SubmitBtn>
                         </Form>
                     </Modal>
                     </ReactTransitionGroup>
@@ -113,8 +126,8 @@ class LoginModal extends Component {
     }
 }
   
-memberTaskLogin.propTypes = {
-    memberTaskLogin: PropTypes.func.isRequired,
+accountInsert.propTypes = {
+    accountInsert: PropTypes.func.isRequired,
     errors: PropTypes.object.isRequired
 }
 
@@ -124,5 +137,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps, 
-    { memberTaskLogin }
-)(LoginModal);
+    { accountInsert }
+)(SingUpModal);

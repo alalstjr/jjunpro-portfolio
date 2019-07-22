@@ -1,7 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import { injectIntl } from "react-intl";
-import { Test } from "./hooks/hooks-test";
 
 import Header from "./components/layout/header";
 import Footer from "./components/layout/footer";
@@ -15,7 +14,6 @@ const App = () => {
     return (
       <Router>
         <Header/>
-        <Test/>
         <Switch>
           {/* 메인페이지 */}
           <Route exact path="/" component={MainPage} />

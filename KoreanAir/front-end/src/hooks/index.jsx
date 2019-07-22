@@ -1,4 +1,4 @@
-import {useState} from "react";
+import { useState } from "react";
 
 export function useLocalState(localItem) {
     const [loc, setState] = useState(localStorage.getItem(localItem));

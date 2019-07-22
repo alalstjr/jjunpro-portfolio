@@ -2,7 +2,7 @@ import React from "react"
 import { useLocalState } from "../index"
 
 export const Test = () => {
-    const [a1, a2] = useLocalState("asdadddddddddddddddddddddddddddd");
+    const [a1, a2] = useLocalState("token");
     return(
         <div>
             {a1}

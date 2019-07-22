@@ -6,8 +6,6 @@ import { changeLocale } from "./action";
 
 const getCurrentLocale = () => {
   let defaultLang = navigator.language || navigator.userLanguage || navigator.languages[0];
-  console.log("hello world");
-  console.log(defaultLang);
 
   defaultLang = defaultLang.split("-")[0];
   if (defaultLang !== "ko") {

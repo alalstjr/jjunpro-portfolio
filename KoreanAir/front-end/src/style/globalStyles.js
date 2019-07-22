@@ -133,14 +133,13 @@ export const FormCss = css`
     color: #5c6873;
     background-color: #fff;
     background-clip: padding-box;
-    border: 1px solid #e4e7ea;
-    border-radius: .25rem;
 `;
 export const Form = styled.form`
     padding 1.25rem 0;
 `;
 export const FormGroup = styled.div`
-    margin-bottom: 1rem;
+    position: relative;
+    margin-bottom: 2rem;
 `;
 export const Formlabel = styled.label`
     display: inline-block;
@@ -148,9 +147,24 @@ export const Formlabel = styled.label`
     font-size: 1rem;
 `;
 export const Input = styled.input.attrs({
-    required: true
+    // required: true
 })`
     ${FormCss};
+    border: 1px solid #e4e7ea;
+    border-radius: .25rem;
+`;
+export const InputClean = styled.input.attrs({
+    // required: true
+})`
+    ${FormCss};
+    border: none;
+    border-bottom: 1px solid #e4e7ea;
+`;
+export const InputWarning = styled.div`
+    color: red;
+    font-size: 12px;
+    position: absolute;
+    bottom: -18px;
 `;
 export const Textarea = styled.textarea`
     ${FormCss};
@@ -158,6 +172,16 @@ export const Textarea = styled.textarea`
 `;
 export const SelectBox = styled.select`
     ${FormCss};
+`;
+export const SubmitBtn = styled.button`
+    background-color: ${props => props.theme.themeColor};
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    border-radius: 3px;
+    font-size: 16px;
+    padding: 12px 0;
+    margin-top: 15px;
 `;
 
 /*******************

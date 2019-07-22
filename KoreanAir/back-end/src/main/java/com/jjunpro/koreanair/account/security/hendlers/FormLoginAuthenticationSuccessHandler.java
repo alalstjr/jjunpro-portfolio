@@ -13,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jjunpro.koreanair.account.security.AccountContext;
@@ -44,12 +43,15 @@ public class FormLoginAuthenticationSuccessHandler implements AuthenticationSucc
 		
 		String tokenString = factory.generateToken(context);
 		
-		processRespone(res, writeDto(tokenString));
+		String username = token.getAccountContext().getAccount().getUsername();
+		String userId = token.getAccountContext().getAccount().getUserId();
+		
+		processRespone(res, writeDto(tokenString, username, userId));
 	}
-	
-	private TokenDto writeDto(String token) 
+	 
+	private TokenDto writeDto(String token, String username, String userId) 
 	{
-		return new TokenDto(token);
+		return new TokenDto(token, username, userId);
 	}
 	
 	private void processRespone(

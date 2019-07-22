@@ -324,3 +324,6 @@ https://blog.outsider.ne.kr/1160
 
 # MVC 인터페이스 사용하는 이유
 https://multifrontgarden.tistory.com/97
+
+# @Transient(Java Persistence API)
+http://egloos.zum.com/LuckyChips/v/1692422

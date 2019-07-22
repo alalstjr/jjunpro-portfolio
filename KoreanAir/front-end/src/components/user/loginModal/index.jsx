@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from 'react';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { memberTaskInsert } from "../../../actions/memberTaskActions";
+import { accountLogin } from "../../../actions/accountActions";
 
 import ReactTransitionGroup from 'react-addons-css-transition-group';
 
@@ -14,18 +14,28 @@ import {
 
 import {
     Form,
-    Input,
+    InputClean,
     Formlabel,
-    FormGroup
+    FormGroup,
+    SubmitBtn,
+    InputWarning
 } from "../../../style/globalStyles";
 
-class SingUpModal extends Component {
+class LoginModal extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             userId: "",
-            password: ""
+            password: "",
+            warning : {
+                userId: false,
+                password: false
+            },
+            warningText : {
+                userId: "아이디는 필수로 작성해야 합니다.",
+                password: "비밀번호는 필수로 작성해야 합니다."
+            }
         }
     }
 
@@ -50,12 +60,29 @@ class SingUpModal extends Component {
             password
         };
 
-        this.props.memberTaskInsert(account, this.props.history);
+        if(!account.userId) {
+            this.setState({
+                warning: {
+                    userId: true
+                }
+            });
+            return false;
+        }
+        if(!account.password) {
+            this.setState({
+                warning: {
+                    password: true
+                }
+            });
+            return false;
+        }
+
+        this.props.accountLogin(account, this.props.history);
     }
 
     render(){
         const { isOpen, close } = this.props;
-        const { userId, password } = this.state;
+        const { userId, password, warning, warningText } = this.state;
 
         return (
             <Fragment>
@@ -72,36 +99,53 @@ class SingUpModal extends Component {
                             onSubmit={this.onSubmit}
                         >
                             <Title>
-                                회원 가입
+                                로그인
                             </Title>
                             <Content>
                                 <FormGroup>
                                     <Formlabel>아이디</Formlabel>
-                                    <Input                                    
+                                    <InputClean                                    
                                         id="userId"
                                         name="userId"
+                                        type="text"
                                         value={userId}
                                         onChange={this.onChange}
                                     />
+                                    {
+                                        warning.userId ? 
+                                        <InputWarning
+                                            transitionName={'Warning-anim'}
+                                            transitionEnterTimeout={200}
+                                            transitionLeaveTimeout={200}
+                                        >
+                                            {warningText.userId}
+                                        </InputWarning>
+                                        : 
+                                        null
+                                    }
                                 </FormGroup>
                                 <FormGroup>
                                     <Formlabel>비밀번호</Formlabel>
-                                    <Input
+                                    <InputClean
                                         id="password"
                                         name="password"
+                                        type="password"
                                         value={password}
                                         onChange={this.onChange}
                                     />
+                                    {
+                                        warning.password ? 
+                                        <InputWarning>{warningText.password}</InputWarning>
+                                        : 
+                                        null
+                                    }
                                 </FormGroup>
                             </Content>
-                            <div className="button-wrap">
-                                <button 
-                                    // onClick={close}
-                                    type="submit"
-                                >
-                                    Confirm
-                                </button>
-                            </div>
+                            <SubmitBtn
+                                type="submit"
+                            >
+                                    로그인
+                            </SubmitBtn>
                         </Form>
                     </Modal>
                     </ReactTransitionGroup>
@@ -113,8 +157,8 @@ class SingUpModal extends Component {
     }
 }
   
-memberTaskInsert.propTypes = {
-    memberTaskInsert: PropTypes.func.isRequired,
+accountLogin.propTypes = {
+    accountLogin: PropTypes.func.isRequired,
     errors: PropTypes.object.isRequired
 }
 
@@ -124,5 +168,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps, 
-    { memberTaskInsert }
-)(SingUpModal);
+    { accountLogin }
+)(LoginModal);

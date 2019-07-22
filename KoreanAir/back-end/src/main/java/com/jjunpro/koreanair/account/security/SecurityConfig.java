@@ -69,7 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 	
 	protected FormLoginFilter formLoginFilter() throws Exception 
 	{
-		FormLoginFilter filter = new FormLoginFilter("/api/member/login", formLoginAuthenticationSuccessHandler, fromLoginFailuerHandler);
+		FormLoginFilter filter = new FormLoginFilter("/api/user/login", formLoginAuthenticationSuccessHandler, fromLoginFailuerHandler);
 		filter.setAuthenticationManager(super.authenticationManagerBean());
 		
 		return filter;
@@ -78,7 +78,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 
     protected JwtAuthenticationFilter jwtFilter() throws Exception 
     {
-        FilterSkipMatcher matcher = new FilterSkipMatcher(Arrays.asList("/api/member", "/login" ,"/social"), "/api/member/**");
+        FilterSkipMatcher matcher = new FilterSkipMatcher(Arrays.asList("/api/user", "/login" ,"/social"), "/api/user/**");
         JwtAuthenticationFilter filter = new JwtAuthenticationFilter(matcher, jwtFailureHandler, headerTokenExtractor);
         filter.setAuthenticationManager(super.authenticationManagerBean());
         return filter;

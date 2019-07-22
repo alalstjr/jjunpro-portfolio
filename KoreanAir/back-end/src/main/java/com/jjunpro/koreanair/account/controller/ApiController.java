@@ -24,7 +24,7 @@ import com.jjunpro.koreanair.account.security.tokens.PostAuthorizationToken;
 import com.jjunpro.koreanair.account.service.UserServiceImpl;
 
 @RestController
-@RequestMapping("/api/member")
+@RequestMapping("/api/user")
 @CrossOrigin
 public class ApiController {
 	
@@ -45,7 +45,7 @@ public class ApiController {
 			
 			return new ResponseEntity<Map<String, String>>(errorMap, HttpStatus.BAD_REQUEST);
 		}
-		
+
 		Account newAccount = memberTaskService.saveOrUpdateMemberTask(account);
 		return new ResponseEntity<Account>(newAccount, HttpStatus.CREATED);
 	}

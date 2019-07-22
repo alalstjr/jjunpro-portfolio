@@ -2,7 +2,8 @@
   "TEST.message": "hello world",
   "HOME.FIRST.subtitle": "test",
   "HEADER.UTILNAV.login": "Login",
-  "HEADER.UTILNAV.register": "Join Now",
+  "HEADER.UTILNAV.logout": "Logout",
+  "HEADER.UTILNAV.singUp": "SingUp",
   "HEADER.UTILNAV.reservation": "My Trips",
   "HEADER.UTILNAV.wishList": "WishList",
   "HEADER.UTILNAV.search": "Search"

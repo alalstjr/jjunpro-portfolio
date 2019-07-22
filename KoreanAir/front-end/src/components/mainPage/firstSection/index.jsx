@@ -1,7 +1,7 @@
-import React from "react";
-import MainTitleSlide from "../../widget/mainTitleSlide";
+import React from "react"
 
-import { MainSection } from "../../../style/globalStyles";
+import MainTitleSlide from "../../widget/mainTitleSlide"
+import { MainSection } from "../../../style/globalStyles"
 
 const FirstSection = ({ intl }) => (
   <MainSection>
@@ -10,3 +10,5 @@ const FirstSection = ({ intl }) => (
 );
 
 export default FirstSection;
+
+

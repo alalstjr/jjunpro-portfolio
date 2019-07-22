@@ -7,7 +7,7 @@ import { changeLocale } from "../../../../connectedIntlProvider/action";
 import { Utilnav, LangLink } from "../style";
 import { Container, LeftBox, RightBox, ListUl } from "../../../../style/globalStyles";
 
-import Member from "../../../member";
+import UserModal from "../../../user";
 
 class Nav extends Component {
 
@@ -21,7 +21,46 @@ class Nav extends Component {
 
     render() {
 
-        const { locale, intl } = this.props;
+        // props Init
+        const { 
+            locale, 
+            intl,
+            account
+        } = this.props;
+
+        // Variables Init
+        let loginContainer;
+        let singUpContainer;
+
+        const loginComponent = () => {
+            return account.token ?
+                <UserModal  
+                    text = {intl.formatMessage({ id: "HEADER.UTILNAV.logout" })}
+                    req = {"logout"}
+                />
+                :
+                <UserModal
+                    text = {intl.formatMessage({ id: "HEADER.UTILNAV.login" })}
+                    req = {"login"}
+                /> 
+                ;
+        }
+
+        const singUpComponent = () => {
+            return account.token ?
+                null
+                :
+                <li>
+                    <UserModal
+                        text = {intl.formatMessage({ id: "HEADER.UTILNAV.singUp" })}
+                        req = {"singUp"}
+                    />
+                </li>
+                ;
+        }
+
+        loginContainer = loginComponent();
+        singUpContainer = singUpComponent();
 
         return (
             <Utilnav>
@@ -32,25 +71,13 @@ class Nav extends Component {
                             href="javscript:;"
                             onClick={this.langChange}
                         >
-                            {
-                                locale.locale === "ko" ? "English" : "한국어"
-                            }
+                            {locale.locale === "ko" ? "English" : "한국어"}
                         </LangLink>
                     </LeftBox>
                     <RightBox>
                         <ListUl>
-                            <li>
-                                <Member
-                                    txt = {intl.formatMessage({ id: "HEADER.UTILNAV.login" })}
-                                    req = {"login"}
-                                />
-                            </li>
-                            <li>
-                                <Member
-                                    txt = {intl.formatMessage({ id: "HEADER.UTILNAV.register" })}
-                                    req = {"register"}
-                                />
-                            </li>
+                            <li>{loginContainer}</li>
+                            {singUpContainer}
                             <li>{intl.formatMessage({ id: "HEADER.UTILNAV.reservation" })}</li>
                             <li>{intl.formatMessage({ id: "HEADER.UTILNAV.wishList" })}</li>
                             <li>{intl.formatMessage({ id: "HEADER.UTILNAV.search" })}</li>

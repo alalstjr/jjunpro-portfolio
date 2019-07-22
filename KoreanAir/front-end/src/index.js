@@ -1,16 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react'
+import ReactDOM from 'react-dom'
 
-import App from './App';
+import App from './App'
 
-import { Provider } from "react-redux";
-import ConnectedIntlProvider from "./connectedIntlProvider";
+import { Provider } from "react-redux"
+import ConnectedIntlProvider from "./connectedIntlProvider"
 import store from "./store"
 
 // GlobalStyle
-import { GlobalStyle } from "./style/globalStyles";
-import { ThemeProvider } from "styled-components";
-import theme from "./style/theme";
+import { GlobalStyle } from "./style/globalStyles"
+import { ThemeProvider } from "styled-components"
+import theme from "./style/theme"
+
+import LnitialComponent from "./initialComponent"
 
 ReactDOM.render(
     <Provider store={store}>
@@ -18,6 +20,7 @@ ReactDOM.render(
             <ThemeProvider theme={theme}>
                 <React.Fragment>
                     <GlobalStyle />
+                    <LnitialComponent />
                     <App />
                 </React.Fragment> 
             </ThemeProvider>

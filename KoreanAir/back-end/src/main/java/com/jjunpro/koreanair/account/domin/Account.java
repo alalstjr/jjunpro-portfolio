@@ -22,6 +22,7 @@ public class Account {
 	private Long id;
 	
 	@Column(name = "ACCOUNT_USERNAME")
+	@NotBlank(message = "이름은 비워 둘 수 없습니다.")
 	private String username;
 
 	@Column(name = "ACCOUNT_LOGINID")
