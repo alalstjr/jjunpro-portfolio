@@ -34,9 +34,7 @@ public class FormLoginAuthenticationProvider implements AuthenticationProvider{
 		
 		Account account = accountRepository
 				.findByUserId(username)
-				.orElseThrow(
-						() -> new NoSuchElementException("정보에 맞는 계정이 없습니다.")
-						);
+				.orElseThrow(() -> new NoSuchElementException("정보에 맞는 계정이 없습니다."));
 		
 		if(isCorrectPassword(password, account)) {
 			return PostAuthorizationToken.getTokenFromAccountContext(AccountContext.fromAccountModel(account));

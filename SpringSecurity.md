@@ -298,6 +298,52 @@ BackEndApplication
 		};
 	}
 
+# FilterSkipMatcher - FilterSkipMatcher Skip 전송
+
+SecurityConfig - JwtAuthenticationFilter jwtFilter() 에서
+Jwt 인증을 건너띄거나 인증을 해야하는 곳을 Filter 로 url path 를 전송하여
+인증여부를 판단하도록 하는 함수 입니다.
+
+FilterSkipMatcher matcher = new FilterSkipMatcher(Arrays.asList("/api/user", "/user/login" ,"/user/social"), "/api/**");
+
+이런식으로 Filter 필수 매개변수인 matcher 를 설정하여 위처럼 인증 이 필요한 url 과 건너띄는 url FilterSkipMatcher 객체를 생성하여 JwtAuthenticationFilter() 에 matcher 필수 매개변수를 넣어 객체를 생성하여 
+filter를 등록합니다.
+
+다만 건너띄는 url path가 RESTFUL API 주소가 동일하다면 
+ex) /api/board/ (POST),  /api/board/ (GET) 
+위처럼 짠 코드는 어떠한 URL이 POST 인지 GET인지 구분하지 못하여 
+둘다 막아버리는 경우가 생겨버렸습니다.
+
+그래서 FilterSkipMatcher 클래스의 인터페이스 RequestMatcher 를 상속받는 모든 클래스의 함수를 찾아본 결과
+
+AntPathRequestMatcher 클래스의 생성자가 
+public AntPathRequestMatcher(String pattern) {
+    this(pattern, null);
+}
+기본 패턴만 받는 것이 아닌
+
+public AntPathRequestMatcher(String pattern, String httpMethod) {
+    this(pattern, httpMethod, true);
+}
+이렇게 httpMethod 값도 받는 것을 확인하였습니다.
+
+# AntPathRequestMatcher docs
+https://docs.spring.io/spring-security/site/docs/4.2.12.RELEASE/apidocs/org/springframework/security/web/util/matcher/AntPathRequestMatcher.html
+
+이것을 활용하여 
+
+this.orRequestMatcher = new OrRequestMatcher(
+        pathToSkip
+        .stream()
+        .map(skipPath -> new AntPathRequestMatcher(skipPath)).collect(Collectors.toList())
+        );
+
+이곳을 new AntPathRequestMatcher(skipPath, skipMethod) 식으로 보내주면 될꺼같습니다.
+
+## Stream() [자바] 자바8 스트림이란?
+https://12bme.tistory.com/461
+https://ryan-han.com/post/java/java-stream/
+
 # docs
 https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/web/authentication/AbstractAuthenticationProcessingFilter.html
 https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/
@@ -327,3 +373,15 @@ https://multifrontgarden.tistory.com/97
 
 # @Transient(Java Persistence API)
 http://egloos.zum.com/LuckyChips/v/1692422
+
+# logger 사용법
+https://singun.github.io/2017/02/04/logging-requestbody/
+
+# Spring Security @PreAuthorize, @PostAuthorize 를 사용하는 신박한 전처리 후처리 기법
+https://blog.thereis.xyz/21
+
+# 기타
+https://kingbbode.tistory.com/29
+
+# 스프링 시큐리티 인프런 강좌
+https://www.inflearn.com/course/spring_rest-api#description

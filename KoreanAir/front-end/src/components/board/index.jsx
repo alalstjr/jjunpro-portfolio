@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import BoardHead from "./header";
 import CateGory from "./category";
 import BoardList from "./list";
@@ -7,6 +9,7 @@ import ListBtn from "./bottom/listBtn";
 class Board extends Component {
     render() {
         const { page_num } = this.props.match.params;
+        const { account } = this.props;
 
         return (
             <div>
@@ -17,12 +20,25 @@ class Board extends Component {
                 <BoardList
                     pageNum={page_num}
                 />
-                <ListBtn
-                    option={"list"}
-                />
+                {
+                    account.token && 
+                    <ListBtn
+                        option={"list"}
+                    />
+                }
             </div>
         )
     }
 }
 
-export default Board;
+Board.propTypes = {
+    account: PropTypes.object.isRequired,
+}
+
+const mapStateToProps = state => ({
+    account: state.account.userInfo
+});
+
+export default connect(
+    mapStateToProps
+)(Board);

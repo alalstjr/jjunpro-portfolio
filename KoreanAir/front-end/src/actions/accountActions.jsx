@@ -11,14 +11,28 @@ import {
  */
 export const accountInsert = (account, history) => async dispatch => {
     try {
-        await axios.post("http://localhost:8080/api/user", account)
-        .then(res => {
-            console.log(res);
-        });
-    } catch (error) {
+        // 유저가 로그인 상태가 아니라면
+        if(!localStorage.getItem("userInfo")) {
+            await axios.post("http://localhost:8080/api/user", account)
+            .then(res => {
+                console.log(res);
+            });
+        }
+    } catch (errors) {
+        // 회원가입 실패 정보를 전송합니다.
+        const error = {
+            AuthenticationError: "이미 존재하는 아이디 입니다."
+        };
+
         dispatch({
             type: GET_ERRORS,
-            payload: error.response.data
+            payload: error
+        });
+
+        // 프론트단에서 쉽게 에러 메세지를 관리하기 위해서 초기화해줍니다.
+        dispatch({
+            type: GET_ERRORS,
+            payload: {}
         });
     }
 }
@@ -36,7 +50,7 @@ export const accountLogin = (account, history) => async dispatch => {
 
             if(token) {
                 /*
-                 *  사용자가 서버에서 로그인 인증을 받았을경우 localStorage에 Token을 저장합니다.
+                 *  사용자가 서버에 서 로그인 인증을 받았을경우 localStorage에 Token을 저장합니다.
                  */
                 const userInfo = JSON.stringify({
                     token,
@@ -59,10 +73,21 @@ export const accountLogin = (account, history) => async dispatch => {
                 });
             }
         });
-    } catch (error) {
+    } catch (errors) {
+        const error = {
+            AuthenticationError: "정보에 맞는 계정이 없습니다."
+        };
+
+        // 인증 실패 정보를 전송합니다.
         dispatch({
             type: GET_ERRORS,
-            payload: error.response.data
+            payload: error
+        });
+
+        // 프론트단에서 쉽게 에러 메세지를 관리하기 위해서 초기화해줍니다.
+        dispatch({
+            type: GET_ERRORS,
+            payload: {}
         });
     }
 }
@@ -103,6 +128,7 @@ export const userLoginCheck = () => dispatch => {
  */
 // export const memberTaskLogin = (account, history) => async dispatch => {
 //     try {
+//     axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
 //         await axios.get("http://localhost:8080/api/user/go",{ 
 //             headers: {
 //                 Authorization : `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqanVucHJvIiwiVVNFUk5BTUUiOiJhc2QiLCJVU0VSX1JPTEUiOiJST0xFX1VTRVIifQ.rGUlmMWPCEHMgY8YEakH7aMWSGUuCYnrxwQdRsMs1CY`

@@ -31,8 +31,7 @@ export const Modal = styled.div`
     position: fixed;
     top: 50%;
     left: 50%;
-    margin-top: -230px;
-    margin-left: -230px;
+    transform: translate(-50%, -50%);
     width: 100%;
     max-width: 450px;
     border-radius: 10px;
@@ -43,21 +42,21 @@ export const Modal = styled.div`
 
     &.Modal-anim-enter {
         opacity: 0.00;
-        transform: scale(0.7);
+        transform: translate(-50%, -50%) scale(0.7);
         transition: all 0.2s;
     }
      &.Modal-anim-enter.Modal-anim-enter-active {
         opacity: 1;
-        transform: scale(1);
+        transform: translate(-50%, -50%) scale(1);
     }
     &.Modal-anim-leave {
         opacity: 1;
-        transform: scale(1);
+        transform: translate(-50%, -50%) scale(1);
         transition: all 0.2s;
     }  
     &.Modal-anim-leave.Modal-anim-leave-active {
         opacity: 0.00;
-        transform: scale(0.7);
+        transform: translate(-50%, -50%) scale(0.7);
     }
 `;
 export const Title = styled.h3`

@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
@@ -31,17 +32,20 @@ public class ApiController {
 	@Autowired
 	private UserServiceImpl memberTaskService;
 	
+	//	private static final Logger log = LoggerFactory.getLogger(ApiController.class); 
+	
 	// 생성 CREATE or UADATE
 	@PostMapping("")
-	@PreAuthorize("isAnonymous()")
+	@PostAuthorize("isAnonymous()")
 	public ResponseEntity<?> insertMember(
 		@Valid @RequestBody Account account,
 		BindingResult result
 	) {
+		
 		if(!memberTaskService.findById(account.getUserId()).isEmpty()) 
 		{
 			Map<String, String> errorMap = new HashMap<String, String>();
-			errorMap.put("error", "이미 존재하는 아이디 입니다.");
+			errorMap.put("AuthenticationError", "이미 존재하는 아이디 입니다.");
 			
 			return new ResponseEntity<Map<String, String>>(errorMap, HttpStatus.BAD_REQUEST);
 		}

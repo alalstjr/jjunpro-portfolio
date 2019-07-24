@@ -1,7 +1,8 @@
-import styled, { createGlobalStyle, css } from 'styled-components';
-import reset from './reset';
-import gyeonggiOTF from '../details/fonts/gyeonggi/Title_Medium.otf';
-import gyeonggiWOFF from '../details/fonts/gyeonggi/Title_Medium.woff';
+import styled, { createGlobalStyle, css } from 'styled-components'
+import reset from './reset'
+import { ShakeWeakly } from "./keyFrames"
+import gyeonggiOTF from '../details/fonts/gyeonggi/Title_Medium.otf'
+import gyeonggiWOFF from '../details/fonts/gyeonggi/Title_Medium.woff'
 
 /*******************
     Global Style
@@ -134,6 +135,10 @@ export const FormCss = css`
     background-color: #fff;
     background-clip: padding-box;
 `;
+export const FormCssBasic = css`
+    border: 1px solid #e4e7ea;
+    border-radius: .25rem;
+`;
 export const Form = styled.form`
     padding 1.25rem 0;
 `;
@@ -150,8 +155,7 @@ export const Input = styled.input.attrs({
     // required: true
 })`
     ${FormCss};
-    border: 1px solid #e4e7ea;
-    border-radius: .25rem;
+    ${FormCssBasic};
 `;
 export const InputClean = styled.input.attrs({
     // required: true
@@ -161,17 +165,23 @@ export const InputClean = styled.input.attrs({
     border-bottom: 1px solid #e4e7ea;
 `;
 export const InputWarning = styled.div`
-    color: red;
+    color: #e60023;
     font-size: 12px;
     position: absolute;
     bottom: -18px;
+
+    ${props => props.active && css`
+        animation: ${ShakeWeakly} 0.3s linear;
+    `}
 `;
 export const Textarea = styled.textarea`
     ${FormCss};
+    ${FormCssBasic};
     height: calc(9rem + 2px);
 `;
 export const SelectBox = styled.select`
     ${FormCss};
+    ${FormCssBasic};
 `;
 export const SubmitBtn = styled.button`
     background-color: ${props => props.theme.themeColor};

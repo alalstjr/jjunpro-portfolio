@@ -14,10 +14,11 @@ import {
 
 import {
     Form,
-    Input,
+    InputClean,
     Formlabel,
     FormGroup,
-    SubmitBtn
+    SubmitBtn,
+    InputWarning
 } from "../../../style/globalStyles";
 
 class SingUpModal extends Component {
@@ -27,8 +28,20 @@ class SingUpModal extends Component {
         this.state = {
             userId: "",
             password: "",
+            passwordRe: "",
             username: ""
         }
+    }
+
+    // Lifecycle Methods
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.error.AuthenticationError && !this.props.warning.authentication) {
+            this.warningSetAuthentication();
+        }
+    }
+    // componentWillReceiveProps 무한루프 방지 함수에 담아서 사용
+    warningSetAuthentication = () => {
+        this.props.warningSetAuthentication(true);
     }
 
     // Input Setup
@@ -45,6 +58,7 @@ class SingUpModal extends Component {
         const { 
             userId,
             password,
+            passwordRe,
             username
         } = this.state;
 
@@ -54,12 +68,59 @@ class SingUpModal extends Component {
             username
         };
 
+        if(!account.username) {
+            this.props.warningSetUsername(true);
+            return false;
+        }
+        if(!account.userId) {
+            this.props.warningSetUserId(true);
+            return false;
+        }
+        if(!account.password) {
+            this.props.warningSetPassword(true);
+            return false;
+        }
+        if(password !== passwordRe) {
+            this.props.warningSetPasswordRe(true);
+            return false;
+        }
+
         this.props.accountInsert(account, this.props.history);
     }
 
+    // Input값 존재여부 체크 후 warning 종합 상태 관리
+    valueCheck = (e) => {
+        // 유저 인증 경고문 warning 상태 관리
+        if(this.props.warning.authentication === true) {
+            this.props.warningSetAuthentication(false);
+        }
+
+        // passwordRe 경고문 warning 상태 관리
+        if(this.state.password === this.state.passwordRe) {
+            this.props.warningSetPasswordRe(false);
+        }
+
+        // account 유효성 검사 경고문 warning 상태 관리
+        if(!e.target.value) {
+            switch(e.target.name) {
+                case "username" :
+                    this.props.warningSetUsername(false);    
+                
+                case "userId" :
+                    this.props.warningSetUserId(false);
+
+                case "password" :
+                    this.props.warningSetPassword(false);
+
+                default :
+                    return false;
+            }
+        }
+    }
+
     render(){
-        const { isOpen, close } = this.props;
-        const { userId, password, username } = this.state;
+        const { isOpen, close, warning, warningText } = this.props;
+        const { userId, password, passwordRe, username } = this.state;
 
         return (
             <Fragment>
@@ -81,33 +142,98 @@ class SingUpModal extends Component {
                             <Content>
                                 <FormGroup>
                                     <Formlabel>이름</Formlabel>
-                                    <Input
+                                    <InputClean
                                         id="username"
                                         name="username"
                                         type="text"
                                         value={username}
                                         onChange={this.onChange}
+                                        onKeyDown={this.valueCheck}
                                     />
+                                    {
+                                        warning.username ? 
+                                        <InputWarning
+                                            active={warningText.username}
+                                        >
+                                            {warningText.username}
+                                        </InputWarning>
+                                        : 
+                                        null
+                                    }
                                 </FormGroup>
                                 <FormGroup>
                                     <Formlabel>아이디</Formlabel>
-                                    <Input                                    
+                                    <InputClean                                    
                                         id="userId"
                                         name="userId"
                                         type="text"
                                         value={userId}
                                         onChange={this.onChange}
+                                        onKeyDown={this.valueCheck}
                                     />
+                                    {
+                                        warning.userId ? 
+                                        <InputWarning
+                                            active={warningText.userId}
+                                        >
+                                            {warningText.userId}
+                                        </InputWarning>
+                                        : 
+                                        null
+                                    }
+                                   {
+                                        // 이미 존재하는 아이디 경고문
+                                        warning.authentication ? 
+                                        <InputWarning
+                                            active={warningText.singUpIdFail}
+                                        >
+                                            {warningText.singUpIdFail}
+                                        </InputWarning>
+                                        : 
+                                        null
+                                    }
                                 </FormGroup>
                                 <FormGroup>
                                     <Formlabel>비밀번호</Formlabel>
-                                    <Input
+                                    <InputClean
                                         id="password"
                                         name="password"
                                         type="password"
                                         value={password}
                                         onChange={this.onChange}
+                                        onKeyDown={this.valueCheck}
                                     />
+                                    {
+                                        warning.password ? 
+                                        <InputWarning
+                                            active={warningText.password}
+                                        >
+                                            {warningText.password}
+                                        </InputWarning>
+                                        : 
+                                        null
+                                    }
+                                </FormGroup>
+                                <FormGroup>
+                                    <Formlabel>비밀번호 확인</Formlabel>
+                                    <InputClean
+                                        id="passwordRe"
+                                        name="passwordRe"
+                                        type="password"
+                                        value={passwordRe}
+                                        onChange={this.onChange}
+                                        onKeyDown={this.valueCheck}
+                                    />
+                                    {
+                                        warning.passwordRe ? 
+                                        <InputWarning
+                                            active={warningText.passwordRe}
+                                        >
+                                            {warningText.passwordRe}
+                                        </InputWarning>
+                                        : 
+                                        null
+                                    }
                                 </FormGroup>
                             </Content>
                             <SubmitBtn
@@ -128,11 +254,11 @@ class SingUpModal extends Component {
   
 accountInsert.propTypes = {
     accountInsert: PropTypes.func.isRequired,
-    errors: PropTypes.object.isRequired
+    error: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
-    errors: state.errors
+    error: state.errors
 });
 
 export default connect(

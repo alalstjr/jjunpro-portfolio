@@ -12,14 +12,15 @@ import {
  */
 export const boardTaskInsert = (board_task, history, files, removeFiles) => async dispatch => {
     try {
-        /*
-         * Write Update Set
-         */
+
+        // 유저 JWT Token정보
+        axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
+
+        // Write Update Set
         await axios.post("http://localhost:8080/api/board/", board_task)
         .then(res => {
-            /*
-            * File Upload Set
-            */
+
+            // File Upload Set
             if( board_task.files !== 0 || removeFiles.length !== 0) {
                 let boNum = 0;
                 boNum = res.data.num;
