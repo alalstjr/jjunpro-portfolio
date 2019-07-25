@@ -44,7 +44,7 @@ public class BoardTaskController {
     private FileStorageService fileStorageService;
 	
 	// 생성 CREATE or UADATE
-	@PostMapping("/")
+	@PostMapping("")
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<?> addPTToBoard(
 			@Valid @RequestBody BoardTask boardTask, 
@@ -85,7 +85,7 @@ public class BoardTaskController {
 	}
 	
 	// READ 모든 게시글 조회
-	@GetMapping("/")
+	@GetMapping("")
 	public Iterable<BoardTask> getAllPTs(Sort sort) {
 		sort = sort.and(new Sort(Sort.Direction.DESC, "regDate"));
 		return boardTaskService.findAll(sort);

@@ -18,9 +18,17 @@ public class FilterSkipMatcher implements RequestMatcher {
         this.orRequestMatcher = new OrRequestMatcher(
         		pathToSkip
         		.stream()
-        		.map(skipPath -> new AntPathRequestMatcher(skipPath)).collect(Collectors.toList())
+        		.map(skipPath -> httpPath(skipPath)).collect(Collectors.toList())
         		);
         this.processingMatcher = new AntPathRequestMatcher(processingPath);
+    }
+    
+    private AntPathRequestMatcher httpPath(String skipPath) {
+    	String[] splitStr = skipPath.split(",");
+    	
+    	// 배열 [1] httpMathod 방식 post get 인지 구분
+    	// 배열 [0] 제외하는 url
+    	return new AntPathRequestMatcher(splitStr[1], splitStr[0]);
     }
 
     @Override

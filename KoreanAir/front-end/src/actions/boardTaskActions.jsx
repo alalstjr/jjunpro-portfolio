@@ -17,7 +17,7 @@ export const boardTaskInsert = (board_task, history, files, removeFiles) => asyn
         axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
 
         // Write Update Set
-        await axios.post("http://localhost:8080/api/board/", board_task)
+        await axios.post("http://localhost:8080/api/board", board_task)
         .then(res => {
 
             // File Upload Set
@@ -55,7 +55,7 @@ export const boardTaskDelete = (bo_num, history) => async dispatch => {
  *  모든 게시판 목록을 불러옵니다. (리스트)
  */
 export const getBoardTasks = () => async dispatch => {
-    const res = await axios.get("http://localhost:8080/api/board/");
+    const res = await axios.get("http://localhost:8080/api/board");
     dispatch({
         type: GET_BOARD_TASKS,
         payload: res.data
