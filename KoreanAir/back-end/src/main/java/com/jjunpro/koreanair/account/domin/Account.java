@@ -10,36 +10,42 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Data
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @Entity
 @Table(name = "JP_ACCOUNT")
-public class Account {
+public class Account extends BaseTime {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "bo_num")
+	@Column(name = "id")
 	private Long id;
 	
-	@Column(name = "ACCOUNT_USERNAME")
+	@Column(name = "ACCOUNT_USERNAME", nullable = false, unique = true)
 	@NotBlank(message = "이름은 비워 둘 수 없습니다.")
 	private String username;
 
-	@Column(name = "ACCOUNT_LOGINID")
+	@Column(name = "ACCOUNT_ID", nullable = false)
 	@NotBlank(message = "아이디는 비워 둘 수 없습니다.")
 	public String userId;
 	
-	@Column(name = "ACCOUNT_PASSWORD")
+	@Column(name = "ACCOUNT_PASSWORD", nullable = false)
 	@NotBlank(message = "비밀번호는 비워 둘 수 없습니다.")
 	public String password;
 	
-	@Column(name = "ACCOUNT_ROLE")
+	@Column(name = "ACCOUNT_ROLE", nullable = false)
 	@Enumerated(value = EnumType.STRING)
 	public UserRole userRole = UserRole.USER;
 	
-	@Column(name = "ACCOUNT_SOCIAL_ID")
-	private Long socialId;
-	
-	@Column(name = "ACCOUNT_SOCIAL_PROFILEPIC")
-	private String profileHref;
+	@Builder
+	public Account(String userId, String username, String password, UserRole userRole) {
+		this.userId = userId;
+		this.username = username;
+		this.password = password;
+		this.userRole = userRole;
+	}
 }
