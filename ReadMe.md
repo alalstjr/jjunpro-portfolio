@@ -163,10 +163,6 @@ https://medium.com/@okihouse16/%EB%B3%84%EB%B3%84-%EC%82%BD%EC%A7%88%ED%95%98%EB
 
 filter -  JwtAuthenticationFilter 클레스 생성
 
-### 지워 민석 당일 할것
-
-@Service 알아보고 오류 원인
-
 ## Spring bean 이란
 https://endorphin0710.tistory.com/93
 
@@ -178,3 +174,12 @@ https://engaspect.tistory.com/27
 
 ## Spring Security Custom AuthenticationProvider
 출처: https://micropilot.tistory.com/2884 []
+
+## JAVA 제네릭(Generic) 문법 정리
+https://preamtree.tistory.com/138
+
+## JAVA 스트림 stream
+http://iloveulhj.github.io/posts/java/java-stream-api.html
+
+## 스트림 주의사항 stream
+https://okky.kr/article/329818
