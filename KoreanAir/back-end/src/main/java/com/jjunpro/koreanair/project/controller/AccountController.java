@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jjunpro.koreanair.project.domain.AccountEntity;
-import com.jjunpro.koreanair.project.dto.AccountSaveRequestDto;
+import com.jjunpro.koreanair.project.dto.AccountSaveDTO;
 import com.jjunpro.koreanair.project.serviceImpl.AccountServiceImpl;
 
 import lombok.AllArgsConstructor;
@@ -26,7 +26,7 @@ public class AccountController {
 	// Create Or Update
 	@PostMapping("")
 	public ResponseEntity<AccountEntity> saveOrUpdate(
-			@Valid @RequestBody AccountSaveRequestDto dto,
+			@Valid @RequestBody AccountSaveDTO dto,
 			BindingResult result
 			) {
 		
