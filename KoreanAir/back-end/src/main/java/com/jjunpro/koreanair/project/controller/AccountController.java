@@ -1,5 +1,8 @@
 package com.jjunpro.koreanair.project.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -25,13 +28,24 @@ public class AccountController {
 
 	// Create Or Update
 	@PostMapping("")
-	public ResponseEntity<AccountEntity> saveOrUpdate(
+	public ResponseEntity<?> saveOrUpdate(
 			@Valid @RequestBody AccountSaveDTO dto,
 			BindingResult result
 			) {
 		
+		// DB Account ID Check		
+		if(!accountServiceImpl.findByUserId(dto.getUserId()).isEmpty()) {
+			Map<String, String> errorMap = new HashMap<String, String>();
+			errorMap.put("AuthenticationError", "이미 존재하는 아이디 입니다.");
+			
+			return new ResponseEntity<Map<String, String>>(errorMap, HttpStatus.BAD_REQUEST);
+		}
+		
+		// DB Account Create		
 		AccountEntity newAccount = accountServiceImpl.saveOrUpdate(dto);
 		
 		return new ResponseEntity<AccountEntity>(newAccount, HttpStatus.CREATED);
 	}
+	
+	// 
 }

@@ -1,5 +1,7 @@
 package com.jjunpro.koreanair.project.serviceImpl;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import com.jjunpro.koreanair.project.domain.AccountEntity;
@@ -19,5 +21,11 @@ public class AccountServiceImpl implements AccountService {
 	public AccountEntity saveOrUpdate(AccountSaveDTO dto) {
 		
 		return accountRepository.save(dto.toEntity());
+	}
+	
+	@Override
+	public Optional<AccountEntity> findByUserId(String dto) {
+		
+		return accountRepository.findByUserId(dto);
 	}
 }
