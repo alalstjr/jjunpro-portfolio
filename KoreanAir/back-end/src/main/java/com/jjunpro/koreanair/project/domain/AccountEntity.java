@@ -46,6 +46,7 @@ public class AccountEntity extends BaseTimeEntity {
 	
 	@Builder
 	public AccountEntity(String userId, String password, String username, UserRole userRole) {
+		super();
 		this.userId = userId;
 		this.password = password;
 		this.username = username;

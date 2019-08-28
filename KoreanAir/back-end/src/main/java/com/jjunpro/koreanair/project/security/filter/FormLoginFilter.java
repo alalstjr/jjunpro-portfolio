@@ -7,6 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
@@ -21,7 +23,7 @@ public class FormLoginFilter extends AbstractAuthenticationProcessingFilter {
 	
 	private AuthenticationSuccessHandler authenticationSuccessHandler;
 	private AuthenticationFailureHandler authenticationFailureHandler;
-
+	
 	protected FormLoginFilter(String defaultFilterProcessesUrl) {
 		super(defaultFilterProcessesUrl);
 	}
@@ -64,7 +66,6 @@ public class FormLoginFilter extends AbstractAuthenticationProcessingFilter {
 			FilterChain chain,
 			Authentication authResult
 			) throws IOException, ServletException {
-		super.successfulAuthentication(request, response, chain, authResult);
 		
 		this.authenticationSuccessHandler
 		.onAuthenticationSuccess(request, response, authResult);
@@ -76,7 +77,6 @@ public class FormLoginFilter extends AbstractAuthenticationProcessingFilter {
 			HttpServletResponse response,
 			AuthenticationException failed
 			) throws IOException, ServletException {
-		super.unsuccessfulAuthentication(request, response, failed);
 		
 		this
 		.authenticationFailureHandler
