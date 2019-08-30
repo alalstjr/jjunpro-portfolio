@@ -7,7 +7,12 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jjunpro.koreanair.project.domain.AccountEntity;
 import com.jjunpro.koreanair.project.dto.AccountSaveDTO;
+import com.jjunpro.koreanair.project.security.token.PostAuthorizationToken;
 import com.jjunpro.koreanair.project.serviceImpl.AccountServiceImpl;
 
 import lombok.AllArgsConstructor;
@@ -22,12 +28,14 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/account")
+@CrossOrigin
 public class AccountController {
 	
 	private AccountServiceImpl accountServiceImpl; 
 
 	// Create Or Update
 	@PostMapping("")
+	@PostAuthorize("isAnonymous()")
 	public ResponseEntity<?> saveOrUpdate(
 			@Valid @RequestBody AccountSaveDTO dto,
 			BindingResult result
@@ -47,5 +55,10 @@ public class AccountController {
 		return new ResponseEntity<AccountEntity>(newAccount, HttpStatus.CREATED);
 	}
 	
-	// 
+	@GetMapping("/go")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public String getUsername(Authentication authentication) {
+		PostAuthorizationToken token = (PostAuthorizationToken)authentication;
+		return token.getAccountContext().getUsername();
+	} 
 }

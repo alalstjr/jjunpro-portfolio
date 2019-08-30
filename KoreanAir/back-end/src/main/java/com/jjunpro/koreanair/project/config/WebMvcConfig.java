@@ -28,7 +28,7 @@ public class WebMvcConfig {
     }
     
     @Bean
-    public ObjectMapper getObjectMapper() {
-        return new ObjectMapper();
+    public ObjectMapper objectMapper() {
+    	return new ObjectMapper();
     }
 }
