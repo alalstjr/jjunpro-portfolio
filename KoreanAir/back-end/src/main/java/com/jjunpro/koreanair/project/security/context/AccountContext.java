@@ -33,13 +33,14 @@ public class AccountContext extends User {
 	 */
 	public AccountContext(
 			String username, 
+			String password,
 			Collection<? extends GrantedAuthority> authorities
 			) {
-        super(username, null, authorities);
+        super(username, password, authorities);
 	}
 	
 	/**
-	 * 로그인을 시도한 유저의 정보를 담은 AccountContext 생성
+	 * 로그인 유저의 정보를 담은 AccountContext 생성
 	 */
 	public static AccountContext fromAccountModel(
 			AccountEntity account, 

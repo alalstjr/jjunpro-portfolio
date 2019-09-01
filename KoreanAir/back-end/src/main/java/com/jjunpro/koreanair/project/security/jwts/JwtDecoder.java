@@ -15,9 +15,13 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.jjunpro.koreanair.project.enums.EnumMapper;
+import com.jjunpro.koreanair.project.enums.UserRole;
 import com.jjunpro.koreanair.project.security.context.AccountContext;
 
+import lombok.AllArgsConstructor;
+
 @Component
+@AllArgsConstructor
 public class JwtDecoder {
 
 	private EnumMapper enumMapper;
@@ -31,10 +35,14 @@ public class JwtDecoder {
         String username = decodedJWT.getClaim("USERNAME").asString();
         String role = decodedJWT.getClaim("USER_ROLE").asString();
 
-        // UserRole String 형을 SimpleGrantedAuthority 바꿔주는 메서드 실행        
-		List<SimpleGrantedAuthority> userRole = enumMapper.userRoleListString(role);
+        // JWT 토큰 값의 ROLE 값이 ROLE ENUM 값에 존재하는지 체크합니다.
+        UserRole roles = EnumMapper.getRoleByName(role);
         
-        return new AccountContext(username, userRole);
+        // UserRole String 형을 SimpleGrantedAuthority 바꿔주는 메서드 실행        
+		List<SimpleGrantedAuthority> userRole = enumMapper.userRoleList(roles);
+		
+		// AccountContext 생성자의 기본 매개변수 Password 값을 임의로 무작위로 넣어 생성합니다.
+        return new AccountContext(username, "bvufi%^jkdoif!$#&^sdfkme", userRole);
     }
 
     private Optional<DecodedJWT> isValidToken(String token) {

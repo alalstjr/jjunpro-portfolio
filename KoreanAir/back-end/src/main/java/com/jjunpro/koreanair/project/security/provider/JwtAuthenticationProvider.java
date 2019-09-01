@@ -27,7 +27,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
     	
     	String token = (String)authentication.getPrincipal();
         AccountContext context = jwtDecoder.decodeJwt(token);
-
+        
         return PostAuthorizationToken.getTokenFormAccountContext(context);
     }
 

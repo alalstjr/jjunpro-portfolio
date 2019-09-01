@@ -7,8 +7,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
@@ -16,7 +14,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jjunpro.koreanair.project.dto.FormLoginDTO;
+import com.jjunpro.koreanair.project.dto.AccountFormLoginDTO;
 import com.jjunpro.koreanair.project.security.token.PreAuthorizationToken;
 
 public class FormLoginFilter extends AbstractAuthenticationProcessingFilter {
@@ -40,13 +38,13 @@ public class FormLoginFilter extends AbstractAuthenticationProcessingFilter {
 
 	@Override
 	public Authentication attemptAuthentication(
-			HttpServletRequest request, 
-			HttpServletResponse response
+			HttpServletRequest req, 
+			HttpServletResponse res
 			)
 			throws AuthenticationException, IOException, ServletException {
 		
-		FormLoginDTO dto = new ObjectMapper()
-				.readValue(request.getReader(), FormLoginDTO.class);
+		AccountFormLoginDTO dto = new ObjectMapper()
+				.readValue(req.getReader(), AccountFormLoginDTO.class);
 		
 		PreAuthorizationToken token = new PreAuthorizationToken(dto);
 		
@@ -61,25 +59,25 @@ public class FormLoginFilter extends AbstractAuthenticationProcessingFilter {
 
 	@Override
 	protected void successfulAuthentication(
-			HttpServletRequest request, 
-			HttpServletResponse response, 
+			HttpServletRequest req, 
+			HttpServletResponse res, 
 			FilterChain chain,
 			Authentication authResult
 			) throws IOException, ServletException {
 		
 		this.authenticationSuccessHandler
-		.onAuthenticationSuccess(request, response, authResult);
+		.onAuthenticationSuccess(req, res, authResult);
 	}
 
 	@Override
 	protected void unsuccessfulAuthentication(
-			HttpServletRequest request, 
-			HttpServletResponse response,
+			HttpServletRequest req, 
+			HttpServletResponse res,
 			AuthenticationException failed
 			) throws IOException, ServletException {
 		
 		this
 		.authenticationFailureHandler
-		.onAuthenticationFailure(request, response, failed);
+		.onAuthenticationFailure(req, res, failed);
 	}
 }

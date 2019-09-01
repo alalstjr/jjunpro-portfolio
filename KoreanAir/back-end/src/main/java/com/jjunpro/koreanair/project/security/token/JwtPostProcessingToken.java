@@ -1,11 +1,9 @@
 package com.jjunpro.koreanair.project.security.token;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 public class JwtPostProcessingToken extends UsernamePasswordAuthenticationToken {
 	
@@ -18,13 +16,6 @@ public class JwtPostProcessingToken extends UsernamePasswordAuthenticationToken 
 		super(principal, credentials, authorities);
 	}
 
-    public JwtPostProcessingToken(
-    		String username, 
-    		List<SimpleGrantedAuthority> role
-    		) {
-        super(username,  role);
-    }
-    
     public String getUserid() {
     	return (String)super.getPrincipal();
     }

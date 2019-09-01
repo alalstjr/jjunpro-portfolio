@@ -3,9 +3,6 @@ package com.jjunpro.koreanair.project.security.provider;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -31,8 +28,6 @@ public class FormLoginAuthenticationProvider implements AuthenticationProvider {
 	private BCryptPasswordEncoder passwordEncoder;
 	
 	private EnumMapper enumMapper; 
-	
-	private static final Logger log = LoggerFactory.getLogger(FormLoginAuthenticationProvider.class);
 	
 	@Override
 	public Authentication authenticate(

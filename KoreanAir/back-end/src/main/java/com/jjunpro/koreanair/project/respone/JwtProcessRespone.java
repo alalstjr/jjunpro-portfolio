@@ -41,7 +41,7 @@ public class JwtProcessRespone {
 			TokenDTO dto
 			) throws JsonProcessingException, IOException {
 		
-		log.info("유저 Token 생성 {}", objectMapper.writeValueAsString(dto));
+		log.info("유저 Token 생성 - {}", objectMapper.writeValueAsString(dto));
 		
 		res.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 		res.setStatus(HttpStatus.OK.value());
@@ -56,7 +56,7 @@ public class JwtProcessRespone {
 			AuthenticationException e
 			) throws JsonProcessingException, IOException {
 		
-		log.error("JWT 인증 실패 {}", e.getMessage());
+		log.error("JWT 인증 실패 - {}", e.getMessage());
 		
 		res.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 		res.setStatus(HttpStatus.ACCEPTED.value());
@@ -82,5 +82,20 @@ public class JwtProcessRespone {
 		res.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 		res.setStatus(HttpStatus.ACCEPTED.value());
 		res.getWriter().print(objectMapper.writeValueAsString(json));
+	}
+	
+	/**
+	 *	JWT 로그인 실패 Respone 
+	 */
+	public void formLoginFailuerHandlerRespone(
+			HttpServletResponse res,
+			AuthenticationException e
+			) throws JsonProcessingException, IOException {
+		
+		log.info("로그인 인증 실패 - {}", e.getMessage());
+		
+		res.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+		res.setStatus(HttpStatus.ACCEPTED.value());
+		res.getWriter().print(objectMapper.writeValueAsString(e));
 	}
 }

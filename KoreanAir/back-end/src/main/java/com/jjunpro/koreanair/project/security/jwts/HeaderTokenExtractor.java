@@ -15,12 +15,16 @@ import lombok.AllArgsConstructor;
 public class HeaderTokenExtractor {
 
 	JwtProcessRespone jwtProcessRespone;
-	
+
+	public HeaderTokenExtractor() {
+		super();
+	}
+
 	/*
 	 * HEADER_PREFIX
 	 * header Authorization token 값의 표준이되는 변수 
 	 */
-	public static final String HEADER_PREFIX = "bearer "; 
+	public static final String HEADER_PREFIX = "Bearer "; 
 
 	public String extract(String header) throws JsonProcessingException, IOException {
 		/*

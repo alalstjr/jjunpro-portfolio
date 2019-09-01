@@ -2,7 +2,7 @@ package com.jjunpro.koreanair.project.security.token;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
-import com.jjunpro.koreanair.project.dto.FormLoginDTO;
+import com.jjunpro.koreanair.project.dto.AccountFormLoginDTO;
 
 public class PreAuthorizationToken extends UsernamePasswordAuthenticationToken{
 
@@ -13,7 +13,7 @@ public class PreAuthorizationToken extends UsernamePasswordAuthenticationToken{
 		super(principal, credentials);
 	}
 
-	public PreAuthorizationToken(FormLoginDTO dto) {
+	public PreAuthorizationToken(AccountFormLoginDTO dto) {
 		this(dto.getUserId(), dto.getPassword());
 	}
 

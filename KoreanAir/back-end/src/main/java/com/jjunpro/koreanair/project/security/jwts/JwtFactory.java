@@ -16,7 +16,7 @@ public class JwtFactory {
 
 	private static final Logger log = LoggerFactory.getLogger(JwtFactory.class);
 	
-	private static String signingKey = "jwttest";
+	private static String signingKey = "jjunproProject";
 	
 	public String generateToken(AccountContext account) {
 		String token = null;
