@@ -10,11 +10,15 @@ import BoardWriteInsert from "./components/board/write/writeInsert";
 import BoardWriteUpdate from "./components/board/write/writeUpdate";
 import BoardView from "./components/board/view";
 
+import { AdminComponent } from './admin';
+
 const App = () => {
     return (
       <Router>
         <Header/>
         <Switch>
+          {/* 관리자페이지 */}
+          <Route exact path="/admin" component={AdminComponent} />
           {/* 메인페이지 */}
           <Route exact path="/" component={MainPage} />
           {/* 게시판 */}

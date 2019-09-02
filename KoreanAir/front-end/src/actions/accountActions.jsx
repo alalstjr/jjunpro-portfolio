@@ -13,7 +13,7 @@ export const accountInsert = (account, history) => async dispatch => {
     try {
         // 유저가 로그인 상태가 아니라면
         if(!localStorage.getItem("userInfo")) {
-            await axios.post("http://localhost:8080/api/user", account)
+            await axios.post("http://localhost:8080/api/account", account)
             .then(res => {
                 console.log(res);
             });
@@ -42,7 +42,7 @@ export const accountInsert = (account, history) => async dispatch => {
  */
 export const accountLogin = (account, history) => async dispatch => {
     try {
-        await axios.post("http://localhost:8080/api/user/login", account)
+        await axios.post("http://localhost:8080/api/account/login", account)
         .then(res => {
             const token = res.data.token;
             const userId = res.data.userId;
@@ -129,7 +129,7 @@ export const userLoginCheck = () => dispatch => {
 // export const memberTaskLogin = (account, history) => async dispatch => {
 //     try {
 //     axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
-//         await axios.get("http://localhost:8080/api/user/go",{ 
+//         await axios.get("http://localhost:8080/api/account/go",{ 
 //             headers: {
 //                 Authorization : `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqanVucHJvIiwiVVNFUk5BTUUiOiJhc2QiLCJVU0VSX1JPTEUiOiJST0xFX1VTRVIifQ.rGUlmMWPCEHMgY8YEakH7aMWSGUuCYnrxwQdRsMs1CY`
 //             }
