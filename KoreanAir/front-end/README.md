@@ -2,7 +2,7 @@
 - [1. CORS Response Headers 오류 설정](#CORS-Response-Headers-오류-설정)
 - [2. React Router 4 일반페이지 와 관리자페이지 나누기](#React-Router-4-일반페이지-와-관리자페이지-나누기)
 - [3. React-Admin 정보](#React-Admin-정보)
-    - [1. authProvider 유저 ROLE권한 체크](#authProvider-유저-ROLE권한-체크);
+    - [1. authProvider 유저 ROLE권한 체크](#authProvider-유저-ROLE권한-체크)
 - [4. axios 정리](#axios-정리)
     - [1. axios jwt token 기본설정](#axios-jwt-token-기본설정)
 
@@ -68,7 +68,7 @@ http://localhost:8080/api/account 로 spring 서버로 유저 리스트 정보�
 번역한 글만보면 서버로부터 받은 Response Headers 목록에 X-Total-Count 값이 존재하지 않아서 발생하는 오류라는것을 체크했습니다.
 이제 Client 에서 Spring Server 로 요청이 와서 응답해줄 때 Spring Security 에서 headers 값을 직접 설정해서 Client 로 Response 해주도록 합니다.
 
-https://docs.spring.io/spring-security/site/docs/5.0.x/reference/html/headers.html#headers-static - [Spring Security Static Headers 등록 설정 방법]
+- https://docs.spring.io/spring-security/site/docs/5.0.x/reference/html/headers.html#headers-static - [Spring Security Static Headers 등록 설정 방법]
 
 > java config/WebSecurityConfig.java
 
@@ -165,12 +165,12 @@ ReactDOM.render(
 
 이런식으로 App 밖에 Route 를 따로 일반페이지, 관리자페이지 선언하여 path 를 통해 구별하여 나오도록 했습니다.
 
-https://stackoverflow.com/questions/49473727/how-to-handle-multiple-routers-in-react -[How to handle multiple routers in react 여러개의 Router 관리하기]
+- https://stackoverflow.com/questions/49473727/how-to-handle-multiple-routers-in-react -[How to handle multiple routers in react 여러개의 Router 관리하기]
 
 # React-Admin 정보
 
-https://marmelab.com/react-admin/index.html - [React-Admin-튜토리얼]
-https://github.com/marmelab/react-admin/tree/master/docs - [React-Admin-Git-DOCS]
+- https://marmelab.com/react-admin/index.html - [React-Admin-튜토리얼]
+- https://github.com/marmelab/react-admin/tree/master/docs - [React-Admin-Git-DOCS]
 
 ## authProvider 유저 ROLE권한 체크
 
@@ -191,12 +191,12 @@ export const adminAccountCheck = async () => {
 headers 로그인한 유저의 Token 값을 전송하여 해당 유저의 ROLE 값을 실시간으로 확인합니다.
 만약에 ROLE값이 임의로 변경되면 서버에서 체크하여 강제 로그아웃 시킵니다.
 
-https://github.com/marmelab/react-admin/blob/master/docs/Authentication.md - [관리자페이지-로그인-인증-promise]
+- https://github.com/marmelab/react-admin/blob/master/docs/Authentication.md - [관리자페이지-로그인-인증-promise]
 
 # axios 정리
 
-https://github.com/axios/axios/issues/1422 - [axios.Catch-error-체크전송]
-https://github.com/axios/axios/issues/193 - [axios-에러-체크-후-reject-request]
+- https://github.com/axios/axios/issues/1422 - [axios.Catch-error-체크전송]
+- https://github.com/axios/axios/issues/193 - [axios-에러-체크-후-reject-request]
 
 ## axios jwt token 기본설정
 
@@ -204,4 +204,4 @@ https://github.com/axios/axios/issues/193 - [axios-에러-체크-후-reject-requ
 axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
 ~~~
 
-http://jeonghwan-kim.github.io/2018/03/26/vue-authentication.html - [axios-defaults-headers-설정]
+- http://jeonghwan-kim.github.io/2018/03/26/vue-authentication.html - [axios-defaults-headers-설정]
