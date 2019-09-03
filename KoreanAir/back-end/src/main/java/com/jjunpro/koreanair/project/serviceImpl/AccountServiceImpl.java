@@ -1,5 +1,6 @@
 package com.jjunpro.koreanair.project.serviceImpl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,5 +35,15 @@ public class AccountServiceImpl implements AccountService {
 	public Optional<AccountEntity> findByUserId(String dto) {
 		
 		return accountRepository.findByUserId(dto);
+	}
+	
+	/**
+	 * Account List All 모두 탐색
+	 **/
+	
+	@Override
+	public List<AccountEntity> findAll() {
+		
+		return accountRepository.findAll();
 	}
 }

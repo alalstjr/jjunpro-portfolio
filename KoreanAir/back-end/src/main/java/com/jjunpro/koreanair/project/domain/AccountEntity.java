@@ -26,7 +26,7 @@ public class AccountEntity extends BaseTimeEntity {
 	@Id
 	@GeneratedValue(generator = "system-uuid")
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
-	private String uuid;
+	private String id;
 	
 	@Column(name = "ACCOUNT_ID", nullable = false, unique = true)
 	@NotBlank(message = "아이디는 비워둘 수 없습니다.")

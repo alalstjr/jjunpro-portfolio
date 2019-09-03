@@ -72,11 +72,13 @@ public class AccountController {
 		return new ResponseEntity<String>(token.getAccountContext().getUsername(), HttpStatus.OK);
 	} 
 	
-	@GetMapping("/go")
-	@PreAuthorize("hasRole('ROLE_USER')")
-	public String getUsername(Authentication authentication) {
-		PostAuthorizationToken token = (PostAuthorizationToken)authentication;
-		return token.getAccountContext().getUsername();
+	/**
+	 * Account List 목록을 전체 요청합니다.
+	 */
+	@GetMapping("")
+	public Iterable<?> getAccountList() {
+		
+		return accountServiceImpl.findAll();
 	} 
 }
  

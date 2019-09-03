@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -64,6 +65,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	       configuration.addAllowedHeader("*");
 	       configuration.setAllowCredentials(true);
 	       configuration.setMaxAge(3600L);
+	       
+	       configuration.addExposedHeader("WWW-Authenticate");
+	       configuration.addExposedHeader("Access-Control-Allow-Origin");
+	       configuration.addExposedHeader("Access-Control-Allow-Headers");
+	       
+	       configuration.addExposedHeader("X-Total-Count");
+	       
 	       UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 	       source.registerCorsConfiguration("/**", configuration);
 	       return source;
@@ -85,6 +93,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //    	skipPath.add("GET,board/page");
 //    	skipPath.add("POST,account/login");
     	skipPath.add("POST,/api/account");
+    	skipPath.add("GET,/api/account");
     	
         FilterSkipMatcher matcher = new FilterSkipMatcher(skipPath, "/api/**");
         JwtAuthenticationFilter filter = new JwtAuthenticationFilter(matcher, jwtFailureHandler, headerTokenExtractor);
@@ -133,5 +142,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 		.addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class)
 		.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
+		
+		http
+		.headers()
+		.addHeaderWriter(new StaticHeadersWriter("X-Total-Count", "10"));
 	}
 }
