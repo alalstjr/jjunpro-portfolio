@@ -36,3 +36,12 @@ this.setState({
 # axios jwt token 기본설정
 http://jeonghwan-kim.github.io/2018/03/26/vue-authentication.html
 axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
+
+# React-Admin 정보
+
+## authProvider
+관리자페이지 로그인 인증 promise - https://github.com/marmelab/react-admin/blob/master/docs/Authentication.md
+
+### axios 정보
+axios.Catch error 체크전송 - https://github.com/axios/axios/issues/1422
+axios 에러 체크 후 reject request - https://github.com/axios/axios/issues/193

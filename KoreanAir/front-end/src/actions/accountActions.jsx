@@ -5,6 +5,7 @@ import {
     CHECK_USER_SUCCESS,
     CHECK_USER_FAILURE
 } from "./types"
+import { async } from "q";
 
 /*
  *  새로운 유저를 등록합니다.
@@ -35,6 +36,32 @@ export const accountInsert = (account, history) => async dispatch => {
             payload: {}
         });
     }
+}
+
+/*
+ *  관리자 로그인
+ */
+export const adminAccountLogin = async (account) => {
+    return await axios.post("http://localhost:8080/api/account/login", account)
+    .then(res => {
+        const token = res.data.token;
+        const userId = res.data.userId;
+        const username = res.data.username;
+
+        if(token) {
+            const userInfo = JSON.stringify({
+                token,
+                userId,
+                username
+            });
+            localStorage.setItem('userInfo', userInfo);
+        } else {
+            return Promise.reject("잘못된 상태 입니다.");    
+        }
+    }, (error) => {
+        console.log(error);
+        return Promise.reject("정보가 틀립니다.");
+    });
 }
 
 /*
@@ -121,6 +148,19 @@ export const userLoginCheck = () => dispatch => {
             }
         });
     }
+}
+
+/* 
+ *  관리자 상태 체크
+ */
+export const adminAccountCheck = async () => {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
+    return await axios.get("http://localhost:8080/api/account/admin")
+        .then(function(){
+            return Promise.resolve();
+        }).catch(function() {
+            return Promise.reject({ redirectTo: '/' });
+        });    
 }
 
 /*
