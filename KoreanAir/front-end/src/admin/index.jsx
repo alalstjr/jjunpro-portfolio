@@ -13,6 +13,6 @@ const dataProvider = jsonServerProvider('http://localhost:8080/api', httpClient)
 export const AdminComponent = () => (
     <Admin dashboard={Dashboard} authProvider={authProvider} dataProvider={dataProvider}>
         <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} />
-        <Resource name="users" list={UserList} />
+        <Resource name="account" list={UserList} />
     </Admin>
 );

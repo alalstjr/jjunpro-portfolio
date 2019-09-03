@@ -5,7 +5,6 @@ import {
     CHECK_USER_SUCCESS,
     CHECK_USER_FAILURE
 } from "./types"
-import { async } from "q";
 
 /*
  *  새로운 유저를 등록합니다.

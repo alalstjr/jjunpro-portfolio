@@ -1,5 +1,3 @@
-import axios from "axios"
-
 import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'react-admin';
 
 import { adminAccountLogin, adminAccountCheck } from '../../actions/accountActions';

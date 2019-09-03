@@ -24,12 +24,12 @@ ReactDOM.render(
                 <React.Fragment>
                     <GlobalStyle />
                     <LnitialComponent />
-
                     <Router>
+                        {/* 일반페이지 */}
                         <Route path="/" exact component={App} />
+                        {/* 관리자페이지 */}
                         <Route exact path="/admin" component={AdminComponent} />
                     </Router>
-
                 </React.Fragment> 
             </ThemeProvider>
         </ConnectedIntlProvider>
