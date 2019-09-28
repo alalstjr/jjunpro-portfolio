@@ -1,9 +1,7 @@
-# 포트폴리오 리스트
+# 목차
 
-## KoreanAir 
-
-- 제작 일시 2019년 06월 15일 
-- Spring-Boot 와 ReactJS 를 활용한 웹 
+- [1. LocalDateTime JSON 직렬화 시간 ISO8601 설정 방법](#LocalDateTime-시간-ISO8601-설정-방법)
+- [2. JPA 쿼리문 정리](#JPA-쿼리문-정리)
 
 ## npm 설치
 
@@ -183,3 +181,100 @@ http://iloveulhj.github.io/posts/java/java-stream-api.html
 
 ## 스트림 주의사항 stream
 https://okky.kr/article/329818
+
+# LocalDateTime 시간 ISO8601 설정 방법
+
+> domain/BaseTimeEntity.java
+
+Spring Boot(또는 Spring 4 MVC)는 HTTP 요청-응답시 `application/json;charset=UTF-8 형식의 메시지에 대해 JSON 문자열-Java 오브젝트를 자동으로 상호 변환`해준다. 
+이 기능을 입맛에 맞게 잘 사용하려면 동작의 상세 원리를 이해하는 것이 필수이다.
+JsonFormat 어노테이션 없이 값을 반환하면 JSON 직렬 형태로 길고 복잡하게 REST API 에 맞지 않게 반환합니다.
+
+~~~
+{
+    "hour": 2,
+    "minute": 7,
+    ...
+    "chronology": {
+        "id": "ISO",
+        "calendarType": "iso8601"
+    }
+}
+~~~
+
+ObjectMapper 오브젝트의 커스터마이징 빈 등록으로 이를 해결할 수 있다.
+/build.gradle의 의존성에 아래 라이브러리를 추가한다.
+`Jackson Datatype JSR310은 LocalDateTime을 비롯한 Java 8의 날짜/시간 관련 오브젝트를 인식할 수 있는 Jackson 라이브러리`의 추가 모듈이다.
+
+~~~
+dependencies {
+    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.7.4'
+}
+~~~
+
+커스터마이징된 빈을 등록하기 위한 @Configuration 클래스를 아래와 같이 작성한다.
+
+~~~
+@Configuration
+public class JsonConfig {
+
+    @Bean
+    public ObjectMapper objectMapper() {
+
+        return Jackson2ObjectMapperBuilder
+        .json()
+        .featuresToDisable(SerializationFeature
+        .WRITE_DATES_AS_TIMESTAMPS)
+        .modules(new JavaTimeModule())
+        .build();
+    }
+}
+~~~
+
+이를 좀더 보기 쉽게 반환해주기 위해서 @JsonFormat 어노테이션을 활용합니다.
+
+~~~
+import java.time.LocalDateTime;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+public abstract class BaseTimeEntity {
+
+	@CreatedDate
+	+ @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
+	private LocalDateTime createdDate;
+	
+	@LastModifiedDate
+	+ @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
+	private LocalDateTime modifiedDate;
+}
+~~~
+
+결과를 확인해봅니다.
+
+~~~
+{
+    "createdDate": "2019-09-05T12:01:25",
+    "modifiedDate": "2019-09-05T12:01:25",
+}
+~~~
+
+정상 출력 됩니다.
+
+- https://jsonobject.tistory.com/235 - [Spring-Boot,-JSON-변환,-LocalDateTime을-ISO8601으로-출력하기]
+- https://javacan.tistory.com/entry/spring-boot-jackson-json-date-type-format - [스프링-부트-2.0과-1.5의-Jackson-JSON-날짜-타입-포맷-설정]
+- https://jojoldu.tistory.com/361 - [SpringBoot에서-날짜-타입-JSON-변환에-대한-오해-풀기]
+
+# JPA 쿼리문 정리
+
+https://jojoldu.tistory.com/235 - [JPA에서-대량의-데이터를-삭제할때-주의해야할-점]
+https://goodgid.github.io/Spring-Data-JPA-Query_Part_1/ - [JPA-용어-정리]
+
+## JPA 특정 열,컬럼 조회하여 모두 가져오기
+https://stackoverflow.com/questions/22007341/spring-jpa-selecting-specific-columns - [특정-열을-선택하는-Spring-JPA]
+
+## 
+JpaSpecificationExecutor
+https://javacan.tistory.com/entry/SpringDataJPA-Specifcation-Usage - [Spring-Data-JPA의-Specifcation을-이용한-검색-조건-조합의-편리함]
+https://hojak99.tistory.com/503 - [Specifcation]
