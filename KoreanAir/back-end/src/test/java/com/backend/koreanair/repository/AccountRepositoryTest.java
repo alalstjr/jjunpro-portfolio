@@ -33,6 +33,8 @@ class AccountRepositoryTest {
 
         accountRepository.findByUserPublic();
 
+        accountRepository.findByUserId("userId");
+
         assertThat(entityManager.contains(account)).isTrue();
     }
 }
