@@ -3,10 +3,12 @@ package com.backend.koreanair.domain;
 import com.backend.koreanair.enums.UserRole;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Account extends BaseTime {
