@@ -5,10 +5,7 @@ import { UserList } from './user';
 import { PostList, PostEdit, PostCreate } from './post';
 import Dashboard from './dashboard';
 import authProvider from './authProvider';
-import { httpClient } from './httpClient';
-
-import jsonServerProvider from 'ra-data-json-server';
-const dataProvider = jsonServerProvider('http://localhost:8080/api', httpClient);
+import dataProvider from './provider/AccountProvider';
 
 export const AdminComponent = () => (
     <Admin dashboard={Dashboard} authProvider={authProvider} dataProvider={dataProvider}>

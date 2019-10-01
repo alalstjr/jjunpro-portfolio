@@ -1,13 +1,15 @@
 import React from 'react';
-import { List, Datagrid, TextField, EmailField, UrlField } from 'react-admin';
+import { List, Datagrid, TextField, EmailField, UrlField, ReferenceField } from 'react-admin';
 
 export const UserList = props => (
     <List {...props}>
         <Datagrid rowClick="edit">
-            <TextField source="userId" />
+            <TextField source="id" />
+            {/* <TextField source="user_id" />
             <TextField source="username" />
-            <TextField source="userRole" />
-            <TextField source="uuid" />
+            <TextField source="user_role" />
+            <TextField source="created_date" />
+            <TextField source="modified_date" /> */}
             {/* <EmailField source="email" />
             <TextField source="address.street" />
             <TextField source="phone" />
