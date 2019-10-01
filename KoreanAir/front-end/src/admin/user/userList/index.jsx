@@ -4,7 +4,7 @@ import { List, Datagrid, TextField, EmailField, UrlField, ReferenceField } from 
 export const UserList = props => (
     <List {...props}>
         <Datagrid rowClick="edit">
-            <TextField source="id" />
+            <TextField source="size" />
             {/* <TextField source="user_id" />
             <TextField source="username" />
             <TextField source="user_role" />

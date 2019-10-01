@@ -25,7 +25,7 @@ const convertDataProviderRequestToHTTP = (type, resource, params) => {
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
         const query = {
-            size: JSON.stringify(perPage),
+            // size: JSON.stringify(perPage),
             // sort: JSON.stringify([field, order]),
             // range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
             // filter: JSON.stringify(params.filter),

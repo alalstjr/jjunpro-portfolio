@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -46,7 +47,17 @@ public class AccountContoller {
     public Page<AccountPublic> getPublicAccountList(
             Pageable pageable
     ) {
-        return accountServiceImpl.findByUserPublic(pageable);
+        return accountServiceImpl.findByPublicAccountList(pageable);
+    }
+
+    @GetMapping("/{id}")
+    @PostAuthorize("isAnonymous()")
+    public ResponseEntity<AccountPublic> getPublicAccount(
+            @PathVariable Long id
+    ) {
+        AccountPublic accountPublic = accountServiceImpl.findOnePublicAccount(id);
+
+        return new ResponseEntity<AccountPublic>(accountPublic, HttpStatus.OK);
     }
 
     @GetMapping("/admin")

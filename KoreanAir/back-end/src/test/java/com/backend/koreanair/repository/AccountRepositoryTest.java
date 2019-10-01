@@ -8,9 +8,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import javax.persistence.EntityManager;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-
 @DataJpaTest
 class AccountRepositoryTest {
 
@@ -29,12 +26,14 @@ class AccountRepositoryTest {
                 .userRole(UserRole.USER)
                 .build();
 
-        accountRepository.save(account);
+//        accountRepository.save(account);
 
-        accountRepository.findByUserPublic();
+//        accountRepository.findByUserPublic();
 
-        accountRepository.findByUserId("userId");
+//        accountRepository.findByUserId("userId");
 
-        assertThat(entityManager.contains(account)).isTrue();
+        accountRepository.findOneById(1L);
+
+//        assertThat(entityManager.contains(account)).isTrue();
     }
 }

@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 public interface AccountPublic {
 
-    String getId();
+    Long getId();
     String getUser_id();
     String getUsername();
     UserRole getUser_role();

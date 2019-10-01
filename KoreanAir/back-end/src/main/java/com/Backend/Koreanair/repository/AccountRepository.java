@@ -14,5 +14,8 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     Optional<Account> findByUserId(String userId);
 
     @Query(value = "SELECT id, user_id, username, user_role, created_date, modified_date FROM Account", nativeQuery = true)
-    Page<AccountPublic> findByUserPublic(Pageable pageable);
+    Page<AccountPublic> findByPublicAccountList(Pageable pageable);
+
+    @Query(value = "SELECT id, user_id, username, user_role, created_date, modified_date FROM Account AS a WHERE a.id = ?", nativeQuery = true)
+    AccountPublic findOnePublicAccount(Long id);
 }

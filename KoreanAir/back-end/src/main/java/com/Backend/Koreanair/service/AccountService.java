@@ -9,7 +9,10 @@ import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 
 public interface AccountService {
-    public Page<AccountPublic> findByUserPublic(Pageable pageable);
     public Optional<Account> findByUserId(String userId);
+
+    public Page<AccountPublic> findByPublicAccountList(Pageable pageable);
+    public AccountPublic findOnePublicAccount(Long id);
+
     public Account saveOrUpdate(AccountSaveDTO dto);
 }
