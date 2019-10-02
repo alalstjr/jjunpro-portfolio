@@ -60,18 +60,17 @@ public class AccountContoller {
         return new ResponseEntity<AccountPublic>(accountPublic, HttpStatus.OK);
     }
 
-    @GetMapping("/admin")
+    @PostMapping("/admin")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> adminAuthCheck(
             Authentication authentication
     ) {
         PostAuthorizationToken token = (PostAuthorizationToken)authentication;
-
         return new ResponseEntity<String>(token.getPrincipal().toString(), HttpStatus.OK);
     }
 
     @GetMapping("/go")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String getUsername(
             Authentication authentication
     ) {

@@ -22,13 +22,13 @@ public class AccountServiceImpl implements AccountService {
     private BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public Page<AccountPublic> findByPublicAccountList(Pageable pageable) {
-        return account.findByPublicAccountList(pageable);
+    public AccountPublic findOnePublicAccount(Long id) {
+        return account.findOnePublicAccount(id);
     }
 
     @Override
-    public AccountPublic findOnePublicAccount(Long id) {
-        return account.findOnePublicAccount(id);
+    public Page<AccountPublic> findByPublicAccountList(Pageable pageable) {
+        return account.findByPublicAccountList(pageable);
     }
 
     @Override

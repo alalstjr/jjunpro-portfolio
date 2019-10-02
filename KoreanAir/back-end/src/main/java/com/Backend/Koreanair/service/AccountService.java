@@ -11,8 +11,8 @@ import java.util.Optional;
 public interface AccountService {
     public Optional<Account> findByUserId(String userId);
 
-    public Page<AccountPublic> findByPublicAccountList(Pageable pageable);
     public AccountPublic findOnePublicAccount(Long id);
+    public Page<AccountPublic> findByPublicAccountList(Pageable pageable);
 
     public Account saveOrUpdate(AccountSaveDTO dto);
 }

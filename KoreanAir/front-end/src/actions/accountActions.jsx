@@ -154,7 +154,7 @@ export const userLoginCheck = () => dispatch => {
  */
 export const adminAccountCheck = async () => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
-    return await axios.get("http://localhost:8080/api/account/admin")
+    return await axios.post("http://localhost:8080/api/account/admin")
         .then(function(){
             return Promise.resolve();
         }).catch(function() {

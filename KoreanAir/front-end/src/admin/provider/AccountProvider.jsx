@@ -25,8 +25,9 @@ const convertDataProviderRequestToHTTP = (type, resource, params) => {
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
         const query = {
-            // size: JSON.stringify(perPage),
-            // sort: JSON.stringify([field, order]),
+            size: perPage,
+            sort: field+','+order,
+            page: (page - 1)
             // range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
             // filter: JSON.stringify(params.filter),
         };
@@ -79,12 +80,13 @@ const convertDataProviderRequestToHTTP = (type, resource, params) => {
  * @returns {Object} Data Provider response
  */
 const convertHTTPResponseToDataProvider = (response, type, resource, params) => {
+
     const { headers, json } = response;
     switch (type) {
     case GET_LIST:
         return {
-            data: json.map(x => x),
-            total: parseInt(headers.get('content-range').split('/').pop(), 10),
+            data: json.content.map(x => x),
+            total: json.totalElements
         };
     case CREATE:
         return { data: { ...params.data, id: json.id } };

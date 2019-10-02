@@ -91,7 +91,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         List<String> skipPath = new ArrayList<String>();
         skipPath.add("POST,/api/account");
         skipPath.add("GET,/api/account");
-        skipPath.add("GET,/api/account/{id}");
+        skipPath.add("GET,/api/account/*");
 
         FilterSkipMatcher matcher = new FilterSkipMatcher(skipPath, "/api/**");
         JwtAuthenticationFilter filter = new JwtAuthenticationFilter(matcher, jwtFailureHandler, headerTokenExtractor);
