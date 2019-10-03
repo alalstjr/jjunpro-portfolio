@@ -31,7 +31,6 @@ const convertDataProviderRequestToHTTP = (type, resource, params) => {
             // range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
             // filter: JSON.stringify(params.filter),
         };
-        console.log(stringify(query));
         return { url: `${API_URL}/${resource}?${stringify(query)}` };
     }
     case GET_ONE:

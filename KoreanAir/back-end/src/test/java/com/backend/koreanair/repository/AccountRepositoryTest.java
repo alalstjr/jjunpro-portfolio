@@ -1,6 +1,7 @@
 package com.backend.koreanair.repository;
 
 import com.backend.koreanair.domain.Account;
+import com.backend.koreanair.domain.University;
 import com.backend.koreanair.enums.UserRole;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,23 +18,41 @@ class AccountRepositoryTest {
     @Autowired
     AccountRepository accountRepository;
 
+    @Autowired
+    UniversityRepository universityRepository;
+
     @Test
     public void showTest() {
+
         Account account = Account.builder()
                 .userId("userId")
                 .username("username")
                 .password("password")
+                .nickname("nickname")
+                .myUniversity("myUniversity")
                 .userRole(UserRole.USER)
                 .build();
 
-//        accountRepository.save(account);
+        University uni = University.builder()
+                .uniSubject("uniSubject")
+                .uniName("uniName")
+                .uniState(false)
+                .account(account)
+                .build();
 
-//        accountRepository.findByUserPublic();
+        account.addUniversity(uni);
 
-//        accountRepository.findByUserId("userId");
+        accountRepository.save(account);
+        universityRepository.save(uni);
+        accountRepository.findAll();
+        universityRepository.findAll();
 
-        accountRepository.findOneById(1L);
+//
+//        universityRepository.findAll();
+
+
 
 //        assertThat(entityManager.contains(account)).isTrue();
+
     }
 }

@@ -1,8 +1,9 @@
 import React from 'react';
 import { List, Datagrid, TextField, EmailField, UrlField, ReferenceField } from 'react-admin';
+import { AccountFilter } from '../AccountFilter';
 
 export const UserList = props => (
-    <List {...props}>
+    <List filters={<AccountFilter />} {...props}>
         <Datagrid rowClick="edit">
             <TextField source="id" />
             <TextField source="user_id" />
