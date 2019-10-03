@@ -31,7 +31,6 @@ public class AccountSaveDTO {
                 .username(username)
                 .nickname(nickname)
                 .myUniversity(myUniversity)
-                .university(university)
                 .email(email)
                 .userRole(userRole)
                 .build();

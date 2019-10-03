@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -27,9 +25,9 @@ public class University extends BaseDate {
     @Column(nullable = true)
     private String uniTag;
 
-    @OneToMany
-    @Column(nullable = true)
-    private Set<File> photo = new HashSet<>();
+//    @OneToMany
+//    @Column(nullable = true)
+//    private Set<File> photo = new HashSet<>();
 
     @Column(nullable = false)
     private Boolean uniState;
@@ -38,11 +36,10 @@ public class University extends BaseDate {
     private Account account;
 
     @Builder
-    public University(String uniSubject, String uniName, String uniTag, Set<File> photo, Boolean uniState, Account account) {
+    public University(String uniSubject, String uniName, String uniTag, Boolean uniState, Account account) {
         this.uniSubject = uniSubject;
         this.uniName = uniName;
         this.uniTag = uniTag;
-        this.photo = photo;
         this.uniState = uniState;
         this.account = account;
     }

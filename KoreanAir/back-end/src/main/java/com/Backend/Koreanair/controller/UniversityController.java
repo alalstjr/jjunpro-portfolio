@@ -1,11 +1,10 @@
 package com.backend.koreanair.controller;
 
-import com.backend.koreanair.domain.Account;
 import com.backend.koreanair.domain.University;
 import com.backend.koreanair.dto.UniversitySaveDTO;
-import com.backend.koreanair.repository.AccountRepository;
-import com.backend.koreanair.repository.UniversityRepository;
+import com.backend.koreanair.service.UniversityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,27 +16,15 @@ import javax.validation.Valid;
 public class UniversityController {
 
     @Autowired
-    UniversityRepository universityRepository;
-
-    @Autowired
-    AccountRepository accountRepository;
+    UniversityServiceImpl universityService;
 
     @PostMapping("")
     public ResponseEntity<University> saveOrUpdate(
             @Valid
             @RequestBody UniversitySaveDTO dto
     ) {
+        University newUniversity = universityService.saveOrUpdate(dto);
 
-        Account account = accountRepository.findById(2L).get();
-        account.addUniversity(dto);
-
-        System.out.println(dto.getAccount());
-
-        accountRepository.save(account);
-
-        University university = dto.toEntity();
-        universityRepository.save(university);
-
-        return null;
+        return new ResponseEntity<University>(newUniversity, HttpStatus.CREATED);
     }
 }

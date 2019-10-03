@@ -40,7 +40,7 @@ class AccountRepositoryTest {
                 .account(account)
                 .build();
 
-        account.addUniversity(uni);
+//        account.addUniversity(uni);
 
         accountRepository.save(account);
         universityRepository.save(uni);

@@ -25,21 +25,21 @@ import java.util.Map;
 public class AccountController {
 
     @Autowired
-    private AccountServiceImpl accountServiceImpl;
+    private AccountServiceImpl accountService;
 
     @PostMapping("")
     public ResponseEntity<?> saveOrUpdate(
             @Valid
             @RequestBody AccountSaveDTO dto
     ) {
-        if(accountServiceImpl.findByUserId(dto.getUserId()).isPresent()) {
+        if(accountService.findByUserId(dto.getUserId()).isPresent()) {
             Map<String, String> errorMap = new HashMap<String, String>();
             errorMap.put("AuthenticationError", "이미 존재하는 아이디 입니다.");
 
             return new ResponseEntity<Map<String, String>>(errorMap, HttpStatus.BAD_REQUEST);
         }
 
-        Account newAccount = accountServiceImpl.saveOrUpdate(dto);
+        Account newAccount = accountService.saveOrUpdate(dto);
         return new ResponseEntity<Account>(newAccount, HttpStatus.CREATED);
     }
 
@@ -47,7 +47,7 @@ public class AccountController {
     public Page<AccountPublic> getPublicAccountList(
             Pageable pageable
     ) {
-        return accountServiceImpl.findByPublicAccountList(pageable);
+        return accountService.findByPublicAccountList(pageable);
     }
 
     @GetMapping("/{id}")
@@ -55,7 +55,7 @@ public class AccountController {
     public ResponseEntity<AccountPublic> getPublicAccount(
             @PathVariable Long id
     ) {
-        AccountPublic accountPublic = accountServiceImpl.findOnePublicAccount(id);
+        AccountPublic accountPublic = accountService.findOnePublicAccount(id);
 
         return new ResponseEntity<AccountPublic>(accountPublic, HttpStatus.OK);
     }

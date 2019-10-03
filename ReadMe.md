@@ -7,6 +7,9 @@
 
 - [1. JPA 초기 셋팅](#JPA-초기-셋팅)
 - [2. React Admin](#React-Admin)
+- [3. JPA Repository Type ERROR](#JPA-Repository-Type-ERROR)
+- [4. 양방향 관계 예제](#양방향-관계-예제)
+- [5. 빌더 패턴을 사용하는 이유를](#빌더-패턴을-사용하는-이유를)
 
 # JPA, Security 초기 셋팅
 
@@ -235,3 +238,127 @@ export const AdminComponent = () => (
 ~~~
 
 dataProvider 추가합니다.
+
+# JPA Repository Type ERROR
+
+~~~
+UniversitySaveDTO dto;
+
+Optional<Account> account = accountRepository.findById(1L);
+dto.setAccount(account);
+~~~
+
+이렇게 dto Optional<Account> 타입을 넣으려고 하면 아래와 같은 오류가 발생합니다.
+
+~~~
+inferred type 'S' for type parameter 'S' is not within its bound
+~~~
+
+그 이유는 UniversitySaveDTO dto 에서 받는 Account 타입은 Optional 포함하고 있지 않기 때문입니다.
+해결 방법은 get() 메소드로 Optional 에서 빼와서 Account 타입으로 넣은 후 dto에 담는 것입니다.
+
+~~~
+UniversitySaveDTO dto;
+
+Account account = accountRepository.findById(1L).get();
+dto.setAccount(account);
+~~~
+
+https://4programmers.net/Forum/Java/312113-type_parameter_s_is_not_within_its_bound_i_jpa_repository - [type-parameter-S-is-not-within-its-bound-i-JPA-Repository]
+
+# 양방향 관계 예제
+
+> Account.java
+
+~~~
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
+public class Account {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @Column(nullable = false, unique = true)
+    private String userId;
+
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
+    @Column(nullable = true)
+    private Set<University> university = new HashSet<>();
+
+    @Builder
+    public Account(String userId) {
+        this.userId = userId;
+    }
+
+    public void addUniversity(UniversitySaveDTO university) {
+        this.getUniversity().add(university.toEntity());
+        university.setAccount(this);
+    }
+}
+~~~
+
+addUniversity 메소드를 활용해서 양쪽의 데이터를 연결하도록 insert 설정을 해줍니다.
+
+> University.java
+
+~~~
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
+public class University {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @Column(nullable = false)
+    private String uniSubject;
+
+    @ManyToOne
+    private Account account;
+
+    @Builder
+    public University(String uniSubject, Account account) {
+        this.uniSubject = uniSubject;
+        this.account = account;
+    }
+}
+
+~~~
+
+> UniversityController.java
+
+~~~
+public class UniversityController {
+
+    @Autowired
+    UniversityRepository universityRepository;
+
+    @Autowired
+    AccountRepository accountRepository;
+
+    @PostMapping("")
+    public ResponseEntity<University> saveOrUpdate(
+            @Valid
+            @RequestBody UniversitySaveDTO dto
+    ) {
+
+        Account account = accountRepository.findById(1L).get();
+
+        account.addUniversity(dto);
+
+        University university = dto.toEntity();
+
+        accountRepository.save(account);
+        universityRepository.save(university);
+
+        return null;
+    }
+}
+~~~
+
+# 빌더 패턴을 사용하는 이유를
+
+https://okky.kr/article/396206 - [빌더-패턴을-사용하는-이유를]

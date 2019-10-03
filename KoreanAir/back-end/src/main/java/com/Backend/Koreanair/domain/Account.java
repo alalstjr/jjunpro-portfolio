@@ -1,6 +1,5 @@
 package com.backend.koreanair.domain;
 
-import com.backend.koreanair.dto.UniversitySaveDTO;
 import com.backend.koreanair.enums.UserRole;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -8,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -35,10 +32,6 @@ public class Account extends BaseDate {
     @Column(nullable = true)
     private String myUniversity;
 
-    @OneToMany(mappedBy = "account")
-    @Column(nullable = true)
-    private Set<University> university = new HashSet<>();
-
 //    @OneToMany
 //    @Column(nullable = true)
 //    private Set<File> photo = new HashSet<>();
@@ -51,34 +44,13 @@ public class Account extends BaseDate {
     private UserRole userRole;
 
     @Builder
-    public Account(String userId, String password, String username, String nickname, String myUniversity, Set<University> university, String email, UserRole userRole) {
+    public Account(String userId, String password, String username, String nickname, String myUniversity, String email, UserRole userRole) {
         this.userId = userId;
         this.password = password;
         this.username = username;
         this.nickname = nickname;
         this.myUniversity = myUniversity;
-        this.university = university;
         this.email = email;
         this.userRole = userRole;
-    }
-
-    public void addUniversity(UniversitySaveDTO university) {
-        this.getUniversity().add(university.toEntity());
-        university.setAccount(this);
-    }
-
-    @Override
-    public String toString() {
-        return "Account{" +
-                "id=" + id +
-                ", userId='" + userId + '\'' +
-                ", password='" + password + '\'' +
-                ", username='" + username + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", myUniversity='" + myUniversity + '\'' +
-                ", university=" + university +
-                ", email='" + email + '\'' +
-                ", userRole=" + userRole +
-                '}';
     }
 }
