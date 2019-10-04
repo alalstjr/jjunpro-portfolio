@@ -45,4 +45,9 @@ public class AccountServiceImpl implements AccountService {
 
         return account.save(dto.toEntity());
     }
+
+    @Override
+    public Optional<Account> findByNickname(String nickname) {
+        return account.findByNickname(nickname);
+    }
 }

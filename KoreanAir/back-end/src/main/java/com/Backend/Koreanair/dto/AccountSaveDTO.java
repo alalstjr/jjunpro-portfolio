@@ -23,6 +23,7 @@ public class AccountSaveDTO {
     private Set<File> photo;
     private String email;
     private UserRole userRole = UserRole.USER;
+    private String passwordRe;
 
     public Account toEntity() {
         return Account.builder()

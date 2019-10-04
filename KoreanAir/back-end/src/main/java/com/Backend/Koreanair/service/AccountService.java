@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public interface AccountService {
     public Optional<Account> findByUserId(String userId);
+    public Optional<Account> findByNickname(String nickname);
 
     public AccountPublic findOnePublicAccount(Long id);
     public Page<AccountPublic> findByPublicAccountList(Pageable pageable);
