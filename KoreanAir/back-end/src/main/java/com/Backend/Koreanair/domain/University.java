@@ -25,22 +25,27 @@ public class University extends BaseDate {
     @Column(nullable = true)
     private String uniTag;
 
-//    @OneToMany
-//    @Column(nullable = true)
-//    private Set<File> photo = new HashSet<>();
-
     @Column(nullable = false)
     private Boolean uniState;
+
+    @Column(nullable = false)
+    private String uniLocal;
 
     @ManyToOne
     private Account account;
 
+    //    @OneToMany
+    //    @Column(nullable = true)
+    //    private Set<File> photo = new HashSet<>();
+
     @Builder
-    public University(String uniSubject, String uniName, String uniTag, Boolean uniState, Account account) {
+    public University(Long id, String uniSubject, String uniName, String uniTag, Boolean uniState, String uniLocal, Account account) {
+        this.id = id;
         this.uniSubject = uniSubject;
         this.uniName = uniName;
         this.uniTag = uniTag;
         this.uniState = uniState;
+        this.uniLocal = uniLocal;
         this.account = account;
     }
 }

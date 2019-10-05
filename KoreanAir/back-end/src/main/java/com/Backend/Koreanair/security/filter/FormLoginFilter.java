@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 public class FormLoginFilter extends AbstractAuthenticationProcessingFilter {
 
@@ -41,6 +42,13 @@ public class FormLoginFilter extends AbstractAuthenticationProcessingFilter {
         // 사용자 입력값을 JSON 으로 변환 후 DTO 생성
         SecurityFormLoginDTO dto =
                 objectMapper.readValue(request.getReader(), SecurityFormLoginDTO.class);
+
+        if(dto.getUserId() == null) {
+            throw new NoSuchElementException("아이디를 입력해 주세요.");
+        }
+        if(dto.getPassword() == null) {
+            throw new NoSuchElementException("비밀번호를 입력해 주세요.");
+        }
 
         // 사용자입력값이 존재하는지 검증 후 인증전 객체 Token 생성
         PreAuthorizationToken token = new PreAuthorizationToken(dto);

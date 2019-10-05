@@ -12,9 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -34,18 +34,16 @@ public class AccountController {
     private ValidityCheck validityCheck;
 
     @PostMapping("")
-    public ResponseEntity<?> saveOrUpdate(
-            @Valid
-            @RequestBody AccountSaveDTO dto
+    public ResponseEntity<Account> saveOrUpdate(
+            @Valid @RequestBody AccountSaveDTO dto,
+            BindingResult bindingResult
     ) {
         String errorType = null;
         String errorText = null;
 
-        // PasswordRe Check
-        if(dto.getPasswordRe() == null) {
-            errorType = "AuthenticationError";
-            errorText = "패스워드 확인을 입력해주세요.";
-            return webProcessRespone.webErrorRespone(errorType, errorText);
+        // Field Check
+        if(bindingResult.hasErrors()) {
+            return webProcessRespone.webErrorRespone(bindingResult);
         }
 
         // Password equals PasswordRe Check
@@ -70,7 +68,7 @@ public class AccountController {
         }
 
         // Account Email Validity Check
-        if(!validityCheck.emailCheck(dto.getEmail())) {
+        if (dto.getEmail() != null && !validityCheck.emailCheck(dto.getEmail())) {
             errorType = "AuthenticationError";
             errorText = "올바르지 않은 이메일입니다.";
             return webProcessRespone.webErrorRespone(errorType, errorText);
@@ -88,7 +86,6 @@ public class AccountController {
     }
 
     @GetMapping("/{id}")
-    @PostAuthorize("isAnonymous()")
     public ResponseEntity<AccountPublic> getPublicAccount(
             @PathVariable Long id
     ) {

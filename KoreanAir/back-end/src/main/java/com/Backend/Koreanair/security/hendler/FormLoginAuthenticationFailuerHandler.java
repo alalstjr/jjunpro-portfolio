@@ -18,7 +18,7 @@ import java.io.IOException;
 @Component
 public class FormLoginAuthenticationFailuerHandler implements AuthenticationFailureHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(FormLoginAuthenticationSuccessHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(FormLoginAuthenticationFailuerHandler.class);
 
     @Autowired
     private ObjectMapper objectMapper;

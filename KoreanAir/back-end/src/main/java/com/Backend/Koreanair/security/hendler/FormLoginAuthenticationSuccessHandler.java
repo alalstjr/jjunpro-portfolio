@@ -39,14 +39,14 @@ public class FormLoginAuthenticationSuccessHandler implements AuthenticationSucc
 
         String tokenString = factory.generateToken(context);
 
-        String username = context.getAccount().getUsername();
         String userId = context.getAccount().getUserId();
+        String username = context.getAccount().getUsername();
 
-        processRespone(response, writeDTO(tokenString, username, userId));
+        processRespone(response, writeDTO(tokenString, userId, username));
     }
 
-    private TokenDTO writeDTO(String token, String username, String userId) {
-        return new TokenDTO(token, username, userId);
+    private TokenDTO writeDTO(String token, String userId, String username) {
+        return new TokenDTO(token, userId, username);
     }
 
     private void processRespone(

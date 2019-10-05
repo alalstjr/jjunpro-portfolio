@@ -16,6 +16,7 @@ public class UniversitySaveDTO {
     private String uniTag;
     private Boolean uniState;
     private Account account;
+    private String uniLocal;
 
     public University toEntity() {
         return University.builder()
@@ -24,6 +25,7 @@ public class UniversitySaveDTO {
                 .account(account)
                 .uniTag(uniTag)
                 .uniState(uniState)
+                .uniLocal(uniLocal)
                 .build();
     }
 }
