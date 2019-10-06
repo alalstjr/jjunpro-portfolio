@@ -8,6 +8,8 @@ import com.backend.project.service.AccountServiceImpl;
 import com.backend.project.service.UniversityServiceImpl;
 import com.backend.project.util.IpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -56,9 +58,9 @@ public class UniversityController {
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-        Optional<Account> account = accountService.findByUserId(userDetails.getUsername());
+        Optional<Account> accountData = accountService.findByUserId(userDetails.getUsername());
 
-        if(!account.isPresent()) {
+        if(!accountData.isPresent()) {
             errorType = "AuthenticationError";
             errorText = "올바른 접근이 아닙니다.";
             return webProcessRespone.webErrorRespone(errorType, errorText);
@@ -70,10 +72,17 @@ public class UniversityController {
             return webProcessRespone.webErrorRespone(errorType, errorText);
         }
 
-        dto.setAccount(account.get());
+        dto.setAccount(accountData.get());
         dto.setUniIp(ipUtil.getUserIp(request));
 
         University newUniversity = universityService.saveOrUpdate(dto);
         return new ResponseEntity<University>(newUniversity, HttpStatus.CREATED);
+    }
+
+    @GetMapping("")
+    public Page<University> getPublicAccountList(
+            Pageable pageable
+    ) {
+        return universityService.findByUniversityList(pageable);
     }
 }
