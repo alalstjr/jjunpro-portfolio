@@ -7,9 +7,15 @@
 
 - [1. JPA 초기 셋팅](#JPA-초기-셋팅)
 - [2. React Admin](#React-Admin)
-- [3. JPA Repository Type ERROR](#JPA-Repository-Type-ERROR)
-- [4. 양방향 관계 예제](#양방향-관계-예제)
-- [5. 빌더 패턴을 사용하는 이유를](#빌더-패턴을-사용하는-이유를)
+
+- [1. JPA Repository Type ERROR](#JPA-Repository-Type-ERROR)
+- [2. 양방향 관계 예제](#양방향-관계-예제)
+- [3. 빌더 패턴을 사용하는 이유를](#빌더-패턴을-사용하는-이유를)
+- [4. 하이버네이트 ID 값 생성](#하이버네이트-ID-값-생성)
+
+- [1. request로 받은 Authentication 인증정보값 사용하기](#request로-받은-인증정보값-사용하기)
+- [2. request로 IP 받기](#request로-IP-받기)
+- [3. 현재 로그인한 사용자 정보받기](#현재-로그인한-사용자-정보받기)
 
 # JPA, Security 초기 셋팅
 
@@ -362,3 +368,43 @@ public class UniversityController {
 # 빌더 패턴을 사용하는 이유를
 
 https://okky.kr/article/396206 - [빌더-패턴을-사용하는-이유를]
+
+# request로 받은 인증정보값 사용하기
+
+~~~
+    @PostMapping("")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<University> saveOrUpdate(
+            @RequestBody UniversitySaveDTO dto,
+            Authentication authentication
+    ) {
+        ...
+    }
+~~~
+
+로그인한 유저 인증된 유저만 접근할 수 있는 공간입니다.
+해당 공간에 접근한 유저의 정보를 활용하여 무언가를 하려고 합니다.
+넘겨받은 Authentication 활용해서 말이죠.
+
+하지만 단순하게 authentication 가지고 getter 해서 값을 가져오면 Oject로만 값을 반환하여 
+쉽게 값을 사용할 수 없습니다. 이를 사용하기 위해서 필요한 인터페이스 `UserDetails` 입니다.
+
+~~~
+...
+UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+userDetails.getUsername();
+~~~
+
+UserDetails 값에 캐스팅 담아서 사용하면 유저의 를 담아서 사용할 수 있습니다.
+
+# request로 IP 받기
+
+https://stackoverflow.com/questions/22877350/how-to-extract-ip-address-in-spring-mvc-controller-get-call - [사용자에게-IP받기]
+
+# 현재 로그인한 사용자 정보받기
+
+https://itstory.tk/entry/Spring-Security-%ED%98%84%EC%9E%AC-%EB%A1%9C%EA%B7%B8%EC%9D%B8%ED%95%9C-%EC%82%AC%EC%9A%A9%EC%9E%90-%EC%A0%95%EB%B3%B4-%EA%B0%80%EC%A0%B8%EC%98%A4%EA%B8%B0 - [SpringSecurity-현재-로그인한-사용자-정보-가져오기]
+
+# 하이버네이트 ID 값 생성
+
+https://medium.com/@SlackBeck/%ED%95%98%EC%9D%B4%EB%B2%84%EB%84%A4%EC%9D%B4%ED%8A%B8%EB%8A%94-%EC%96%B4%EB%96%BB%EA%B2%8C-%EC%9E%90%EB%8F%99-%ED%82%A4-%EC%83%9D%EC%84%B1-%EC%A0%84%EB%9E%B5%EC%9D%84-%EA%B2%B0%EC%A0%95%ED%95%98%EB%8A%94%EA%B0%80-75dfa89939d1 - [하이버네이트-ID값-생성-전략]
