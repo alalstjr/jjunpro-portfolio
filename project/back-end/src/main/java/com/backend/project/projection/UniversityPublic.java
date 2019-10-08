@@ -18,9 +18,9 @@ public class UniversityPublic {
 //    private String[] uniTag;
 //    private String uniLocal;
 //    private Integer uniStar;
-//    private List<Account> uniLike;
 //    private String uniIp;
 //    private LocalDateTime modifiedDate;
 //    private Long account_id;
 //    private String account_nickname;
+//    private Integer university_like;
 }

@@ -8,8 +8,8 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,7 +41,7 @@ public class University extends BaseEntity {
     @ManyToOne
     private Account account;
 
-    @OneToMany
+    @ManyToMany
     private Set<Account> uniLike = new HashSet<>();
 
     @Builder

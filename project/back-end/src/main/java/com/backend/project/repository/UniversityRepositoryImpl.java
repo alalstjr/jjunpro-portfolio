@@ -35,11 +35,11 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
 //                        qUniversity.uniLocal,
 //                        qUniversity.uniTag,
 //                        qUniversity.uniStar,
-//                        qUniversity.uniLike,
 //                        qUniversity.uniIp,
 //                        qUniversity.modifiedDate,
 //                        qUniversity.account.id.as("account_id"),
-//                        qUniversity.account.nickname.as("account_nickname")
+//                        qUniversity.account.nickname.as("account_nickname"),
+//                        qUniversity.uniLike
                 ))
                 .from(qUniversity)
                 .fetchResults();
