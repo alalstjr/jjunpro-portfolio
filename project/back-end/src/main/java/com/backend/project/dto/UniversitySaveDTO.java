@@ -9,6 +9,7 @@ import org.hibernate.annotations.Type;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -34,6 +35,8 @@ public class UniversitySaveDTO {
 
     private Integer uniStar = 0;
 
+    private Set<Account> uniLike;
+
     private String uniIp;
 
     private Account account;
@@ -46,6 +49,7 @@ public class UniversitySaveDTO {
                 .uniTag(uniTag)
                 .uniLocal(uniLocal)
                 .uniStar(uniStar)
+                .uniLike(uniLike)
                 .uniIp(uniIp)
                 .account(account)
                 .build();

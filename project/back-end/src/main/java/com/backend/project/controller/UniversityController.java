@@ -3,6 +3,7 @@ package com.backend.project.controller;
 import com.backend.project.domain.Account;
 import com.backend.project.domain.University;
 import com.backend.project.dto.UniversitySaveDTO;
+import com.backend.project.projection.UniversityPublic;
 import com.backend.project.respone.WebProcessRespone;
 import com.backend.project.service.AccountServiceImpl;
 import com.backend.project.service.UniversityServiceImpl;
@@ -72,6 +73,12 @@ public class UniversityController {
             return webProcessRespone.webErrorRespone(errorType, errorText);
         }
 
+        if(dto.getUniStar() < 0 || dto.getUniStar() >= 6) {
+            errorType = "AuthenticationError";
+            errorText = "잘못된 점수입니다.";
+            return webProcessRespone.webErrorRespone(errorType, errorText);
+        }
+
         dto.setAccount(accountData.get());
         dto.setUniIp(ipUtil.getUserIp(request));
 
@@ -79,8 +86,45 @@ public class UniversityController {
         return new ResponseEntity<University>(newUniversity, HttpStatus.CREATED);
     }
 
+    @PostMapping("/{id}/like")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<University> update(
+            @PathVariable Long id,
+            Authentication authentication,
+            HttpServletRequest request
+    ) {
+        String errorType = null;
+        String errorText = null;
+
+        // Account
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        Optional<Account> accountData = accountService.findByUserId(userDetails.getUsername());
+
+        // University
+        University universityData = universityService.findByIdLike(id, accountData.get());
+
+        if(!accountData.isPresent()) {
+            errorType = "AuthenticationError";
+            errorText = "올바른 접근이 아닙니다.";
+            return webProcessRespone.webErrorRespone(errorType, errorText);
+        }
+
+        // Like State Check
+        if(universityData.getUniLike().contains(accountData.get())) {
+            // Like False
+            universityData.getUniLike().remove(accountData.get());
+        } else {
+            // Like True
+            universityData.getUniLike().add(accountData.get());
+        }
+
+        University earlyUniversity = universityService.saveOrUpdate(universityData);
+
+        return new ResponseEntity<University>(earlyUniversity, HttpStatus.OK);
+    }
+
     @GetMapping("")
-    public Page<University> getPublicAccountList(
+    public Page<UniversityPublic> getPublicAccountList(
             Pageable pageable
     ) {
         return universityService.findByUniversityList(pageable);

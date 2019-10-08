@@ -6,7 +6,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -31,10 +34,6 @@ public class Account extends BaseEntity {
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private UserRole userRole = UserRole.USER;
-
-    //    @OneToMany
-    //    @Column(nullable = true)
-    //    private Set<File> photo = new HashSet<>();
 
     @Builder
     public Account(String userId, String password, String nickname, String myUniversity, String email, String[] urlList) {

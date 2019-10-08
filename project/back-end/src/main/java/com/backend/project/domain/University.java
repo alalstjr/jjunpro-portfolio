@@ -9,6 +9,9 @@ import org.hibernate.annotations.Type;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -32,20 +35,17 @@ public class University extends BaseEntity {
 
     private Integer uniStar;
 
-    private Integer uniLike = 0;
-
     @Column(nullable = false)
     private String uniIp;
 
     @ManyToOne
     private Account account;
 
-    //    @OneToMany
-    //    @Column(nullable = true)
-    //    private Set<File> photo = new HashSet<>();
+    @OneToMany
+    private Set<Account> uniLike = new HashSet<>();
 
     @Builder
-    public University(String uniSubject, String uniContent, String uniName, String[] uniTag, String uniLocal, Integer uniStar, Integer uniLike, String uniIp, Account account) {
+    public University(String uniSubject, String uniContent, String uniName, String[] uniTag, String uniLocal, Integer uniStar, Set<Account> uniLike, String uniIp, Account account) {
         this.uniSubject = uniSubject;
         this.uniContent = uniContent;
         this.uniName = uniName;

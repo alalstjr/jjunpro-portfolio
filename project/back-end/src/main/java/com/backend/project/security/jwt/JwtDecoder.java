@@ -29,7 +29,7 @@ public class JwtDecoder {
         DecodedJWT decodedJWT = isValidToken(token)
                 .orElseThrow(() -> new NoSuchElementException("유효한 토큰아 아닙니다."));
 
-        String userId = decodedJWT.getClaim("USERNAME").asString();
+        String userId = decodedJWT.getClaim("USERID").asString();
         String role = decodedJWT.getClaim("USER_ROLE").asString();
 
         // JWT 토큰 값의 ROLE 값이 ROLE ENUM 값에 존재하는지 체크합니다.
