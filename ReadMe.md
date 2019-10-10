@@ -409,6 +409,15 @@ https://itstory.tk/entry/Spring-Security-%ED%98%84%EC%9E%AC-%EB%A1%9C%EA%B7%B8%E
 
 https://medium.com/@SlackBeck/%ED%95%98%EC%9D%B4%EB%B2%84%EB%84%A4%EC%9D%B4%ED%8A%B8%EB%8A%94-%EC%96%B4%EB%96%BB%EA%B2%8C-%EC%9E%90%EB%8F%99-%ED%82%A4-%EC%83%9D%EC%84%B1-%EC%A0%84%EB%9E%B5%EC%9D%84-%EA%B2%B0%EC%A0%95%ED%95%98%EB%8A%94%EA%B0%80-75dfa89939d1 - [하이버네이트-ID값-생성-전략]
 
+
+# 임시 정리 주소
+
 https://dotoridev.tistory.com/2 - [QueryDsl 삽질기 1부 [ONE TO MANY 중복제거]]
 
 https://jojoldu.tistory.com/394 - [If-문]
+
+https://devbox.tistory.com/entry/DBMS-CASEWHENTHEN - [sql when 문]
+
+https://effectivesquid.tistory.com/entry/JPQL-%EB%B9%8C%EB%8D%94-%ED%81%B4%EB%9E%98%EC%8A%A4-QueryDsl-%EC%82%AC%EC%9A%A9%EB%B2%95 - [JPQL-빌더-클래스-QueryDsl-사용법]
+
+https://kic1.tistory.com/102 - [복잡한 쿼리]
