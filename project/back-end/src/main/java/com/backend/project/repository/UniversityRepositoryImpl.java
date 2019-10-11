@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -69,5 +70,15 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                 .fetchOne();
 
         return result;
+    }
+
+    @Override
+    @Transactional
+    public void taskDelete(Long id, String username) {
+
+        Long result = queryFactory
+                .delete(qUniversity)
+                .where(qUniversity.id.eq(id).and(qUniversity.account.userId.eq(username)))
+                .execute();
     }
 }

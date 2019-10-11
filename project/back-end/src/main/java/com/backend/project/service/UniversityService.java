@@ -17,4 +17,6 @@ public interface UniversityService {
 
     public University saveOrUpdate(UniversitySaveDTO dto);
     public University saveOrUpdate(University universityData);
+
+    public void delete(Long id, String username);
 }

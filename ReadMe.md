@@ -421,3 +421,5 @@ https://devbox.tistory.com/entry/DBMS-CASEWHENTHEN - [sql when 문]
 https://effectivesquid.tistory.com/entry/JPQL-%EB%B9%8C%EB%8D%94-%ED%81%B4%EB%9E%98%EC%8A%A4-QueryDsl-%EC%82%AC%EC%9A%A9%EB%B2%95 - [JPQL-빌더-클래스-QueryDsl-사용법]
 
 https://kic1.tistory.com/102 - [복잡한 쿼리]
+
+https://joont92.github.io/jpa/QueryDSL/ - [QueryDSL 사용법]

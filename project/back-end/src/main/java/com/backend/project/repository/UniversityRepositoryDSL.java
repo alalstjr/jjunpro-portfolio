@@ -11,4 +11,6 @@ public interface UniversityRepositoryDSL {
     Page<UniversityPublic> findByPublicAll(Pageable pageable);
 
     University findByIdLike(Long id, Account account);
+
+    void taskDelete(Long id, String username);
 }

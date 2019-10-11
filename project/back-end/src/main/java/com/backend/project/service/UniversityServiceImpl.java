@@ -43,4 +43,9 @@ public class UniversityServiceImpl implements UniversityService {
     public University findByIdLike(Long id, Account account) {
         return university.findByIdLike(id, account);
     }
+
+    @Override
+    public void delete(Long id, String username) {
+        university.taskDelete(id, username);
+    }
 }

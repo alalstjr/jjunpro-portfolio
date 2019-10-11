@@ -88,7 +88,7 @@ public class UniversityController {
 
     @PostMapping("/{id}/like")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<University> update(
+    public ResponseEntity<University> updateLike(
             @PathVariable Long id,
             Authentication authentication,
             HttpServletRequest request
@@ -128,5 +128,19 @@ public class UniversityController {
             Pageable pageable
     ) {
         return universityService.findByUniversityList(pageable);
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<String> deleteTask(
+            @PathVariable Long id,
+            Authentication authentication
+    ) {
+
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        universityService.delete(id, userDetails.getUsername());
+
+        return new ResponseEntity<String>("Board Task delete", HttpStatus.OK);
     }
 }
