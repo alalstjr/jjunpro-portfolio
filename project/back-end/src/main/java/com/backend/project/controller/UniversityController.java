@@ -40,6 +40,7 @@ public class UniversityController {
     @Autowired
     private IpUtil ipUtil;
 
+    // CREATE or UADATE 생성
     @PostMapping("")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<University> saveOrUpdate(
@@ -86,6 +87,7 @@ public class UniversityController {
         return new ResponseEntity<University>(newUniversity, HttpStatus.CREATED);
     }
 
+    // LKIE TRUE or FALSE
     @PostMapping("/{id}/like")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<University> updateLike(
@@ -123,6 +125,7 @@ public class UniversityController {
         return new ResponseEntity<University>(earlyUniversity, HttpStatus.OK);
     }
 
+    // GET 공개된 유저정보
     @GetMapping("")
     public Page<UniversityPublic> getPublicAccountList(
             Pageable pageable
@@ -130,17 +133,27 @@ public class UniversityController {
         return universityService.findByUniversityList(pageable);
     }
 
+    // DELETE 특정 TASK 삭제
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<String> deleteTask(
             @PathVariable Long id,
             Authentication authentication
     ) {
+        String errorType = null;
+        String errorText = null;
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        Optional<Account> accountData =  accountService.findByUserId(userDetails.getUsername());
 
-        universityService.delete(id, userDetails.getUsername());
+        if(!accountData.isPresent()) {
+            universityService.deleteTask(id, accountData.get());
+        } else {
+            errorType = "AuthenticationError";
+            errorText = "올바른 접근이 아닙니다.";
+            return webProcessRespone.webErrorRespone(errorType, errorText);
+        }
 
-        return new ResponseEntity<String>("Board Task delete", HttpStatus.OK);
+        return new ResponseEntity<String>("처리가 완료되었습니다.", HttpStatus.OK);
     }
 }

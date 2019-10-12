@@ -36,6 +36,7 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
         Map<University, List<Account>> transform = queryFactory
                 .from(qUniversity)
                 .leftJoin(qUniversity.uniLike, qAccount)
+                .where(qUniversity.publicStatus.eq(true).and(qUniversity.controlStatus.eq(true)))
                 .transform(groupBy(qUniversity).as(list(qAccount)));
 
         List<UniversityPublic> results = transform.entrySet().stream()
@@ -74,11 +75,11 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
 
     @Override
     @Transactional
-    public void taskDelete(Long id, String username) {
+    public void deleteTask(Long id, Account accountData) {
 
         Long result = queryFactory
                 .delete(qUniversity)
-                .where(qUniversity.id.eq(id).and(qUniversity.account.userId.eq(username)))
+                .where(qUniversity.id.eq(id).and(qUniversity.account.eq(accountData)))
                 .execute();
     }
 }
