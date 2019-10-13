@@ -1,14 +1,15 @@
-import React, { Fragment } from "react";
-import { injectIntl } from "react-intl";
+import React from "react";
 
 import FirstSection from "./firstSection";
 import SecondSection from "./secondSection";
 
-const HomePage = ({ intl }) => (
-  <Fragment>
-    <FirstSection intl={intl} />
-    <SecondSection intl={intl} />
-  </Fragment>
+import {Main} from "../../style/globalStyles";
+
+const HomePage = () => (
+  <Main>
+    <FirstSection/>
+    <SecondSection/>
+  </Main>
 );
 
-export default injectIntl(HomePage);
+export default HomePage;

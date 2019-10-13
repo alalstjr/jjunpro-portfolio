@@ -13,8 +13,6 @@ import { GlobalStyle } from "./style/globalStyles"
 import { ThemeProvider } from "styled-components"
 import theme from "./style/theme"
 
-import LnitialComponent from "./initialComponent"
-
 import { AdminComponent } from './admin';
 
 ReactDOM.render(
@@ -23,7 +21,6 @@ ReactDOM.render(
             <ThemeProvider theme={theme}>
                 <React.Fragment>
                     <GlobalStyle />
-                    <LnitialComponent />
                     <Router>
                         {/* 일반페이지 */}
                         <Route path="/" exact component={App} />
