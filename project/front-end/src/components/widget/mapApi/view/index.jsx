@@ -1,6 +1,7 @@
 import React, { Component, createRef } from 'react'
 import $script from 'scriptjs'
-import routes from '../../../routes'
+import routes from '../../../../routes'
+import { MainMap } from '../../../../style/globalStyles'
 
 class MapApi extends Component {
 
@@ -11,8 +12,8 @@ class MapApi extends Component {
             API_KEY: routes.apiKey,
             setLoading: true,
             LatLng: {
-                x : 100,
-                y : 100
+                x : 33.450701,
+                y : 126.570667
             }
         }
 
@@ -58,7 +59,7 @@ class MapApi extends Component {
         
         if (typeof this.kakao === 'undefined' || this.kakao == null) return false;
 
-
+        console.log("도달")
         // 커스텀 오버레이에 표시할 내용입니다     
         // HTML 문자열 또는 Dom Element 입니다 
         var content = `
@@ -90,18 +91,17 @@ class MapApi extends Component {
 
         const {API_KEY} = this.state; 
         const kakao_url = `http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${API_KEY}`;
+        
         var that = this;
         $script(kakao_url, () => {
-            // golobal setting
-
             /*global kakao*/
             this.kakao = kakao;
-            console.log(that.appRef.current);
+            
             kakao.maps.load(function () {
                 // v3가 모두 로드된 후, 이 콜백 함수가 실행됩니다.
                 that.kakao = kakao;
-                that.map = new that.kakao.maps.Map(that.appRef.current, {
-                    center: new that.kakao.maps.LatLng(y, x), // 지도의 중심좌표
+                that.map = new kakao.maps.Map(that.appRef.current, {
+                    center: new that.kakao.maps.LatLng(x, y), // 지도의 중심좌표
                     level: 3 // 지도의 확대 레벨
                 });
             });
@@ -112,9 +112,9 @@ class MapApi extends Component {
         const { setLoading } = this.state
         return (
             (setLoading) ?
-                <div>Looooooooooooading....</div>
+                <div>불러오는 중입니다.</div>
                 : 
-                <div style={{ 'height': '850px','width': '850px' }} ref={this.appRef} />
+                <MainMap ref={this.appRef}/>
         )
     }
 }

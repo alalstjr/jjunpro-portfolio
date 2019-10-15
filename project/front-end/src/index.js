@@ -23,7 +23,7 @@ ReactDOM.render(
                     <GlobalStyle />
                     <Router>
                         {/* 일반페이지 */}
-                        <Route path="/" exact component={App} />
+                        <Route path="/" component={App} />
                         {/* 관리자페이지 */}
                         <Route exact path="/admin" component={AdminComponent} />
                     </Router>

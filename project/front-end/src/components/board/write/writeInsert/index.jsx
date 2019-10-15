@@ -9,13 +9,12 @@ class BoardWriteInsert extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            num: 0,
-            writer: "작성자",
-            password: "비밀번호",
-            category: "",
-            subject: "",
-            content: "",
-            fileCount: 0,
+            uniSubject: "",
+            uniContent: "",
+            uniName: "",
+            uniTag: [],
+            uniLocal: "",
+            uniStar: 1,
             files: [],
             registerFiles: [],
             removeFiles: [],
@@ -43,39 +42,39 @@ class BoardWriteInsert extends Component {
         e.preventDefault();
 
         const { 
-            num,
-            writer, 
-            password, 
-            category, 
-            subject, 
-            content,
+            uniSubject,
+            uniContent,
+            uniName,
+            uniTag,
+            uniLocal,
+            uniStar,
             files,
             fileCount,
             removeFiles
         } = this.state;
 
-        const newBoardTask = {
-            num: num,
-            writer: writer,
-            password: password,
-            category: category,
-            subject: subject,
-            content: content,
+        const newPugjjig = {
+            uniSubject,
+            uniContent,
+            uniName,
+            uniTag,
+            uniLocal,
+            uniStar,
             files: fileCount
         };
 
-        this.props.boardTaskInsert(newBoardTask, this.props.history, files, removeFiles);
+        this.props.boardTaskInsert(newPugjjig, this.props.history, files, removeFiles);
     }
 
     render() {
 
         const {
-            num,
-            writer,
-            password,
-            category,
-            subject,
-            content,
+            uniSubject,
+            uniContent,
+            uniName,
+            uniTag,
+            uniLocal,
+            uniStar,
             fileCount,
             files,
             registerFiles,
@@ -85,12 +84,12 @@ class BoardWriteInsert extends Component {
         return (
             <Fragment>
                 <BoardWrite
-                    num={num}
-                    writer={writer}
-                    password={password}
-                    category={category}
-                    subject={subject}
-                    content={content}
+                    uniSubject={uniSubject}
+                    uniContent={uniContent}
+                    uniName={uniName}
+                    uniTag={uniTag}
+                    uniLocal={uniLocal}
+                    uniStar={uniStar}
                     fileCount={fileCount}
                     files={files}
                     registerFiles={registerFiles}

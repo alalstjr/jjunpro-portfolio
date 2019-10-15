@@ -15,12 +15,12 @@ import {
 } from "../../../../style/globalStyles";
 
 const BoardWrite = ({
-    num,
-    writer,
-    password,
-    category,
-    subject,
-    content,
+    uniSubject,
+    uniContent,
+    uniName,
+    uniTag,
+    uniLocal,
+    uniStar,
     fileCount,
     files,
     registerFiles,
@@ -39,47 +39,52 @@ const BoardWrite = ({
                     method="post" 
                     enctype="multipart/form-data"
                 >
-                    <Input 
-                        id="writer"
-                        type="hidden"
-                        name="writer"
-                        value={subject}
-                    />
-                    <Input 
-                        id="password"
-                        type="hidden"
-                        name="password"
-                        value={password}
-                    />
                     <FormGroup>
-                        <Formlabel htmlFor="category">분류</Formlabel>
-                        <SelectBox
-                            id="category"
-                            name="category"
-                            value={category}
-                            onChange={onChange}
-                        >
-                            <option value="none">분류를 선택해주세요.</option>
-                            <option value="1">진행중인 이벤트</option>
-                            <option value="2">마감된 이벤트</option>
-                        </SelectBox>
-                    </FormGroup>
-                    <FormGroup>
-                        <Formlabel htmlFor="subject">제목</Formlabel>
+                        <Formlabel htmlFor="uniName">대학교 이름</Formlabel>
                         <Input 
-                            id="subject"
+                            id="uniName"
                             type="text"
-                            name="subject"
-                            value={subject}
+                            name="uniName"
+                            value={uniName}
                             onChange={onChange}
                         />
                     </FormGroup>
                     <FormGroup>
-                        <Formlabel htmlFor="content">내용</Formlabel>
+                        <Formlabel htmlFor="uniTag">태그</Formlabel>
+                        <Input 
+                            id="uniTag"
+                            type="text"
+                            name="uniTag"
+                            value={uniTag}
+                            onChange={onChange}
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <Formlabel htmlFor="uniStar">평가</Formlabel>
+                        <Input 
+                            id="uniStar"
+                            type="text"
+                            name="uniStar"
+                            value={uniStar}
+                            onChange={onChange}
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <Formlabel htmlFor="uniSubject">제목</Formlabel>
+                        <Input 
+                            id="uniSubject"
+                            type="text"
+                            name="uniSubject"
+                            value={uniSubject}
+                            onChange={onChange}
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <Formlabel htmlFor="uniContent">내용</Formlabel>
                         <Textarea
-                            id="content"
-                            name="content"
-                            value={content}
+                            id="uniContent"
+                            name="uniContent"
+                            value={uniContent}
                             onChange={onChange}
                         />
                     </FormGroup>
