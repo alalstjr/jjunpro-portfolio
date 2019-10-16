@@ -1,7 +1,4 @@
-import React from "react"
 import $script from 'scriptjs'
-import { Link } from "react-router-dom"
-import { func } from "prop-types";
 
 /****************************************
     전역변수
@@ -9,15 +6,17 @@ import { func } from "prop-types";
 let markers = [];
 let newthat = null;
 let openModal;
+let importantSetUp;
 
 /****************************************
     카카오 지도를 생성합니다.
 ****************************************/
-export const setKakaoMap = (that, latLng, apiKey, open) => {
+export const setKakaoMap = (that, latLng, apiKey, open, important) => {
     let x = latLng.x;
     let y = latLng.y;
     newthat = that;
     openModal = open;
+    importantSetUp = important;
     const kakao_url = `http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${apiKey}&libraries=services`;
     
     $script(kakao_url, () => {
@@ -30,6 +29,7 @@ export const setKakaoMap = (that, latLng, apiKey, open) => {
                 center: new that.kakao.maps.LatLng(x, y), // 지도의 중심좌표
                 level: 3 // 지도의 확대 레벨
             });
+            categorySearch();
         });
     });
 }
@@ -63,9 +63,14 @@ const searchPlacesCB = (data, status, pagination) => {
             zIndex:1
         });
 
+        let customOverlay = new kakao.maps.CustomOverlay({
+            xAnchor: 0.3,
+            yAnchor: 0.91
+        });
+
         // 정상적으로 검색이 완료됐으면
-        // 검색 목록과 마커를 표출합니다
-        displayPlaces(data, infowindow);
+        // 검색 목록과 (마커, 오버레이)를 표출합니다
+        displayPlaces(data, infowindow, customOverlay);
 
         // 페이지 번호를 표출합니다
         // displayPagination(pagination);
@@ -86,13 +91,14 @@ const searchPlacesCB = (data, status, pagination) => {
 /****************************************
     검색 결과 목록과 마커를 표출하는 함수입니다.
 ****************************************/
-const displayPlaces = (places, infowindow) => {
+const displayPlaces = (places, infowindow, customOverlay) => {
 
-    let listEl = document.getElementById('placesList'), 
-    menuEl = document.getElementById('menu_wrap'),
-    fragment = document.createDocumentFragment(), 
-    bounds = new kakao.maps.LatLngBounds(), 
-    listStr = '';
+    // 좌측 리스트
+    let listEl = document.getElementById('placesList');
+    let menuEl = document.getElementById('menu_wrap');
+    let fragment = document.createDocumentFragment();
+    let bounds = new kakao.maps.LatLngBounds();
+    let listStr = '';
     
     // 검색 결과 목록에 추가된 항목들을 제거합니다
     removeAllChildNods(listEl);
@@ -103,9 +109,9 @@ const displayPlaces = (places, infowindow) => {
     for ( let i=0; i<places.length; i++ ) {
 
         // 마커를 생성하고 지도에 표시합니다
-        let placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
-            marker = addMarker(placePosition, i), 
-            itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
+        let placePosition = new kakao.maps.LatLng(places[i].y, places[i].x);
+        let marker = addMarker(placePosition, i);
+        let itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
 
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
         // LatLngBounds 객체에 좌표를 추가합니다
@@ -114,30 +120,7 @@ const displayPlaces = (places, infowindow) => {
         // 마커와 검색결과 항목에 mouseover 했을때
         // 해당 장소에 인포윈도우에 장소명을 표시합니다
         // mouseout 했을 때는 인포윈도우를 닫습니다
-        (function(marker, title) {
-            // 인포윈도우
-            kakao.maps.event.addListener(marker, 'mouseover', function() {
-                infowindow.close();
-                displayInfowindow(infowindow, marker, title);
-            });
-            kakao.maps.event.addListener(marker, 'mouseout', function() {
-                infowindow.close();
-            });
-
-            // 커스텀 오버레이
-            kakao.maps.event.addListener(marker, 'click', function() {
-                infowindow.close();
-                displayOverlay(placePosition);
-            });
-
-            itemEl.onmouseover =  function () {
-                displayInfowindow(infowindow, marker, title);
-            };
-
-            itemEl.onmouseout =  function () {
-                infowindow.close();
-            };
-        })(marker, places[i].place_name);
+        setOverInfo(marker, places[i].place_name, infowindow, customOverlay, placePosition, itemEl);
 
         fragment.appendChild(itemEl);
     }
@@ -148,6 +131,38 @@ const displayPlaces = (places, infowindow) => {
 
     // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
     newthat.map.setBounds(bounds);
+}
+
+/****************************************
+    인포윈도우 커스텀 오버레이 생성
+****************************************/
+const setOverInfo = (marker, title, infowindow, customOverlay, placePosition, itemEl) => {
+    // 인포윈도우
+    kakao.maps.event.addListener(marker, 'mouseover', function() {
+        infowindow.close();
+        displayInfowindow(infowindow, marker, title);
+    });
+    kakao.maps.event.addListener(marker, 'mouseout', function() {
+        infowindow.close();
+    });
+
+    // 커스텀 오버레이
+    kakao.maps.event.addListener(marker, 'click', function() {
+        infowindow.close();
+        displayOverlay(customOverlay, placePosition, title, marker);
+    });
+
+    itemEl.onmouseover =  function () {
+        displayInfowindow(infowindow, marker, title);
+    };
+    itemEl.onclick =  function () {
+        infowindow.close();
+        displayOverlay(customOverlay, placePosition, title);
+    };
+
+    itemEl.onmouseout =  function () {
+        infowindow.close();
+    };
 }
 
 /****************************************
@@ -259,38 +274,40 @@ function displayInfowindow(infowindow, marker, title) {
 /****************************************
     커스텀 오버레이를 생성합니다
 ****************************************/
-const displayOverlay = (placePosition) => {
+const displayOverlay = (customOverlay, placePosition, title, marker) => {
 
-    let newDiv = document.createElement("div"); 
-    let newContent = document.createTextNode("환영합니다!"); 
-    newDiv.appendChild(newContent);
-    newDiv.addEventListener('click', openModal());
+    let overlayWarp = document.createElement("div"); 
+    overlayWarp.setAttribute("style", "padding:5px;z-index:1;background-color: #fff;");
 
-    let content = `
-        <div style="padding:5px;z-index:1;background:#fff;">
-            <div>커스텀 오버레이</div>
-            <div>평점 0점 | 리뷰 0개</div>
-            <div class='review-write'>리뷰 작성하기</div>
-        </div>
-    `;
+    let overlayTitle = document.createElement("div"); 
+    let overlayTitleText = document.createTextNode(title); 
+    overlayTitle.appendChild(overlayTitleText);
 
-    let customOverlay = new kakao.maps.CustomOverlay({
-        position: placePosition,
-        content: newDiv,
-        xAnchor: 0.3,
-        yAnchor: 0.91
+    let overlayReview = document.createElement("div"); 
+    let overlayReviewText = document.createTextNode("평점 0점 | 리뷰 0개"); 
+    overlayReview.appendChild(overlayReviewText);
+
+    let overlayWrite = document.createElement("button"); 
+    let overlayWritewText = document.createTextNode("리뷰 작성하기"); 
+    overlayWrite.appendChild(overlayWritewText);
+
+    overlayWarp.appendChild(overlayTitle);
+    overlayWarp.appendChild(overlayReview);
+    overlayWarp.appendChild(overlayWrite);
+    
+    overlayWrite.addEventListener('click', function(){
+        importantSet(placePosition);
     });
 
-    customOverlay.setMap(newthat.map);
-    console.log(customOverlay.getContent());
+    customOverlay.setPosition(placePosition);
+    customOverlay.setContent(overlayWarp);
 
-    customOverlay.addListener('click', function(){
-        console.log("도달");
-    })
-    // kakao.maps.event.addListener(marker, 'mouseover', function() {
-    //     infowindow.close();
-    //     displayInfowindow(infowindow, marker, title);
-    // });
+    customOverlay.setMap(newthat.map);
+}
+
+const importantSet = (placePosition) => {
+    openModal();
+    importantSetUp(placePosition);
 }
 
 /****************************************
@@ -301,3 +318,86 @@ function removeAllChildNods(el) {
         el.removeChild (el.lastChild);
     }
 }
+
+/*-map review-*/
+
+/****************************************
+    카테고리 검색
+****************************************/
+const categorySearch = () => {
+    // defaultAddr 변수로 대학교 위치를 입력받아 근처 맛집을 탐색
+    let defaultAddr = new kakao.maps.LatLng(37.537183, 127.005454);
+    newthat.map.setCenter(defaultAddr);
+
+    // 장소 검색 객체를 생성합니다
+    var ps = new kakao.maps.services.Places(newthat.map); 
+    // 카테고리로 은행을 검색합니다
+    ps.categorySearch('FD6', placesSearchCB, {useMapBounds:true});
+}
+
+// 키워드 검색 완료 시 호출되는 콜백함수 입니다
+const placesSearchCB = (places, status, pagination) => {
+    if (status === kakao.maps.services.Status.OK) {
+
+        // 좌측 리스트
+        let listEl = document.getElementById('placesList');
+        let menuEl = document.getElementById('menu_wrap');
+        let fragment = document.createDocumentFragment();
+        let bounds = new kakao.maps.LatLngBounds();
+
+        // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
+        let infowindow = new kakao.maps.InfoWindow({
+            zIndex:1
+        });
+
+        let customOverlay = new kakao.maps.CustomOverlay({
+            xAnchor: 0.3,
+            yAnchor: 0.91
+        });
+
+        // 검색 결과 목록에 추가된 항목들을 제거합니다
+        removeAllChildNods(listEl);
+
+        // 지도에 표시되고 있는 마커를 제거합니다
+        removeMarker();
+
+        for (var i=0; i<places.length; i++) {
+            
+            // 마커를 생성하고 지도에 표시합니다
+            let placePosition = new kakao.maps.LatLng(places[i].y, places[i].x);
+            let marker = addMarker(placePosition, i);
+            let itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
+
+            // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+            // LatLngBounds 객체에 좌표를 추가합니다
+            bounds.extend(placePosition);
+
+            setOverInfo(marker, places[i].place_name, infowindow, customOverlay, placePosition, itemEl);
+
+            fragment.appendChild(itemEl);
+        }       
+
+        // 검색결과 항목들을 검색결과 목록 Elemnet에 추가합니다
+        listEl.appendChild(fragment);
+        menuEl.scrollTop = 0;
+
+        // // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+        newthat.map.setBounds(bounds);
+    }
+}
+
+// 지도에 마커를 표시하는 함수입니다
+// const displayMarker = (place) => {
+//     // 마커를 생성하고 지도에 표시합니다
+//     var marker = new kakao.maps.Marker({
+//         map: map,
+//         position: new kakao.maps.LatLng(place.y, place.x) 
+//     });
+
+//     // 마커에 클릭이벤트를 등록합니다
+//     kakao.maps.event.addListener(marker, 'click', function() {
+//         // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
+//         infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
+//         infowindow.open(map, marker);
+//     });
+// }

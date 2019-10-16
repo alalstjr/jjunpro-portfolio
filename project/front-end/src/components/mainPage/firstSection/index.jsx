@@ -2,6 +2,7 @@ import React from "react"
 import { MainList, Input } from "../../../style/globalStyles"
 import { Link } from "react-router-dom"
 import { searchPlaces } from "../../../service/KakaoMapService"
+import UserModal from "../../user"
 
 const FirstSection = ({onChange, keyword}) => (
     <MainList>
@@ -18,6 +19,10 @@ const FirstSection = ({onChange, keyword}) => (
       <button type="button" onClick={searchPlaces}>검색하기</button>
       <div id="placesList"></div>
       <div id="menu_wrap"></div>
+      <UserModal
+          text = "로그인"
+          req = "login"
+      />
     </MainList>
 );
 

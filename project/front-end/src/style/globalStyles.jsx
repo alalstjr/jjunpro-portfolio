@@ -194,9 +194,9 @@ export const SubmitBtn = styled.button`
     margin-top: 15px;
 `;
 
-/*******************
+/****************************************
     Active&Hover Style
-********************/
+****************************************/
 export const ActiveList = css`
     transition: 0.2s cubic-bezier(0.91, 0.35, 0.21, 0.72);
     
@@ -230,6 +230,103 @@ export const ListUl = styled.ul`
     li:last-child {
         padding-right: 0;
     }
+`;
+
+/****************************************
+    Modal Style
+****************************************/
+export const ModalOverlay = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0,0,0,0.6);
+    z-index: 9;
+
+    &.Modal-anim-enter {
+        opacity: 0.00;
+        transition: all 0.2s;
+    }
+    &.Modal-anim-enter.Modal-anim-enter-active {
+        opacity: 1;
+    }
+    &.Modal-anim-leave {
+        opacity: 1;
+        transition: all 0.2s;
+    }
+    &.Modal-anim-leave.Modal-anim-leave-active {
+        opacity: 0.00;
+    }
+`;
+export const Modal = styled.div`
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 75rem;
+    border-radius: 0.1875rem;
+    background-color: white;
+    box-shadow: 0px 3px 6px rgba(0,0,0,0.16);
+    z-index: 10;
+    padding: 30px 40px;
+
+    &.Modal-anim-enter {
+        opacity: 0.00;
+        transform: translate(-50%, -50%) scale(0.7);
+        transition: all 0.2s;
+    }
+     &.Modal-anim-enter.Modal-anim-enter-active {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    &.Modal-anim-leave {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+        transition: all 0.2s;
+    }  
+    &.Modal-anim-leave.Modal-anim-leave-active {
+        opacity: 0.00;
+        transform: translate(-50%, -50%) scale(0.7);
+    }
+`;
+export const ModalCloseBtn = styled.button`
+    position: absolute;
+    right: 32px;
+    top: 32px;
+    width: 32px;
+    height: 32px;
+    opacity: 0.3;
+
+    &:hover {
+        opacity: 1;
+    }
+    &:before,
+    &:after {
+        position: absolute;
+        left: 15px;
+        content: ' ';
+        height: 33px;
+        width: 2px;
+        background-color: #333;
+    }
+    &:before {
+        transform: rotate(45deg);
+      }
+    &:after {
+        transform: rotate(-45deg);
+      }
+`;
+export const Title = styled.h3`
+    font-size: 28px;
+    margin-bottom: 25px;
+    font-weight: bold;
+    color: #333;
+    text-align: center
+`;
+export const Content = styled.div`
+    
 `;
 
 /* Main Style */

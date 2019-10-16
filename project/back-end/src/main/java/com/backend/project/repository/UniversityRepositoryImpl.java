@@ -36,7 +36,7 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
         Map<University, List<Account>> transform = queryFactory
                 .from(qUniversity)
                 .leftJoin(qUniversity.uniLike, qAccount)
-                .where(qUniversity.publicStatus.eq(true).and(qUniversity.controlStatus.eq(true)))
+                .where(qUniversity.publicStatus.eq(true).and(qUniversity.controlStatus.eq(false)))
                 .transform(groupBy(qUniversity).as(list(qAccount)));
 
         List<UniversityPublic> results = transform.entrySet().stream()
@@ -47,8 +47,8 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                                 u.getKey().getUniContent(),
                                 u.getKey().getUniName(),
                                 u.getKey().getUniTag(),
-                                u.getKey().getUniLocal(),
                                 u.getKey().getUniStar(),
+                                u.getKey().getPlacePosition(),
                                 u.getKey().getUniIp(),
                                 u.getKey().getModifiedDate(),
                                 u.getKey().getAccount().getId(),

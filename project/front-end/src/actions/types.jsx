@@ -1,4 +1,9 @@
 /*
+ * UNIVERSITY TYPES
+ */
+// export const 
+
+/*
  * BOARD_TASK TYPES
  */
 export const GET_ERRORS = "GET_ERRORS"

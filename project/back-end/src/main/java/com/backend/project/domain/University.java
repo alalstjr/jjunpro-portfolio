@@ -30,13 +30,13 @@ public class University extends BaseEntity {
 
     private String[] uniTag;
 
-    @Column(nullable = false)
-    private String uniLocal;
-
     private Integer uniStar;
 
     @Column(nullable = false)
     private String uniIp;
+
+    @Column(nullable = false)
+    private String placePosition;
 
     @ManyToOne
     private Account account;
@@ -45,12 +45,12 @@ public class University extends BaseEntity {
     private Set<Account> uniLike = new HashSet<>();
 
     @Builder
-    public University(String uniSubject, String uniContent, String uniName, String[] uniTag, String uniLocal, Integer uniStar, Set<Account> uniLike, String uniIp, Account account) {
+    public University(String uniSubject, String uniContent, String uniName, String[] uniTag, String placePosition, Integer uniStar, Set<Account> uniLike, String uniIp, Account account) {
         this.uniSubject = uniSubject;
         this.uniContent = uniContent;
         this.uniName = uniName;
         this.uniTag = uniTag;
-        this.uniLocal = uniLocal;
+        this.placePosition = placePosition;
         this.uniStar = uniStar;
         this.uniLike = uniLike;
         this.uniIp = uniIp;

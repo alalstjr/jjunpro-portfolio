@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Set;
@@ -31,7 +32,7 @@ public class UniversitySaveDTO {
     private String[] uniTag;
 
     @NotBlank(message = "지역 위치가 없습니다.")
-    private String uniLocal;
+    private String placePosition;
 
     private Integer uniStar = 0;
 
@@ -41,13 +42,19 @@ public class UniversitySaveDTO {
 
     private Account account;
 
+    @Column(nullable = false)
+    private String stoId;
+
+    @Column(nullable = false)
+    private String stoAddress;
+
     public University toEntity() {
         return University.builder()
                 .uniSubject(uniSubject)
                 .uniContent(uniContent)
                 .uniName(uniName)
                 .uniTag(uniTag)
-                .uniLocal(uniLocal)
+                .placePosition(placePosition)
                 .uniStar(uniStar)
                 .uniLike(uniLike)
                 .uniIp(uniIp)
