@@ -1,5 +1,6 @@
 import axios from "axios"
-import { SERVER_URL } from "../routes"
+import { SERVER_URL, USER_AUTH } from "../routes"
+import { GET_PUGJJIG_COUNT } from "./types"
 
 /****************************************
     INSERT 푹찍 리뷰
@@ -7,7 +8,7 @@ import { SERVER_URL } from "../routes"
 export const pugjjigInsert = (pugjjig) => async dispatch => {
     
     // 유저 JWT Token정보
-    axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
+    USER_AUTH();
 
     try {
         await axios.post(`${SERVER_URL}/api/university`, pugjjig)
@@ -17,4 +18,37 @@ export const pugjjigInsert = (pugjjig) => async dispatch => {
     } catch (e) {
         console.log(e);
     }
+}
+
+/****************************************
+    GET 푹찍 리뷰 
+****************************************/
+// export const pugjjigGetCount = (storeId) =>  async dispatch => {
+    
+//     USER_AUTH();
+
+//     try {
+//         await axios.get(`${SERVER_URL}/api/store/${storeId}/count`)
+//         .then(res => {
+//             dispatch({
+//                 type: GET_PUGJJIG_COUNT,
+//                 payload: {
+//                     count: res.data.count
+//                 }
+//             });
+//         });
+//     } catch (e) {
+//         console.log(e);
+//     }
+// }
+
+export const pugjjigGetCount = (storeId) =>  async dispatch => {
+    
+    USER_AUTH();
+    
+    return axios.get(`${SERVER_URL}/api/store/${storeId}/count`)
+    .then(res => {
+        return res.data;
+    });
+
 }

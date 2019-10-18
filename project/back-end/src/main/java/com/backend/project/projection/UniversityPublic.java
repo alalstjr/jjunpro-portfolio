@@ -16,7 +16,6 @@ public class UniversityPublic {
     private String[] uniTag;
     private Integer uniStar;
     private String uniIp;
-    private String placePosition;
     private LocalDateTime modifiedDate;
     private Long account_id;
     private String account_nickname;

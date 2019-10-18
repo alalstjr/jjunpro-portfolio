@@ -26,9 +26,9 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
 
     private final JPAQueryFactory queryFactory;
 
-    QUniversity qUniversity = QUniversity.university;
+    private QUniversity qUniversity = QUniversity.university;
 
-    QAccount qAccount = QAccount.account;
+    private QAccount qAccount = QAccount.account;
 
     @Override
     public Page<UniversityPublic> findByPublicAll(Pageable pageable) {
@@ -48,7 +48,6 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                                 u.getKey().getUniName(),
                                 u.getKey().getUniTag(),
                                 u.getKey().getUniStar(),
-                                u.getKey().getPlacePosition(),
                                 u.getKey().getUniIp(),
                                 u.getKey().getModifiedDate(),
                                 u.getKey().getAccount().getId(),

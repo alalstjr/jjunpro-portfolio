@@ -6,7 +6,7 @@ import { API_KEY } from "../../routes"
 import { MainMap } from "../../style/globalStyles"
 import { setKakaoMap } from "../../service/KakaoMapService"
 import InsertModal from "../kakaoMap/InsertModal"
-import { pugjjigInsert } from "../../actions/KakaoMapActions"
+import { pugjjigInsert, pugjjigGetCount } from "../../actions/KakaoMapActions"
 
 class MapApi extends Component {
     constructor(props){
@@ -21,14 +21,15 @@ class MapApi extends Component {
             },
             // modal
             modalState: false,
-            // important
-            placePosition: "",
             // input
             uniSubject: "",
             uniContent: "",
             uniName: "",
             uniTag: ["arr1","arr2"],
             uniStar: 1,
+            // store
+            stoId: "",
+            stoAddress: ""
         }
 
         this.appRef = createRef();
@@ -38,7 +39,14 @@ class MapApi extends Component {
         this.setState({ 
             setLoading: false
         }); 
-        setKakaoMap(this, this.state.LatLng, this.state.API_KEY, this.openModal, this.importantSetUp);
+        setKakaoMap(
+            this, 
+            this.state.LatLng, 
+            this.state.API_KEY, 
+            this.openModal, 
+            this.storeSetUp,
+            this.pugjjigGetCount
+        );
     }
 
     // Modal State
@@ -53,10 +61,11 @@ class MapApi extends Component {
         });
     }
 
-    // Important SetUp
-    importantSetUp = (important) => {
+    // Store SetUp
+    storeSetUp = (id, address_name) => {
         this.setState({
-            placePosition: JSON.stringify(important)
+            stoId: id,
+            stoAddress: address_name
         });
     }
 
@@ -71,21 +80,28 @@ class MapApi extends Component {
     onSubmit = (e) => {
         e.preventDefault();
         const { 
-            placePosition, 
             uniSubject, 
             uniContent,
             uniName,
-            uniTag
+            uniTag,
+            stoId,
+            stoAddress
          } = this.state;
 
         const pugjjig = {
-            placePosition,
             uniSubject, 
             uniContent,
             uniName,
-            uniTag
+            uniTag,
+            stoId,
+            stoAddress
         };
         this.props.pugjjigInsert(pugjjig);
+    }
+
+    // 음식점 리뷰 갯수 가져오는 함수
+    pugjjigGetCount = (storeId) => {
+        return this.props.pugjjigGetCount(storeId);
     }
 
     render() {
@@ -108,16 +124,22 @@ class MapApi extends Component {
     }
 }
 
-pugjjigInsert.propTypes = {
+MapApi.propTypes = {
     pugjjigInsert: PropTypes.func.isRequired,
+    pugjjigGetCount: PropTypes.func.isRequired,
+    pugjjig_count: PropTypes.object.isRequired,
     error: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
-    error: state.errors
+    error: state.errors,
+    pugjjig_count: state.pugjjig.pugjjig_count
 });
 
 export default connect(
     mapStateToProps, 
-    { pugjjigInsert }
+    { 
+        pugjjigInsert, 
+        pugjjigGetCount 
+    }
 )(MapApi);

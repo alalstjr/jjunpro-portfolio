@@ -2,6 +2,7 @@ package com.backend.project.controller;
 
 import com.backend.project.domain.Account;
 import com.backend.project.domain.University;
+import com.backend.project.dto.StoreDTO;
 import com.backend.project.dto.UniversitySaveDTO;
 import com.backend.project.projection.UniversityPublic;
 import com.backend.project.respone.WebProcessRespone;
@@ -80,11 +81,14 @@ public class UniversityController {
             return webProcessRespone.webErrorRespone(errorType, errorText);
         }
 
+        StoreDTO storeDTO = new StoreDTO();
+
         dto.setAccount(accountData.get());
         dto.setUniIp(ipUtil.getUserIp(request));
 
-//        Store newStore =;
-        University newUniversity = universityService.saveOrUpdate(dto);
+        University newUniversity = universityService.saveOrUpdate(dto, storeDTO);
+
+
         return new ResponseEntity<University>(newUniversity, HttpStatus.CREATED);
     }
 

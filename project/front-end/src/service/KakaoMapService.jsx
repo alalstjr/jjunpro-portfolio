@@ -6,17 +6,26 @@ import $script from 'scriptjs'
 let markers = [];
 let newthat = null;
 let openModal;
-let importantSetUp;
+let storeSetUp;
+let pugjjigGetCount;
 
 /****************************************
     카카오 지도를 생성합니다.
 ****************************************/
-export const setKakaoMap = (that, latLng, apiKey, open, important) => {
+export const setKakaoMap = (
+    that, 
+    latLng, 
+    apiKey, 
+    open, 
+    store,
+    getCount
+    ) => {
     let x = latLng.x;
     let y = latLng.y;
     newthat = that;
     openModal = open;
-    importantSetUp = important;
+    storeSetUp = store;
+    pugjjigGetCount = getCount;
     const kakao_url = `http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${apiKey}&libraries=services`;
     
     $script(kakao_url, () => {
@@ -48,7 +57,7 @@ export const searchPlaces = () => {
     }
 
     // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
-    places.keywordSearch( keyword, searchPlacesCB); 
+    places.keywordSearch( keyword, searchPlacesCB, {category_group_code :"FD6"}); 
     return false;
 } 
 
@@ -120,7 +129,7 @@ const displayPlaces = (places, infowindow, customOverlay) => {
         // 마커와 검색결과 항목에 mouseover 했을때
         // 해당 장소에 인포윈도우에 장소명을 표시합니다
         // mouseout 했을 때는 인포윈도우를 닫습니다
-        setOverInfo(marker, places[i].place_name, infowindow, customOverlay, placePosition, itemEl);
+        setOverInfo(marker, places[i], infowindow, customOverlay, placePosition, itemEl);
 
         fragment.appendChild(itemEl);
     }
@@ -136,11 +145,11 @@ const displayPlaces = (places, infowindow, customOverlay) => {
 /****************************************
     인포윈도우 커스텀 오버레이 생성
 ****************************************/
-const setOverInfo = (marker, title, infowindow, customOverlay, placePosition, itemEl) => {
+const setOverInfo = (marker, store, infowindow, customOverlay, placePosition, itemEl) => {
     // 인포윈도우
     kakao.maps.event.addListener(marker, 'mouseover', function() {
         infowindow.close();
-        displayInfowindow(infowindow, marker, title);
+        displayInfowindow(infowindow, marker, store.place_name);
     });
     kakao.maps.event.addListener(marker, 'mouseout', function() {
         infowindow.close();
@@ -149,15 +158,15 @@ const setOverInfo = (marker, title, infowindow, customOverlay, placePosition, it
     // 커스텀 오버레이
     kakao.maps.event.addListener(marker, 'click', function() {
         infowindow.close();
-        displayOverlay(customOverlay, placePosition, title, marker);
+        displayOverlay(customOverlay, placePosition, store.place_name, store.id, store.address_name);
     });
 
     itemEl.onmouseover =  function () {
-        displayInfowindow(infowindow, marker, title);
+        displayInfowindow(infowindow, marker, store.place_name);
     };
     itemEl.onclick =  function () {
         infowindow.close();
-        displayOverlay(customOverlay, placePosition, title);
+        displayOverlay(customOverlay, placePosition, store.place_name, store.id, store.address_name);
     };
 
     itemEl.onmouseout =  function () {
@@ -274,7 +283,11 @@ function displayInfowindow(infowindow, marker, title) {
 /****************************************
     커스텀 오버레이를 생성합니다
 ****************************************/
-const displayOverlay = (customOverlay, placePosition, title, marker) => {
+const displayOverlay =async (customOverlay, placePosition, title, id, address_name) => {
+
+    // 푹찍 리뷰 오브젝트 생성
+    let pugjjig = new Object;
+    pugjjig = await pugjjigGetCount(id);
 
     let overlayWarp = document.createElement("div"); 
     overlayWarp.setAttribute("style", "padding:5px;z-index:1;background-color: #fff;");
@@ -284,7 +297,7 @@ const displayOverlay = (customOverlay, placePosition, title, marker) => {
     overlayTitle.appendChild(overlayTitleText);
 
     let overlayReview = document.createElement("div"); 
-    let overlayReviewText = document.createTextNode("평점 0점 | 리뷰 0개"); 
+    let overlayReviewText = document.createTextNode(`평점 0점 | 리뷰 ${pugjjig.count}개`); 
     overlayReview.appendChild(overlayReviewText);
 
     let overlayWrite = document.createElement("button"); 
@@ -296,7 +309,7 @@ const displayOverlay = (customOverlay, placePosition, title, marker) => {
     overlayWarp.appendChild(overlayWrite);
     
     overlayWrite.addEventListener('click', function(){
-        importantSet(placePosition);
+        storeSet(id, address_name);
     });
 
     customOverlay.setPosition(placePosition);
@@ -305,9 +318,9 @@ const displayOverlay = (customOverlay, placePosition, title, marker) => {
     customOverlay.setMap(newthat.map);
 }
 
-const importantSet = (placePosition) => {
+const storeSet = (id, address_name) => {
     openModal();
-    importantSetUp(placePosition);
+    storeSetUp(id, address_name);
 }
 
 /****************************************
@@ -371,8 +384,7 @@ const placesSearchCB = (places, status, pagination) => {
             // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
             // LatLngBounds 객체에 좌표를 추가합니다
             bounds.extend(placePosition);
-
-            setOverInfo(marker, places[i].place_name, infowindow, customOverlay, placePosition, itemEl);
+            setOverInfo(marker, places[i], infowindow, customOverlay, placePosition, itemEl);
 
             fragment.appendChild(itemEl);
         }       

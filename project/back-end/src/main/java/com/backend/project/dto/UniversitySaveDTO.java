@@ -31,9 +31,6 @@ public class UniversitySaveDTO {
 
     private String[] uniTag;
 
-    @NotBlank(message = "지역 위치가 없습니다.")
-    private String placePosition;
-
     private Integer uniStar = 0;
 
     private Set<Account> uniLike;
@@ -54,7 +51,6 @@ public class UniversitySaveDTO {
                 .uniContent(uniContent)
                 .uniName(uniName)
                 .uniTag(uniTag)
-                .placePosition(placePosition)
                 .uniStar(uniStar)
                 .uniLike(uniLike)
                 .uniIp(uniIp)
