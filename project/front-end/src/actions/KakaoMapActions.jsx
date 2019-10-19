@@ -23,25 +23,6 @@ export const pugjjigInsert = (pugjjig) => async dispatch => {
 /****************************************
     GET 푹찍 리뷰 
 ****************************************/
-// export const pugjjigGetCount = (storeId) =>  async dispatch => {
-    
-//     USER_AUTH();
-
-//     try {
-//         await axios.get(`${SERVER_URL}/api/store/${storeId}/count`)
-//         .then(res => {
-//             dispatch({
-//                 type: GET_PUGJJIG_COUNT,
-//                 payload: {
-//                     count: res.data.count
-//                 }
-//             });
-//         });
-//     } catch (e) {
-//         console.log(e);
-//     }
-// }
-
 export const pugjjigGetCount = (storeId) =>  async dispatch => {
     
     USER_AUTH();

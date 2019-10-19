@@ -1,10 +1,10 @@
 import React from "react"
 import { MainList, Input } from "../../../style/globalStyles"
 import { Link } from "react-router-dom"
-import { searchPlaces } from "../../../service/KakaoMapService"
+// import { searchPlaces } from "../../../service/KakaoMapService"
 import UserModal from "../../user"
 
-const FirstSection = ({onChange, keyword}) => (
+const FirstSection = ({onChange, keyword, searchPlaces}) => (
     <MainList>
       대학교 리스트
       <Link to={`/pugjjig/write`}>등록</Link>
