@@ -1,4 +1,5 @@
 import $script from 'scriptjs'
+import { Link } from "react-router-dom";
 
 const API_KEY = "e4886ec63d8dacf6d7f11ab426759a84";
 const KAKAO_URL =  `http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${API_KEY}&libraries=services`;
@@ -12,20 +13,17 @@ class KakaoMapService {
     thatThis = null;
     latLng = null;
     openModal = null;
-    storeSetUp = null;
     pugjjigGetCount = null;
 
     constructor(
         thatThis,
         latLng,
         openModal,
-        storeSetUp,
         pugjjigGetCount
     ) {
         this.thatThis = thatThis
         this.latLng = latLng
         this.openModal = openModal
-        this.storeSetUp = storeSetUp
         this.pugjjigGetCount = pugjjigGetCount
 
         // kakao 콜백함수에 전달해주는 변수
@@ -166,15 +164,15 @@ class KakaoMapService {
         // 커스텀 오버레이
         kakao.maps.event.addListener(marker, 'click', function() {
             thatThis.infowindow.close();
-            classThis.displayOverlay(placePosition, store.place_name, store.id, store.address_name);
+            classThis.displayOverlay(placePosition, store);
         });
 
         itemEl.onmouseover =  function () {
-            classThis.displayInfowindow(marker, store.place_name);
+            classThis.displayInfowindow(marker, store);
         };
         itemEl.onclick =  function () {
             thatThis.infowindow.close();
-            classThis.displayOverlay(placePosition, store.place_name, store.id, store.address_name);
+            classThis.displayOverlay(placePosition, store);
         };
 
         itemEl.onmouseout =  function () {
@@ -287,6 +285,7 @@ class KakaoMapService {
                 <div>${title}</div>
             </div>
         `;
+        
         thatThis.infowindow.setContent(content);
         thatThis.infowindow.open(thatThis.map, marker);
     }
@@ -294,24 +293,45 @@ class KakaoMapService {
     /****************************************
         커스텀 오버레이를 생성합니다
     ****************************************/
-    displayOverlay = async (placePosition, title, id, address_name) => {
+    displayOverlay = async (placePosition, store) => {
         // kakao 콜백함수에 전달해주는 변수
         const classThis = this;
 
         // 푹찍 리뷰 오브젝트 생성
         let pugjjig = new Object;
-        pugjjig = await this.pugjjigGetCount(id);
+        pugjjig = await this.pugjjigGetCount(store.id);
 
         let overlayWarp = document.createElement("div"); 
         overlayWarp.setAttribute("style", "padding:5px;z-index:1;background-color: #fff;");
 
         let overlayTitle = document.createElement("div"); 
-        let overlayTitleText = document.createTextNode(title); 
+        let overlayTitleText = document.createTextNode(store.place_name); 
         overlayTitle.appendChild(overlayTitleText);
 
-        let overlayReview = document.createElement("div"); 
+        let overlayReview = document.createElement("button"); 
+        overlayReview.type = "button";
         let overlayReviewText = document.createTextNode(`평점 0점 | 리뷰 ${pugjjig.count}개`); 
         overlayReview.appendChild(overlayReviewText);
+
+        overlayReview.addEventListener('click', function(){
+            classThis.openModal("listModalState", store.id, store.address_name);
+        });
+
+        let overlayAddr = document.createElement("div"); 
+        let overlayAddrText = document.createTextNode(`${store.address_name}`); 
+        overlayAddr.appendChild(overlayAddrText);
+        
+        let overlayPhone = document.createElement("a");
+        overlayPhone.href = `tel: ${store.phone}`;
+        overlayPhone.target = `_blank`;
+        let overlayPhoneText = document.createTextNode(`${store.phone}`); 
+        overlayPhone.appendChild(overlayPhoneText);
+
+        let overlayInfo = document.createElement("a"); 
+        overlayInfo.href = `${store.place_url}`;
+        overlayInfo.target = `_blank`;
+        let overlayInfoText = document.createTextNode(`상세정보`); 
+        overlayInfo.appendChild(overlayInfoText);
 
         let overlayWrite = document.createElement("button"); 
         let overlayWritewText = document.createTextNode("리뷰 작성하기"); 
@@ -319,10 +339,13 @@ class KakaoMapService {
 
         overlayWarp.appendChild(overlayTitle);
         overlayWarp.appendChild(overlayReview);
+        overlayWarp.appendChild(overlayAddr);
+        overlayWarp.appendChild(overlayPhone);
+        overlayWarp.appendChild(overlayInfo);
         overlayWarp.appendChild(overlayWrite);
         
         overlayWrite.addEventListener('click', function(){
-            classThis.storeSet(id, address_name);
+            classThis.storeSet(store.id, store.address_name);
         });
 
         this.thatThis.customOverlay.setPosition(placePosition);
@@ -332,8 +355,7 @@ class KakaoMapService {
     }
 
     storeSet = (id, address_name) => {
-        this.openModal();
-        this.storeSetUp(id, address_name);
+        this.openModal("insertModalState", id, address_name);
     }
 
     /****************************************

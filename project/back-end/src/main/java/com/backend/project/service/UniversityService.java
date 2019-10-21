@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface UniversityService {
 
     public Optional<University> findById(Long id);
+    public UniversityPublic findByPublicId(Long id);
     public Page<UniversityPublic> findByUniversityList(Pageable pageable);
     public University findByIdLike(Long id, Account account);
 

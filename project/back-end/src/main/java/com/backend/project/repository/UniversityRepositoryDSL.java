@@ -10,6 +10,8 @@ public interface UniversityRepositoryDSL {
 
     Page<UniversityPublic> findByPublicAll(Pageable pageable);
 
+    UniversityPublic findByPublicId(Long id);
+
     University findByIdLike(Long id, Account account);
 
     void deleteTask(Long id, Account accountData);

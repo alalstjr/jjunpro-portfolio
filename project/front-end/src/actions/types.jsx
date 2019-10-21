@@ -2,6 +2,9 @@
  * UNIVERSITY TYPES
  */
 // export const 
+export const GET_PUGJJIG = "GET_PUGJJIG";
+export const GET_PUGJJIG_VIEW = "GET_PUGJJIG_VIEW";
+export const GET_PUGJJIG_VIEW_LIKE = "GET_PUGJJIG_VIEW_LIKE";
 export const GET_PUGJJIG_COUNT = "GET_PUGJJIG_COUNT";
 
 /*

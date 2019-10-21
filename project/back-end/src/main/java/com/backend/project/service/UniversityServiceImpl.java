@@ -30,6 +30,11 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
+    public UniversityPublic findByPublicId(Long id) {
+        return university.findByPublicId(id);
+    }
+
+    @Override
     public Page<UniversityPublic> findByUniversityList(Pageable pageable) {
         return university.findByPublicAll(pageable);
     }

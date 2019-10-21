@@ -39,7 +39,7 @@ class InsertModal extends Component {
                     >
                     <ModalOverlay/>
                     <Modal>
-                        <ModalCloseBtn onClick={closeModal} />
+                        <ModalCloseBtn onClick={() => closeModal("insertModalState")}/>
                         <Form
                             onSubmit={onSubmit}
                         >

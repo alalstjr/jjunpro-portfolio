@@ -95,7 +95,7 @@ public class UniversityController {
     // LKIE TRUE or FALSE
     @PostMapping("/{id}/like")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<University> updateLike(
+    public ResponseEntity<Integer> updateLike(
             @PathVariable Long id,
             Authentication authentication,
             HttpServletRequest request
@@ -127,7 +127,7 @@ public class UniversityController {
 
         University earlyUniversity = universityService.saveOrUpdate(universityData);
 
-        return new ResponseEntity<University>(earlyUniversity, HttpStatus.OK);
+        return new ResponseEntity<Integer>(earlyUniversity.getUniLike().size(), HttpStatus.OK);
     }
 
     // GET 공개된 유저정보
@@ -136,6 +136,16 @@ public class UniversityController {
             Pageable pageable
     ) {
         return universityService.findByUniversityList(pageable);
+    }
+
+    // GET 푹찍 {ID} 리뷰
+    @GetMapping("/{id}")
+    public ResponseEntity<UniversityPublic> getPublicAccountList(
+            @PathVariable Long id
+    ) {
+        UniversityPublic result =  universityService.findByPublicId(id);
+
+        return new ResponseEntity<UniversityPublic>(result, HttpStatus.OK);
     }
 
     // DELETE 특정 TASK 삭제

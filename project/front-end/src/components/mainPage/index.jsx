@@ -5,11 +5,12 @@ import { connect } from "react-redux";
 import FirstSection from "./firstSection";
 import { MainMap } from "../../style/globalStyles"
 import InsertModal from "../kakaoMap/InsertModal"
+import ListModal from "../kakaoMap/ListModal"
 
 import { Main } from "../../style/globalStyles";
 
 import KakaoMapService from "../../service/KakaoMapService"
-import { pugjjigInsert, pugjjigGetCount } from "../../actions/KakaoMapActions"
+import { pugjjigInsert, pugjjigGetCount, pugjjigGet } from "../../actions/KakaoMapActions"
 
 class HomePage extends Component {
 
@@ -28,7 +29,8 @@ class HomePage extends Component {
           y : 126.570667
       },
       // modal state
-      modalState: false,
+      insertModalState: false,
+      listModalState: false,
       // input value
       uniSubject: "",
       uniContent: "",
@@ -47,67 +49,65 @@ class HomePage extends Component {
     let map = new KakaoMapService(
       this,
       this.state.LatLng, 
-      this.openModal, 
-      this.storeSetUp,
+      this.openModal,
       this.pugjjigGetCount
     );
   
     this.setState({ 
-        map,
-        setLoading: false
+      map,
+      setLoading: false
     });
-
-    console.log(this.state.map)
   }
 
   // Modal State
-  openModal = () => {
-      this.setState({
-          modalState: true
-      });
+  openModal = (target, id, address_name) => {
+    this.setState({
+      [target]: true,
+      stoId: id,
+      stoAddress: address_name
+    });
   }
-  closeModal = () => {
-      this.setState({
-          modalState: false
-      });
-  }
-
-  // Store SetUp
-  storeSetUp = (id, address_name) => {
-      this.setState({
-          stoId: id,
-          stoAddress: address_name
-      });
+  closeModal = (target) => {
+    this.setState({
+      [target]: false,
+      stoId: "",
+      stoAddress: ""
+    });
   }
 
   // Input Setup
   onChange = (e) => {
     this.setState({
-        [e.target.name]: e.target.value
+      [e.target.name]: e.target.value
     });
   }
 
   // Form Submit
   onSubmit = (e) => {
-      e.preventDefault();
-      const { 
-          uniSubject, 
-          uniContent,
-          uniName,
-          uniTag,
-          stoId,
-          stoAddress
-      } = this.state;
+    e.preventDefault();
+    const { 
+        uniSubject, 
+        uniContent,
+        uniName,
+        uniTag,
+        stoId,
+        stoAddress
+    } = this.state;
 
-      const pugjjig = {
-          uniSubject, 
-          uniContent,
-          uniName,
-          uniTag,
-          stoId,
-          stoAddress
-      };
-      this.props.pugjjigInsert(pugjjig);
+    const pugjjig = {
+        uniSubject, 
+        uniContent,
+        uniName,
+        uniTag,
+        stoId,
+        stoAddress
+    };
+    this.props.pugjjigInsert(pugjjig);
+  }
+
+  // 음식점 리뷰를 가져오는 함수
+  pugjjigGet = (storeId) => {
+    return this.props.pugjjigGet(storeId);
   }
 
   // 음식점 리뷰 갯수 가져오는 함수
@@ -117,8 +117,8 @@ class HomePage extends Component {
 
   render() {
     // state Init
-    const { map, keyword, setLoading, modalState } = this.state;
-  
+    const { map, keyword, setLoading, insertModalState, listModalState, stoId } = this.state;
+    
     return (
       <Main>
         {setLoading ?
@@ -126,19 +126,26 @@ class HomePage extends Component {
           :
           <Fragment>
             <FirstSection
-              searchPlaces={map.searchPlaces}
               keyword={keyword}
               onChange={this.onChange}
+              searchPlaces={map.searchPlaces}
             />
             <MainMap
               ref = {this.appRef}
             />
             <InsertModal
-              modalState = {modalState}
-              closeModal = {this.closeModal}
-              onSubmit = {this.onSubmit}
               onChange = {this.onChange}
+              onSubmit = {this.onSubmit}
+              closeModal = {this.closeModal}
+              modalState = {insertModalState}
             /> 
+            <ListModal
+              stoId = {stoId}
+              modalState = {listModalState}
+              closeModal = {this.closeModal}
+              pugjjigGet = {this.pugjjigGet}
+              pugjjig = {this.props.pugjjig_list}
+            />
           </Fragment>
         }
       </Main>
@@ -148,7 +155,9 @@ class HomePage extends Component {
 
 HomePage.propTypes = {
   pugjjigInsert: PropTypes.func.isRequired,
+  pugjjigGet: PropTypes.func.isRequired,
   pugjjigGetCount: PropTypes.func.isRequired,
+  pugjjig_list: PropTypes.object.isRequired,
   pugjjig_count: PropTypes.object.isRequired,
   error: PropTypes.object.isRequired
 }
@@ -156,6 +165,7 @@ HomePage.propTypes = {
 
 const mapStateToProps = state => ({
   error: state.errors,
+  pugjjig_list: state.pugjjig.pugjjig_list,
   pugjjig_count: state.pugjjig.pugjjig_count
 });
 
@@ -163,6 +173,7 @@ export default connect(
   mapStateToProps, 
   { 
       pugjjigInsert, 
-      pugjjigGetCount 
+      pugjjigGet,
+      pugjjigGetCount
   }
 )(HomePage);

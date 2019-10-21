@@ -61,6 +61,32 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
     }
 
     @Override
+    public UniversityPublic findByPublicId(Long id) {
+
+        University data = queryFactory
+                .select(qUniversity)
+                .from(qUniversity)
+                .where(qUniversity.id.eq(id))
+                .fetchOne();
+
+        UniversityPublic result = new UniversityPublic(
+                data.getId(),
+                data.getUniSubject(),
+                data.getUniContent(),
+                data.getUniName(),
+                data.getUniTag(),
+                data.getUniStar(),
+                data.getUniIp(),
+                data.getModifiedDate(),
+                data.getAccount().getId(),
+                data.getAccount().getNickname(),
+                data.getUniLike().size()
+        );
+
+        return result;
+    }
+
+    @Override
     public University findByIdLike(Long id, Account account) {
 
         University result = queryFactory
