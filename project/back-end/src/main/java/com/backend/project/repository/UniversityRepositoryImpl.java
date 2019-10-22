@@ -31,7 +31,7 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
     private QAccount qAccount = QAccount.account;
 
     @Override
-    public Page<UniversityPublic> findByPublicAll(Pageable pageable) {
+    public Page<UniversityPublic> findByPublicAll(Pageable pageable, Account account) {
 
         Map<University, List<Account>> transform = queryFactory
                 .from(qUniversity)
@@ -52,7 +52,8 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                                 u.getKey().getModifiedDate(),
                                 u.getKey().getAccount().getId(),
                                 u.getKey().getAccount().getNickname(),
-                                u.getValue().size()
+                                u.getValue().size(),
+                                u.getKey().getUniLike().contains(account)
                         )
                 )
                 .collect(Collectors.toList());
@@ -61,7 +62,7 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
     }
 
     @Override
-    public UniversityPublic findByPublicId(Long id) {
+    public UniversityPublic findByPublicId(Long id, Account account) {
 
         University data = queryFactory
                 .select(qUniversity)
@@ -80,22 +81,22 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                 data.getModifiedDate(),
                 data.getAccount().getId(),
                 data.getAccount().getNickname(),
-                data.getUniLike().size()
+                data.getUniLike().size(),
+                data.getUniLike().contains(account)
         );
 
         return result;
     }
 
     @Override
-    public University findByIdLike(Long id, Account account) {
-
+    public Boolean findByIdLike(Long id, Account account) {
         University result = queryFactory
                 .select(qUniversity)
                 .from(qUniversity)
-                .where(qUniversity.id.eq(id))
+                .where(qUniversity.id.eq(id).and(qUniversity.uniLike.contains(account)))
                 .fetchOne();
 
-        return result;
+        return (result == null ? false : true);
     }
 
     @Override

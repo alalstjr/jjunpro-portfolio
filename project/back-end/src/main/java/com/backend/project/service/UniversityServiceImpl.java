@@ -30,13 +30,13 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public UniversityPublic findByPublicId(Long id) {
-        return university.findByPublicId(id);
+    public UniversityPublic findByPublicId(Long id, Account account) {
+        return university.findByPublicId(id, account);
     }
 
     @Override
-    public Page<UniversityPublic> findByUniversityList(Pageable pageable) {
-        return university.findByPublicAll(pageable);
+    public Page<UniversityPublic> findByUniversityList(Pageable pageable, Account account) {
+        return university.findByPublicAll(pageable, account);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public University findByIdLike(Long id, Account account) {
+    public Boolean findByIdLike(Long id, Account account) {
         return university.findByIdLike(id, account);
     }
 

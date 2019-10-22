@@ -40,7 +40,7 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
     }
 
     @Override
-    public Page<StorePublic> findByStoreUniAll(Pageable pageable, String storeId) {
+    public Page<StorePublic> findByStoreUniAll(Pageable pageable, String storeId, Account account) {
 
         Map<Store, List<University>> transform = queryFactory
                 .from(qStore)
@@ -64,7 +64,8 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
                                             u.getModifiedDate(),
                                             u.getAccount().getId(),
                                             u.getAccount().getNickname(),
-                                            u.getUniLike().size()
+                                            u.getUniLike().size(),
+                                            u.getUniLike().contains(account)
                                     )
                                 ).collect(Collectors.toList())
                         )

@@ -1,6 +1,9 @@
 import React, { Fragment, Component } from 'react';
+import PropTypes from "prop-types"
+import { connect } from "react-redux"
 import ReactTransitionGroup from 'react-addons-css-transition-group';
 import Item from "./list/item/Item"
+import { pugjjigLike } from "../../actions/KakaoMapActions"
 import { 
     ModalCloseBtn,  
     ModalOverlay, 
@@ -19,7 +22,7 @@ class InsertModal extends Component {
     render() {
 
         // props Init
-        const { modalState, closeModal, pugjjig } = this.props;
+        const { modalState, closeModal, pugjjig, pugjjigLike } = this.props;
 
         // Variables Init
         let pugjjigContent;
@@ -28,11 +31,11 @@ class InsertModal extends Component {
         // pugjjigList
         const pugjjigGet = (pugjjig) => {
             if(pugjjig.data !== undefined) {
-                console.log(pugjjig);
                 const data = pugjjig.data.stoUniList.map(university => (
                     <Item 
                         key = {university.id}
                         university = {university}
+                        pugjjigLike = {pugjjigLike}
                     />
                 ));
 
@@ -78,4 +81,18 @@ class InsertModal extends Component {
     }
 }
 
-export default InsertModal;
+InsertModal.propTypes = {
+    pugjjigLike: PropTypes.func.isRequired,
+    pugjjig_view_like: PropTypes.object.isRequired,
+    error: PropTypes.object.isRequired
+}
+  
+const mapStateToProps = state => ({
+    error: state.errors,
+    pugjjig_view_like: state.pugjjig.pugjjig_view_like
+});
+  
+export default connect(
+    mapStateToProps, 
+    { pugjjigLike }
+  )(InsertModal);

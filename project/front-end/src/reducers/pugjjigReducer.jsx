@@ -2,6 +2,7 @@ import {
     GET_PUGJJIG,
     GET_PUGJJIG_VIEW,
     GET_PUGJJIG_VIEW_LIKE,
+    GET_PUGJJIG_VIEW_LIKE_STATE,
     GET_PUGJJIG_COUNT
 } from "../actions/types"
 
@@ -9,6 +10,7 @@ const initialState = {
     pugjjig_list : {},
     pugjjig_view : {},
     pugjjig_view_like : {},
+    pugjjig_view_like_state : {},
     pugjjig_count : {}
 };
 
@@ -35,6 +37,14 @@ export default function(state=initialState, action) {
             return {
                 ...state,
                 pugjjig_view_like: {
+                    data: action.payload
+                }
+            };
+
+        case GET_PUGJJIG_VIEW_LIKE_STATE:
+            return {
+                ...state,
+                pugjjig_view_like_state: {
                     data: action.payload
                 }
             };

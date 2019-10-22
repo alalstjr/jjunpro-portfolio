@@ -13,9 +13,9 @@ import java.util.Optional;
 public interface UniversityService {
 
     public Optional<University> findById(Long id);
-    public UniversityPublic findByPublicId(Long id);
-    public Page<UniversityPublic> findByUniversityList(Pageable pageable);
-    public University findByIdLike(Long id, Account account);
+    public UniversityPublic findByPublicId(Long id, Account account);
+    public Page<UniversityPublic> findByUniversityList(Pageable pageable, Account account);
+    public Boolean findByIdLike(Long id, Account account);
 
     public University saveOrUpdate(UniversitySaveDTO dto, StoreDTO storeDTO);
     public University saveOrUpdate(University universityData);

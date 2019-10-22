@@ -20,4 +20,5 @@ public class UniversityPublic {
     private Long account_id;
     private String account_nickname;
     private Integer uniLike;
+    private Boolean uniLikeState;
 }

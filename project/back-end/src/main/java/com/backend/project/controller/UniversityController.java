@@ -8,6 +8,7 @@ import com.backend.project.projection.UniversityPublic;
 import com.backend.project.respone.WebProcessRespone;
 import com.backend.project.service.AccountServiceImpl;
 import com.backend.project.service.UniversityServiceImpl;
+import com.backend.project.util.AccountUtill;
 import com.backend.project.util.IpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.Optional;
 
 @RestController
@@ -41,6 +43,9 @@ public class UniversityController {
     @Autowired
     private IpUtil ipUtil;
 
+    @Autowired
+    private AccountUtill accountUtill;
+
     // CREATE or UADATE 생성
     @PostMapping("")
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -59,9 +64,8 @@ public class UniversityController {
             return webProcessRespone.webErrorRespone(bindingResult);
         }
 
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
-        Optional<Account> accountData = accountService.findByUserId(userDetails.getUsername());
+        // Account Info
+        Optional<Account> accountData = accountUtill.accountInfo(authentication);
 
         if(!accountData.isPresent()) {
             errorType = "AuthenticationError";
@@ -103,12 +107,11 @@ public class UniversityController {
         String errorType = null;
         String errorText = null;
 
-        // Account
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        Optional<Account> accountData = accountService.findByUserId(userDetails.getUsername());
+        // Account Info
+        Optional<Account> accountData = accountUtill.accountInfo(authentication);
 
         // University
-        University universityData = universityService.findByIdLike(id, accountData.get());
+        University universityData = universityService.findById(id).get();
 
         if(!accountData.isPresent()) {
             errorType = "AuthenticationError";
@@ -130,20 +133,51 @@ public class UniversityController {
         return new ResponseEntity<Integer>(earlyUniversity.getUniLike().size(), HttpStatus.OK);
     }
 
+    // LKIE TRUE or FALSE
+    @GetMapping("/{id}/like")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<Boolean> checkLike(
+            @PathVariable Long id,
+            Authentication authentication,
+            HttpServletRequest request
+    ) {
+        // Account Info
+        Account accountData = accountUtill.accountInfo(authentication).get();
+
+        Boolean result = universityService.findByIdLike(id, accountData);
+
+        return new ResponseEntity<Boolean>(result, HttpStatus.OK);
+    }
+
     // GET 공개된 유저정보
     @GetMapping("")
+    @PreAuthorize("permitAll()")
     public Page<UniversityPublic> getPublicAccountList(
-            Pageable pageable
-    ) {
-        return universityService.findByUniversityList(pageable);
+            Pageable pageable,
+            HttpServletRequest request
+    ) throws IOException {
+        // Account Info
+        Account accountData = null;
+        if(accountUtill.accountJWT(request) != null) {
+            accountData = accountUtill.accountJWT(request).get();
+        }
+
+        return universityService.findByUniversityList(pageable, accountData);
     }
 
     // GET 푹찍 {ID} 리뷰
     @GetMapping("/{id}")
     public ResponseEntity<UniversityPublic> getPublicAccountList(
-            @PathVariable Long id
-    ) {
-        UniversityPublic result =  universityService.findByPublicId(id);
+            @PathVariable Long id,
+            HttpServletRequest request
+    ) throws IOException {
+        // Account Info
+        Account accountData = null;
+        if(accountData != null) {
+            accountData = accountUtill.accountJWT(request).get();
+        }
+
+        UniversityPublic result =  universityService.findByPublicId(id, accountData);
 
         return new ResponseEntity<UniversityPublic>(result, HttpStatus.OK);
     }

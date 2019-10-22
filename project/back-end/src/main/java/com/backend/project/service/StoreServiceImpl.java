@@ -1,5 +1,6 @@
 package com.backend.project.service;
 
+import com.backend.project.domain.Account;
 import com.backend.project.projection.StorePublic;
 import com.backend.project.repository.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public Page<StorePublic> findByStoreUniAll(Pageable pageable, String storeId) {
-        return store.findByStoreUniAll(pageable, storeId);
+    public Page<StorePublic> findByStoreUniAll(Pageable pageable, String storeId, Account account) {
+        return store.findByStoreUniAll(pageable, storeId, account);
     }
 }
