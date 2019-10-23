@@ -3,6 +3,7 @@ package com.backend.project.controller;
 import com.backend.project.domain.Account;
 import com.backend.project.domain.University;
 import com.backend.project.dto.StoreDTO;
+import com.backend.project.dto.UniLikeDTO;
 import com.backend.project.dto.UniversitySaveDTO;
 import com.backend.project.projection.UniversityPublic;
 import com.backend.project.respone.WebProcessRespone;
@@ -99,13 +100,14 @@ public class UniversityController {
     // LKIE TRUE or FALSE
     @PostMapping("/{id}/like")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<Integer> updateLike(
+    public ResponseEntity<UniLikeDTO> updateLike(
             @PathVariable Long id,
             Authentication authentication,
             HttpServletRequest request
     ) {
         String errorType = null;
         String errorText = null;
+        Boolean uniLikeState = false;
 
         // Account Info
         Optional<Account> accountData = accountUtill.accountInfo(authentication);
@@ -126,11 +128,16 @@ public class UniversityController {
         } else {
             // Like True
             universityData.getUniLike().add(accountData.get());
+            uniLikeState = true;
         }
 
         University earlyUniversity = universityService.saveOrUpdate(universityData);
 
-        return new ResponseEntity<Integer>(earlyUniversity.getUniLike().size(), HttpStatus.OK);
+        UniLikeDTO uniLikeDTO = new UniLikeDTO();
+        uniLikeDTO.setLikeCount(earlyUniversity.getUniLike().size());
+        uniLikeDTO.setLikeState(uniLikeState);
+
+        return new ResponseEntity<UniLikeDTO>(uniLikeDTO, HttpStatus.OK);
     }
 
     // LKIE TRUE or FALSE
@@ -157,10 +164,7 @@ public class UniversityController {
             HttpServletRequest request
     ) throws IOException {
         // Account Info
-        Account accountData = null;
-        if(accountUtill.accountJWT(request) != null) {
-            accountData = accountUtill.accountJWT(request).get();
-        }
+        Account accountData = accountUtill.accountJWT(request);
 
         return universityService.findByUniversityList(pageable, accountData);
     }
@@ -172,10 +176,7 @@ public class UniversityController {
             HttpServletRequest request
     ) throws IOException {
         // Account Info
-        Account accountData = null;
-        if(accountData != null) {
-            accountData = accountUtill.accountJWT(request).get();
-        }
+        Account accountData = accountUtill.accountJWT(request);
 
         UniversityPublic result =  universityService.findByPublicId(id, accountData);
 

@@ -43,12 +43,12 @@ public class AccountUtill {
      *   Controller 에서 사용가능합니다.
      *   매개변수로 HttpServletRequest 필수 입니다.
      */
-    public Optional<Account> accountJWT(HttpServletRequest request) throws IOException {
+    public Account accountJWT(HttpServletRequest request) throws IOException {
         if(request.getHeader("Authorization") != null) {
             String tokenExtractor = headerTokenExtractor.extract(request.getHeader("Authorization"));
             AccountContext accountContext = jwtDecoder.decodeJwt(tokenExtractor);
             UserDetails userDetails = (UserDetails) accountContext;
-            return accountService.findByUserId(userDetails.getUsername());
+            return accountService.findByUserId(userDetails.getUsername()).get();
         } else {
             return null;
         }

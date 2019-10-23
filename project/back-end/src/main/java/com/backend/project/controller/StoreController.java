@@ -37,10 +37,7 @@ public class StoreController {
             HttpServletRequest request
     ) throws IOException {
         // Account Info
-        Account accountData = null;
-        if(accountUtill.accountJWT(request) != null) {
-            accountData = accountUtill.accountJWT(request).get();
-        }
+        Account accountData = accountUtill.accountJWT(request);
 
         return storeService.findByStoreUniAll(pageable, storeId, accountData);
     }

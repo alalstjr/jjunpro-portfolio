@@ -9,7 +9,8 @@ class PugjjigView extends Component {
         super(props);
 
         this.state = {
-            pugjjig_view_like: 0
+            pugjjig_view_like: 0,
+            pugjjig_like_state: false
         }
     }
 
@@ -19,17 +20,26 @@ class PugjjigView extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        let next_props;
+        const { pugjjig_view, pugjjig_view_like } = this.props;
+
         // 처음 rendering 시점의 푹찍 좋아요 갯수
-        if (nextProps.pugjjig_view !== this.props.pugjjig_view) {
+        if (nextProps.pugjjig_view !== pugjjig_view) {
+            next_props = nextProps.pugjjig_view.data;
+            
             this.setState({
-                pugjjig_view_like: nextProps.pugjjig_view.data.uniLike
+                pugjjig_view_like: next_props.uniLike,
+                pugjjig_like_state: next_props.uniLikeState
             });
         }
 
         // 사용자가 푹찍을 눌렀을경우 좋아요 갯수 state 카운팅
-        if (nextProps.pugjjig_view_like !== this.props.pugjjig_view_like) {
+        if (nextProps.pugjjig_view_like !== pugjjig_view_like) {
+            next_props = nextProps.pugjjig_view_like.data;
+
             this.setState({
-                pugjjig_view_like: nextProps.pugjjig_view_like.data
+                pugjjig_view_like: next_props.likeCount,
+                pugjjig_like_state: next_props.likeState
             });
         }
     }
@@ -39,7 +49,7 @@ class PugjjigView extends Component {
         const { pugjjig_view } = this.props;
         const pugjjig = pugjjig_view.data;
 
-        const { pugjjig_view_like } = this.state;
+        const { pugjjig_view_like, pugjjig_like_state } = this.state;
 
         return (
             <Fragment>
@@ -53,7 +63,7 @@ class PugjjigView extends Component {
                         <div>리뷰 태그 : {pugjjig.uniTag}</div>
                         <div>가게 평점 : {pugjjig.uniStar}</div>
                         <div>리뷰 푹찍 갯수 : {pugjjig_view_like}</div>
-                        <div>좋아요를 누른 상태 : {pugjjig.uniLikeState == true ? "푹찍~!" : "X"}</div>
+                        <div>좋아요를 누른 상태 : {pugjjig_like_state == true ? "푹찍~!" : "X"}</div>
                         <button type="button" onClick={() => this.props.pugjjigLike(pugjjig.id)}>푹찍</button>
                     </div>
                     :

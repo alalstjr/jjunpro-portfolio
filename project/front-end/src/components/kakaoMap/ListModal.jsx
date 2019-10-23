@@ -22,12 +22,12 @@ class InsertModal extends Component {
     render() {
 
         // props Init
-        const { modalState, closeModal, pugjjig, pugjjigLike } = this.props;
+        const { modalState, closeModal, pugjjig, pugjjigLike, pugjjig_view_like } = this.props;
 
         // Variables Init
         let pugjjigContent;
         let pugjjigList = [];
-
+        
         // pugjjigList
         const pugjjigGet = (pugjjig) => {
             if(pugjjig.data !== undefined) {
