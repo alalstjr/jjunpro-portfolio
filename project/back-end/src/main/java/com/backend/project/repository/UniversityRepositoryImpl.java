@@ -39,54 +39,33 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                 .where(qUniversity.publicStatus.eq(true).and(qUniversity.controlStatus.eq(false)))
                 .transform(groupBy(qUniversity).as(list(qAccount)));
 
-        List<UniversityPublic> results = transform.entrySet().stream()
-                .map(
-                        u -> new UniversityPublic(
-                                u.getKey().getId(),
-                                u.getKey().getUniSubject(),
-                                u.getKey().getUniContent(),
-                                u.getKey().getUniName(),
-                                u.getKey().getUniTag(),
-                                u.getKey().getUniStar(),
-                                u.getKey().getUniIp(),
-                                u.getKey().getModifiedDate(),
-                                u.getKey().getAccount().getId(),
-                                u.getKey().getAccount().getNickname(),
-                                u.getValue().size(),
-                                u.getKey().getUniLike().contains(account)
-                        )
-                )
-                .collect(Collectors.toList());
+        List<UniversityPublic> results = getUniversityPublicList(transform, account);
 
         return new PageImpl<>(results, pageable, results.size());
     }
 
     @Override
-    public Page<UniversityPublic> findByUniversityListWhereAccountId(Pageable pageable, Account account, String string) {
+    public Page<UniversityPublic> findByUniversityListWhereAccountId(Pageable pageable, Account account, String userId) {
         Map<University, List<Account>> transform = queryFactory
                 .from(qUniversity)
                 .leftJoin(qUniversity.uniLike, qAccount)
-                .where(qUniversity.publicStatus.eq(true).and(qUniversity.controlStatus.eq(false)).and(qUniversity.account.userId.eq(string)))
+                .where(qUniversity.publicStatus.eq(true).and(qUniversity.controlStatus.eq(false)).and(qUniversity.account.userId.eq(userId)))
                 .transform(groupBy(qUniversity).as(list(qAccount)));
 
-        List<UniversityPublic> results = transform.entrySet().stream()
-                .map(
-                        u -> new UniversityPublic(
-                                u.getKey().getId(),
-                                u.getKey().getUniSubject(),
-                                u.getKey().getUniContent(),
-                                u.getKey().getUniName(),
-                                u.getKey().getUniTag(),
-                                u.getKey().getUniStar(),
-                                u.getKey().getUniIp(),
-                                u.getKey().getModifiedDate(),
-                                u.getKey().getAccount().getId(),
-                                u.getKey().getAccount().getNickname(),
-                                u.getValue().size(),
-                                u.getKey().getUniLike().contains(account)
-                        )
-                )
-                .collect(Collectors.toList());
+        List<UniversityPublic> results = getUniversityPublicList(transform, account);
+
+        return new PageImpl<>(results, pageable, results.size());
+    }
+
+    @Override
+    public Page<UniversityPublic> findByLikeListWhereAccountId(Pageable pageable, Account account, String userId) {
+        Map<University, List<Account>> transform = queryFactory
+                .from(qUniversity)
+                .leftJoin(qUniversity.uniLike, qAccount)
+                .where(qUniversity.publicStatus.eq(true).and(qUniversity.controlStatus.eq(false)).and(qUniversity.uniLike.any().userId.eq(userId)))
+                .transform(groupBy(qUniversity).as(list(qAccount)));
+
+        List<UniversityPublic> results = getUniversityPublicList(transform, account);
 
         return new PageImpl<>(results, pageable, results.size());
     }
@@ -100,22 +79,7 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                 .where(qUniversity.id.eq(id))
                 .fetchOne();
 
-        UniversityPublic result = new UniversityPublic(
-                data.getId(),
-                data.getUniSubject(),
-                data.getUniContent(),
-                data.getUniName(),
-                data.getUniTag(),
-                data.getUniStar(),
-                data.getUniIp(),
-                data.getModifiedDate(),
-                data.getAccount().getId(),
-                data.getAccount().getNickname(),
-                data.getUniLike().size(),
-                data.getUniLike().contains(account)
-        );
-
-        return result;
+        return getUniversityPublic(data, account);
     }
 
     @Override
@@ -137,5 +101,43 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                 .delete(qUniversity)
                 .where(qUniversity.id.eq(id).and(qUniversity.account.eq(accountData)))
                 .execute();
+    }
+
+    private UniversityPublic getUniversityPublic(University data, Account account) {
+        return new UniversityPublic(
+                data.getId(),
+                data.getUniSubject(),
+                data.getUniContent(),
+                data.getUniName(),
+                data.getUniTag(),
+                data.getUniStar(),
+                data.getUniIp(),
+                data.getModifiedDate(),
+                data.getAccount().getId(),
+                data.getAccount().getNickname(),
+                data.getUniLike().size(),
+                data.getUniLike().contains(account)
+        );
+    }
+
+    private List<UniversityPublic> getUniversityPublicList(Map<University, List<Account>> transform, Account account) {
+        return transform.entrySet().stream()
+                .map(
+                        u -> new UniversityPublic(
+                                u.getKey().getId(),
+                                u.getKey().getUniSubject(),
+                                u.getKey().getUniContent(),
+                                u.getKey().getUniName(),
+                                u.getKey().getUniTag(),
+                                u.getKey().getUniStar(),
+                                u.getKey().getUniIp(),
+                                u.getKey().getModifiedDate(),
+                                u.getKey().getAccount().getId(),
+                                u.getKey().getAccount().getNickname(),
+                                u.getValue().size(),
+                                u.getKey().getUniLike().contains(account)
+                        )
+                )
+                .collect(Collectors.toList());
     }
 }

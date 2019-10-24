@@ -3,7 +3,9 @@ import {
     GET_PUGJJIG_VIEW,
     GET_PUGJJIG_VIEW_LIKE,
     GET_PUGJJIG_VIEW_LIKE_STATE,
-    GET_PUGJJIG_COUNT
+    GET_PUGJJIG_COUNT,
+    GET_PUGJJIG_USER,
+    GET_PUGJJIG_LIKE_USER
 } from "../actions/types"
 
 const initialState = {
@@ -11,7 +13,9 @@ const initialState = {
     pugjjig_view : {},
     pugjjig_view_like : {},
     pugjjig_view_like_state : {},
-    pugjjig_count : {}
+    pugjjig_count : {},
+    pugjjig_list_user: {},
+    pugjjig_list_like_user: {}
 };
 
 export default function(state=initialState, action) {
@@ -54,6 +58,22 @@ export default function(state=initialState, action) {
                 ...state,
                 pugjjig_count: {
                     count: action.payload.count
+                }
+            };
+
+        case GET_PUGJJIG_USER:
+            return {
+                ...state,
+                pugjjig_list_user: {
+                    data: action.payload.content
+                }
+            };
+
+        case GET_PUGJJIG_LIKE_USER:
+            return {
+                ...state,
+                pugjjig_list_like_user: {
+                    data: action.payload.content
                 }
             };
 

@@ -1,21 +1,24 @@
 import React, { Fragment, Component } from 'react';
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
-import ReactTransitionGroup from 'react-addons-css-transition-group';
-import Item from "./list/item/Item"
-import { pugjjigLike } from "../../actions/KakaoMapActions"
-import { 
-    ModalCloseBtn,  
-    ModalOverlay, 
-    Modal
-} from "../../style/globalStyles";
+import { pugjjigGetUser, pugjjigLikeGetUser } from "../../../actions/KakaoMapActions"
+import Item from "../../kakaoMap/list/item/Item"
+import { pugjjigLike } from "../../../actions/KakaoMapActions"
 
-class InsertModal extends Component {
+class PugjjigViewList extends Component {
 
-    componentWillReceiveProps(nextProps) {
-        if ((nextProps.modalState !== this.props.modalState) && this.props.modalState == false) {
-            const { stoId } = nextProps;
-            this.props.pugjjigGet(stoId);
+    componentDidMount() {
+        let userId;
+        let path = this.props.match.path;
+
+        if(this.props.match.params !== undefined) {
+            userId = this.props.match.params.userId;
+        }
+
+        if(path.indexOf("/pugjjigs") === 0) {
+            this.props.pugjjigGetUser(this.props.history, userId);
+        } else if(path.indexOf("/pugjjigLikes") === 0) {
+            this.props.pugjjigLikeGetUser(this.props.history, userId);
         }
     }
 
@@ -34,7 +37,7 @@ class InsertModal extends Component {
     render() {
 
         // props Init
-        const { modalState, closeModal, pugjjig, pugjjigLike, pugjjig_view_like } = this.props;
+        const { pugjjigLike, pugjjig_list_user, pugjjig_view_like } = this.props;
 
         // Variables Init
         let pugjjigContent;
@@ -43,7 +46,7 @@ class InsertModal extends Component {
         // pugjjigList
         const pugjjigGet = (pugjjig) => {
             if(pugjjig.data !== undefined) {
-                const data = pugjjig.data.stoUniList.map(university => (
+                const data = pugjjig.data.map(university => (
                     <Item 
                         key = {university.id}
                         university = {university}
@@ -54,7 +57,7 @@ class InsertModal extends Component {
                 for(let i = 0; i < data.length; i++) {
                     pugjjigList.push(data[i]);
                 }
-
+                
                 // 푹찍 Like 클릭시 Re rendering 여부 체크
                 if(pugjjig_view_like.data !== undefined) {
                     this.handleLikeUpdate(pugjjigList, pugjjig_view_like.data);
@@ -73,43 +76,32 @@ class InsertModal extends Component {
         }
 
         // pugjjig Get List View
-        pugjjigContent = pugjjigGet(pugjjig);
+        pugjjigContent = pugjjigGet(pugjjig_list_user);
 
         return (
-            <Fragment>
-                {
-                    modalState ?
-                    <ReactTransitionGroup
-                        transitionName={'Modal-anim'}
-                        transitionEnterTimeout={200}
-                        transitionLeaveTimeout={200}
-                    >
-                    <ModalOverlay/>
-                    <Modal onClick={this.asd}>
-                        <ModalCloseBtn onClick={() => closeModal("listModalState")}/>
-                        {pugjjigContent}
-                    </Modal>
-                    </ReactTransitionGroup>
-                    :
-                    <ReactTransitionGroup transitionName={'Modal-anim'} transitionEnterTimeout={200} transitionLeaveTimeout={200} />
-                }
-            </Fragment>
+            <div>
+               {pugjjigContent} 
+            </div>
         )
     }
 }
 
-InsertModal.propTypes = {
+PugjjigViewList.propTypes = {
     pugjjigLike: PropTypes.func.isRequired,
+    pugjjigGetUser: PropTypes.func.isRequired,
+    pugjjigLikeGetUser: PropTypes.func.isRequired,
+    pugjjig_list_user: PropTypes.object.isRequired,
     pugjjig_view_like: PropTypes.object.isRequired,
     error: PropTypes.object.isRequired
 }
   
 const mapStateToProps = state => ({
     error: state.errors,
+    pugjjig_list_user: state.pugjjig.pugjjig_list_user,
     pugjjig_view_like: state.pugjjig.pugjjig_view_like
 });
-  
+
 export default connect(
     mapStateToProps, 
-    { pugjjigLike }
-  )(InsertModal);
+    { pugjjigGetUser, pugjjigLikeGetUser, pugjjigLike }
+  )(PugjjigViewList);

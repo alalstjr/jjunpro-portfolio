@@ -1,6 +1,6 @@
 import axios from "axios"
-import { SERVER_URL, USER_AUTH } from "../routes"
-import { GET_PUGJJIG, GET_ERRORS, GET_PUGJJIG_VIEW, GET_PUGJJIG_VIEW_LIKE, GET_PUGJJIG_VIEW_LIKE_STATE } from "./types"
+import { SERVER_URL, USER_AUTH, USER_ID } from "../routes"
+import { GET_PUGJJIG, GET_ERRORS, GET_PUGJJIG_VIEW, GET_PUGJJIG_VIEW_LIKE, GET_PUGJJIG_USER, GET_PUGJJIG_LIKE_USER } from "./types"
 
 /****************************************
     POST 푹찍 리뷰
@@ -92,20 +92,36 @@ export const pugjjigGetCount = (storeId) =>  async dispatch => {
 
 }
 
-// 푹찍 좋아요 {id} 상태 체크
-export const pugjjigLikeState = (storeId) =>  async dispatch => {
-    
-    // 유저 JWT Token정보
-    USER_AUTH();
-    
-    return axios.get(`${SERVER_URL}/api/university/${storeId}/like`)
+// 푹찍 리뷰 {userId} 목록 조회
+export const pugjjigGetUser = (history, userId) =>  async dispatch => {
+
+    userId = (userId === undefined) ? USER_ID() : userId;
+
+    await axios.get(`${SERVER_URL}/api/university/pugjjigs/${userId}`)
     .then(res => {
         dispatch({
-            type: GET_PUGJJIG_VIEW_LIKE_STATE,
+            type: GET_PUGJJIG_USER,
             payload: res.data
         });
     }).catch(error => {
         alert(error.response.data.error);
+        history.push("/");
     });
+}
 
+// 푹찍 리뷰 좋아요 {userId} 목록 조회
+export const pugjjigLikeGetUser = (history, userId) =>  async dispatch => {
+
+    userId = (userId === undefined) ? USER_ID() : userId;
+
+    await axios.get(`${SERVER_URL}/api/university/pugjjigLikes/${userId}`)
+    .then(res => {
+        dispatch({
+            type: GET_PUGJJIG_LIKE_USER,
+            payload: res.data
+        });
+    }).catch(error => {
+        alert(error.response.data.error);
+        history.push("/");
+    });
 }

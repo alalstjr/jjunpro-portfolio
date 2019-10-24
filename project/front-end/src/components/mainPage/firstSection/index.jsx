@@ -7,8 +7,10 @@ import UserModal from "../../user"
 const FirstSection = ({onChange, keyword, searchPlaces}) => (
     <MainList>
       대학교 리스트
-      <Link to={`/pugjjig/write`}>등록</Link>
-      대학교 근처 맛집 둘러보기
+      <div><Link to={`/pugjjigs`}>내가 쓴 글보기</Link></div>
+      <div><Link to={`/pugjjigs/kkw10`}>kkw10 유저의 게시글보기</Link></div>
+      <div><Link to={`/pugjjigLikes`}>푹찍한 게시글보기</Link></div>
+      <div><Link to={`/pugjjigLikes/kkw10`}>kkw10 유저의 푹찍한 게시글보기</Link></div>
       <Input
         id="keyword"
         type="text"

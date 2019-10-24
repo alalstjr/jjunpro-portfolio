@@ -45,6 +45,11 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
+    public Page<UniversityPublic> findByLikeListWhereAccountId(Pageable pageable, Account account, String userId) {
+        return university.findByLikeListWhereAccountId(pageable, account, userId);
+    }
+
+    @Override
     public University saveOrUpdate(UniversitySaveDTO dto, StoreDTO storeDTO) {
         University universityData =  university.save(dto.toEntity());
 

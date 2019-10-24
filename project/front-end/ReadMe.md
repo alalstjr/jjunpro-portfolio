@@ -5,6 +5,7 @@
     - [1. authProvider 유저 ROLE권한 체크](#authProvider-유저-ROLE권한-체크)
 - [4. axios 정리](#axios-정리)
     - [1. axios jwt token 기본설정](#axios-jwt-token-기본설정)
+- [5. 새로 전달받은 값 체크후 Re 랜더링 방법](#새로-전달받은-값-체크후-Re-랜더링-방법)
 
 
 # React hooc localstore
@@ -205,3 +206,57 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStora
 ~~~
 
 - http://jeonghwan-kim.github.io/2018/03/26/vue-authentication.html - [axios-defaults-headers-설정]
+
+# 새로 전달받은 값 체크후 Re 랜더링 방법
+
+map, filter 기능을 활요하여 배열의 변경된 값을 체크하여 값을 수정합니다.
+
+~~~
+class 클래스 {
+    ...
+    handleLikeUpdate = (preData, postData) => {
+        let props;
+        preData.map(preData => {
+            // id 가 일치하면 변경되는 값만 찾아서 변경합니다.
+            if(preData.key*1 === postData.uniId) {
+                props = preData.props;
+                props.university.uniLike = postData.likeCount;
+                props.university.uniLikeState = postData.likeState;
+            }
+        });
+    }
+    ...
+}
+~~~
+
+위 예시로 게시글의 좋아요 버튼을 클릭시 해당 게시글{id} 만 좋아요 카운팅과 좋아요상태를 실시간으로 변경해 주기 위해서
+map 메소드를 활용한 handle 함수 메소드입니다.
+
+매개변수로 {preData} 변경 이전의 배열값을 받습니다.
+{postData} 서버로부터 받은 변경된 데이터의 오브젝트 입니다. 변경되는 값만 지니고 있습니다.
+
+~~~
+preData 데이터 >
+(2) [{…}, {…}]
+    0: {$$typeof: Symbol(react.element), key: "4", ref: null, props: {…}, type: ƒ, …}
+    1: {$$typeof: Symbol(react.element), key: "2", ref: null, props: {…}, type: ƒ, …}
+
+postData 데이터 >
+{uniId: 4, likeCount: 0, likeState: false}
+~~~
+
+postData.uniId 값으로 변경된 값을 찾은 후 prop에 직접 변경합니다.
+
+불변성을 지킨 다른 예시
+~~~
+preData.map(preData => preData.key*1 === postData.uniId
+    ? ({ 
+        ...preData.props.university,
+        uniLike: postData.likeCount,
+        uniLikeState: postData.likeState
+    }) // id 가 일치하면 새 객체를 만들고, 기존의 내용을 집어넣고 원하는 값 덮어쓰기
+    : preData // 바꿀 필요 없는것들은 그냥 기존 값 사용
+);
+~~~
+
+- https://velopert.com/3638 - [배열-다루기-제거와-수정]

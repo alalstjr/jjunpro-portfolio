@@ -154,8 +154,8 @@ public class UniversityController {
         return universityService.findByUniversityList(pageable, accountData);
     }
 
-    // GET {userId} 의 푹찍 목록
-    @GetMapping("/pugjjig/{userId}")
+    // GET {userId} 의 푹찍 좋아요 목록
+    @GetMapping("/pugjjigs/{userId}")
     public Page<UniversityPublic> getUserPugjjig(
             Pageable pageable,
             @PathVariable String userId,
@@ -182,6 +182,22 @@ public class UniversityController {
         UniversityPublic result =  universityService.findByPublicId(id, accountData);
 
         return new ResponseEntity<UniversityPublic>(result, HttpStatus.OK);
+    }
+
+    // GET 푹찍한 모든 리뷰 목록
+    @GetMapping("/pugjjigLikes/{userId}")
+    public Page<UniversityPublic> getUserPugjjigLike(
+            Pageable pageable,
+            @PathVariable String userId,
+            HttpServletRequest request
+    ) throws IOException {
+        if(userId == null) {
+            throw new IOException("잘못된 접근입니다.");
+        }
+        // Account Info
+        Account accountData = accountUtill.accountJWT(request);
+
+        return universityService.findByLikeListWhereAccountId(pageable, accountData, userId);
     }
 
     // DELETE 특정 TASK 삭제

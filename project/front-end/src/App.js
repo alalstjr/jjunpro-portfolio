@@ -8,6 +8,7 @@ import BoardWriteUpdate from "./components/board/write/writeUpdate"
 import BoardView from "./components/board/view"
 
 import PugjjigView from "./components/kakaoMap/view/PugjjigView"
+import PugjjigViewList from "./components/myPage/myList/PugjjigViewList"
 
 const App = () => {
     return (
@@ -21,8 +22,14 @@ const App = () => {
           <Route exact path="/board/:page_num" component={Board} />
           <Route exact path="/board/write/:bo_num" component={BoardWriteUpdate} />
           <Route exact path="/board/view/:bo_num" component={BoardView} />
-          {/* Pugjjig 리뷰 */}
+          {/* Pugjjig Review */}
           <Route exact path="/pugjjig/:id" component={PugjjigView} />
+          {/* Pugjjig Reviews */}
+          <Route exact path="/pugjjigs" component={PugjjigViewList} />
+          <Route exact path="/pugjjigs/:userId" component={PugjjigViewList} />
+          {/* Pugjjig Like */}
+          <Route exact path="/pugjjigLikes" component={PugjjigViewList} />
+          <Route exact path="/pugjjigLikes/:userId" component={PugjjigViewList} />
 
           <Redirect from="*" to="/" />
         </Switch>

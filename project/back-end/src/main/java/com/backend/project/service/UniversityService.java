@@ -16,6 +16,7 @@ public interface UniversityService {
     public UniversityPublic findByPublicId(Long id, Account account);
     public Page<UniversityPublic> findByUniversityList(Pageable pageable, Account account);
     public Page<UniversityPublic> findByUniversityListWhereAccountId(Pageable pageable, Account account, String userId);
+    public Page<UniversityPublic> findByLikeListWhereAccountId(Pageable pageable, Account account, String userId);
     public Boolean findByIdLike(Long id, Account account);
 
     public University saveOrUpdate(UniversitySaveDTO dto, StoreDTO storeDTO);
