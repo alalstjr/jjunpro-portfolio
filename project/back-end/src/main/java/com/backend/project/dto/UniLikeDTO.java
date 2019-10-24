@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class UniLikeDTO {
-    Integer likeCount;
-    Boolean likeState;
+    Long id;
+    Integer uniLike;
+    Boolean uniLikeState;
 }

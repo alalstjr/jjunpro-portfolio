@@ -134,32 +134,17 @@ public class UniversityController {
         University earlyUniversity = universityService.saveOrUpdate(universityData);
 
         UniLikeDTO uniLikeDTO = new UniLikeDTO();
-        uniLikeDTO.setLikeCount(earlyUniversity.getUniLike().size());
-        uniLikeDTO.setLikeState(uniLikeState);
+        uniLikeDTO.setId(earlyUniversity.getId());
+        uniLikeDTO.setUniLike(earlyUniversity.getUniLike().size());
+        uniLikeDTO.setUniLikeState(uniLikeState);
 
         return new ResponseEntity<UniLikeDTO>(uniLikeDTO, HttpStatus.OK);
-    }
-
-    // LKIE TRUE or FALSE
-    @GetMapping("/{id}/like")
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<Boolean> checkLike(
-            @PathVariable Long id,
-            Authentication authentication,
-            HttpServletRequest request
-    ) {
-        // Account Info
-        Account accountData = accountUtill.accountInfo(authentication).get();
-
-        Boolean result = universityService.findByIdLike(id, accountData);
-
-        return new ResponseEntity<Boolean>(result, HttpStatus.OK);
     }
 
     // GET 공개된 유저정보
     @GetMapping("")
     @PreAuthorize("permitAll()")
-    public Page<UniversityPublic> getPublicAccountList(
+    public Page<UniversityPublic> getPugjjig(
             Pageable pageable,
             HttpServletRequest request
     ) throws IOException {
@@ -167,6 +152,22 @@ public class UniversityController {
         Account accountData = accountUtill.accountJWT(request);
 
         return universityService.findByUniversityList(pageable, accountData);
+    }
+
+    // GET {userId} 의 푹찍 목록
+    @GetMapping("/pugjjig/{userId}")
+    public Page<UniversityPublic> getUserPugjjig(
+            Pageable pageable,
+            @PathVariable String userId,
+            HttpServletRequest request
+    ) throws IOException {
+        if(userId == null) {
+            throw new IOException("잘못된 접근입니다.");
+        }
+        // Account Info
+        Account accountData = accountUtill.accountJWT(request);
+
+        return universityService.findByUniversityListWhereAccountId(pageable, accountData, userId);
     }
 
     // GET 푹찍 {ID} 리뷰

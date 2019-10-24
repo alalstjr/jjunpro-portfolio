@@ -62,6 +62,36 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
     }
 
     @Override
+    public Page<UniversityPublic> findByUniversityListWhereAccountId(Pageable pageable, Account account, String string) {
+        Map<University, List<Account>> transform = queryFactory
+                .from(qUniversity)
+                .leftJoin(qUniversity.uniLike, qAccount)
+                .where(qUniversity.publicStatus.eq(true).and(qUniversity.controlStatus.eq(false)).and(qUniversity.account.userId.eq(string)))
+                .transform(groupBy(qUniversity).as(list(qAccount)));
+
+        List<UniversityPublic> results = transform.entrySet().stream()
+                .map(
+                        u -> new UniversityPublic(
+                                u.getKey().getId(),
+                                u.getKey().getUniSubject(),
+                                u.getKey().getUniContent(),
+                                u.getKey().getUniName(),
+                                u.getKey().getUniTag(),
+                                u.getKey().getUniStar(),
+                                u.getKey().getUniIp(),
+                                u.getKey().getModifiedDate(),
+                                u.getKey().getAccount().getId(),
+                                u.getKey().getAccount().getNickname(),
+                                u.getValue().size(),
+                                u.getKey().getUniLike().contains(account)
+                        )
+                )
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(results, pageable, results.size());
+    }
+
+    @Override
     public UniversityPublic findByPublicId(Long id, Account account) {
 
         University data = queryFactory
