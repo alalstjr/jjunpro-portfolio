@@ -1,6 +1,12 @@
 import axios from "axios"
 import { SERVER_URL, USER_AUTH, USER_ID } from "../routes"
-import { GET_PUGJJIG, GET_ERRORS, GET_PUGJJIG_VIEW, GET_PUGJJIG_VIEW_LIKE, GET_PUGJJIG_USER, GET_PUGJJIG_LIKE_USER } from "./types"
+import { 
+    GET_PUGJJIG_LIST, 
+    GET_PUGJJIG_STORE_LIST, 
+    GET_PUGJJIG_LIKE, 
+    GET_PUGJJIG_VIEW,
+    GET_ERRORS
+} from "./types"
 
 /****************************************
     POST 푹찍 리뷰
@@ -29,7 +35,7 @@ export const pugjjigLike = (id) => async dispatch => {
     await axios.post(`${SERVER_URL}/api/university/${id}/like`)
     .then(res => {
         dispatch({
-            type: GET_PUGJJIG_VIEW_LIKE,
+            type: GET_PUGJJIG_LIKE,
             payload: res.data
         });
     }).catch(error => {
@@ -42,15 +48,16 @@ export const pugjjigLike = (id) => async dispatch => {
 ****************************************/
 
 // 푹찍 가게 {id} 조회
-export const pugjjigGet = (storeId) => async dispatch => {
+export const pugjjigGetStoreList = (storeId) => async dispatch => {
 
     // 유저 JWT Token정보
     USER_AUTH();
 
     await axios.get(`${SERVER_URL}/api/store/${storeId}`)
     .then(res => {
+        console.log(res);
         dispatch({
-            type: GET_PUGJJIG,
+            type: GET_PUGJJIG_STORE_LIST,
             payload: res.data
         });
     }).catch(error => {
@@ -93,14 +100,14 @@ export const pugjjigGetCount = (storeId) =>  async dispatch => {
 }
 
 // 푹찍 리뷰 {userId} 목록 조회
-export const pugjjigGetUser = (history, userId) =>  async dispatch => {
+export const pugjjigGetUserList = (history, userId) =>  async dispatch => {
 
     userId = (userId === undefined) ? USER_ID() : userId;
 
     await axios.get(`${SERVER_URL}/api/university/pugjjigs/${userId}`)
     .then(res => {
         dispatch({
-            type: GET_PUGJJIG_USER,
+            type: GET_PUGJJIG_LIST,
             payload: res.data
         });
     }).catch(error => {
@@ -110,14 +117,14 @@ export const pugjjigGetUser = (history, userId) =>  async dispatch => {
 }
 
 // 푹찍 리뷰 좋아요 {userId} 목록 조회
-export const pugjjigLikeGetUser = (history, userId) =>  async dispatch => {
+export const pugjjigLikeGetUserList = (history, userId) =>  async dispatch => {
 
     userId = (userId === undefined) ? USER_ID() : userId;
 
     await axios.get(`${SERVER_URL}/api/university/pugjjigLikes/${userId}`)
     .then(res => {
         dispatch({
-            type: GET_PUGJJIG_LIKE_USER,
+            type: GET_PUGJJIG_LIST,
             payload: res.data
         });
     }).catch(error => {

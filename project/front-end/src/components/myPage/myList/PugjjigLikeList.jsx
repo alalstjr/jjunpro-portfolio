@@ -1,11 +1,11 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
-import { pugjjigGetUserList, pugjjigLike } from "../../../actions/KakaoMapActions"
+import { pugjjigLikeGetUserList, pugjjigLike } from "../../../actions/KakaoMapActions"
 
 import List from "../../../components/pugjjig/list/List"
 
-class PugjjigViewList extends Component {
+class PugjjigLikeList extends Component {
 
     componentDidMount() {
         let userId;
@@ -14,7 +14,7 @@ class PugjjigViewList extends Component {
             userId = this.props.match.params.userId;
         }
 
-        this.props.pugjjigGetUserList(this.props.history, userId);
+        this.props.pugjjigLikeGetUserList(this.props.history, userId);
     }
 
     render() {
@@ -38,9 +38,9 @@ class PugjjigViewList extends Component {
     }
 }
 
-PugjjigViewList.propTypes = {
+PugjjigLikeList.propTypes = {
     pugjjigLike: PropTypes.func.isRequired,
-    pugjjigGetUserList: PropTypes.func.isRequired,
+    pugjjigLikeGetUserList: PropTypes.func.isRequired,
     pugjjig_list: PropTypes.object.isRequired,
     pugjjig_like: PropTypes.object.isRequired,
     error: PropTypes.object.isRequired
@@ -53,9 +53,9 @@ const mapStateToProps = state => ({
 });
 
 export default connect(
-    mapStateToProps,
+    mapStateToProps, 
     { 
-        pugjjigGetUserList, 
+        pugjjigLikeGetUserList, 
         pugjjigLike 
     }
-  )(PugjjigViewList);
+  )(PugjjigLikeList);

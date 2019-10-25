@@ -1,16 +1,16 @@
-import React, { Component, Fragment, createRef } from 'react'
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import React, { Component, Fragment, createRef } from "react"
+import PropTypes from "prop-types"
+import { connect } from "react-redux"
 
-import FirstSection from "./firstSection";
+import FirstSection from "./firstSection"
 import { MainMap } from "../../style/globalStyles"
 import InsertModal from "../kakaoMap/InsertModal"
-import ListModal from "../kakaoMap/ListModal"
+import ListModal from "../pugjjig/modal/ListModal"
 
-import { Main } from "../../style/globalStyles";
+import { Main } from "../../style/globalStyles"
 
 import KakaoMapService from "../../service/KakaoMapService"
-import { pugjjigInsert, pugjjigGetCount, pugjjigGet } from "../../actions/KakaoMapActions"
+import { pugjjigInsert, pugjjigGetCount } from "../../actions/KakaoMapActions"
 
 class HomePage extends Component {
 
@@ -105,11 +105,6 @@ class HomePage extends Component {
     this.props.pugjjigInsert(pugjjig);
   }
 
-  // 음식점 리뷰를 가져오는 함수
-  pugjjigGet = (storeId) => {
-    return this.props.pugjjigGet(storeId);
-  }
-
   // 음식점 리뷰 갯수 가져오는 함수
   pugjjigGetCount = (storeId) => {
     return this.props.pugjjigGetCount(storeId);
@@ -117,7 +112,14 @@ class HomePage extends Component {
 
   render() {
     // state Init
-    const { map, keyword, setLoading, insertModalState, listModalState, stoId } = this.state;
+    const { 
+      map, 
+      keyword, 
+      setLoading, 
+      insertModalState, 
+      listModalState, 
+      stoId 
+    } = this.state;
     
     return (
       <Main>
@@ -143,8 +145,6 @@ class HomePage extends Component {
               stoId = {stoId}
               modalState = {listModalState}
               closeModal = {this.closeModal}
-              pugjjigGet = {this.pugjjigGet}
-              pugjjig = {this.props.pugjjig_list}
             />
           </Fragment>
         }
@@ -155,9 +155,7 @@ class HomePage extends Component {
 
 HomePage.propTypes = {
   pugjjigInsert: PropTypes.func.isRequired,
-  pugjjigGet: PropTypes.func.isRequired,
   pugjjigGetCount: PropTypes.func.isRequired,
-  pugjjig_list: PropTypes.object.isRequired,
   pugjjig_count: PropTypes.object.isRequired,
   error: PropTypes.object.isRequired
 }
@@ -165,7 +163,6 @@ HomePage.propTypes = {
 
 const mapStateToProps = state => ({
   error: state.errors,
-  pugjjig_list: state.pugjjig.pugjjig_list,
   pugjjig_count: state.pugjjig.pugjjig_count
 });
 
@@ -173,7 +170,6 @@ export default connect(
   mapStateToProps, 
   { 
       pugjjigInsert, 
-      pugjjigGet,
       pugjjigGetCount
   }
 )(HomePage);

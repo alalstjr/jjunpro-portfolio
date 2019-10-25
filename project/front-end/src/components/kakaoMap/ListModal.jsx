@@ -15,7 +15,7 @@ class InsertModal extends Component {
     componentWillReceiveProps(nextProps) {
         if ((nextProps.modalState !== this.props.modalState) && this.props.modalState == false) {
             const { stoId } = nextProps;
-            this.props.pugjjigGet(stoId);
+            this.props.pugjjigGetStoreList(stoId);
         }
     }
 
@@ -34,7 +34,7 @@ class InsertModal extends Component {
     render() {
 
         // props Init
-        const { modalState, closeModal, pugjjig, pugjjigLike, pugjjig_view_like } = this.props;
+        const { modalState, closeModal, pugjjig, pugjjigLike, pugjjig_like } = this.props;
 
         // Variables Init
         let pugjjigContent;
@@ -56,8 +56,8 @@ class InsertModal extends Component {
                 }
 
                 // 푹찍 Like 클릭시 Re rendering 여부 체크
-                if(pugjjig_view_like.data !== undefined) {
-                    this.handleLikeUpdate(pugjjigList, pugjjig_view_like.data);
+                if(pugjjig_like.data !== undefined) {
+                    this.handleLikeUpdate(pugjjigList, pugjjig_like.data);
                 }
 
                 return (
@@ -100,13 +100,13 @@ class InsertModal extends Component {
 
 InsertModal.propTypes = {
     pugjjigLike: PropTypes.func.isRequired,
-    pugjjig_view_like: PropTypes.object.isRequired,
+    pugjjig_like: PropTypes.object.isRequired,
     error: PropTypes.object.isRequired
 }
   
 const mapStateToProps = state => ({
     error: state.errors,
-    pugjjig_view_like: state.pugjjig.pugjjig_view_like
+    pugjjig_like: state.pugjjig.pugjjig_like
 });
   
 export default connect(

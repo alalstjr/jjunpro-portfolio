@@ -7,8 +7,9 @@ import BoardWriteInsert from "./components/board/write/writeInsert"
 import BoardWriteUpdate from "./components/board/write/writeUpdate"
 import BoardView from "./components/board/view"
 
-import PugjjigView from "./components/kakaoMap/view/PugjjigView"
+import PugjjigView from "./components/pugjjig/view/PugjjigView"
 import PugjjigViewList from "./components/myPage/myList/PugjjigViewList"
+import PugjjigLikeList from "./components/myPage/myList/PugjjigLikeList"
 
 const App = () => {
     return (
@@ -28,8 +29,8 @@ const App = () => {
           <Route exact path="/pugjjigs" component={PugjjigViewList} />
           <Route exact path="/pugjjigs/:userId" component={PugjjigViewList} />
           {/* Pugjjig Like */}
-          <Route exact path="/pugjjigLikes" component={PugjjigViewList} />
-          <Route exact path="/pugjjigLikes/:userId" component={PugjjigViewList} />
+          <Route exact path="/pugjjigLikes" component={PugjjigLikeList} />
+          <Route exact path="/pugjjigLikes/:userId" component={PugjjigLikeList} />
 
           <Redirect from="*" to="/" />
         </Switch>
