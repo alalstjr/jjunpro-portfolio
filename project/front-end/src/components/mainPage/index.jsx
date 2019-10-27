@@ -20,13 +20,11 @@ class HomePage extends Component {
     this.state = {
       // Map
       map: null,
-      // 검색 키워드
-      keyword: "",
       // Map state
       setLoading: true,
         LatLng: {
-          x : 33.450701,
-          y : 126.570667
+          x : 127.01639455013195,
+          y : 37.64950880707469
       },
       // modal state
       insertModalState: false,
@@ -114,7 +112,6 @@ class HomePage extends Component {
     // state Init
     const { 
       map, 
-      keyword, 
       setLoading, 
       insertModalState, 
       listModalState, 
@@ -128,9 +125,8 @@ class HomePage extends Component {
           :
           <Fragment>
             <FirstSection
-              keyword={keyword}
-              onChange={this.onChange}
               searchPlaces={map.searchPlaces}
+              categorySearch={map.categorySearch}
             />
             <MainMap
               ref = {this.appRef}

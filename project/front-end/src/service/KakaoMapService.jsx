@@ -35,7 +35,7 @@ class KakaoMapService {
                 // v3가 모두 로드된 후, 이 콜백 함수가 실행됩니다.
                 thatThis.kakao = kakao;
                 thatThis.map = new kakao.maps.Map(thatThis.appRef.current, {
-                    center: new thatThis.kakao.maps.LatLng(latLng.x, latLng.y), // 지도의 중심좌표
+                    center: new thatThis.kakao.maps.LatLng(latLng.y, latLng.x), // 지도의 중심좌표
                     level: 3 // 지도의 확대 레벨
                 });
 
@@ -47,8 +47,16 @@ class KakaoMapService {
                     xAnchor: 0.3,
                     yAnchor: 0.91
                 });
+
+                thatThis.defaultAddr = (x, y) => {
+                    return new thatThis.kakao.maps.LatLng(y, x);
+                };
+
+                thatThis.latLng = (x, y) => { 
+                    return new thatThis.kakao.maps.LatLng(x, y);
+                }
                 
-                classThis.categorySearch();
+                // classThis.categorySearch();
             });
         });
     }
@@ -67,7 +75,8 @@ class KakaoMapService {
         }
 
         // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
-        places.keywordSearch( keyword, this.searchPlacesCB, {category_group_code :"FD6"}); 
+        places.keywordSearch( keyword, this.searchPlacesCB); 
+        // places.keywordSearch( keyword, this.searchPlacesCB, {category_group_code :"FD6"}); 
         return false;
     } 
 
@@ -76,6 +85,7 @@ class KakaoMapService {
     ****************************************/
     searchPlacesCB = (data, status, pagination) => {
         if (status === kakao.maps.services.Status.OK) {
+            console.log(data)
 
             // 정상적으로 검색이 완료됐으면
             // 커스텀 오버레이를 초기화 동시에 
@@ -126,6 +136,7 @@ class KakaoMapService {
 
             // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
             // LatLngBounds 객체에 좌표를 추가합니다
+            console.log(bounds);
             bounds.extend(placePosition);
 
             // 마커와 검색결과 항목에 mouseover 했을때
@@ -185,23 +196,29 @@ class KakaoMapService {
     ****************************************/
     getListItem = (index, places) => {
 
-        let el = document.createElement('li'),
-        itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
-                    '<div class="info">' +
-                    '   <h5>' + places.place_name + '</h5>';
+        let el = document.createElement('button');
+        let item = `
+            <span class="sc-brqgnP hEXxbP">${places.place_name}</span>
+            <span class="sc-cMljjf kKFuHc">0명 푹찍</span>
+        `;
 
-        if (places.road_address_name) {
-            itemStr += '    <span>' + places.road_address_name + '</span>' +
-                        '   <span class="jibun gray">' +  places.address_name  + '</span>';
-        } else {
-            itemStr += '    <span>' +  places.address_name  + '</span>'; 
-        }
+        // let el = document.createElement('li'),
+        // itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
+        //             '<div class="info">' +
+        //             '   <h5>' + places.place_name + '</h5>';
+
+        // if (places.road_address_name) {
+        //     itemStr += '    <span>' + places.road_address_name + '</span>' +
+        //                 '   <span class="jibun gray">' +  places.address_name  + '</span>';
+        // } else {
+        //     itemStr += '    <span>' +  places.address_name  + '</span>'; 
+        // }
                     
-        itemStr += '  <span class="tel">' + places.phone  + '</span>' +
-                    '</div>';           
+        // itemStr += '  <span class="tel">' + places.phone  + '</span>' +
+        //             '</div>';           
 
-        el.innerHTML = itemStr;
-        el.className = 'item';
+        el.innerHTML = item;
+        el.className = 'sc-jWBwVP bLhMdZ';
 
         return el;
     }
@@ -372,15 +389,16 @@ class KakaoMapService {
     /****************************************
         카테고리 검색
     ****************************************/
-    categorySearch = () => {
+    categorySearch = (x, y) => {
         // defaultAddr 변수로 대학교 위치를 입력받아 근처 맛집을 탐색
-        let defaultAddr = new this.thatThis.kakao.maps.LatLng(37.537183, 127.005454);
+        let defaultAddr = this.thatThis.defaultAddr(x, y);
+
         this.thatThis.map.setCenter(defaultAddr);
         
         // 장소 검색 객체를 생성합니다
         var ps = new kakao.maps.services.Places(this.thatThis.map); 
         // 카테고리로 은행을 검색합니다
-        ps.categorySearch('FD6', this.placesSearchCB, {useMapBounds:true});
+        ps.categorySearch('FD6', this.placesSearchCB, {useMapBounds:true, useMapCenter: true});
     }
 
     // 키워드 검색 완료 시 호출되는 콜백함수 입니다
@@ -388,8 +406,7 @@ class KakaoMapService {
         if (status === kakao.maps.services.Status.OK) {
 
             // 좌측 리스트
-            let listEl = document.getElementById('placesList');
-            let menuEl = document.getElementById('menu_wrap');
+            let listEl = document.getElementById('universityList');
             let fragment = document.createDocumentFragment();
             let bounds = new kakao.maps.LatLngBounds();
 
@@ -402,7 +419,7 @@ class KakaoMapService {
             for (var i=0; i<places.length; i++) {
                 
                 // 마커를 생성하고 지도에 표시합니다
-                let placePosition = new kakao.maps.LatLng(places[i].y, places[i].x);
+                let placePosition = this.thatThis.latLng(places[i].y, places[i].x);
                 let marker = this.addMarker(placePosition, i);
                 let itemEl = this.getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
 
@@ -416,7 +433,6 @@ class KakaoMapService {
 
             // 검색결과 항목들을 검색결과 목록 Elemnet에 추가합니다
             listEl.appendChild(fragment);
-            menuEl.scrollTop = 0;
 
             // // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
             this.thatThis.map.setBounds(bounds);
