@@ -126,6 +126,7 @@ class HomePage extends Component {
           <Fragment>
             <FirstSection
               searchPlaces={map.searchPlaces}
+              searchPlacesSetting={map.searchPlacesSetting}
               categorySearch={map.categorySearch}
             />
             <MainMap

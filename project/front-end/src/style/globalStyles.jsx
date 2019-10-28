@@ -25,7 +25,7 @@ export const GlobalStyle = createGlobalStyle`
         background-color: ${props => props.theme.backgroundColor};
         color: ${props => props.theme.fontColor};
     }
-    body { 
+    body, * { 
         font-family:'Noto Sans KR', sans-serif;
         font-weight: 300; 
         font-size: ${props => props.theme.fontSizeSm};
@@ -343,6 +343,7 @@ export const MainList = styled.div`
 `;
 export const MainMap = styled.div`
     width: calc(100% - 300px);
+    z-index: 0;
 `;
 
 /* Img */

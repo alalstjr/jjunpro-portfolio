@@ -5,27 +5,56 @@ import {
     SearchTitle,
     SearchInputText,
     SearchInputBtn,
-    SearchInputWrap
+    SearchInputWrap,
+    RefreshBtn,
+    SwitchWrap,
+    SwitchBtn
 } from "../../style"
 
-const UniversitySearch = ({keyword, onChange, searchPlaces}) => (
+const UniversitySearch = ({keyword, onChange, onState, onSearchState, onSearchStore, searchState, storeState}) => (
     <SearchWrap>
         <SearchTitle>
             학교 주변 푹찍 둘러보기
-        </SearchTitle>
-        <SearchInputWrap>
-            <SearchInputText
-                id="keyword"
-                name="keyword"
-                value={keyword}
-                onChange={onChange}
-            />
-            <SearchInputBtn
-                onClick={searchPlaces}
+            <SwitchWrap
+                storeState={storeState}
             >
-                푹찍 검색하기
-            </SearchInputBtn>
-        </SearchInputWrap>
+                <SwitchBtn 
+                    onClick={() => onSearchState(1)}
+                >
+                    대학교
+                </SwitchBtn>
+                <SwitchBtn 
+                    onClick={() => onSearchState(2)}
+                >
+                    음식점
+                </SwitchBtn>
+                <SwitchBtn 
+                    onClick={() => onSearchState(3)}
+                >
+                    푹설정
+                </SwitchBtn>
+            </SwitchWrap>
+        </SearchTitle>
+        {
+            searchState !== false ?
+            <SearchInputWrap>
+                <SearchInputText
+                    id="keyword"
+                    name="keyword"
+                    value={keyword}
+                    onChange={onChange}
+                />
+                <SearchInputBtn
+                    onClick={(storeState === 2) ? onSearchStore : null}
+                >
+                    대학교 검색하기
+                </SearchInputBtn>
+            </SearchInputWrap>
+            :
+            <RefreshBtn onClick={onState}>
+                다시검색하기
+            </RefreshBtn>
+        }
     </SearchWrap> 
 );
 

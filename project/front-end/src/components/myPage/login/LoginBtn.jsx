@@ -1,11 +1,16 @@
-import React, { Component, Fragment } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import React, { Component, Fragment } from "react"
+import { connect } from "react-redux"
+import PropTypes from "prop-types"
 
-import LoginModal from "./loginModal";
-import SingUpModal from "./signUpModal";
+import LoginModal from "./modal/LoginModal"
+import SingUpModal from "./modal/SignUpModal"
 
-import { accountLogout } from "../../actions/accountActions";
+import { accountLogout } from "../../../actions/accountActions"
+
+import {
+    LoginBtn,
+    SingUpBtn
+} from "../style"
 
 class User extends Component {
     constructor(props) {
@@ -144,7 +149,7 @@ class User extends Component {
                 case "login" :
                     return(
                         <Fragment>
-                            <button onClick = {this.openModal}>{text}</button>
+                            <LoginBtn onClick = {this.openModal}>{text}</LoginBtn>
                             <LoginModal 
                                 isOpen = {this.state.isModalOpen} 
                                 close = {this.closeModal}
@@ -159,7 +164,7 @@ class User extends Component {
                 case "singUp" : 
                     return(
                         <Fragment>
-                        <button onClick = {this.openModal}>{text}</button>
+                            <SingUpBtn onClick = {this.openModal}>{text}</SingUpBtn>
                             <SingUpModal 
                                 isOpen = {this.state.isModalOpen} 
                                 close = {this.closeModal}

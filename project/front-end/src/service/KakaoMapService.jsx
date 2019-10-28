@@ -1,5 +1,5 @@
 import $script from 'scriptjs'
-import { Link } from "react-router-dom";
+import { Item, ItemUniName, ItemUniCount } from '../components/university/style'
 
 const API_KEY = "e4886ec63d8dacf6d7f11ab426759a84";
 const KAKAO_URL =  `http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${API_KEY}&libraries=services`;
@@ -75,8 +75,11 @@ class KakaoMapService {
         }
 
         // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
-        places.keywordSearch( keyword, this.searchPlacesCB); 
-        // places.keywordSearch( keyword, this.searchPlacesCB, {category_group_code :"FD6"}); 
+        // places.keywordSearch( keyword, this.searchPlacesCB); 
+        places.keywordSearch( keyword, this.searchPlacesCB, {
+            category_group_code :"FD6",
+            radius: 500
+        }); 
         return false;
     } 
 
@@ -115,8 +118,7 @@ class KakaoMapService {
     displayPlaces = (places) => {
 
         // 좌측 리스트
-        let listEl = document.getElementById('placesList');
-        let menuEl = document.getElementById('menu_wrap');
+        let listEl = document.getElementById('universityList');
         let fragment = document.createDocumentFragment();
         let bounds = new kakao.maps.LatLngBounds();
         let listStr = '';
@@ -136,7 +138,6 @@ class KakaoMapService {
 
             // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
             // LatLngBounds 객체에 좌표를 추가합니다
-            console.log(bounds);
             bounds.extend(placePosition);
 
             // 마커와 검색결과 항목에 mouseover 했을때
@@ -149,7 +150,6 @@ class KakaoMapService {
 
         // 검색결과 항목들을 검색결과 목록 Elemnet에 추가합니다
         listEl.appendChild(fragment);
-        menuEl.scrollTop = 0;
 
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
         this.thatThis.map.setBounds(bounds);
@@ -198,8 +198,8 @@ class KakaoMapService {
 
         let el = document.createElement('button');
         let item = `
-            <span class="sc-brqgnP hEXxbP">${places.place_name}</span>
-            <span class="sc-cMljjf kKFuHc">0명 푹찍</span>
+            <span class="${ItemUniName.componentStyle.componentId} ${ItemUniName.componentStyle.lastClassName}">${places.place_name}</span>
+            <span class="${ItemUniCount.componentStyle.componentId} ${ItemUniCount.componentStyle.lastClassName}">0명 푹찍</span>
         `;
 
         // let el = document.createElement('li'),
@@ -218,7 +218,7 @@ class KakaoMapService {
         //             '</div>';           
 
         el.innerHTML = item;
-        el.className = 'sc-jWBwVP bLhMdZ';
+        el.className = `${Item.componentStyle.componentId} ${Item.componentStyle.lastClassName}`;
 
         return el;
     }
@@ -396,9 +396,13 @@ class KakaoMapService {
         this.thatThis.map.setCenter(defaultAddr);
         
         // 장소 검색 객체를 생성합니다
-        var ps = new kakao.maps.services.Places(this.thatThis.map); 
+        var places = new kakao.maps.services.Places(this.thatThis.map); 
         // 카테고리로 은행을 검색합니다
-        ps.categorySearch('FD6', this.placesSearchCB, {useMapBounds:true, useMapCenter: true});
+        places.categorySearch('FD6', this.placesSearchCB, {
+            useMapBounds: true, 
+            useMapCenter: true,
+            radius: 500
+        });
     }
 
     // 키워드 검색 완료 시 호출되는 콜백함수 입니다
@@ -438,6 +442,38 @@ class KakaoMapService {
             this.thatThis.map.setBounds(bounds);
         }
     }
+
+    /****************************************
+        사용자 설정 검색을 요청하는 함수입니다.
+    ****************************************/
+    searchPlacesSetting = (x, y, radius, keyword) => {
+        let cate;
+        let places = new kakao.maps.services.Places();
+
+        // defaultAddr 변수로 대학교 위치를 입력받아 근처 맛집을 탐색
+        let defaultAddr = this.thatThis.defaultAddr(x, y);
+
+        this.thatThis.map.setCenter(defaultAddr);
+
+        if (!keyword.replace(/^\s+|\s+$/g, '')) {
+            alert('키워드를 입력해주세요!');
+            return false;
+        }
+
+        // 사용자 설정이 카페인지 음식적인지 구분하는 조건문
+        keyword.indexOf("카페") != -1 ? cate = "CE7" : cate = "FD6";
+
+        // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+        places.keywordSearch( keyword, this.searchPlacesCB, {
+            category_group_code : cate,
+            location: defaultAddr,
+            useMapBounds: true, 
+            useMapCenter: true,
+            radius: radius*1
+        }); 
+
+        return false;
+    } 
 }
 
 export default KakaoMapService;

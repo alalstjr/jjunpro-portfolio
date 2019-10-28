@@ -7,7 +7,7 @@ import {
  } from "../../style"
 
 const UniversityItem = ({uniName, uniPujjig, categorySearch}) => (
-    <Item onClick = {categorySearch}>
+    <Item onClick={categorySearch}>
         <ItemUniName>{uniName}</ItemUniName>
         <ItemUniCount>{uniPujjig}명 푹찍</ItemUniCount>
     </Item> 

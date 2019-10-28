@@ -5,7 +5,13 @@ import { ClearFix } from "../../style/globalStyles"
     List Style
 ********************/
 export const ListWrap = styled.div`
-    border-top: 0.0625rem solid #e3e3e3;
+    overflow-y: scroll;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 316px;
+    padding-top: 277px;
 `;
 
 /*******************
@@ -22,6 +28,7 @@ export const Item = styled.button.attrs({
     box-sizing: border-box;
     border-bottom: 0.0625rem solid #e3e3e3;
     cursor: pointer;
+    display: block;
     &:hover {
         background-color: #fafafa;
     }
@@ -42,8 +49,11 @@ export const ItemUniCount = styled.span`
 ********************/
 export const SearchWrap = styled.div`
     padding: 0.3125rem;
+    position: relative;
+    z-index: 1;
 `;
 export const SearchTitle = styled.h2`
+    position: relative;
     padding: 0.9375rem 0;
     line-height: 1.25rem;
     color: #292929;
@@ -67,7 +77,6 @@ export const SearchInputText = styled.input.attrs(props => ({
     background: #f2f2f2;
     border-radius: 0.1875rem;
 `;
-  
 export const SearchInputBtn = styled.button.attrs({
     type: "button"
 })`
@@ -79,4 +88,99 @@ export const SearchInputBtn = styled.button.attrs({
     position: absolute;
     right: 0;
     top: 0;
+`;
+export const RefreshBtn = styled.button.attrs({
+    type: "button"
+})`
+    background-color: ${props => props.theme.themeColor};
+    width: 100%;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    font-size: 0.875rem;
+    border-radius: 0.1875rem;
+    color: #fff;
+    transition: 0.2s all ease;
+
+    &:hover {
+        background-color: ${props => props.theme.themeColorHover};
+    }
+`;
+
+export const SwitchWrap = styled.div`
+    position: absolute;
+    right: 0;
+    top: 6px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    overflow: hidden;
+
+    ${
+        props => props.storeState === 3 ?
+        `> button:nth-child(3) {
+            color: #fff
+        }`
+        :
+        props => props.storeState === 2 ?
+        `> button:nth-child(2) {
+            color: #fff
+        }`
+        :
+        `> button:nth-child(1) {
+            color: #fff
+        }`
+    }
+
+    &:before {
+        display: block;
+        content: "";
+        position: absolute;
+        width: 47px;
+        height: 27px;
+        background-color: ${props => props.theme.themeColor};
+        top: 0;
+        transition: 0.2s all ease;
+        border-radius: 6px;
+
+        left: ${
+            props => props.storeState !== false ?
+            "49px"
+            :
+            "0px"
+        };
+
+        left: ${
+            props => props.storeState === 3 ?
+            `96px`
+            :
+            props => props.storeState === 2 ?
+            `48px`
+            :
+            `0`
+        }
+    }
+`;
+export const SwitchBtn = styled.button.attrs({
+    type: "button"
+})`
+    padding: 4px 7px;
+    position: relative;
+    z-index: 1;
+    transition: 0.2s all ease;
+`;
+export const SearchNotice = styled.div`
+    text-align: center;
+    padding: 20px 0;
+`;
+export const SearchSet = styled.div`
+    border-bottom: 0.0625rem solid #e3e3e3;
+`;
+
+/*******************
+    UserBox Style
+********************/
+export const UserBox = styled.div`
+    border-bottom: 0.0625rem solid #e3e3e3;
+    background-color: #fff;
+    position: relative;
+    z-index: 1;
 `;

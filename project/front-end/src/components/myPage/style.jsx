@@ -1,7 +1,42 @@
-import styled from 'styled-components';
+import styled, { css } from "styled-components"
 
 /*******************
-    Member Modal Style
+    Login Style
+********************/
+export const LoginWrap = styled.div`
+    padding: 1.3125rem 2.3125rem;
+`;
+export const LoginLogo = styled.h1`
+    text-align: center;
+    font-size: 25px;
+    font-weight: 600;
+    padding: 10px 0 15px;
+    color: ${props => props.theme.themeColorHover};
+`;
+export const LoginBtnCss = css`
+    display: block;
+    margin-bottom: 5px;
+    height: 40px;
+    line-height: 40px;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+`;
+export const LoginBtn = styled.button`
+    ${LoginBtnCss}
+    border: 1px solid #e3e3e3;
+    color: #737373;
+`;
+export const SingUpBtn = styled.button`
+    ${LoginBtnCss}
+    background-color: ${props => props.theme.themeColorHover};
+    color: #fff;
+`;
+
+/*******************
+    Login Modal Style
 ********************/
 export const ModalOverlay = styled.div`
     position: fixed;

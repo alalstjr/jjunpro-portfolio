@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from 'react';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { accountLogin } from "../../../actions/accountActions";
+import { accountLogin } from "../../../../actions/accountActions";
 
 import ReactTransitionGroup from 'react-addons-css-transition-group';
 
@@ -10,7 +10,7 @@ import {
     Modal,
     Title,
     Content
-} from "../style";
+} from "../../style";
 
 import {
     Form,
@@ -19,7 +19,7 @@ import {
     FormGroup,
     SubmitBtn,
     InputWarning
-} from "../../../style/globalStyles";
+} from "../../../../style/globalStyles";
 
 class LoginModal extends Component {
     constructor(props) {
