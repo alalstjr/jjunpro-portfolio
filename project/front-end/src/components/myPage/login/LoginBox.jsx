@@ -1,6 +1,8 @@
-import React, { Component } from "react"
-import LoginBtn from "./LoginBtn"
-
+import React, { Component, Fragment } from "react"
+import PropTypes from "prop-types"
+import { connect } from "react-redux"
+import { userLoginCheck } from "../../../actions/accountActions"
+import AccountBtn from "./AccountBtn"
 
 import { 
     LoginWrap,
@@ -8,21 +10,56 @@ import {
 } from "../style"
 
 class LoginBox extends Component {
+
+    componentDidMount() {
+        this.props.userLoginCheck();
+    }
+
     render() {
         return (
             <LoginWrap>
                 <LoginLogo>푹찍</LoginLogo>
-                <LoginBtn
-                    text = "로그인"
-                    req = "login"
-                />
-                <LoginBtn
-                    text = "푹찍 회원가입"
-                    req = "singUp"
-                />
+                {
+                    this.props.user_info.data === undefined ?
+                    <Fragment>
+                        <AccountBtn
+                            text = "로그인"
+                            req = "login"
+                        />
+                        <AccountBtn
+                            text = "푹찍 회원가입"
+                            req = "singUp"
+                        />
+                    </Fragment>
+                    :
+                    <Fragment>
+                        <AccountBtn
+                            text = "로그아웃"
+                            req = "logout"
+                        />
+                        <AccountBtn
+                            text = "마이페이지"
+                            req = "singUp"
+                        />
+                    </Fragment>
+                }
             </LoginWrap>
         )
     }
 }
 
-export default LoginBox;
+LoginBox.propTypes = {
+    error: PropTypes.object.isRequired,
+    user_info: PropTypes.object.isRequired
+}
+  
+  
+const mapStateToProps = state => ({
+    error: state.errors,
+    user_info: state.account.user_info
+});
+
+export default connect(
+    mapStateToProps,
+    { userLoginCheck }
+)(LoginBox);

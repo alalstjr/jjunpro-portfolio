@@ -27,21 +27,36 @@ class SingUpModal extends Component {
 
         this.state = {
             userId: "",
+            nickname: "",
             password: "",
             passwordRe: "",
-            username: ""
+            email: ""
         }
     }
 
     // Lifecycle Methods
     componentWillReceiveProps(nextProps) {
-        if(nextProps.error.AuthenticationError && !this.props.warning.authentication) {
-            this.warningSetAuthentication();
+
+        // {Server} 유효성 검사 출력 코드입니다.
+        if(nextProps.error.data !== this.props.error.data) {
+            if(nextProps.error.data.userId) {
+                this.props.warningSet("userId", true, nextProps.error.data.userId);
+            }
+            if(nextProps.error.data.nickname) {
+                this.props.warningSet("nickname", true, nextProps.error.data.nickname);
+            }
+            if(nextProps.error.data.password) {
+                this.props.warningSet("password", true, nextProps.error.data.password);
+            }
+            if(nextProps.error.data.email) {
+                this.props.warningSet("email", true, nextProps.error.data.email);
+            }
         }
-    }
-    // componentWillReceiveProps 무한루프 방지 함수에 담아서 사용
-    warningSetAuthentication = () => {
-        this.props.warningSetAuthentication(true);
+        
+        // 회원가입이 최종 완료된후 실행되는 이벤트 코드입니다.
+        if(nextProps.account_create.data !== this.props.account_create.data) {
+            console.log(nextProps.account_create);
+        }
     }
 
     // Input Setup
@@ -55,72 +70,62 @@ class SingUpModal extends Component {
     onSubmit = (e) => {
         e.preventDefault();
 
+        // state Init
         const { 
             userId,
+            nickname,
             password,
             passwordRe,
-            username
+            myUniversity,
+            urlList,
+            email
         } = this.state;
 
+        // value Init
         const account = {
             userId,
+            nickname,
             password,
-            username
+            passwordRe,
+            myUniversity,
+            urlList,
+            email
         };
 
-        if(!account.username) {
-            this.props.warningSetUsername(true);
-            return false;
-        }
+        // {Client} 유효성 검사 출력 코드입니다.
         if(!account.userId) {
-            this.props.warningSetUserId(true);
+            this.props.warningSet("userId", true, "아이디는 필수로 작성해야 합니다.");
+            return false; 
+        }
+        if(!account.nickname) {
+            this.props.warningSet("nickname", true, "닉네임은 필수로 작성해야 합니다.");
             return false;
         }
         if(!account.password) {
-            this.props.warningSetPassword(true);
+            this.props.warningSet("password", true, "비밀번호는 필수로 작성해야 합니다.");
             return false;
         }
         if(password !== passwordRe) {
-            this.props.warningSetPasswordRe(true);
+            this.props.warningSet("passwordRe", true, "비밀번호가 동일하지 않습니다.");
+            return false;
+        }
+        if(!account.email) {
+            this.props.warningSet("email", true, "이메일은 필수로 작성해야 합니다.");
             return false;
         }
 
         this.props.accountInsert(account, this.props.history);
     }
 
-    // Input값 존재여부 체크 후 warning 종합 상태 관리
-    valueCheck = (e) => {
-        // 유저 인증 경고문 warning 상태 관리
-        if(this.props.warning.authentication === true) {
-            this.props.warningSetAuthentication(false);
-        }
-
-        // passwordRe 경고문 warning 상태 관리
-        if(this.state.password === this.state.passwordRe) {
-            this.props.warningSetPasswordRe(false);
-        }
-
-        // account 유효성 검사 경고문 warning 상태 관리
-        if(!e.target.value) {
-            switch(e.target.name) {
-                case "username" :
-                    this.props.warningSetUsername(false);    
-                
-                case "userId" :
-                    this.props.warningSetUserId(false);
-
-                case "password" :
-                    this.props.warningSetPassword(false);
-
-                default :
-                    return false;
-            }
-        }
-    }
-
     render(){
-        const { isOpen, close, warning, warningText } = this.props;
-        const { userId, password, passwordRe, username } = this.state;
+        const { isOpen, close, warning, warningText, initWarning } = this.props;
+        const { 
+            userId,
+            nickname,
+            password,
+            passwordRe,
+            email
+        } = this.state;
 
         return (
             <Fragment>
@@ -141,27 +146,6 @@ class SingUpModal extends Component {
                             </Title>
                             <Content>
                                 <FormGroup>
-                                    <Formlabel>이름</Formlabel>
-                                    <InputClean
-                                        id="username"
-                                        name="username"
-                                        type="text"
-                                        value={username}
-                                        onChange={this.onChange}
-                                        onKeyDown={this.valueCheck}
-                                    />
-                                    {
-                                        warning.username ? 
-                                        <InputWarning
-                                            active={warningText.username}
-                                        >
-                                            {warningText.username}
-                                        </InputWarning>
-                                        : 
-                                        null
-                                    }
-                                </FormGroup>
-                                <FormGroup>
                                     <Formlabel>아이디</Formlabel>
                                     <InputClean                                    
                                         id="userId"
@@ -169,7 +153,7 @@ class SingUpModal extends Component {
                                         type="text"
                                         value={userId}
                                         onChange={this.onChange}
-                                        onKeyDown={this.valueCheck}
+                                        onKeyDown={initWarning}
                                     />
                                     {
                                         warning.userId ? 
@@ -181,13 +165,23 @@ class SingUpModal extends Component {
                                         : 
                                         null
                                     }
-                                   {
-                                        // 이미 존재하는 아이디 경고문
-                                        warning.authentication ? 
+                                </FormGroup>
+                                <FormGroup>
+                                    <Formlabel>닉네임</Formlabel>
+                                    <InputClean
+                                        id="nickname"
+                                        name="nickname"
+                                        type="text"
+                                        value={nickname}
+                                        onChange={this.onChange}
+                                        onKeyDown={initWarning}
+                                    />
+                                    {
+                                        warning.nickname ? 
                                         <InputWarning
-                                            active={warningText.singUpIdFail}
+                                            active={warningText.nickname}
                                         >
-                                            {warningText.singUpIdFail}
+                                            {warningText.nickname}
                                         </InputWarning>
                                         : 
                                         null
@@ -201,7 +195,7 @@ class SingUpModal extends Component {
                                         type="password"
                                         value={password}
                                         onChange={this.onChange}
-                                        onKeyDown={this.valueCheck}
+                                        onKeyDown={initWarning}
                                     />
                                     {
                                         warning.password ? 
@@ -222,7 +216,7 @@ class SingUpModal extends Component {
                                         type="password"
                                         value={passwordRe}
                                         onChange={this.onChange}
-                                        onKeyDown={this.valueCheck}
+                                        onKeyDown={initWarning}
                                     />
                                     {
                                         warning.passwordRe ? 
@@ -230,6 +224,27 @@ class SingUpModal extends Component {
                                             active={warningText.passwordRe}
                                         >
                                             {warningText.passwordRe}
+                                        </InputWarning>
+                                        : 
+                                        null
+                                    }
+                                </FormGroup>
+                                <FormGroup>
+                                    <Formlabel>이메일</Formlabel>
+                                    <InputClean
+                                        id="email"
+                                        name="email"
+                                        type="text"
+                                        value={email}
+                                        onChange={this.onChange}
+                                        onKeyDown={initWarning}
+                                    />
+                                    {
+                                        warning.email ? 
+                                        <InputWarning
+                                            active={warningText.email}
+                                        >
+                                            {warningText.email}
                                         </InputWarning>
                                         : 
                                         null
@@ -254,11 +269,13 @@ class SingUpModal extends Component {
   
 accountInsert.propTypes = {
     accountInsert: PropTypes.func.isRequired,
-    error: PropTypes.object.isRequired
+    error: PropTypes.object.isRequired,
+    account_create: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
-    error: state.errors
+    error: state.errors,
+    account_create: state.account.account_create
 });
 
 export default connect(

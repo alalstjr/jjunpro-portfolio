@@ -33,14 +33,12 @@ class LoginModal extends Component {
 
     // Lifecycle Methods
     componentWillReceiveProps(nextProps) {
-        if(nextProps.error.AuthenticationError && !this.props.warning.authentication) {
-            this.warningSetAuthentication();
+        // {Server} 유효성 검사 출력 코드입니다.
+        if(nextProps.error.data !== this.props.error.data) {
+            if(nextProps.error.data.AuthenticationError) {
+                this.props.warningSet("userId", true, nextProps.error.data.AuthenticationError);
+            }
         }
-    }
-
-    // componentWillReceiveProps 무한루프 방지 함수에 담아서 사용
-    warningSetAuthentication = () => {
-        this.props.warningSetAuthentication(true);
     }
 
     // Input Setup
@@ -54,50 +52,33 @@ class LoginModal extends Component {
     onSubmit = (e) => {
         e.preventDefault();
 
+        // state Init
         const { 
             userId,
             password
         } = this.state;
 
+        // value Init
         const account = {
             userId,
             password
         };
 
+        // {Client} 유효성 검사 출력 코드입니다.
         if(!account.userId) {
-            this.props.warningSetUserId(true);
+            this.props.warningSet("userId", true, "아이디는 필수로 작성해야 합니다.");
             return false;
         }
         if(!account.password) {
-            this.props.warningSetPassword(true);
+            this.props.warningSet("password", true, "비밀번호는 필수로 작성해야 합니다.");
             return false;
         }
 
         this.props.accountLogin(account, this.props.history);
     }
 
-    // Input값 존재여부 체크 후 warning 상태 관리
-    valueCheck = (e) => {
-        if(this.props.warning.authentication === true) {
-            this.props.warningSetAuthentication(false);
-        }
-
-        if(!e.target.value) {
-            switch(e.target.name) {    
-                case "userId" :
-                    this.props.warningSetUserId(false);
-
-                case "password" :
-                    this.props.warningSetPassword(false);
-
-                default :
-                    return false;
-            }
-        }
-    }
-
     render(){
-        const { isOpen, close, warning, warningText } = this.props;
+        const { isOpen, close, warning, warningText, initWarning } = this.props;
         const { userId, password } = this.state;
 
         return (
@@ -126,7 +107,7 @@ class LoginModal extends Component {
                                         type="text"
                                         value={userId}
                                         onChange={this.onChange}
-                                        onKeyDown={this.valueCheck}
+                                        onKeyDown={initWarning}
                                     />
                                     {
                                         // 아이디 입력 경고문
@@ -148,7 +129,7 @@ class LoginModal extends Component {
                                         type="password"
                                         value={password}
                                         onChange={this.onChange}
-                                        onKeyDown={this.valueCheck}
+                                        onKeyDown={initWarning}
                                     />
                                     {
                                         // 비밀번호 입력 경고문

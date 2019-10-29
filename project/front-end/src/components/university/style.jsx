@@ -1,17 +1,33 @@
 import styled, { css } from "styled-components"
-import { ClearFix } from "../../style/globalStyles"
+import { ClearFix, InitTransition } from "../../style/globalStyles"
 
 /*******************
     List Style
 ********************/
 export const ListWrap = styled.div`
+    ${InitTransition}
     overflow-y: scroll;
     height: 100vh;
     position: fixed;
     top: 0;
-    left: 0;
-    width: 316px;
-    padding-top: 277px;
+    width: 300px;
+    padding-top: 299px;
+    background-color: #fff;
+    ::-webkit-scrollbar {
+        display:none;
+    }
+
+    ${
+        props => props.initSearch === true ?
+        `
+            left: 50%;
+            margin-left: -150px;
+        `
+        :
+        `
+            left: 0;
+        `
+    }
 `;
 
 /*******************
@@ -54,7 +70,7 @@ export const SearchWrap = styled.div`
 `;
 export const SearchTitle = styled.h2`
     position: relative;
-    padding: 0.9375rem 0;
+    padding: 8px 0;
     line-height: 1.25rem;
     color: #292929;
     font-size: 1rem;
@@ -107,12 +123,11 @@ export const RefreshBtn = styled.button.attrs({
 `;
 
 export const SwitchWrap = styled.div`
-    position: absolute;
-    right: 0;
-    top: 6px;
+    position: relative;
     border: 1px solid #ddd;
-    border-radius: 6px;
+    border-radius: 4px;
     overflow: hidden;
+    margin-bottom: 10px;
 
     ${
         props => props.storeState === 3 ?
@@ -134,26 +149,26 @@ export const SwitchWrap = styled.div`
         display: block;
         content: "";
         position: absolute;
-        width: 47px;
+        width: 33.333%;
         height: 27px;
         background-color: ${props => props.theme.themeColor};
         top: 0;
         transition: 0.2s all ease;
-        border-radius: 6px;
+        border-radius: 4px;
 
         left: ${
             props => props.storeState !== false ?
-            "49px"
+            "33.333%"
             :
             "0px"
         };
 
         left: ${
             props => props.storeState === 3 ?
-            `96px`
+            `66.666%`
             :
             props => props.storeState === 2 ?
-            `48px`
+            `33.333%`
             :
             `0`
         }
@@ -162,10 +177,11 @@ export const SwitchWrap = styled.div`
 export const SwitchBtn = styled.button.attrs({
     type: "button"
 })`
-    padding: 4px 7px;
+    padding: 4px 0px;
     position: relative;
     z-index: 1;
     transition: 0.2s all ease;
+    width: 33.333%;
 `;
 export const SearchNotice = styled.div`
     text-align: center;

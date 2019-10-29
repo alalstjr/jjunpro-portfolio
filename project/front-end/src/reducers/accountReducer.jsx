@@ -1,25 +1,38 @@
 import {
+    ACCOUNT_CREATE,
+
     CHECK_USER,
     CHECK_USER_SUCCESS,
     CHECK_USER_FAILURE
 } from "../actions/types"
 
 const initialState = {
-    userInfo : {}
+    user_info : {},
+    account_create: {}
 };
 
 export default function(state=initialState, action) {
     
     switch(action.type) {
 
+        case ACCOUNT_CREATE:
+            return {
+                ...state,
+                account_create: {
+                    data: action.payload
+                }
+            };
+
         case CHECK_USER:
             return {
                 ...state,
                 logged: true,
-                userInfo: {
-                    token: action.payload.token,
-                    userId: action.payload.id,
-                    username: action.payload.username
+                user_info: {
+                    data: {
+                        token: action.payload.token,
+                        userId: action.payload.id,
+                        username: action.payload.username
+                    }
                 }
             };
 
@@ -27,17 +40,19 @@ export default function(state=initialState, action) {
             return {
                 ...state,
                 logged: true,
-                userInfo: {
-                    token: action.payload.token,
-                    userId: action.payload.id,
-                    username: action.payload.username
+                user_info: {
+                    data: {
+                        token: action.payload.token,
+                        userId: action.payload.id,
+                        username: action.payload.username
+                    }
                 }
             };
 
         case CHECK_USER_FAILURE:
             return {
                 ...state,
-                userInfo: action.payload
+                user_info: action.payload
             };
 
         default:

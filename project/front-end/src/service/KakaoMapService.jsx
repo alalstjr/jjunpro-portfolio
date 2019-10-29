@@ -452,7 +452,6 @@ class KakaoMapService {
 
         // defaultAddr 변수로 대학교 위치를 입력받아 근처 맛집을 탐색
         let defaultAddr = this.thatThis.defaultAddr(x, y);
-
         this.thatThis.map.setCenter(defaultAddr);
 
         if (!keyword.replace(/^\s+|\s+$/g, '')) {
@@ -464,6 +463,7 @@ class KakaoMapService {
         keyword.indexOf("카페") != -1 ? cate = "CE7" : cate = "FD6";
 
         // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+        // defaultAddr 값은 필수입니다. 검색 거리에 기준점이 됩니다.
         places.keywordSearch( keyword, this.searchPlacesCB, {
             category_group_code : cate,
             location: defaultAddr,

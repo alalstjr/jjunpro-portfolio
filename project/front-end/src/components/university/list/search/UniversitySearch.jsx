@@ -15,26 +15,26 @@ const UniversitySearch = ({keyword, onChange, onState, onSearchState, onSearchSt
     <SearchWrap>
         <SearchTitle>
             학교 주변 푹찍 둘러보기
-            <SwitchWrap
-                storeState={storeState}
-            >
-                <SwitchBtn 
-                    onClick={() => onSearchState(1)}
-                >
-                    대학교
-                </SwitchBtn>
-                <SwitchBtn 
-                    onClick={() => onSearchState(2)}
-                >
-                    음식점
-                </SwitchBtn>
-                <SwitchBtn 
-                    onClick={() => onSearchState(3)}
-                >
-                    푹설정
-                </SwitchBtn>
-            </SwitchWrap>
         </SearchTitle>
+        <SwitchWrap
+            storeState={storeState}
+        >
+            <SwitchBtn 
+                onClick={() => onSearchState(1)}
+            >
+                대학교
+            </SwitchBtn>
+            <SwitchBtn 
+                onClick={() => onSearchState(2)}
+            >
+                음식점
+            </SwitchBtn>
+            <SwitchBtn 
+                onClick={() => onSearchState(3)}
+            >
+                검색설정
+            </SwitchBtn>
+        </SwitchWrap>
         {
             searchState !== false ?
             <SearchInputWrap>

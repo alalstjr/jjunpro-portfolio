@@ -37,7 +37,9 @@ class HomePage extends Component {
       uniStar: 1,
       // store value
       stoId: "",
-      stoAddress: ""
+      stoAddress: "",
+      // 초기 화면
+      initSearch: true
     }
 
     this.appRef = createRef();
@@ -108,6 +110,13 @@ class HomePage extends Component {
     return this.props.pugjjigGetCount(storeId);
   }
 
+  // 초기화면에서 검색하면 검색창 제거
+  hendleInitSearch = () => {
+    this.setState({
+      initSearch: false
+    });
+  }
+
   render() {
     // state Init
     const { 
@@ -115,7 +124,8 @@ class HomePage extends Component {
       setLoading, 
       insertModalState, 
       listModalState, 
-      stoId 
+      stoId,
+      initSearch
     } = this.state;
     
     return (
@@ -128,6 +138,8 @@ class HomePage extends Component {
               searchPlaces={map.searchPlaces}
               searchPlacesSetting={map.searchPlacesSetting}
               categorySearch={map.categorySearch}
+              initSearch={initSearch}
+              hendleInitSearch={this.hendleInitSearch}
             />
             <MainMap
               ref = {this.appRef}

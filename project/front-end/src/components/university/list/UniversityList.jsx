@@ -37,17 +37,73 @@ class UniversityList extends Component {
                 },
                 {
                     id: 1,
+                    uniName:"덕성여자대학교 후문",
+                    uniPujjig: 0,
+                    x: 127.017288184806,
+                    y: 37.6525503981283
+                },
+                {
+                    id: 2,
                     uniName:"서일대학교",
                     uniPujjig: 0,
                     x: 127.097976337279,
                     y: 37.5864866143728
                 },
                 {
-                    id: 2,
+                    id: 3,
                     uniName:"건국대학교",
                     uniPujjig: 0,
                     x: 127.076302318843,
                     y: 37.5429556751421
+                },
+                {
+                    id: 4,
+                    uniName:"홍익대학교 서울캠퍼스",
+                    uniPujjig: 0,
+                    x: 126.925554591431,
+                    y: 37.550874837441
+                },
+                {
+                    id: 5,
+                    uniName:"홍익대학교 세종캠퍼스",
+                    uniPujjig: 0,
+                    x: 127.287933647532,
+                    y: 36.6213894816246
+                },
+                {
+                    id: 6,
+                    uniName:"명지대학교",
+                    uniPujjig: 0,
+                    x: 126.923891021078,
+                    y: 37.5798245779138
+                },
+                {
+                    id: 7,
+                    uniName:"명지전문대학",
+                    uniPujjig: 0,
+                    x: 126.925693019531,
+                    y: 37.5846910900534
+                },
+                {
+                    id: 8,
+                    uniName:"서울대학교",
+                    uniPujjig: 0,
+                    x: 126.948400031913,
+                    y: 37.4663007082505
+                },
+                {
+                    id: 9,
+                    uniName:"이화여자대학교 정문",
+                    uniPujjig: 0,
+                    x: 126.94566937595,
+                    y: 37.5594236592153
+                },
+                {
+                    id: 10,
+                    uniName:"이화여자대학교 후문",
+                    uniPujjig: 0,
+                    x: 126.944692996803,
+                    y: 37.5635317504439
                 }
             ]
         }
@@ -60,31 +116,22 @@ class UniversityList extends Component {
         });
     }
 
-    onSearch = (x, y) => {
-        this.props.categorySearch(x, y);
-
-        this.setState({
-            searchState: false
-        });
-    }
-
-    onState = () => {
-        this.setState({
-            searchState: true
-        });
-
-        this.removeAllChildNods();
-    }
-
+    /*
+     *  검색된 음식점 모두를 초기화하는 메소드입니다.
+     */
     removeAllChildNods = () => {
-        // 좌측 검색된 음식점요소 초기화
         const cell = document.getElementById('universityList');
         while(cell.hasChildNodes()) {
             cell.removeChild(cell.firstChild);
         }
     }
 
-    // 대학교 검색 상태
+    /*
+     *  state {Integer num}
+     *  state 값은 필수 값입니다.
+     *  전달받는 값은 {1: 대학교, 2: 음식점, 3: 사용자설정} 입니다.
+     *  대학교 검색 상태 메소드입니다.
+     */
     onSearchState = (state) => {
         this.setState({
             keyword: "",
@@ -95,34 +142,75 @@ class UniversityList extends Component {
         this.removeAllChildNods();
     }
 
-    // 직접 음식점 검색 상태
+    /*
+     *  사용자가 다시 검색할 수 있도록 설정하는 메소드입니다.
+     */
+    onState = () => {
+        this.setState({
+            searchState: true
+        });
+
+        this.removeAllChildNods();
+    }
+
+    /*
+     *  x {String x}, y {String y}
+     *  x, y 는 필수 값입니다.
+     *  기본 대학교 검색 메소드입니다. 
+     */
+    onSearch = (x, y) => {
+        this.props.categorySearch(x, y);
+
+        this.setState({
+            searchState: false
+        });
+
+        this.props.hendleInitSearch();
+    }
+
+    /*
+     *  직접 음식점 검색 메소드입니다.
+     */
     onSearchStore = () => {
         this.setState({
             keyword: "",
             searchState: false
         });
 
+        this.props.hendleInitSearch();
         this.props.searchPlaces();
     }
     
-    // 푹 사용자 설정 검색
+    /*
+     *  x {String x}, y {String y}, university {String 대학교이름}
+     *  x, y, university 는 필수 값입니다.
+     *  대학교 검색 상세설정 메소드입니다.
+     */
     onSearchSetting = (x, y, university) => {
-        const { radius } = this.state;
+        
+        const { radius, category } = this.state;
         
         // 사용자 검색설정 키워드 변수
-        let keywordSetting = `${university} ${this.state.category}`;
+        // 음식 종류 선택이 없으면 모두 검색
+        let keywordSetting = (category === "") ? "음식점" : `${university} ${this.state.category}`;
 
         this.setState({
             keyword: "",
             searchState: false
         });
+        
         // 카카오 API 콜백
         this.props.searchPlacesSetting(x, y, radius, keywordSetting);
+
+        this.props.hendleInitSearch();
     }
 
     render() {
         // state Init
         const { university, keyword, searchState, storeState, radius, category } = this.state;
+
+        // props Init
+        const { initSearch } = this.props;
 
         // Variables Init
         let universityContent;
@@ -180,7 +268,9 @@ class UniversityList extends Component {
                         storeState={storeState}
                     />
                 </UserBox>
-                <ListWrap>
+                <ListWrap
+                    initSearch={initSearch}
+                >
                     {
                         searchState !== false && storeState === 3 ? 
                         <SearchSet>
@@ -188,19 +278,19 @@ class UniversityList extends Component {
                                 <span>
                                     도보기준 :
                                 </span> 
-                                <label htmlFor="radius-1">5분</label>
+                                <label htmlFor="radius-1">5~10분</label>
                                 <input type="radio" name="radius" id="radius-1"
                                     value={300}
                                     checked={radius == "300"}
                                     onChange={this.onChange}
                                 />
-                                <label htmlFor="radius-2">10분</label>
+                                <label htmlFor="radius-2">10~20분</label>
                                 <input type="radio" name="radius" id="radius-2"
                                     value={600}
                                     checked={radius === "600"}
                                     onChange={this.onChange}
                                 />
-                                <label htmlFor="radius-3">20분</label>
+                                <label htmlFor="radius-3">20분 이상</label>
                                 <input type="radio" name="radius" id="radius-3"
                                     value={1200}
                                     checked={radius === "1200"}

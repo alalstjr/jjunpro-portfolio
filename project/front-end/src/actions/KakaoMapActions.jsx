@@ -30,7 +30,7 @@ export const pugjjigInsert = (pugjjig) => {
 export const pugjjigLike = (id) => async dispatch => {
     
     // 유저 JWT Token정보
-    USER_AUTH(); 
+    USER_AUTH();
 
     await axios.post(`${SERVER_URL}/api/university/${id}/like`)
     .then(res => {

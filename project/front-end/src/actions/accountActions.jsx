@@ -1,6 +1,9 @@
 import axios from "axios"
+import { SERVER_URL } from "../routes"
 import { 
     GET_ERRORS,
+    ACCOUNT_CREATE,
+
     CHECK_USER,
     CHECK_USER_SUCCESS,
     CHECK_USER_FAILURE
@@ -13,27 +16,31 @@ export const accountInsert = (account, history) => async dispatch => {
     try {
         // 유저가 로그인 상태가 아니라면
         if(!localStorage.getItem("userInfo")) {
-            await axios.post("http://localhost:8080/api/account", account)
+            await axios.post(`${SERVER_URL}/api/account`, account)
             .then(res => {
-                console.log(res);
+                switch(res.status) {
+                    case 200 : 
+                        dispatch({
+                            type: ACCOUNT_CREATE,
+                            payload: true
+                        });
+                        break;
+                        
+                    case 202 : 
+                        dispatch({
+                            type: GET_ERRORS,
+                            payload: res.data
+                        });
+                        break;
+
+                    default :
+                        console.log(res);
+                        break;
+                }
             });
         }
-    } catch (errors) {
-        // 회원가입 실패 정보를 전송합니다.
-        const error = {
-            AuthenticationError: "이미 존재하는 아이디 입니다."
-        };
-
-        dispatch({
-            type: GET_ERRORS,
-            payload: error
-        });
-
-        // 프론트단에서 쉽게 에러 메세지를 관리하기 위해서 초기화해줍니다.
-        dispatch({
-            type: GET_ERRORS,
-            payload: {}
-        });
+    } catch (e) {
+        console.log(e);
     }
 }
 
@@ -99,21 +106,15 @@ export const accountLogin = (account, history) => async dispatch => {
                 });
             }
         });
-    } catch (errors) {
+    } catch (e) {
         const error = {
-            AuthenticationError: "정보에 맞는 계정이 없습니다."
+            AuthenticationError: "아이디나 비밀번호를 바르게 입력해주세요."
         };
 
         // 인증 실패 정보를 전송합니다.
         dispatch({
             type: GET_ERRORS,
             payload: error
-        });
-
-        // 프론트단에서 쉽게 에러 메세지를 관리하기 위해서 초기화해줍니다.
-        dispatch({
-            type: GET_ERRORS,
-            payload: {}
         });
     }
 }

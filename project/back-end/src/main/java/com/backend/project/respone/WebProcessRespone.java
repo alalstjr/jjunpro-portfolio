@@ -13,13 +13,23 @@ import java.util.Map;
 public class WebProcessRespone {
 
     /**
+     *	Web API Error Maps Respone
+     *  String Type 웹 오류 응답
+     *  오류를 한곳에 모아서 한번에 응답합니다.
+     */
+    public ResponseEntity webErrorRespone(Map<String, String> errorMap) {
+        return new ResponseEntity<Map<String, String>>(errorMap, HttpStatus.ACCEPTED);
+    }
+
+    /**
      *	Web API Error Respone
      *  String Type 웹 오류 응답
+     *  각각의 오류를 한번 응답합니다.
      */
     public ResponseEntity webErrorRespone(String errorType, String errorText) {
         Map<String, String> errorMap = new HashMap<String, String>();
         errorMap.put(errorType, errorText);
-        return new ResponseEntity<Map<String, String>>(errorMap, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<Map<String, String>>(errorMap, HttpStatus.ACCEPTED);
     }
 
     /**
@@ -33,6 +43,6 @@ public class WebProcessRespone {
             errorMap.put(error.getField(), error.getDefaultMessage());
         }
 
-        return new ResponseEntity<Map<String, String>>(errorMap, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<Map<String, String>>(errorMap, HttpStatus.ACCEPTED);
     }
 }

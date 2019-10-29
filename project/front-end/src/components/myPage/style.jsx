@@ -33,6 +33,7 @@ export const SingUpBtn = styled.button`
     ${LoginBtnCss}
     background-color: ${props => props.theme.themeColorHover};
     color: #fff;
+    margin-bottom: 0;
 `;
 
 /*******************
@@ -73,7 +74,7 @@ export const Modal = styled.div`
     background-color: white;
     box-shadow: 0px 3px 6px rgba(0,0,0,0.16);
     z-index: 10;
-    padding: 30px 40px;
+    padding: 0px 20px;
 
     &.Modal-anim-enter {
         opacity: 0.00;
@@ -95,7 +96,7 @@ export const Modal = styled.div`
     }
 `;
 export const Title = styled.h3`
-    font-size: 28px;
+    font-size: 24px;
     margin-bottom: 25px;
     font-weight: bold;
     color: #333;

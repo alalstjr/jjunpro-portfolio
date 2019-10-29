@@ -144,11 +144,10 @@ export const Form = styled.form`
 `;
 export const FormGroup = styled.div`
     position: relative;
-    margin-bottom: 2rem;
+    margin-bottom: 20px;
 `;
 export const Formlabel = styled.label`
     display: inline-block;
-    margin-bottom: .5rem;
     font-size: 1rem;
 `;
 export const Input = styled.input.attrs({
@@ -338,11 +337,34 @@ export const Main = styled.div`
     }
     height: 100vh;
 `;
+export const InitTransition = css`
+    transition: all 1s ease-in-out;
+`;
 export const MainList = styled.div`
+    ${InitTransition}
+    z-index: 1;
+    position: relative;
+    background: #fff;
+    ${
+        props => props.initSearch === true ?
+        `
+            width: 100%;
+        `
+        : 
+        `
+            width: 300px
+        `
+    }
+`;
+export const MainListContainer = styled.div`
     width: 300px;
+    margin: 0 auto;
 `;
 export const MainMap = styled.div`
     width: calc(100% - 300px);
+    border-left: 1px solid #e3e3e3;
+    margin-left: 300px;
+    position: absolute;
     z-index: 0;
 `;
 

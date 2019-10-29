@@ -15,9 +15,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/account")
@@ -38,44 +41,53 @@ public class AccountController {
             @Valid @RequestBody AccountSaveDTO dto,
             BindingResult bindingResult
     ) {
+        Map<String, String> errorMap = new HashMap<String, String>();
         String errorType = null;
         String errorText = null;
 
         // Field Check
         if(bindingResult.hasErrors()) {
-            return webProcessRespone.webErrorRespone(bindingResult);
+            for(FieldError error : bindingResult.getFieldErrors()) {
+                errorMap.put(error.getField(), error.getDefaultMessage());
+            }
         }
 
         // Password equals PasswordRe Check
         if(!dto.toEntity().getPassword().equals(dto.getPasswordRe())) {
-            errorType = "AuthenticationError";
+            errorType = "password";
             errorText = "비밀번호가 일치하지 않습니다.";
-            return webProcessRespone.webErrorRespone(errorType, errorText);
+            errorMap.put(errorType, errorText);
         }
 
         // Account Id DB Check
         if(accountService.findByUserId(dto.getUserId()).isPresent()) {
-            errorType = "AuthenticationError";
+            errorType = "userId";
             errorText = "이미 존재하는 아이디입니다.";
-            return webProcessRespone.webErrorRespone(errorType, errorText);
+            errorMap.put(errorType, errorText);
         }
 
         // Account Nickname DB Check
         if(accountService.findByNickname(dto.getNickname()).isPresent()) {
-            errorType = "AuthenticationError";
+            errorType = "nickname";
             errorText = "이미 존재하는 넥네임입니다.";
-            return webProcessRespone.webErrorRespone(errorType, errorText);
+            errorMap.put(errorType, errorText);
         }
 
         // Account Email Validity Check
         if (dto.getEmail() != null && !validityCheck.emailCheck(dto.getEmail())) {
-            errorType = "AuthenticationError";
+            errorType = "email";
             errorText = "올바르지 않은 이메일입니다.";
-            return webProcessRespone.webErrorRespone(errorType, errorText);
+            errorMap.put(errorType, errorText);
         }
 
-        Account newAccount = accountService.saveOrUpdate(dto);
-        return new ResponseEntity<Account>(newAccount, HttpStatus.CREATED);
+        // 유효성 검사 최종 반환
+        if(errorMap.size() > 0) {
+            return webProcessRespone.webErrorRespone(errorMap);
+        }
+
+//        Account newAccount = accountService.saveOrUpdate(dto);
+//        return new ResponseEntity<Account>(newAccount, HttpStatus.CREATED);
+        return null;
     }
 
     @GetMapping("")
