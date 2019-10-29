@@ -12,26 +12,28 @@ import {
     SingUpBtn
 } from "../style"
 
-class AccountBtn extends Component {
+class AccountProvider extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             isModalOpen: false,
-            warning : {
+            warning: {
                 userId: false,
                 nickname: false,
                 password: false,
                 passwordRe: false,
                 email: false
             },
-            warningText : {
-                userId: "아이디는 필수로 작성해야 합니다.",
-                nickname: "닉네임은 필수로 작성해야 합니다.",
-                password: "비밀번호는 필수로 작성해야 합니다.",
-                passwordRe: "비밀번호가 동일하지 않습니다.",
-                email: "이메일은 필수로 작성해야 합니다."
-            }
+            warningText: {
+                userId: "",
+                nickname: "",
+                password: "",
+                passwordRe: "",
+                email: ""
+            },
+            // 서버 전송상태 확인 (회원가입 완료 체크)
+            singUp: false
         }
     }
 
@@ -73,6 +75,31 @@ class AccountBtn extends Component {
                 email: false
             }
         }));
+    }
+
+    /*
+     *  모달창 ESC 클릭 반응 메소드입니다.
+     */
+    escFunction = (event) => {
+        if(event.keyCode === 27) {
+            this.closeModal();
+        }
+    }
+
+    /*
+     *  로그아웃 메소드입니다.
+     */
+    logoutHandler = () => {
+        this.props.accountLogout();
+    }
+
+    /*
+     *  로그아웃 메소드입니다.
+     */
+    SingUpHandler = () => {
+        this.setState({
+            singUp: true
+        });
     }
 
     /*
@@ -155,20 +182,10 @@ class AccountBtn extends Component {
         }
     }
 
-    escFunction = (event) => {
-        if(event.keyCode === 27) {
-            this.closeModal();
-        }
-    }
-
-    logoutHandler = () => {
-        this.props.accountLogout();
-    }
-
     render() {
 
         const { text, req } = this.props;
-        const { warning, warningText } = this.state;
+        const { warning, warningText, singUp } = this.state;
 
         let modalContainer;
 
@@ -199,6 +216,8 @@ class AccountBtn extends Component {
                                 warningText = {warningText}
                                 warningSet={this.warningSet}
                                 initWarning={this.initWarning}
+                                singUp={singUp}
+                                SingUpHandler={this.SingUpHandler}
                             />
                         </Fragment>
                     );
@@ -219,7 +238,7 @@ class AccountBtn extends Component {
     }
 }
 
-AccountBtn.propTypes = {
+AccountProvider.propTypes = {
     user_info: PropTypes.object.isRequired,
 }
 
@@ -230,4 +249,4 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps,
     { accountLogout }
-)(AccountBtn);
+)(AccountProvider);

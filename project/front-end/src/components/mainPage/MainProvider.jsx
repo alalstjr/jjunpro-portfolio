@@ -12,7 +12,7 @@ import { Main } from "../../style/globalStyles"
 import KakaoMapService from "../../service/KakaoMapService"
 import { pugjjigInsert, pugjjigGetCount } from "../../actions/KakaoMapActions"
 
-class HomePage extends Component {
+class MainProvider extends Component {
 
   constructor(props){
     super(props);
@@ -162,7 +162,7 @@ class HomePage extends Component {
   }
 }
 
-HomePage.propTypes = {
+MainProvider.propTypes = {
   pugjjigInsert: PropTypes.func.isRequired,
   pugjjigGetCount: PropTypes.func.isRequired,
   pugjjig_count: PropTypes.object.isRequired,
@@ -181,4 +181,4 @@ export default connect(
       pugjjigInsert, 
       pugjjigGetCount
   }
-)(HomePage);
+)(MainProvider);

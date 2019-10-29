@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components"
+import { ClearFix } from "../../style/globalStyles"
 
 /*******************
     Login Style
@@ -10,7 +11,7 @@ export const LoginLogo = styled.h1`
     text-align: center;
     font-size: 25px;
     font-weight: 600;
-    padding: 10px 0 15px;
+    padding: 10px 0 20px;
     color: ${props => props.theme.themeColorHover};
 `;
 export const LoginBtnCss = css`
@@ -70,7 +71,7 @@ export const Modal = styled.div`
     transform: translate(-50%, -50%);
     width: 100%;
     max-width: 450px;
-    border-radius: 10px;
+    border-radius: 3px;
     background-color: white;
     box-shadow: 0px 3px 6px rgba(0,0,0,0.16);
     z-index: 10;
@@ -95,12 +96,21 @@ export const Modal = styled.div`
         transform: translate(-50%, -50%) scale(0.7);
     }
 `;
-export const Title = styled.h3`
-    font-size: 24px;
-    margin-bottom: 25px;
+export const TitleWrap = styled.div`
+    ${ClearFix}
+    margin-top: 15px;
+`;
+export const TitleLogo = styled.h1`
+    color: ${props => props.theme.themeColorHover};
+    float: left;
+    font-size: 28px;
     font-weight: bold;
-    color: #333;
-    text-align: center
+`;
+export const Title = styled.h3`
+    font-size: 18px;
+    float: right;
+    font-weight: bold;
+    color: #3E4348;
 `;
 export const Content = styled.div`
     

@@ -1,16 +1,16 @@
 import React, { Component, Fragment } from "react"
-import UniversityItem from "./item/UniversityItem"
-import UniversitySearch from "./search/UniversitySearch"
-import LoginBox from "../../myPage/login/LoginBox"
+import UniversityItem from "./list/item/UniversityItem"
+import UniversitySearch from "./list/search/UniversitySearch"
+import AccountBox from "../myPage/account/container/AccountBox"
 
 import { 
     ListWrap,
     SearchNotice,
     UserBox,
     SearchSet
- } from "../style"
+ } from "./style"
 
-class UniversityList extends Component {
+class UniversityProvider extends Component {
 
     constructor(props) {
         super(props);
@@ -257,7 +257,7 @@ class UniversityList extends Component {
         return (
             <Fragment>
                 <UserBox>
-                    <LoginBox/>
+                    <AccountBox/>
                     <UniversitySearch
                         keyword={keyword}
                         onChange={this.onChange}
@@ -355,4 +355,4 @@ class UniversityList extends Component {
     }
 }
 
-export default UniversityList;
+export default UniversityProvider;

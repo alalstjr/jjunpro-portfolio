@@ -1,13 +1,13 @@
 import React, { Component, Fragment } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
-import { userLoginCheck } from "../../../actions/accountActions"
-import AccountBtn from "./AccountBtn"
+import { userLoginCheck } from "../../../../actions/accountActions"
+import AccountBtn from "../AccountProvider"
 
 import { 
     LoginWrap,
     LoginLogo
-} from "../style"
+} from "../../style"
 
 class LoginBox extends Component {
 

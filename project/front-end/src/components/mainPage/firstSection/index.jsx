@@ -1,5 +1,5 @@
 import React from "react"
-import UniversityList from "../../university/list/UniversityList"
+import UniversityProvider from "../../university/UniversityProvider"
 import { MainList, MainListContainer } from "../../../style/globalStyles"
 
 const FirstSection = ({
@@ -13,7 +13,7 @@ const FirstSection = ({
       initSearch={initSearch}
     >
       <MainListContainer>
-        <UniversityList
+        <UniversityProvider
           searchPlaces={searchPlaces}
           searchPlacesSetting={searchPlacesSetting}
           categorySearch={categorySearch}
