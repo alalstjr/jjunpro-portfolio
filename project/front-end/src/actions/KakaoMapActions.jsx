@@ -55,7 +55,6 @@ export const pugjjigGetStoreList = (storeId) => async dispatch => {
 
     await axios.get(`${SERVER_URL}/api/store/${storeId}`)
     .then(res => {
-        console.log(res);
         dispatch({
             type: GET_PUGJJIG_STORE_LIST,
             payload: res.data

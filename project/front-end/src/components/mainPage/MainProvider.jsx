@@ -3,14 +3,12 @@ import PropTypes from "prop-types"
 import { connect } from "react-redux"
 
 import FirstSection from "./firstSection"
-import { MainMap } from "../../style/globalStyles"
-import InsertModal from "../kakaoMap/InsertModal"
-import ListModal from "../pugjjig/modal/ListModal"
-
-import { Main } from "../../style/globalStyles"
+import PugjjigProvider from "../../components/pugjjig/PugjjigProvider"
 
 import KakaoMapService from "../../service/KakaoMapService"
-import { pugjjigInsert, pugjjigGetCount } from "../../actions/KakaoMapActions"
+import { pugjjigGetCount } from "../../actions/KakaoMapActions"
+
+import { Main, MainMap } from "../../style/globalStyles"
 
 class MainProvider extends Component {
 
@@ -29,17 +27,11 @@ class MainProvider extends Component {
       // modal state
       insertModalState: false,
       listModalState: false,
-      // input value
-      uniSubject: "",
-      uniContent: "",
-      uniName: "",
-      uniTag: ["arr1","arr2"],
-      uniStar: 1,
-      // store value
-      stoId: "",
-      stoAddress: "",
       // 초기 화면
-      initSearch: true
+      initSearch: true,
+      // 상점 정보 리뷰작성시 필요정보 PugjjigProvider로 넘어갑니다.
+      stoId: "",
+      stoAddress: ""
     }
 
     this.appRef = createRef();
@@ -75,36 +67,6 @@ class MainProvider extends Component {
     });
   }
 
-  // Input Setup
-  onChange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
-  }
-
-  // Form Submit
-  onSubmit = (e) => {
-    e.preventDefault();
-    const { 
-        uniSubject, 
-        uniContent,
-        uniName,
-        uniTag,
-        stoId,
-        stoAddress
-    } = this.state;
-
-    const pugjjig = {
-        uniSubject, 
-        uniContent,
-        uniName,
-        uniTag,
-        stoId,
-        stoAddress
-    };
-    this.props.pugjjigInsert(pugjjig);
-  }
-
   // 음식점 리뷰 갯수 가져오는 함수
   pugjjigGetCount = (storeId) => {
     return this.props.pugjjigGetCount(storeId);
@@ -124,8 +86,9 @@ class MainProvider extends Component {
       setLoading, 
       insertModalState, 
       listModalState, 
+      initSearch,
       stoId,
-      initSearch
+      stoAddress
     } = this.state;
     
     return (
@@ -144,16 +107,12 @@ class MainProvider extends Component {
             <MainMap
               ref = {this.appRef}
             />
-            <InsertModal
-              onChange = {this.onChange}
-              onSubmit = {this.onSubmit}
-              closeModal = {this.closeModal}
-              modalState = {insertModalState}
-            /> 
-            <ListModal
-              stoId = {stoId}
-              modalState = {listModalState}
-              closeModal = {this.closeModal}
+            <PugjjigProvider
+              closeModal={this.closeModal}
+              insertModalState={insertModalState}
+              listModalState={listModalState}
+              stoId={stoId}
+              stoAddress={stoAddress}
             />
           </Fragment>
         }
@@ -163,7 +122,6 @@ class MainProvider extends Component {
 }
 
 MainProvider.propTypes = {
-  pugjjigInsert: PropTypes.func.isRequired,
   pugjjigGetCount: PropTypes.func.isRequired,
   pugjjig_count: PropTypes.object.isRequired,
   error: PropTypes.object.isRequired
@@ -177,8 +135,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps, 
-  { 
-      pugjjigInsert, 
-      pugjjigGetCount
-  }
+  { pugjjigGetCount }
 )(MainProvider);

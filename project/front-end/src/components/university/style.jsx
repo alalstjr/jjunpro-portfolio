@@ -29,6 +29,29 @@ export const ListWrap = styled.div`
         `
     }
 `;
+export const PagingBox = styled.div`
+    position: relative;
+`;
+export const Pagination = styled.div`
+    text-align: center;
+    padding: 20px 0;
+
+    > button {
+        width: 20px;
+        height: 20px;
+        margin: 0 3px;
+    }
+
+    > button#on {
+        background-color: ${props => props.theme.themeColor};
+        color: #fff;
+    }
+
+    > button:hover {
+        background-color: ${props => props.theme.themeColorHover};
+        color: #fff;
+    }
+`;
 
 /*******************
     Item Style

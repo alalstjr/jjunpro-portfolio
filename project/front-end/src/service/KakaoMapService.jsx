@@ -1,5 +1,6 @@
 import $script from 'scriptjs'
-import { Item, ItemUniName, ItemUniCount } from '../components/university/style'
+import { Item, ItemUniName, ItemUniCount, Pagination } from '../components/university/style'
+import markerIcon from '../static/images/kakao/marker.png';
 
 const API_KEY = "e4886ec63d8dacf6d7f11ab426759a84";
 const KAKAO_URL =  `http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${API_KEY}&libraries=services`;
@@ -95,9 +96,9 @@ class KakaoMapService {
             // 검색 목록과 (마커, 오버레이)를 표출합니다
             this.thatThis.customOverlay.setMap(null);
             this.displayPlaces(data);
-
+            console.log(pagination);
             // 페이지 번호를 표출합니다
-            // displayPagination(pagination);
+            this.displayPagination(pagination);
 
         } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
 
@@ -227,11 +228,9 @@ class KakaoMapService {
         마커를 생성하고 지도 위에 마커를 표시하는 함수입니다.
     ****************************************/
     addMarker = (position, idx, title) => {
-        let imageSrc = 'http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
-            imageSize = new kakao.maps.Size(36, 37),  // 마커 이미지의 크기
+        let imageSrc = markerIcon, // 마커 이미지 url, 스프라이트 이미지를 씁니다
+            imageSize = new kakao.maps.Size(38, 38),  // 마커 이미지의 크기
             imgOptions =  {
-                spriteSize : new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
-                spriteOrigin : new kakao.maps.Point(0, (idx*46)+10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
                 offset: new kakao.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
             },
             markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
@@ -245,6 +244,7 @@ class KakaoMapService {
 
         return marker;
     }
+
 
     /****************************************
         지도 위에 표시되고 있는 마커를 모두 제거합니다.
@@ -260,9 +260,9 @@ class KakaoMapService {
         검색결과 목록 하단에 페이지번호를 표시는 함수입니다.
     ****************************************/
     displayPagination = (pagination) => {
-        let paginationEl = document.getElementById('pagination'),
-            fragment = document.createDocumentFragment(),
-            i; 
+        let paginationEl = document.getElementsByClassName(Pagination.componentStyle.componentId).item(0);
+        let fragment = document.createDocumentFragment();
+        let i; 
 
         // 기존에 추가된 페이지번호를 삭제합니다
         while (paginationEl.hasChildNodes()) {
@@ -270,12 +270,12 @@ class KakaoMapService {
         }
 
         for (i=1; i<=pagination.last; i++) {
-            let el = document.createElement('a');
-            el.href = "#";
+            let el = document.createElement('button');
+            el.type = "button";
             el.innerHTML = i;
 
             if (i===pagination.current) {
-                el.className = 'on';
+                el.id = 'on';
             } else {
                 el.onclick = (function(i) {
                     return function() {

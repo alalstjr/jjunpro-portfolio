@@ -1,13 +1,21 @@
 import React, { Component, Fragment } from "react"
+import PropTypes from "prop-types"
+import { connect } from "react-redux"
+
 import UniversityItem from "./list/item/UniversityItem"
 import UniversitySearch from "./list/search/UniversitySearch"
 import AccountBox from "../myPage/account/container/AccountBox"
+import { getUniversity } from "../../actions/PugjjigActions"
 
 import { 
     ListWrap,
     SearchNotice,
     UserBox,
-    SearchSet
+    SearchSet,
+    PagingBox,
+    Pagination,
+    NextBtn,
+    PrevBtn
  } from "./style"
 
 class UniversityProvider extends Component {
@@ -127,22 +135,6 @@ class UniversityProvider extends Component {
     }
 
     /*
-     *  state {Integer num}
-     *  state 값은 필수 값입니다.
-     *  전달받는 값은 {1: 대학교, 2: 음식점, 3: 사용자설정} 입니다.
-     *  대학교 검색 상태 메소드입니다.
-     */
-    onSearchState = (state) => {
-        this.setState({
-            keyword: "",
-            searchState: true,
-            storeState: state
-        });
-
-        this.removeAllChildNods();
-    }
-
-    /*
      *  사용자가 다시 검색할 수 있도록 설정하는 메소드입니다.
      */
     onState = () => {
@@ -158,14 +150,31 @@ class UniversityProvider extends Component {
      *  x, y 는 필수 값입니다.
      *  기본 대학교 검색 메소드입니다. 
      */
-    onSearch = (x, y) => {
+    onSearch = (x, y, uniName) => {
         this.props.categorySearch(x, y);
 
         this.setState({
             searchState: false
         });
 
+        this.props.getUniversity(uniName);
         this.props.hendleInitSearch();
+    }
+
+    /*
+     *  state {Integer num}
+     *  state 값은 필수 값입니다.
+     *  전달받는 값은 {1: 대학교, 2: 음식점, 3: 사용자설정} 입니다.
+     *  대학교 검색 상태 메소드입니다.
+     */
+    onSearchState = (state) => {
+        this.setState({
+            keyword: "",
+            searchState: true,
+            storeState: state
+        });
+
+        this.removeAllChildNods();
     }
 
     /*
@@ -230,7 +239,7 @@ class UniversityProvider extends Component {
                     uniPujjig = {university.uniPujjig}
                     categorySearch = {
                         storeState === 1 ?
-                        () => this.onSearch(university.x, university.y)
+                        () => this.onSearch(university.x, university.y, university.uniName)
                         :
                         storeState === 3 ?
                         () => this.onSearchSetting(university.x, university.y, university.uniName)
@@ -252,7 +261,7 @@ class UniversityProvider extends Component {
         }
 
         // universityList Get List View
-        universityContent = universityGet(filteredList);
+        universityContent = (keyword !== "") ? universityGet(filteredList) : null;
 
         return (
             <Fragment>
@@ -349,10 +358,25 @@ class UniversityProvider extends Component {
                         null
                     }
                     <div id="universityList"></div>
+                    <PagingBox>
+                        <Pagination></Pagination>
+                    </PagingBox>
                 </ListWrap>
             </Fragment>
         )
     }
 }
 
-export default UniversityProvider;
+UniversityProvider.propTypes = {
+    getUniversity: PropTypes.func.isRequired,
+    error: PropTypes.object.isRequired
+}
+
+const mapStateToProps = state => ({
+    error: state.errors
+});
+  
+export default connect(
+    mapStateToProps, 
+    { getUniversity }
+)(UniversityProvider);

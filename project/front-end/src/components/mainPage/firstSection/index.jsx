@@ -12,7 +12,9 @@ const FirstSection = ({
     <MainList
       initSearch={initSearch}
     >
-      <MainListContainer>
+      <MainListContainer
+        initSearch={initSearch}
+      >
         <UniversityProvider
           searchPlaces={searchPlaces}
           searchPlacesSetting={searchPlacesSetting}

@@ -262,51 +262,52 @@ export const Modal = styled.div`
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    margin-left: -300px;
+    margin-top: -330px;
     width: 100%;
-    max-width: 75rem;
-    border-radius: 0.1875rem;
+    max-width: 600px;
+    border-radius: 6px;
     background-color: white;
     box-shadow: 0px 3px 6px rgba(0,0,0,0.16);
     z-index: 10;
-    padding: 30px 40px;
 
     &.Modal-anim-enter {
         opacity: 0.00;
-        transform: translate(-50%, -50%) scale(0.7);
+        transform: scale(0.7);
         transition: all 0.2s;
     }
      &.Modal-anim-enter.Modal-anim-enter-active {
         opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
+        transform: scale(1);
     }
     &.Modal-anim-leave {
         opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
+        transform: scale(1);
         transition: all 0.2s;
     }  
     &.Modal-anim-leave.Modal-anim-leave-active {
         opacity: 0.00;
-        transform: translate(-50%, -50%) scale(0.7);
+        transform: scale(0.7);
     }
 `;
 export const ModalCloseBtn = styled.button`
     position: absolute;
-    right: 32px;
-    top: 32px;
+    right: 15px;
+    top: 20px;
     width: 32px;
     height: 32px;
     opacity: 0.3;
 
     &:hover {
-        opacity: 1;
+        opacity: 0.7;
     }
     &:before,
     &:after {
         position: absolute;
         left: 15px;
+        top: 0;
         content: ' ';
-        height: 33px;
+        height: 20px;
         width: 2px;
         background-color: #333;
     }
@@ -352,13 +353,24 @@ export const MainList = styled.div`
         `
         : 
         `
-            width: 300px
+            width: 300px;
         `
     }
 `;
 export const MainListContainer = styled.div`
-    width: 300px;
-    margin: 0 auto;
+    ${InitTransition}
+    ${
+        props => props.initSearch === true ?
+        `
+            width: 500px;
+            margin: 130px auto 0;
+        `
+        : 
+        `
+            width: 300px;
+            margin: 0 auto;
+        `
+    }
 `;
 export const MainMap = styled.div`
     width: calc(100% - 300px);

@@ -8,6 +8,11 @@ export const GET_PUGJJIG_VIEW = "GET_PUGJJIG_VIEW";
 export const GET_PUGJJIG_COUNT = "GET_PUGJJIG_COUNT";
 
 /*
+ * PUGJJIG TYPES
+ */
+export const GET_UNIVERSITY = "GET_UNIVERSITY";
+
+/*
  * BOARD_TASK TYPES
  */
 export const GET_BOARD_TASKS = "GET_BOARD_TASKS";

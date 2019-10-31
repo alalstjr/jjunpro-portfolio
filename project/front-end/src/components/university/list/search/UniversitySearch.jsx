@@ -43,6 +43,7 @@ const UniversitySearch = ({keyword, onChange, onState, onSearchState, onSearchSt
                     name="keyword"
                     value={keyword}
                     onChange={onChange}
+                    autoComplete="off"
                 />
                 <SearchInputBtn
                     onClick={(storeState === 2) ? onSearchStore : null}

@@ -5,11 +5,14 @@ import { ClearFix } from "../../style/globalStyles"
     Login Style
 ********************/
 export const LoginWrap = styled.div`
+    max-width: 300px;
+    margin: 0 auto;
     padding: 1.3125rem 2.3125rem;
+    margin-bottom: 20px;
 `;
 export const LoginLogo = styled.h1`
     text-align: center;
-    font-size: 25px;
+    font-size: 45px;
     font-weight: 600;
     padding: 10px 0 20px;
     color: ${props => props.theme.themeColorHover};
