@@ -266,7 +266,9 @@ class UniversityProvider extends Component {
         return (
             <Fragment>
                 <UserBox>
-                    <AccountBox/>
+                    <AccountBox
+                        initSearch={initSearch}
+                    />
                     <UniversitySearch
                         keyword={keyword}
                         onChange={this.onChange}
@@ -275,6 +277,7 @@ class UniversityProvider extends Component {
                         onSearchStore={this.onSearchStore}
                         searchState={searchState}
                         storeState={storeState}
+                        initSearch={initSearch}
                     />
                 </UserBox>
                 <ListWrap

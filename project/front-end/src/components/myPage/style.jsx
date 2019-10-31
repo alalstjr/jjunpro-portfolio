@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components"
-import { ClearFix } from "../../style/globalStyles"
+import { ClearFix, InitTransition } from "../../style/globalStyles"
 
 /*******************
     Login Style
@@ -11,11 +11,18 @@ export const LoginWrap = styled.div`
     margin-bottom: 20px;
 `;
 export const LoginLogo = styled.h1`
+    ${InitTransition}
     text-align: center;
-    font-size: 45px;
     font-weight: 600;
     padding: 10px 0 20px;
     color: ${props => props.theme.themeColorHover};
+
+    ${
+        props => props.initSearch ?
+        "font-size: 45px;"
+        :
+        "font-size: 25px;"
+    }
 `;
 export const LoginBtnCss = css`
     display: block;

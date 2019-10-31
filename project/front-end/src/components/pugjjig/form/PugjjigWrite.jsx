@@ -21,7 +21,10 @@ import {
     Rating,
     RatingMessage,
     RatingPointInput,
-    RatingPointLabel
+    RatingPointLabel,
+    TagWrap,
+    TagPart,
+    CloseBtn
 } from "../style"
 
 class PugjjigWrite extends Component {
@@ -35,6 +38,7 @@ class PugjjigWrite extends Component {
             uniContent: "",
             uniName: "",
             uniTag: ["arr1","arr2"],
+            uniTagText: "",
             uniStar: ""
         }
     }
@@ -90,14 +94,48 @@ class PugjjigWrite extends Component {
         this.props.pugjjigInsert(pugjjig);
     }
 
+    // 태그 메소드
+    handleTagEvent = (e) => {
+        const { uniTag, uniTagText } = this.state;
+        
+        if( (e.keyCode === 32 || e.keyCode === 13) && uniTagText ) {
+            let tagVal = uniTagText;
+
+            if( uniTag.filter( tag => tag === uniTagText ).length >= 1 ) {
+                return false;
+            }
+
+            this.setState({
+                uniTag: uniTag.concat(tagVal),
+                uniTagText: ""
+            });
+        }
+    }
+
+    handleTagRemove = (arg) => {
+        const { tagList } = this.state;
+        
+        this.setState({
+            tagList: tagList.filter( tag => tag !== arg)
+        });
+    }
+
     render() {
 
         const { 
             uniSubject, 
             uniContent,
             uniTag,
+            uniTagText,
             uniStar
         } = this.state;
+
+        const tags = uniTag.map((tag, index) => (
+            <TagPart key={index}>
+                {tag}
+                <CloseBtn onClick={ () => this.handleTagRemove(tag)} key={index} >X</CloseBtn>
+            </TagPart>
+        ));
 
         return (
             <Form
@@ -141,13 +179,17 @@ class PugjjigWrite extends Component {
                     </RatingWrap>
                     <FormGroup>
                         <Formlabel>태그</Formlabel>
-                        <InputClean
-                            id="uniTag"
-                            name="uniTag"
-                            type="text"
-                            value={uniTag}
-                            onChange={this.onChange}
-                        />
+                        <TagWrap>
+                            {tags}
+                            <InputClean
+                                id="uniTagText"
+                                name="uniTagText"
+                                type="text"
+                                value={uniTagText}
+                                onChange={this.onChange}
+                                onKeyDown={this.handleTagEvent}
+                            />
+                        </TagWrap>
                     </FormGroup>
                     <FormGroup>
                         <Formlabel>제목</Formlabel>

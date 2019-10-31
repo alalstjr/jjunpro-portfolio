@@ -16,9 +16,12 @@ class LoginBox extends Component {
     }
 
     render() {
+
+        const { initSearch } = this.props;
+
         return (
             <LoginWrap>
-                <LoginLogo>푹찍</LoginLogo>
+                <LoginLogo initSearch = {initSearch} >푹찍</LoginLogo>
                 {
                     this.props.user_info.data === undefined ?
                     <Fragment>

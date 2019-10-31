@@ -69,3 +69,23 @@ export const RatingPointLabel = styled.label`
         background: url(${require("../../static/images/icon/star.png")}) no-repeat center center;
     }
 `;
+export const TagWrap = styled.div`
+    padding: 8px;
+    border: 1px solid #ddd;
+    cursor: text;
+`;
+export const TagPart = styled.span`
+    border-radius: 3;
+    padding: 3px 0px 3px 10px;
+    background-color: ${props => props.theme.themeColor};
+    color: #fff;
+    font-weight: bold;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    display: inline-block;
+`;
+export const CloseBtn = styled.div`
+    float: right;
+    padding: 0 10px;
+    cursor: pointer;
+`;

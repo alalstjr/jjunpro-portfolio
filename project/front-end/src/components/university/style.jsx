@@ -10,8 +10,6 @@ export const ListWrap = styled.div`
     height: 100vh;
     position: fixed;
     top: 0;
-    width: 300px;
-    padding-top: 299px;
     background-color: #fff;
     ::-webkit-scrollbar {
         display:none;
@@ -21,11 +19,15 @@ export const ListWrap = styled.div`
         props => props.initSearch === true ?
         `
             left: 50%;
-            margin-left: -150px;
+            padding-top: 500px;
+            width: 500px;
+            margin-left: -250px;
         `
         :
         `
             left: 0;
+            padding-top: 334px;
+            width: 300px;
         `
     }
 `;
@@ -173,7 +175,7 @@ export const SwitchWrap = styled.div`
         content: "";
         position: absolute;
         width: 33.333%;
-        height: 27px;
+        height: 42px;
         background-color: ${props => props.theme.themeColor};
         top: 0;
         transition: 0.2s all ease;
@@ -203,8 +205,29 @@ export const SwitchBtn = styled.button.attrs({
     padding: 4px 0px;
     position: relative;
     z-index: 1;
-    transition: 0.2s all ease;
     width: 33.333%;
+    height: 42px;
+
+    > svg {
+        transition: all 0.2s ease-in-out;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-top: -14px;
+        margin-left: -11px;
+    }
+    
+    &:hover > div {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    ${
+        props => props.initSearch === true ?
+        "&:hover > svg {left: 30px;}"
+        :
+        "&:hover > svg {visibility: hidden;opacity: 0;}"
+    }
 `;
 export const SearchNotice = styled.div`
     text-align: center;
@@ -213,12 +236,17 @@ export const SearchNotice = styled.div`
 export const SearchSet = styled.div`
     border-bottom: 0.0625rem solid #e3e3e3;
 `;
+export const NoticeText = styled.div`
+    transition: all 0.2s ease-in-out;
+    visibility: hidden;
+    opacity: 0;
+    font-weight: 600;
+`;
 
 /*******************
     UserBox Style
 ********************/
 export const UserBox = styled.div`
-    border-bottom: 0.0625rem solid #e3e3e3;
     background-color: #fff;
     position: relative;
     z-index: 1;
