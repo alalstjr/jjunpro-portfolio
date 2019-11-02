@@ -2,7 +2,6 @@ package com.backend.project.controller;
 
 import com.backend.project.domain.Account;
 import com.backend.project.domain.University;
-import com.backend.project.dto.StoreDTO;
 import com.backend.project.dto.UniLikeDTO;
 import com.backend.project.dto.UniversitySaveDTO;
 import com.backend.project.projection.UniversityPublic;
@@ -21,9 +20,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -51,14 +50,22 @@ public class UniversityController {
     @PostMapping("")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<University> saveOrUpdate(
-            @Valid
-            @RequestBody UniversitySaveDTO dto,
+//            @Valid
+            @ModelAttribute(value = "pugjjigs") UniversitySaveDTO dto,
+            @RequestParam(value = "pugjjig") String asd,
             BindingResult bindingResult,
             Authentication authentication,
-            HttpServletRequest request
+            HttpServletRequest request,
+            @RequestParam(value = "files", required = true) MultipartFile files
     ) {
         String errorType = null;
         String errorText = null;
+
+        System.out.println("files");
+        System.out.println(files);
+
+        System.out.println("asd");
+        System.out.println(asd);
 
         // Field Check
         if(bindingResult.hasErrors()) {
@@ -70,13 +77,13 @@ public class UniversityController {
 
         if(!accountData.isPresent()) {
             errorType = "AuthenticationError";
-            errorText = "올바른 접근이 아닙니다.";
+            errorText = "잘못된 계정 접근입니다.";
             return webProcessRespone.webErrorRespone(errorType, errorText);
         }
 
         if(ipUtil.getUserIp(request).equals("0.0.0.0")) {
             errorType = "AuthenticationError";
-            errorText = "올바른 접근이 아닙니다.";
+            errorText = "잘못된 IP 정보 접근입니다.";
             return webProcessRespone.webErrorRespone(errorType, errorText);
         }
 
@@ -86,15 +93,15 @@ public class UniversityController {
             return webProcessRespone.webErrorRespone(errorType, errorText);
         }
 
-        StoreDTO storeDTO = new StoreDTO();
-
-        dto.setAccount(accountData.get());
-        dto.setUniIp(ipUtil.getUserIp(request));
-
-        University newUniversity = universityService.saveOrUpdate(dto, storeDTO);
-
-
-        return new ResponseEntity<University>(newUniversity, HttpStatus.CREATED);
+//        StoreDTO storeDTO = new StoreDTO();
+//
+//        dto.setAccount(accountData.get());
+//        dto.setUniIp(ipUtil.getUserIp(request));
+//
+//        University newUniversity = universityService.saveOrUpdate(dto, storeDTO);
+//
+//        return new ResponseEntity<University>(newUniversity, HttpStatus.CREATED);
+        return null;
     }
 
     // LKIE TRUE or FALSE

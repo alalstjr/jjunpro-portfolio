@@ -24,6 +24,8 @@ export const Form = styled.form`
 `;
 export const Content = styled.div`
     ${WrapPadding}
+    height: 540px;
+    overflow-y: scroll;
 `;
 export const RatingWrap = styled.div`
     

@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 
 import BoardHead from "../../header";
 import ListBtn from "../../bottom/listBtn"; 
-import FileDrop from "../../../widget/fileDrop";
+import FileDrop from "../../../widget/fileDrop/FileDrop";
 
 import { 
     Form, 

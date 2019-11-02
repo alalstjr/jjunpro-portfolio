@@ -28,8 +28,5 @@ public class File extends BaseDate {
     private String fileType;
 
     @Column(nullable = false)
-    private int fileDivision;
-
-    @Column(nullable = false)
-    private int fileDownload;
+    private String fileDivision;
 }

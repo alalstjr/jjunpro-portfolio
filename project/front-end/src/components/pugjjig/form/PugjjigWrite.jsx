@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import { connect } from "react-redux"
 
 import { pugjjigInsert } from "../../../actions/KakaoMapActions"
+import FileDrop from "../../widget/fileDrop/FileDrop"
 
 import { 
     InputClean, 
@@ -39,7 +40,11 @@ class PugjjigWrite extends Component {
             uniName: "",
             uniTag: ["arr1","arr2"],
             uniTagText: "",
-            uniStar: ""
+            uniStar: "",
+            // FileDrop 필수 state
+            files: [],
+            registerFiles: [],
+            fileCount: 0
         }
     }
 
@@ -66,6 +71,27 @@ class PugjjigWrite extends Component {
         });
     }
 
+    // File Setup
+    fileState = (target) => {
+        this.setState({
+            files: target.map(fileItem => fileItem),
+            fileCount: target.length
+        });
+    }
+
+    // registerFiles Setup
+    registerFileState = (file) => {
+        const { registerFiles, removeFiles } = this.state;
+        registerFiles.splice(registerFiles.indexOf(file), 1);
+
+        removeFiles.push(file.id)
+
+        this.setState({
+            registerFiles,
+            removeFiles
+        });
+    }
+
     // Form Submit
     onSubmit = (e) => {
         e.preventDefault();
@@ -75,6 +101,7 @@ class PugjjigWrite extends Component {
             uniContent,
             uniName,
             uniTag,
+            files
         } = this.state;
 
         const {
@@ -91,32 +118,34 @@ class PugjjigWrite extends Component {
             stoAddress
         };
         
-        this.props.pugjjigInsert(pugjjig);
+        this.props.pugjjigInsert(pugjjig, files);
     }
 
     // 태그 메소드
     handleTagEvent = (e) => {
         const { uniTag, uniTagText } = this.state;
         
-        if( (e.keyCode === 32 || e.keyCode === 13) && uniTagText ) {
-            let tagVal = uniTagText;
+        if(uniTag.length < 6) {
+            if( (e.keyCode === 32 || e.keyCode === 13) && uniTagText ) {
+                let tagVal = uniTagText;
 
-            if( uniTag.filter( tag => tag === uniTagText ).length >= 1 ) {
-                return false;
+                if( uniTag.filter( tag => tag === uniTagText ).length >= 1 ) {
+                    return false;
+                }
+
+                this.setState({
+                    uniTag: uniTag.concat(tagVal),
+                    uniTagText: ""
+                });
             }
-
-            this.setState({
-                uniTag: uniTag.concat(tagVal),
-                uniTagText: ""
-            });
         }
     }
 
     handleTagRemove = (arg) => {
-        const { tagList } = this.state;
+        const { uniTag } = this.state;
         
         this.setState({
-            tagList: tagList.filter( tag => tag !== arg)
+            uniTag: uniTag.filter( tag => tag !== arg)
         });
     }
 
@@ -127,7 +156,8 @@ class PugjjigWrite extends Component {
             uniContent,
             uniTag,
             uniTagText,
-            uniStar
+            uniStar,
+            registerFiles
         } = this.state;
 
         const tags = uniTag.map((tag, index) => (
@@ -208,6 +238,14 @@ class PugjjigWrite extends Component {
                             name="uniContent"
                             value={uniContent}
                             onChange={this.onChange}
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <Formlabel>사진</Formlabel>
+                        <FileDrop
+                            fileState={this.fileState}
+                            registerFileState={this.registerFileState}
+                            registerFiles={registerFiles}
                         />
                     </FormGroup>
                 </Content>

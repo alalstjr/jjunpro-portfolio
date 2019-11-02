@@ -41,8 +41,11 @@ public class University extends BaseEntity {
     @ManyToMany
     private Set<Account> uniLike = new HashSet<>();
 
+    @ManyToMany
+    private Set<File> files = new HashSet<>();
+
     @Builder
-    public University(String uniSubject, String uniContent, String uniName, String[] uniTag, Integer uniStar, Set<Account> uniLike, String uniIp, Account account) {
+    public University(String uniSubject, String uniContent, String uniName, String[] uniTag, Integer uniStar, Set<Account> uniLike, String uniIp, Account account, Set<File> files) {
         this.uniSubject = uniSubject;
         this.uniContent = uniContent;
         this.uniName = uniName;
@@ -51,5 +54,6 @@ public class University extends BaseEntity {
         this.uniLike = uniLike;
         this.uniIp = uniIp;
         this.account = account;
+        this.files = files;
     }
 }
