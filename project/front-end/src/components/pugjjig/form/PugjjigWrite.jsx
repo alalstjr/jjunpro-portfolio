@@ -115,7 +115,8 @@ class PugjjigWrite extends Component {
             uniName,
             uniTag,
             stoId,
-            stoAddress
+            stoAddress,
+            files
         };
         
         this.props.pugjjigInsert(pugjjig, files);

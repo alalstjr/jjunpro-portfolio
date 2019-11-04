@@ -1,6 +1,7 @@
 package com.backend.project.dto;
 
 import com.backend.project.domain.Account;
+import com.backend.project.domain.File;
 import com.backend.project.domain.University;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import org.hibernate.annotations.Type;
 import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -44,6 +46,8 @@ public class UniversitySaveDTO {
 
     @Column(nullable = false)
     private String stoAddress;
+
+    private Set<File> files = new HashSet<>();
 
     public University toEntity() {
         return University.builder()

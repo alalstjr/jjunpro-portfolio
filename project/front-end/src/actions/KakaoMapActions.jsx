@@ -13,7 +13,7 @@ import {
 ****************************************/
 
 // 푹찍 리뷰 작성
-export const pugjjigInsert = (pugjjig, files) => {
+export const pugjjigInsert = (pugjjig, files) => async dispatch => {
 
     const formData = new FormData();
     const config = {
@@ -26,16 +26,16 @@ export const pugjjigInsert = (pugjjig, files) => {
         }
     };
 
+    formData.append("pugjjig", pugjjig);
+    
     files.forEach(function(file) {
         formData.append('files', file);
     });
-
-    formData.append("pugjjig", pugjjig);
     
     // 유저 JWT Token정보
     USER_AUTH();
 
-    axios.post(`${SERVER_URL}/api/university`, formData, config)
+    await axios.post(`${SERVER_URL}/api/university`, pugjjig)
     .then(res => {
         console.log(res);
     }).catch(error => {

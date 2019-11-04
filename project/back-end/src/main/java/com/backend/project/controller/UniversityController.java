@@ -20,9 +20,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -50,22 +50,20 @@ public class UniversityController {
     @PostMapping("")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<University> saveOrUpdate(
-//            @Valid
-            @ModelAttribute(value = "pugjjigs") UniversitySaveDTO dto,
-            @RequestParam(value = "pugjjig") String asd,
+            @Valid
+            @RequestBody UniversitySaveDTO dto,
             BindingResult bindingResult,
             Authentication authentication,
-            HttpServletRequest request,
-            @RequestParam(value = "files", required = true) MultipartFile files
+            HttpServletRequest request
     ) {
         String errorType = null;
         String errorText = null;
 
-        System.out.println("files");
-        System.out.println(files);
+//        System.out.println("files");
+//        System.out.println(files[0].getContentType());
 
-        System.out.println("asd");
-        System.out.println(asd);
+        System.out.println("dto");
+        System.out.println(dto.getFiles());
 
         // Field Check
         if(bindingResult.hasErrors()) {
