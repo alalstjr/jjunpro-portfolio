@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -42,10 +43,10 @@ public class University extends BaseEntity {
     private Set<Account> uniLike = new HashSet<>();
 
     @ManyToMany
-    private Set<File> files = new HashSet<>();
+    private List<File> files;
 
     @Builder
-    public University(String uniSubject, String uniContent, String uniName, String[] uniTag, Integer uniStar, Set<Account> uniLike, String uniIp, Account account, Set<File> files) {
+    public University(String uniSubject, String uniContent, String uniName, String[] uniTag, Integer uniStar, Set<Account> uniLike, String uniIp, Account account, List<File> files) {
         this.uniSubject = uniSubject;
         this.uniContent = uniContent;
         this.uniName = uniName;

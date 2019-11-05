@@ -7,11 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -47,7 +48,9 @@ public class UniversitySaveDTO {
     @Column(nullable = false)
     private String stoAddress;
 
-    private Set<File> files = new HashSet<>();
+    private List<File> fileData;
+
+    private MultipartFile[] files;
 
     public University toEntity() {
         return University.builder()
@@ -59,6 +62,7 @@ public class UniversitySaveDTO {
                 .uniLike(uniLike)
                 .uniIp(uniIp)
                 .account(account)
+                .files(fileData)
                 .build();
     }
 }

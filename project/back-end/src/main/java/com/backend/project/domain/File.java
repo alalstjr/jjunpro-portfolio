@@ -1,6 +1,7 @@
 package com.backend.project.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,7 +17,7 @@ public class File extends BaseDate {
 
     @Id
     @GeneratedValue
-    private String id;
+    private Long id;
 
     @Column(nullable = false)
     private String fileName;
@@ -28,5 +29,14 @@ public class File extends BaseDate {
     private String fileType;
 
     @Column(nullable = false)
-    private String fileDivision;
+    private Integer fileDivision;
+
+    @Builder
+    public File(Long id, String fileName, long fileSize, String fileType, Integer fileDivision) {
+        this.id = id;
+        this.fileName = fileName;
+        this.fileSize = fileSize;
+        this.fileType = fileType;
+        this.fileDivision = fileDivision;
+    }
 }

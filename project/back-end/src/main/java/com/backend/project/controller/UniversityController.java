@@ -1,12 +1,15 @@
 package com.backend.project.controller;
 
 import com.backend.project.domain.Account;
+import com.backend.project.domain.File;
 import com.backend.project.domain.University;
+import com.backend.project.dto.StoreDTO;
 import com.backend.project.dto.UniLikeDTO;
 import com.backend.project.dto.UniversitySaveDTO;
 import com.backend.project.projection.UniversityPublic;
 import com.backend.project.respone.WebProcessRespone;
 import com.backend.project.service.AccountServiceImpl;
+import com.backend.project.service.FileStorageServiceImpl;
 import com.backend.project.service.UniversityServiceImpl;
 import com.backend.project.util.AccountUtill;
 import com.backend.project.util.IpUtil;
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -38,6 +42,9 @@ public class UniversityController {
     AccountServiceImpl accountService;
 
     @Autowired
+    FileStorageServiceImpl fileStorageService;
+
+    @Autowired
     private WebProcessRespone webProcessRespone;
 
     @Autowired
@@ -50,20 +57,13 @@ public class UniversityController {
     @PostMapping("")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<University> saveOrUpdate(
-            @Valid
-            @RequestBody UniversitySaveDTO dto,
+             @Valid @ModelAttribute UniversitySaveDTO dto,
             BindingResult bindingResult,
             Authentication authentication,
             HttpServletRequest request
     ) {
         String errorType = null;
         String errorText = null;
-
-//        System.out.println("files");
-//        System.out.println(files[0].getContentType());
-
-        System.out.println("dto");
-        System.out.println(dto.getFiles());
 
         // Field Check
         if(bindingResult.hasErrors()) {
@@ -91,15 +91,20 @@ public class UniversityController {
             return webProcessRespone.webErrorRespone(errorType, errorText);
         }
 
-//        StoreDTO storeDTO = new StoreDTO();
-//
-//        dto.setAccount(accountData.get());
-//        dto.setUniIp(ipUtil.getUserIp(request));
-//
-//        University newUniversity = universityService.saveOrUpdate(dto, storeDTO);
-//
-//        return new ResponseEntity<University>(newUniversity, HttpStatus.CREATED);
-        return null;
+        // 첨부파일이 존재하는 경우 파일 업로드 메소드
+        if(dto.getFiles().length > 0) {
+            List<File> fileData = fileStorageService.uploadMultipleFiles(dto.getFiles());
+            dto.setFileData(fileData);
+        }
+
+        StoreDTO storeDTO = new StoreDTO();
+
+        dto.setAccount(accountData.get());
+        dto.setUniIp(ipUtil.getUserIp(request));
+
+        University newUniversity = universityService.saveOrUpdate(dto, storeDTO);
+
+        return new ResponseEntity<University>(newUniversity, HttpStatus.CREATED);
     }
 
     // LKIE TRUE or FALSE

@@ -18,6 +18,7 @@ export const pugjjigInsert = (pugjjig, files) => async dispatch => {
     const formData = new FormData();
     const config = {
         headers: {
+            'Accept': 'application/json',
             'content-type': 'multipart/form-data'
         },
         // File Upload 진행상황
@@ -26,16 +27,22 @@ export const pugjjigInsert = (pugjjig, files) => async dispatch => {
         }
     };
 
-    formData.append("pugjjig", pugjjig);
+    // pugjjig form 데이터
+    formData.append("uniSubject", pugjjig.uniSubject);
+    formData.append("uniContent", pugjjig.uniContent);
+    formData.append("uniName", pugjjig.uniName);
+    formData.append("uniTag", pugjjig.uniTag);
+    formData.append("stoId", pugjjig.stoId);
+    formData.append("stoAddress", pugjjig.stoAddress);
     
     files.forEach(function(file) {
-        formData.append('files', file);
+        formData.append('files', file); 
     });
     
     // 유저 JWT Token정보
     USER_AUTH();
 
-    await axios.post(`${SERVER_URL}/api/university`, pugjjig)
+    await axios.post(`${SERVER_URL}/api/university`, formData, config)
     .then(res => {
         console.log(res);
     }).catch(error => {
