@@ -9,7 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,7 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class FileStorageServiceImpl {
+public class FileStorageServiceImpl implements FileStorageService{
 
     private final Path fileStorageLocation;
 
@@ -46,6 +50,7 @@ public class FileStorageServiceImpl {
         }
     }
 
+    @Override
     public List<File> uploadMultipleFiles(MultipartFile[] files) {
 
         // 서버로 받은 파일'들'을 List로 변환하여 하나씩 서버로 업로드 합니다.
@@ -57,6 +62,7 @@ public class FileStorageServiceImpl {
         return fileResult;
     }
 
+    @Override
     public File uploadFile(MultipartFile file) {
         /*
          * 파일 이름 표준화
@@ -86,8 +92,8 @@ public class FileStorageServiceImpl {
 
             // DB Save Code
             File dbFile = File.builder()
-                    .fileName(file.getName())
-                    .fileType(file.getContentType())
+                    .filename(file.getName())
+                    .fileType(fileType)
                     .fileSize(file.getSize())
                     .fileDivision(fileDivision)
                     .build();
@@ -109,5 +115,41 @@ public class FileStorageServiceImpl {
         } catch (IOException e) {
             throw new StoreFileException("파일 " + fileName + " 를 저장할 수 없습니다.", e);
         }
+    }
+
+    // BufferedImage croppedImage = cropImageSquare(file.getBytes());
+    private BufferedImage cropImageSquare(byte[] image) throws IOException {
+        // 바이트 배열에서 BufferedImage 객체를 가져옵니다.
+        InputStream in = new ByteArrayInputStream(image);
+        BufferedImage originalImage = ImageIO.read(in);
+
+        // 이미지 치수 얻기
+        int height = originalImage.getHeight();
+        int width = originalImage.getWidth();
+
+        // 이미지가 이미 정사각형인지 확인합니다.
+        if (height == width) {
+            return originalImage;
+        }
+
+        // 정사각형의 크기를 계산합니다.
+        int squareSize = (height > width ? width : height);
+
+        // 이미지 중간 좌표
+        int xc = width / 2;
+        int yc = height / 2;
+
+        // Crop
+        BufferedImage croppedImage = originalImage.getSubimage(
+                xc - (squareSize / 2), // x coordinate of the upper-left corner
+                yc - (squareSize / 2), // y coordinate of the upper-left corner
+                squareSize,            // widht
+                squareSize             // height
+        );
+
+        // 파일 crop 참고 링크
+        // https://blog.netgloo.com/2015/03/03/spring-boot-crop-uploaded-image/
+
+        return croppedImage;
     }
 }

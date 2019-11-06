@@ -65,7 +65,8 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
                                             u.getAccount().getId(),
                                             u.getAccount().getNickname(),
                                             u.getUniLike().size(),
-                                            u.getUniLike().contains(account)
+                                            u.getUniLike().contains(account),
+                                            u.getFiles()
                                     )
                                 ).collect(Collectors.toList())
                         )

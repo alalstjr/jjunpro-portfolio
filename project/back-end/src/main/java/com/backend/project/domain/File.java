@@ -20,7 +20,7 @@ public class File extends BaseDate {
     private Long id;
 
     @Column(nullable = false)
-    private String fileName;
+    private String filename;
 
     @Column(nullable = false)
     private long fileSize;
@@ -32,9 +32,9 @@ public class File extends BaseDate {
     private Integer fileDivision;
 
     @Builder
-    public File(Long id, String fileName, long fileSize, String fileType, Integer fileDivision) {
+    public File(Long id, String filename, long fileSize, String fileType, Integer fileDivision) {
         this.id = id;
-        this.fileName = fileName;
+        this.filename = filename;
         this.fileSize = fileSize;
         this.fileType = fileType;
         this.fileDivision = fileDivision;
