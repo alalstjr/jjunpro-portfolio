@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
+import { withRouter } from "react-router-dom"
 
 import { pugjjigInsert } from "../../../actions/KakaoMapActions"
 import FileDrop from "../../widget/fileDrop/FileDrop"
@@ -38,13 +39,15 @@ class PugjjigWrite extends Component {
             uniSubject: "",
             uniContent: "",
             uniName: "",
-            uniTag: ["arr1","arr2"],
+            uniTag: [],
             uniTagText: "",
             uniStar: "",
             // FileDrop 필수 state
             files: [],
             registerFiles: [],
-            fileCount: 0
+            fileCount: 0,
+            // inset state
+            insetSuccess: false
         }
     }
 
@@ -60,6 +63,13 @@ class PugjjigWrite extends Component {
         if (nextProps.pugjjig_university !== this.props.pugjjig_university) {
             this.setState({
                 uniName: nextProps.pugjjig_university
+            });
+        }
+
+        // 푹찍 게시물 작성이 완료되었는지 확인합니다.
+        if (nextProps.pugjjig_state !== this.props.pugjjig_state) {
+            this.setState({
+                insetSuccess: true
             });
         }
     }
@@ -117,8 +127,9 @@ class PugjjigWrite extends Component {
             stoId,
             stoAddress
         };
+        console.log(this.props.history);
         
-        this.props.pugjjigInsert(pugjjig, files);
+        this.props.pugjjigInsert(pugjjig, files, this.props.history);
     }
 
     // 태그 메소드
@@ -262,15 +273,17 @@ class PugjjigWrite extends Component {
 PugjjigWrite.propTypes = {
     pugjjigInsert: PropTypes.func.isRequired,
     pugjjig_university: PropTypes.string.isRequired,
+    pugjjig_state: PropTypes.bool.isRequired,
     error: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
     error: state.errors,
-    pugjjig_university: state.pugjjig.pugjjig_university
+    pugjjig_university: state.pugjjig.pugjjig_university,
+    pugjjig_state: state.pugjjig.pugjjig_state
 });
   
-export default connect(
+export default withRouter(connect(
     mapStateToProps, 
     { pugjjigInsert }
-)(PugjjigWrite);
+)(PugjjigWrite));

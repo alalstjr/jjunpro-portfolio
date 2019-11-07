@@ -13,7 +13,7 @@ import {
 ****************************************/
 
 // 푹찍 리뷰 작성
-export const pugjjigInsert = (pugjjig, files) => async dispatch => {
+export const pugjjigInsert = (pugjjig, files, history) => async dispatch => {
 
     const formData = new FormData();
     const config = {
@@ -44,7 +44,7 @@ export const pugjjigInsert = (pugjjig, files) => async dispatch => {
 
     await axios.post(`${SERVER_URL}/api/university`, formData, config)
     .then(res => {
-        console.log(res);
+        history.push(`/pugjjig/${res.data.id}`);
     }).catch(error => {
         console.log(error);
     });

@@ -92,7 +92,7 @@ public class UniversityController {
         }
 
         // 첨부파일이 존재하는 경우 파일 업로드 메소드
-        if(dto.getFiles().length > 0) {
+        if(dto.getFiles() != null) {
             List<File> fileData = fileStorageService.uploadMultipleFiles(dto.getFiles());
             dto.setFileData(fileData);
         }

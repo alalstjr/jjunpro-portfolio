@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react"
 import Item from "../../../components/pugjjig/list/item/Item"
+import { PugjjigItemWrap } from "../style"
 
 class List extends Component {
 
@@ -18,7 +19,11 @@ class List extends Component {
 
     render() {
         // props Init
-        const { pugjjigLike, pugjjig_list, pugjjig_like } = this.props;
+        const { 
+            pugjjigLike, 
+            pugjjig_list, 
+            pugjjig_like 
+        } = this.props;
 
         // Variables Init
         let pugjjigContent;
@@ -60,9 +65,9 @@ class List extends Component {
         pugjjigContent = pugjjigGet(pugjjig_list);
 
         return (
-            <Fragment>
+            <PugjjigItemWrap>
                 {pugjjigContent}
-            </Fragment>
+            </PugjjigItemWrap>
         )
     }
 }

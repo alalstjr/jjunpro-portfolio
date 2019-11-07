@@ -91,3 +91,57 @@ export const CloseBtn = styled.div`
     padding: 0 10px;
     cursor: pointer;
 `;
+
+/*******************
+    Item Style
+********************/
+export const PugjjigItemWrap = styled.ul`
+    overflow-y: scroll;
+    height: 100%;
+`;
+export const PugjjigItem = styled.li`
+    padding: 10px;
+    background-color: #fff;
+    margin-bottom: 10px;
+    border-radius: 3px;
+`;
+export const ItemHead = styled.div`
+    ${ClearFix}
+    position: relative;
+`;
+export const ItemUserPhoto = styled.div`
+    width: 38px;
+    height: 38px;
+    background-color: #333;
+    border-radius: 50%;
+    float: left;
+`;
+export const ItemRight = styled.div`
+    float: left;
+    width: calc(100% - 38px);
+    padding-left: 10px;
+`;
+export const ItemUsername = styled.div`
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 300;
+`;
+export const ItemUserInfo = styled.div`
+`;
+export const ItemStar = styled.div`
+    position: absolute;
+    right: 15px;
+    top: 10px;
+`;
+export const ItemSubject = styled.div`
+`;
+export const ItemContent = styled.div`
+`;
+export const ItemImgBox = styled.div`
+`;
+export const ItemTagWrap = styled.div`
+`;
+export const ItemStateWrap = styled.div`
+`;
+export const ItemState = styled.div`
+`;

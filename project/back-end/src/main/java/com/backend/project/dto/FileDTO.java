@@ -14,6 +14,7 @@ public class FileDTO {
     private String fileType;
     private long fileSize;
     private Integer fileDivision;
+    private String fileThumbnail;
 
     public File toEntity() {
         return File.builder()
@@ -22,6 +23,7 @@ public class FileDTO {
                 .fileType(fileType)
                 .fileSize(fileSize)
                 .fileDivision(fileDivision)
+                .fileThumbnail(fileThumbnail)
                 .build();
     }
 }

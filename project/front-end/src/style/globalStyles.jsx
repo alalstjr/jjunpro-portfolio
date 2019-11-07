@@ -263,13 +263,15 @@ export const Modal = styled.div`
     top: 50%;
     left: 50%;
     margin-left: -300px;
-    margin-top: -330px;
+    margin-top: -45vh;
     width: 100%;
     max-width: 600px;
     border-radius: 6px;
-    background-color: white;
     box-shadow: 0px 3px 6px rgba(0,0,0,0.16);
     z-index: 10;
+    height: 90vh;
+    background-color: #f3f3f3;
+    padding: 10px;
 
     &.Modal-anim-enter {
         opacity: 0.00;

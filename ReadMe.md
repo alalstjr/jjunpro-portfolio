@@ -17,6 +17,8 @@
 - [2. request로 IP 받기](#request로-IP-받기)
 - [3. 현재 로그인한 사용자 정보받기](#현재-로그인한-사용자-정보받기)
 
+- [1. File Upload 이미지 crop 방법](File-Upload-이미지-crop-방법)
+
 # JPA, Security 초기 셋팅
 
 > src/java/domain/Account.java
@@ -409,6 +411,23 @@ https://itstory.tk/entry/Spring-Security-%ED%98%84%EC%9E%AC-%EB%A1%9C%EA%B7%B8%E
 
 https://medium.com/@SlackBeck/%ED%95%98%EC%9D%B4%EB%B2%84%EB%84%A4%EC%9D%B4%ED%8A%B8%EB%8A%94-%EC%96%B4%EB%96%BB%EA%B2%8C-%EC%9E%90%EB%8F%99-%ED%82%A4-%EC%83%9D%EC%84%B1-%EC%A0%84%EB%9E%B5%EC%9D%84-%EA%B2%B0%EC%A0%95%ED%95%98%EB%8A%94%EA%B0%80-75dfa89939d1 - [하이버네이트-ID값-생성-전략]
 
+# File Upload 이미지 crop 방법
+
+파일 crop 참고 링크
+https://blog.netgloo.com/2015/03/03/spring-boot-crop-uploaded-image/
+
+How to get an InputStream from a BufferedImage?
+변환된 이미지를 파일로 바꾸는 방법
+https://stackoverflow.com/questions/649186/how-to-get-an-inputstream-from-a-bufferedimage
+
+이미지 파일 비율로 자르는 방법 - 이미지 비율이 아닌 전체적인 틀이 잘림
+https://stackoverflow.com/questions/50562388/how-to-crop-image-in-java
+
+고정 너비 및 높이로 Java 이미지 크기 조정 예제
+https://memorynotfound.com/java-resize-image-fixed-width-height-example/
+
+파일 높이 넓이 조정
+https://stackoverflow.com/questions/10245220/java-image-resize-maintain-aspect-ratio
 
 # 임시 정리 주소
 
