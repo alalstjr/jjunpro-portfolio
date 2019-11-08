@@ -34,7 +34,7 @@ public class UniversitySaveDTO {
 
     private String[] uniTag;
 
-    private Integer uniStar = 0;
+    private Integer uniStar;
 
     private Set<Account> uniLike;
 

@@ -27,6 +27,8 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
 
     private QUniversity qUniversity = QUniversity.university;
 
+    private QFile qFile = QFile.file;
+
     @Override
     public Long findByUniCount(String stoId) {
 
@@ -45,7 +47,11 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
         Map<Store, List<University>> transform = queryFactory
                 .from(qStore)
                 .leftJoin(qStore.stoUniList, qUniversity)
-                .where(qUniversity.publicStatus.eq(true).and(qUniversity.controlStatus.eq(false)).and(qStore.stoId.eq(storeId)))
+                .where(
+                        qUniversity.publicStatus.eq(true)
+                                .and(qUniversity.controlStatus.eq(false))
+                                .and(qStore.stoId.eq(storeId))
+                )
                 .transform(groupBy(qStore).as(list(qUniversity)));
 
         List<StorePublic> results = transform.entrySet().stream()
