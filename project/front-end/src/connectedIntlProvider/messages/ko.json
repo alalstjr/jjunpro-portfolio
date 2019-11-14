@@ -1,0 +1,10 @@
+{
+  "TEST.message": "hello world",
+  "HOME.FIRST.subtitle": "테스트",
+  "HEADER.UTILNAV.login": "로그인",
+  "HEADER.UTILNAV.logout": "로그아웃",
+  "HEADER.UTILNAV.singUp": "회원가입",
+  "HEADER.UTILNAV.reservation": "나의예약",
+  "HEADER.UTILNAV.wishList": "위시리스트",
+  "HEADER.UTILNAV.search": "검색"
+}

@@ -1,0 +1,52 @@
+{
+  "name": "front-end",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.19.0",
+    "ra-data-json-server": "^2.9.6",
+    "react": "^16.8.6",
+    "react-addons-css-transition-group": "^15.6.2",
+    "react-admin": "^2.9.6",
+    "react-dom": "^16.8.6",
+    "react-intl": "^2.9.0",
+    "react-redux": "^7.1.1",
+    "react-router-dom": "^5.0.1",
+    "react-scripts": "3.0.1",
+    "redux": "^4.0.4",
+    "redux-form": "^8.2.6",
+    "redux-thunk": "^2.3.0",
+    "scriptjs": "^2.5.9"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "filepond": "^4.4.9",
+    "filepond-plugin-image-exif-orientation": "^1.0.6",
+    "filepond-plugin-image-preview": "^4.2.1",
+    "react-dropzone": "^10.1.5",
+    "react-filepond": "^7.0.1",
+    "react-scrollreveal": "^1.2.0",
+    "react-slick": "^0.24.0",
+    "styled-components": "^4.3.1"
+  }
+}
