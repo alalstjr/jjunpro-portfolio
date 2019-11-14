@@ -108,6 +108,7 @@ export const PugjjigItem = styled.li`
 export const ItemHead = styled.div`
     ${ClearFix}
     position: relative;
+    margin-bottom: 10px;
 `;
 export const ItemUserPhoto = styled.div`
     width: 38px;
@@ -130,18 +131,72 @@ export const ItemUserInfo = styled.div`
 `;
 export const ItemStar = styled.div`
     position: absolute;
-    right: 15px;
-    top: 10px;
+    right: 0px;
+    top: 0px;
 `;
 export const ItemSubject = styled.div`
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 26px;
 `;
 export const ItemContent = styled.div`
+    margin-bottom: 5px;
 `;
 export const ItemImgBox = styled.div`
+    ${ClearFix}
 `;
 export const ItemTagWrap = styled.div`
 `;
 export const ItemStateWrap = styled.div`
 `;
 export const ItemState = styled.div`
+    line-height: 10px;
+`;
+export const ImgList = styled.div`
+    width: calc(100% / 3 - 3px);
+    margin-right: 4px;
+    float: left;
+
+    > img {
+        width: 100%;
+    }
+
+    &:last-child {
+        margin-right: 0;
+    }
+`;
+export const ItemTag = styled.div`
+    color: #003569;
+    display: inline-block;
+    margin-right: 3px;
+`;
+export const ItemDetailWrap = styled.div`
+    ${ClearFix}
+    padding-top: 5px;
+    color: #999;
+`;
+export const ItemDetail = styled.div`
+    float: left;
+`;
+export const ItemDate = styled.div`
+    float: right;
+`;
+export const ItemBottom = styled.div`
+    border-top: 1px solid #eee;
+    padding-top: 5px;
+    margin-top: 5px;
+`;
+export const ItemLikeBtn = styled.button.attrs({
+    type: "button"
+})`
+    margin-right: 10px;
+    color: #999;
+    > svg {
+        float: left;
+        margin-top: 2px;
+        margin-right: 5px;
+    }
+`;  
+export const ItemLikeText = styled.div`
+    float: left;
 `;
