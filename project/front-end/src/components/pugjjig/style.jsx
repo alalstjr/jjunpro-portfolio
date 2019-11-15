@@ -197,6 +197,7 @@ export const ItemLikeBtn = styled.button.attrs({
         margin-right: 5px;
     }
 `;  
+
 export const ItemLikeText = styled.div`
     float: left;
-`;  
+`;
