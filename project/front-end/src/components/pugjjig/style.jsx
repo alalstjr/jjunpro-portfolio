@@ -200,4 +200,4 @@ export const ItemLikeBtn = styled.button.attrs({
 
 export const ItemLikeText = styled.div`
     float: left;
-`;
+`; 
