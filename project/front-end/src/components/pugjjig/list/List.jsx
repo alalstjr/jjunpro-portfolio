@@ -32,7 +32,10 @@ class List extends Component {
         // pugjjigList
         const pugjjigGet = (pugjjig) => {
             if(pugjjig.data !== undefined) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> d119cadf0eabc66e758c090063508688a18bf004
                 const data = pugjjig.data.map(pugjjig => (
                     <Item 
                         key = {pugjjig.id}

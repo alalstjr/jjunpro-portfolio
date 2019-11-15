@@ -111,8 +111,12 @@ class PugjjigWrite extends Component {
             uniContent,
             uniName,
             uniTag,
+<<<<<<< HEAD
             uniStar,
             files,
+=======
+            files
+>>>>>>> d119cadf0eabc66e758c090063508688a18bf004
         } = this.state;
 
         const {
@@ -125,10 +129,17 @@ class PugjjigWrite extends Component {
             uniContent,
             uniName,
             uniTag,
+<<<<<<< HEAD
             uniStar: uniStar*1,
             stoId,
             stoAddress
         };
+=======
+            stoId,
+            stoAddress
+        };
+        console.log(this.props.history);
+>>>>>>> d119cadf0eabc66e758c090063508688a18bf004
         
         this.props.pugjjigInsert(pugjjig, files, this.props.history);
     }
