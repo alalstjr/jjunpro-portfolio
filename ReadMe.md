@@ -17,7 +17,8 @@
 - [2. request로 IP 받기](#request로-IP-받기)
 - [3. 현재 로그인한 사용자 정보받기](#현재-로그인한-사용자-정보받기)
 
-- [1. File Upload 이미지 crop 방법](File-Upload-이미지-crop-방법)
+- [1. Java File Upload 이미지 crop 방법](#File-Upload-이미지-crop-방법)
+- [2. Java Stream List Map Sorted Comparable](#Stream-List-Map-정렬-방법)
 
 # JPA, Security 초기 셋팅
 
@@ -428,6 +429,118 @@ https://memorynotfound.com/java-resize-image-fixed-width-height-example/
 
 파일 높이 넓이 조정
 https://stackoverflow.com/questions/10245220/java-image-resize-maintain-aspect-ratio
+
+# Stream List Map 정렬 방법
+
+간단한 코드 예제로 확인해 보면
+
+~~~
+Map<Store, List<University>> transform = queryFactory
+        .from(qStore)
+        .leftJoin(qStore.stoUniList, qUniversity)
+        .where(
+                qUniversity.publicStatus.eq(true)
+                        .and(qUniversity.controlStatus.eq(false))
+                        .and(qStore.stoId.eq(storeId))
+        )
+        .transform(groupBy(qStore).as(list(qUniversity)));
+~~~
+
+Store 객체의 University 객체를 Map에 담아서 반환합니다.
+지금까지는 데이터가 무작위로 Map으로 반환됩니다.
+
+하지만 결과는 qUniversity.uniLike 의 가장 많은 숫자 순서대로 결과를 나열하는 정렬 조건입니다.
+
+~~~
+List<StorePublic> results = transform.entrySet().stream()
+        .map(
+                s -> new StorePublic(
+                        s.getKey().getId(),
+                        s.getKey().getStoUniList().stream().map(
+                            u -> new UniversityPublic(
+                                    u.getId(),
+                                    u.getUniSubject(),
+                                    u.getUniContent(),
+                                    u.getUniName(),
+                                    u.getUniTag(),
+                                    u.getUniStar(),
+                                    u.getUniIp(),
+                                    u.getModifiedDate(),
+                                    u.getAccount().getId(),
+                                    u.getAccount().getNickname(),
+                                    u.getUniLike().size(),
+                                    u.getUniLike().contains(account),
+                                    u.getFiles()
+                            )
+                        ).collect(Collectors.toList())
+                )
+        )
+        .collect(Collectors.toList());
+~~~
+
+위 코드는 전달받은 List를 StorePublic, UniversityPublic 객체로 담아서 
+Map 형태를 Collectors.toList List 형태로 바꿔주는 stream 기능 메소드입니다.
+지금의 코드는 무작위로 List에 담아서 반환합니다. 여기서 필요한것은 sorted() 를 활용하는 것입니다.
+
+~~~
+                        ... 생략
+                            u.getUniLike().contains(account),
+                    )
+                ).sorted().collect(Collectors.toList())
+        )
+)
+.collect(Collectors.toList());
+~~~
+
+sorted() 메소드만 추가한 상태로 실행한다면 아래와 같은 오류가 발생합니다.
+
+~~~
+class com.backend.project.projection.UniversityPublic cannot be cast to class java.lang.Comparable (com.backend.project.projection.UniversityPublic is in unnamed module of loader 'app'; java.lang.Comparable is in module java.base of loader 'bootstrap')
+~~~
+
+UniversityPublic 클래스에 Comparable 상속받고있지 않아 발생하는 오류입니다.
+
+~~~
+public class UniversityPublic implements Comparable<UniversityPublic> {
+
+    ... 생략
+    private Integer uniLike;
+
+    @Override
+    public int compareTo(UniversityPublic o) {
+        return Integer.compare(this.uniLike, o.getUniLike());
+    }
+} 
+
+`Comparable<UniversityPublic> 상속`받고 필수 메소드인 `compareTo를 오버라이드` 해줍니다.
+compareTo는 정렬 기준을 직접 만들 수 있습니다.
+위 코드는 uniLike 를 기준으로 정렬한다는 메소드입니다.
+
+만약 객체를 `기본 비교(Comparable) 방법으로 정렬`하고 싶다면 아래와 같이 사용할 수 있다.
+
+~~~
+                        ... 생략
+                            u.getUniLike().contains(account),
+                    )
+                ).sorted(Comparator.naturalOrder()).collect(Collectors.toList())
+        )
+)
+.collect(Collectors.toList());
+~~~
+
+기본 비교(Comparable) `역순으로 정렬`하고 싶다면 아래와 같이 사용
+
+~~~
+                        ... 생략
+                            u.getUniLike().contains(account),
+                    )
+                ).sorted(Comparator.reverseOrder()).collect(Collectors.toList())
+        )
+)
+.collect(Collectors.toList());
+~~~
+
+https://cornswrold.tistory.com/298 - [JAVA-Stream-정렬(sorted())]
 
 # 임시 정리 주소
 

@@ -234,15 +234,7 @@ export const ListUl = styled.ul`
 /****************************************
     Modal Style
 ****************************************/
-export const ModalOverlay = styled.div`
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background-color: rgba(0,0,0,0.6);
-    z-index: 9;
-
+export const ModalActive = css`
     &.Modal-anim-enter {
         opacity: 0.00;
         transition: all 0.2s;
@@ -258,56 +250,49 @@ export const ModalOverlay = styled.div`
         opacity: 0.00;
     }
 `;
-export const Modal = styled.div`
+export const ModalInit = css`
     position: fixed;
     top: 50%;
     left: 50%;
+    width: 100%;
+    box-shadow: 0px 3px 6px rgba(0,0,0,0.16);
+    background-color: #f3f3f3;
+    z-index: 10;
+`;
+export const ModalOverlay = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0,0,0,0.6);
+    z-index: 9;
+`;
+export const Modal = styled.div`
+    ${ModalActive}
+    ${ModalInit}
     margin-left: -300px;
     margin-top: -45vh;
-    width: 100%;
     max-width: 600px;
-    border-radius: 6px;
-    box-shadow: 0px 3px 6px rgba(0,0,0,0.16);
-    z-index: 10;
+    border-radius: 5px;
     height: 90vh;
-    background-color: #f3f3f3;
     padding: 10px;
-
-    &.Modal-anim-enter {
-        opacity: 0.00;
-        transform: scale(0.7);
-        transition: all 0.2s;
-    }
-     &.Modal-anim-enter.Modal-anim-enter-active {
-        opacity: 1;
-        transform: scale(1);
-    }
-    &.Modal-anim-leave {
-        opacity: 1;
-        transform: scale(1);
-        transition: all 0.2s;
-    }  
-    &.Modal-anim-leave.Modal-anim-leave-active {
-        opacity: 0.00;
-        transform: scale(0.7);
-    }
 `;
 export const ModalCloseBtn = styled.button`
     position: absolute;
-    right: 15px;
-    top: 20px;
+    right: -32px;
+    top: 0;
     width: 32px;
     height: 32px;
-    opacity: 0.3;
-
-    &:hover {
-        opacity: 0.7;
-    }
+    background-color: #f2f2f2;
+    opacity: 1;
+    border-radius: 0px 5px 5px 0;
+    
     &:before,
     &:after {
         position: absolute;
         left: 15px;
-        top: 0;
+        top: 6px;
         content: ' ';
         height: 20px;
         width: 2px;

@@ -1,5 +1,9 @@
 import styled, { css } from "styled-components"
-import { ClearFix } from "../../style/globalStyles"
+import { 
+    ClearFix,
+    ModalActive,
+    ModalInit
+} from "../../style/globalStyles"
 
 /*******************
     Common CSS
@@ -178,7 +182,7 @@ export const ItemDetailWrap = styled.div`
 export const ItemDetail = styled.div`
     float: left;
 `;
-export const ItemDate = styled.div`
+export const ItemDate = styled.div` 
     float: right;
 `;
 export const ItemBottom = styled.div`
@@ -199,4 +203,18 @@ export const ItemLikeBtn = styled.button.attrs({
 `;  
 export const ItemLikeText = styled.div`
     float: left;
+`;
+
+/*******************
+    Modal Style
+********************/
+export const Modal = styled.div`
+    ${ModalActive}
+    ${ModalInit}
+    margin-left: -300px;
+    margin-top: -45vh;
+    max-width: 600px;
+    border-radius: 5px 0 5px 5px;
+    height: 90vh;
+    padding: 10px;
 `;

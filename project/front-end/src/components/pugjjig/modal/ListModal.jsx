@@ -8,9 +8,12 @@ import List from "../../../components/pugjjig/list/List"
 
 import { 
     ModalCloseBtn,  
-    ModalOverlay, 
-    Modal
+    ModalOverlay
 } from "../../../style/globalStyles";
+
+import {
+    Modal
+} from "../style"
 
 class InsertModal extends Component {
 

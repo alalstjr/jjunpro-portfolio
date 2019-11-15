@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -74,7 +75,7 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
                                             u.getUniLike().contains(account),
                                             u.getFiles()
                                     )
-                                ).collect(Collectors.toList())
+                                ).sorted(Comparator.reverseOrder()).collect(Collectors.toList())
                         )
                 )
                 .collect(Collectors.toList());

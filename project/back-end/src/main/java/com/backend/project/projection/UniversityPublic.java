@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class UniversityPublic {
+public class UniversityPublic implements Comparable<UniversityPublic> {
 
     private Long id;
     private String uniSubject;
@@ -24,4 +24,9 @@ public class UniversityPublic {
     private Integer uniLike;
     private Boolean uniLikeState;
     private List<File> files;
+
+    @Override
+    public int compareTo(UniversityPublic o) {
+        return Integer.compare(this.uniLike, o.getUniLike());
+    }
 }

@@ -102,7 +102,7 @@ const Item = ({pugjjig, pugjjigLike}) => (
         <ItemDetailWrap>
             <ItemStateWrap>
                 <ItemDetail>
-                    푹찍 {pugjjig.uniLike}개
+                    좋아요 {pugjjig.uniLike}개
                     댓글 0개
                 </ItemDetail>
                 <ItemDate>
@@ -120,7 +120,7 @@ const Item = ({pugjjig, pugjjigLike}) => (
                         <SVG name={"heart"} width="16px" height="16px" color={"#dddddd"} />
                     }
                     <ItemLikeText>
-                        푹찍
+                        좋아요
                     </ItemLikeText>
                 </ItemLikeBtn>
 
