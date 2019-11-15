@@ -32,10 +32,7 @@ export const pugjjigInsert = (pugjjig, files, history) => async dispatch => {
     formData.append("uniContent", pugjjig.uniContent);
     formData.append("uniName", pugjjig.uniName);
     formData.append("uniTag", pugjjig.uniTag);
-<<<<<<< HEAD
     formData.append("uniStar", pugjjig.uniStar);
-=======
->>>>>>> d119cadf0eabc66e758c090063508688a18bf004
     formData.append("stoId", pugjjig.stoId);
     formData.append("stoAddress", pugjjig.stoAddress);
     

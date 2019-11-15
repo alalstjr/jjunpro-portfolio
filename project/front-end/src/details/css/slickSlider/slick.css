@@ -16,11 +16,8 @@
     -ms-touch-action: pan-y;
         touch-action: pan-y;
     -webkit-tap-highlight-color: transparent;
-<<<<<<< HEAD
 
     overflow: hidden;
-=======
->>>>>>> d119cadf0eabc66e758c090063508688a18bf004
 }
 
 .slick-list
@@ -30,11 +27,7 @@
     display: block;
     overflow: hidden;
 
-<<<<<<< HEAD
     margin: 0 -2px;
-=======
-    margin: 0;
->>>>>>> d119cadf0eabc66e758c090063508688a18bf004
     padding: 0;
 }
 .slick-list:focus
@@ -90,10 +83,7 @@
 
     height: 100%;
     min-height: 1px;
-<<<<<<< HEAD
     padding: 0px 2px;
-=======
->>>>>>> d119cadf0eabc66e758c090063508688a18bf004
 }
 [dir='rtl'] .slick-slide
 {
