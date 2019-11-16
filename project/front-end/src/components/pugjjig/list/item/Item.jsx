@@ -38,36 +38,36 @@ const Item = ({pugjjig, pugjjigLike}) => (
             {
                 pugjjig.uniStar === 1 ?
                 <ItemStar>
-                <SVG name={"star"} width="16px" height="16px" color={"#ffd700"} />
+                <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
                 </ItemStar>
                 :
                 pugjjig.uniStar === 2 ?
                 <ItemStar>
-                <SVG name={"star"} width="16px" height="16px" color={"#ffd700"} />
-                <SVG name={"star"} width="16px" height="16px" color={"#ffd700"} />
+                <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
                 </ItemStar>
                 :
                 pugjjig.uniStar === 3 ?
                 <ItemStar>
-                <SVG name={"star"} width="16px" height="16px" color={"#ffd700"} />
-                <SVG name={"star"} width="16px" height="16px" color={"#ffd700"} />
-                <SVG name={"star"} width="16px" height="16px" color={"#ffd700"} />
+                <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
                 </ItemStar>
                 :
                 pugjjig.uniStar === 4 ?
                 <ItemStar>
-                <SVG name={"star"} width="16px" height="16px" color={"#ffd700"} />
-                <SVG name={"star"} width="16px" height="16px" color={"#ffd700"} />
-                <SVG name={"star"} width="16px" height="16px" color={"#ffd700"} />
-                <SVG name={"star"} width="16px" height="16px" color={"#ffd700"} />
+                <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
                 </ItemStar>
                 :
                 <ItemStar>
-                <SVG name={"star"} width="16px" height="16px" color={"#ffd700"} />
-                <SVG name={"star"} width="16px" height="16px" color={"#ffd700"} />
-                <SVG name={"star"} width="16px" height="16px" color={"#ffd700"} />
-                <SVG name={"star"} width="16px" height="16px" color={"#ffd700"} />
-                <SVG name={"star"} width="16px" height="16px" color={"#ffd700"} />
+                <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
                 </ItemStar>
             }
         </ItemHead>
@@ -115,9 +115,9 @@ const Item = ({pugjjig, pugjjigLike}) => (
                 <ItemLikeBtn onClick={() => pugjjigLike(pugjjig.id)}>
                     {
                         pugjjig.uniLikeState == true ?  
-                        <SVG name={"heartCk"} width="16px" height="16px" color={"#d11d33"} />
+                        <SVG name={"heartCk"} width="14px" height="14px" color={"#d11d33"} />
                         :
-                        <SVG name={"heart"} width="16px" height="16px" color={"#dddddd"} />
+                        <SVG name={"heart"} width="14px" height="14px" color={"#dddddd"} />
                     }
                     <ItemLikeText>
                         좋아요
@@ -125,7 +125,7 @@ const Item = ({pugjjig, pugjjigLike}) => (
                 </ItemLikeBtn>
 
                 <ItemLikeBtn>
-                    <SVG name={"comment"} width="16px" height="16px" color={"#dddddd"} />
+                    <SVG name={"comment"} width="14px" height="14px" color={"#dddddd"} />
                     <ItemLikeText>
                         댓글
                     </ItemLikeText>

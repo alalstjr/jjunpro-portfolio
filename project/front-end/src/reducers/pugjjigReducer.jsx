@@ -31,7 +31,7 @@ export default function(state=initialState, action) {
             return {
                 ...state,
                 pugjjig_store_list: {
-                    data: action.payload.content[0].stoUniList
+                    data: action.payload
                 }
             };
 

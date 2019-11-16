@@ -1,12 +1,12 @@
 package com.backend.project.service;
 
 import com.backend.project.domain.Account;
-import com.backend.project.projection.StorePublic;
+import com.backend.project.projection.UniversityPublic;
 import com.backend.project.repository.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class StoreServiceImpl implements StoreService {
@@ -20,7 +20,7 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public Page<StorePublic> findByStoreUniAll(Pageable pageable, String storeId, Account account) {
-        return store.findByStoreUniAll(pageable, storeId, account);
+    public List<UniversityPublic> findByStoreUniAll(String storeId, Account account) {
+        return store.findByStoreUniAll(storeId, account);
     }
 }

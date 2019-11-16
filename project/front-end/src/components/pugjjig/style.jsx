@@ -137,6 +137,10 @@ export const ItemStar = styled.div`
     position: absolute;
     right: 0px;
     top: 0px;
+
+    > svg {
+        margin-left: 2px;
+    }
 `;
 export const ItemSubject = styled.div`
     font-size: 18px;

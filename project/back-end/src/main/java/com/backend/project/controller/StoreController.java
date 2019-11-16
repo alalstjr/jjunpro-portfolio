@@ -1,12 +1,10 @@
 package com.backend.project.controller;
 
 import com.backend.project.domain.Account;
-import com.backend.project.projection.StorePublic;
+import com.backend.project.projection.UniversityPublic;
 import com.backend.project.service.StoreServiceImpl;
 import com.backend.project.util.AccountUtill;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -31,15 +30,14 @@ public class StoreController {
     // GET LIST
     @GetMapping("/{storeId}")
     @PreAuthorize("permitAll()")
-    public Page<StorePublic> getStoreIdUniList(
+    public List<UniversityPublic> getStoreIdUniList(
             @PathVariable String storeId,
-            Pageable pageable,
             HttpServletRequest request
     ) throws IOException {
         // Account Info
         Account accountData = accountUtill.accountJWT(request);
 
-        return storeService.findByStoreUniAll(pageable, storeId, accountData);
+        return storeService.findByStoreUniAll(storeId, accountData);
     }
 
     @GetMapping("/{storeId}/count")

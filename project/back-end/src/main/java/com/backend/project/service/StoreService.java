@@ -1,12 +1,12 @@
 package com.backend.project.service;
 
 import com.backend.project.domain.Account;
-import com.backend.project.projection.StorePublic;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.backend.project.projection.UniversityPublic;
+
+import java.util.List;
 
 public interface StoreService {
 
     public Long findByUniCount(String storeId);
-    public Page<StorePublic> findByStoreUniAll(Pageable pageable, String storeId, Account account);
+    public List<UniversityPublic> findByStoreUniAll(String storeId, Account account);
 }
