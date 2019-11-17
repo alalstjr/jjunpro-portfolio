@@ -34,7 +34,7 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
     }
 
     @Override
-    public List<UniversityPublic> findByStoreUniAll(String storeId, Account account) {
+    public List<UniversityPublic> findByStoreUniAll(String storeId, Account account, Long offsetCount) {
 
         List<University> uniData = queryFactory
             .select(qUniversity)
@@ -42,11 +42,12 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
             .leftJoin(qStore.stoUniList, qUniversity)
             .where(
                 qUniversity.publicStatus.eq(true)
-                        .and(qUniversity.controlStatus.eq(false))
-                        .and(qStore.stoId.eq(storeId))
+                .and(qUniversity.controlStatus.eq(false))
+                .and(qStore.stoId.eq(storeId))
             )
             .orderBy(qUniversity.uniLike.size().desc())
-            .offset(1).limit(2)
+            .offset(8 * offsetCount)
+            .limit(8)
             .fetch();
 
         List<UniversityPublic> results = uniData.stream().map(

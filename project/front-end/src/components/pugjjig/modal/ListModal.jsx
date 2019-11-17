@@ -1,8 +1,5 @@
 import React, { Fragment, Component } from "react"
-import PropTypes from "prop-types"
-import { connect } from "react-redux"
-import ReactTransitionGroup from 'react-addons-css-transition-group';
-import { pugjjigGetStoreList, pugjjigLike } from "../../../actions/KakaoMapActions"
+import ReactTransitionGroup from "react-addons-css-transition-group"
 
 import List from "../../../components/pugjjig/list/List"
 
@@ -17,22 +14,13 @@ import {
 
 class InsertModal extends Component {
 
-    componentWillReceiveProps(nextProps) {
-        if ((nextProps.modalState !== this.props.modalState) && this.props.modalState == false) {
-            const { stoId } = nextProps;
-            this.props.pugjjigGetStoreList(stoId);
-        }
-    }
-
     render() {
 
         // props Init
         const { 
             modalState, 
-            closeModal, 
-            pugjjigLike,
-            pugjjig_store_list,
-            pugjjig_like 
+            closeModal,
+            stoId
         } = this.props;
         
         return (
@@ -47,16 +35,10 @@ class InsertModal extends Component {
                     <ModalOverlay/>
                     <Modal>
                         <ModalCloseBtn onClick={() => closeModal("listModalState")}/>
-                        {
-                            pugjjig_store_list.data !== undefined ?
-                            <List
-                                pugjjigLike = {pugjjigLike}
-                                pugjjig_list = {pugjjig_store_list}
-                                pugjjig_like = {pugjjig_like}
-                            />
-                            :
-                            "푹찍이 존재하지 않습니다."
-                        }
+                        <List
+                            modalState = {modalState}
+                            stoId = {stoId}
+                        />
                     </Modal>
                     </ReactTransitionGroup>
                     :
@@ -67,23 +49,4 @@ class InsertModal extends Component {
     }
 }
 
-InsertModal.propTypes = {
-    pugjjigLike: PropTypes.func.isRequired,
-    pugjjig_store_list: PropTypes.object.isRequired,
-    pugjjig_like: PropTypes.object.isRequired,
-    error: PropTypes.object.isRequired
-}
-  
-const mapStateToProps = state => ({
-    error: state.errors,
-    pugjjig_store_list: state.pugjjig.pugjjig_store_list,
-    pugjjig_like: state.pugjjig.pugjjig_like
-});
-  
-export default connect(
-    mapStateToProps, 
-    { 
-        pugjjigGetStoreList,
-        pugjjigLike 
-    }
-  )(InsertModal);
+export default InsertModal;

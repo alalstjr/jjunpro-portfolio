@@ -42,6 +42,26 @@ export const ClearFix = css`
     }
 `;
 
+/****************************************
+    Animation Style
+****************************************/
+export const ModalActive = css`
+    &.Modal-anim-enter {
+        opacity: 0.00;
+        transition: all 0.2s;
+    }
+    &.Modal-anim-enter.Modal-anim-enter-active {
+        opacity: 1;
+    }
+    &.Modal-anim-leave {
+        opacity: 1;
+        transition: all 0.2s;
+    }
+    &.Modal-anim-leave.Modal-anim-leave-active {
+        opacity: 0.00;
+    }
+`;
+
 /*******************
     Text Style
 ********************/
@@ -234,22 +254,6 @@ export const ListUl = styled.ul`
 /****************************************
     Modal Style
 ****************************************/
-export const ModalActive = css`
-    &.Modal-anim-enter {
-        opacity: 0.00;
-        transition: all 0.2s;
-    }
-    &.Modal-anim-enter.Modal-anim-enter-active {
-        opacity: 1;
-    }
-    &.Modal-anim-leave {
-        opacity: 1;
-        transition: all 0.2s;
-    }
-    &.Modal-anim-leave.Modal-anim-leave-active {
-        opacity: 0.00;
-    }
-`;
 export const ModalInit = css`
     position: fixed;
     top: 50%;

@@ -8,5 +8,5 @@ import java.util.List;
 public interface StoreService {
 
     public Long findByUniCount(String storeId);
-    public List<UniversityPublic> findByStoreUniAll(String storeId, Account account);
+    public List<UniversityPublic> findByStoreUniAll(String storeId, Account account, Long offsetCount);
 }

@@ -1,29 +1,74 @@
 import React, { Component, Fragment } from "react"
+import PropTypes from "prop-types"
+import { connect } from "react-redux"
+import { pugjjigGetStoreList, pugjjigLike } from "../../../actions/KakaoMapActions"
 import Item from "../../../components/pugjjig/list/item/Item"
+import InfiniteScroll from "react-infinite-scroller"
 import { PugjjigItemWrap } from "../style"
 
 class List extends Component {
 
+    constructor(props){
+        super(props);
+    
+        this.state = {
+            pugjjig: []
+        }
+    }
+
+    componentDidMount() {
+        const { stoId } = this.props;
+
+        this.props.pugjjigGetStoreList(stoId, 0);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.pugjjig_store_list !== this.props.pugjjig_store_list) {
+            this.handleUpdate(nextProps.pugjjig_store_list);
+        }
+    }
+
     handleLikeUpdate = (preData, postData) => {
-        let props;
         
         preData.map(preData => {
             // id 가 일치하면 변경되는 값만 찾아서 변경합니다.
-            if(preData.key*1 === postData.id) {
-               props = preData.props;
-               props.pugjjig.uniLike = postData.uniLike;
-               props.pugjjig.uniLikeState = postData.uniLikeState;
+            if(preData.id === postData.id) {
+                preData.uniLike      = postData.uniLike;
+                preData.uniLikeState = postData.uniLikeState;
             }
         });
     } 
 
+    handleLoad = (page) => {
+        const { stoId, pugjjig_store_list } = this.props;
+        
+        if(pugjjig_store_list.data !== undefined) {
+            if(pugjjig_store_list.data.length <= 0) {
+                return false;
+            }
+        }
+
+        this.props.pugjjigGetStoreList(stoId, page);
+    }
+
+    handleUpdate = (postData) => {
+        
+        this.setState({
+            pugjjig: this.state.pugjjig.concat(postData.data)
+        });
+    }
+
     render() {
-        // props Init
+        // Props Init
         const { 
-            pugjjigLike, 
-            pugjjig_list, 
-            pugjjig_like 
+            pugjjigLike,
+            pugjjig_like
         } = this.props;
+
+        // State Init
+        const {
+            pugjjig
+        } = this.state;
 
         // Variables Init
         let pugjjigContent;
@@ -31,11 +76,11 @@ class List extends Component {
         
         // pugjjigList
         const pugjjigGet = (pugjjig) => {
-            if(pugjjig.data !== undefined) {
-                const data = pugjjig.data.map(pugjjig => (
+            if(pugjjig !== undefined && pugjjig.length > 0) {
+                const data = pugjjig.map((pugjjig, index) => (
                     <Item 
-                        key = {pugjjig.id}
-                        pugjjig = {pugjjig}
+                        key         = {index}
+                        pugjjig     = {pugjjig}
                         pugjjigLike = {pugjjigLike}
                     />
                 ));
@@ -46,7 +91,7 @@ class List extends Component {
                 
                 // 푹찍 Like 클릭시 Re rendering 여부 체크
                 if(pugjjig_like.data !== undefined) {
-                    this.handleLikeUpdate(pugjjigList, pugjjig_like.data);
+                    this.handleLikeUpdate(pugjjig, pugjjig_like.data);
                 }
 
                 return (
@@ -62,14 +107,42 @@ class List extends Component {
         }
 
         // pugjjig Get List View
-        pugjjigContent = pugjjigGet(pugjjig_list);
+        pugjjigContent = pugjjigGet(pugjjig);
 
         return (
             <PugjjigItemWrap>
-                {pugjjigContent}
+                <InfiniteScroll
+                    pageStart   = {0}
+                    loadMore    = {this.handleLoad}
+                    hasMore     = {true}
+                    initialLoad = {false}
+                    useWindow   = {false}
+                    threshold   = {500}
+                >
+                    {pugjjigContent}
+                </InfiniteScroll>
             </PugjjigItemWrap>
         )
     }
 }
 
-export default List;
+List.propTypes = {
+    pugjjigLike: PropTypes.func.isRequired,
+    pugjjig_store_list: PropTypes.object.isRequired,
+    pugjjig_like: PropTypes.object.isRequired,
+    error: PropTypes.object.isRequired
+}
+  
+const mapStateToProps = state => ({
+    error: state.errors,
+    pugjjig_store_list: state.pugjjig.pugjjig_store_list,
+    pugjjig_like: state.pugjjig.pugjjig_like
+});
+  
+export default connect(
+    mapStateToProps, 
+    { 
+        pugjjigGetStoreList,
+        pugjjigLike 
+    }
+  )(List);

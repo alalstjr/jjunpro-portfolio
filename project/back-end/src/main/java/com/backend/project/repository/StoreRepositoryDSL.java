@@ -9,5 +9,5 @@ public interface StoreRepositoryDSL {
 
     Long findByUniCount(String stoId);
 
-    List<UniversityPublic> findByStoreUniAll(String storeId, Account account);
+    List<UniversityPublic> findByStoreUniAll(String storeId, Account account, Long offsetCount);
 }

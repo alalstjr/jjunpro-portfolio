@@ -28,16 +28,20 @@ public class StoreController {
     private AccountUtill accountUtill;
 
     // GET LIST
-    @GetMapping("/{storeId}")
+    /**
+     *  storeId 상점 고유번호 & offsetCount 페이지 번호
+     */
+    @GetMapping("/{storeId}/{offsetCount}")
     @PreAuthorize("permitAll()")
     public List<UniversityPublic> getStoreIdUniList(
             @PathVariable String storeId,
+            @PathVariable Long offsetCount,
             HttpServletRequest request
     ) throws IOException {
         // Account Info
         Account accountData = accountUtill.accountJWT(request);
 
-        return storeService.findByStoreUniAll(storeId, accountData);
+        return storeService.findByStoreUniAll(storeId, accountData, offsetCount);
     }
 
     @GetMapping("/{storeId}/count")

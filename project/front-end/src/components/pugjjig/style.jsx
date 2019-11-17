@@ -102,12 +102,36 @@ export const CloseBtn = styled.div`
 export const PugjjigItemWrap = styled.ul`
     overflow-y: scroll;
     height: 100%;
+    padding-right: 3px;
+
+    &::-webkit-scrollbar {
+        background-color:#f3f3f3;
+        width:16px
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color:#f3f3f3
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color:#babac0;
+        border-radius:16px;
+        border:4px solid #f3f3f3
+    }
+
+    &::-webkit-scrollbar-button {
+        display:none
+    }
 `;
 export const PugjjigItem = styled.li`
     padding: 10px;
     background-color: #fff;
-    margin-bottom: 10px;
     border-radius: 3px;
+    margin-bottom: 10px;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
 `;
 export const ItemHead = styled.div`
     ${ClearFix}

@@ -20,7 +20,7 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public List<UniversityPublic> findByStoreUniAll(String storeId, Account account) {
-        return store.findByStoreUniAll(storeId, account);
+    public List<UniversityPublic> findByStoreUniAll(String storeId, Account account, Long offsetCount) {
+        return store.findByStoreUniAll(storeId, account, offsetCount);
     }
 }

@@ -73,12 +73,12 @@ export const pugjjigLike = (id) => async dispatch => {
 ****************************************/
 
 // 푹찍 가게 {id} 조회
-export const pugjjigGetStoreList = (storeId) => async dispatch => {
+export const pugjjigGetStoreList = (storeId, offsetCount) => async dispatch => {
 
     // 유저 JWT Token정보
     USER_AUTH();
 
-    await axios.get(`${SERVER_URL}/api/store/${storeId}`)
+    await axios.get(`${SERVER_URL}/api/store/${storeId}/${offsetCount}`)
     .then(res => {
         dispatch({
             type: GET_PUGJJIG_STORE_LIST,
