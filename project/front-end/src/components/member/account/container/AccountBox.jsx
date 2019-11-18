@@ -42,7 +42,7 @@ class LoginBox extends Component {
                         />
                         <AccountBtn
                             text = "마이페이지"
-                            req = "singUp"
+                            req = "myPage"
                         />
                     </Fragment>
                 }

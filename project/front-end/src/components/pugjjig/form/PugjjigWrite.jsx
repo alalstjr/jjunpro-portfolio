@@ -10,7 +10,6 @@ import {
     InputClean, 
     Formlabel, 
     FormGroup, 
-    SubmitBtn,
     Textarea
 } from "../../../style/globalStyles"
 
@@ -26,7 +25,8 @@ import {
     RatingPointLabel,
     TagWrap,
     TagPart,
-    CloseBtn
+    CloseBtn,
+    InsertSubmitBtn
 } from "../style"
 
 class PugjjigWrite extends Component {
@@ -183,12 +183,12 @@ class PugjjigWrite extends Component {
             <Form
                 onSubmit={this.onSubmit}
             >
-                <TitleWrap>
-                    <Title>
-                        리뷰작성
-                    </Title>
-                </TitleWrap>
                 <Content>
+                    <TitleWrap>
+                        <Title>
+                            리뷰작성
+                        </Title>
+                    </TitleWrap>
                     <RatingWrap>
                         <Rating>
                             <RatingPointInput id="star5" name="uniStar" value="5"
@@ -224,12 +224,12 @@ class PugjjigWrite extends Component {
                         <TagWrap>
                             {tags}
                             <InputClean
-                                id="uniTagText"
-                                name="uniTagText"
-                                type="text"
-                                value={uniTagText}
-                                onChange={this.onChange}
-                                onKeyDown={this.handleTagEvent}
+                                id = "uniTagText"
+                                name = "uniTagText"
+                                type = "text"
+                                value = {uniTagText}
+                                onChange = {this.onChange}
+                                onKeyDown = {this.handleTagEvent}
                             />
                         </TagWrap>
                     </FormGroup>
@@ -261,11 +261,11 @@ class PugjjigWrite extends Component {
                         />
                     </FormGroup>
                 </Content>
-                <SubmitBtn
+                <InsertSubmitBtn
                     type="submit"
                 >
                         작성 완료
-                </SubmitBtn>
+                </InsertSubmitBtn>
             </Form>
         )
     }

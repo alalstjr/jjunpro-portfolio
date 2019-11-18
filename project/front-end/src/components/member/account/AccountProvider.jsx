@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react"
 import { connect } from "react-redux"
 import PropTypes from "prop-types"
+import { Link } from "react-router-dom"
 
 import LoginModal from "./modal/LoginModal"
 import SingUpModal from "./modal/SignUpModal"
@@ -220,6 +221,12 @@ class AccountProvider extends Component {
                                 SingUpHandler={this.SingUpHandler}
                             />
                         </Fragment>
+                    );
+                case "myPage" : 
+                    return(
+                        <SingUpBtn>
+                            <Link to="/mypage">마이페이지</Link>
+                        </SingUpBtn>
                     );
                 case "logout" : 
                     return(

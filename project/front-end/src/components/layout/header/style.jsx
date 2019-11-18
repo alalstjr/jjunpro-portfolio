@@ -1,17 +1,16 @@
 import styled from 'styled-components';
 import { ClearFix } from "../../../style/globalStyles";
 
-export const Utilnav = styled.div`
-    ${ClearFix};
-    background-color: #434343;
-    padding: 10px 0;
-    
-    li > button {
-        color: #fff;    
-    }
-`;
+export const NormalHeaderWrap = styled.div`
+    padding: 11px 0px;
+    background-color: #fff;
+    text-align: center;
+    border-bottom: 1px solid #e2e2e2;
 
-export const LangLink = styled.a`
-    color: #fff;
-    margin-left: 10px;
+    > a {
+        font-weight: 600;
+        color: ${props => props.theme.themeColor};
+        font-size: 25px;
+        display: inline-block;
+    }
 `;

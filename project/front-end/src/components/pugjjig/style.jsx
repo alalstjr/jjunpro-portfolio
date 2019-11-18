@@ -16,7 +16,8 @@ export const WrapPadding = css`
     Form Style
 ********************/
 export const TitleWrap = styled.div`
-    ${WrapPadding}
+    padding-bottom: 10px;
+    margin-bottom: 10px;
     border-bottom: 1px solid #e3e3e3;
 `;
 export const Title = styled.h2`
@@ -27,9 +28,28 @@ export const Form = styled.form`
     
 `;
 export const Content = styled.div`
-    ${WrapPadding}
-    height: 540px;
+    height: 550px;
     overflow-y: scroll;
+    padding-right: 3px;
+
+    &::-webkit-scrollbar {
+        background-color:#fff;
+        width:16px
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color:#fff
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color:#babac0;
+        border-radius:16px;
+        border:4px solid #fff
+    }
+
+    &::-webkit-scrollbar-button {
+        display:none
+    }
 `;
 export const RatingWrap = styled.div`
     
@@ -76,9 +96,7 @@ export const RatingPointLabel = styled.label`
     }
 `;
 export const TagWrap = styled.div`
-    padding: 8px;
-    border: 1px solid #ddd;
-    cursor: text;
+    padding: 5px 0;
 `;
 export const TagPart = styled.span`
     border-radius: 3;
@@ -105,18 +123,18 @@ export const PugjjigItemWrap = styled.ul`
     padding-right: 3px;
 
     &::-webkit-scrollbar {
-        background-color:#f3f3f3;
+        background-color: ${props => props.theme.backgroundColor};
         width:16px
     }
 
     &::-webkit-scrollbar-track {
-        background-color:#f3f3f3
+        background-color: ${props => props.theme.backgroundColor};
     }
 
     &::-webkit-scrollbar-thumb {
         background-color:#babac0;
         border-radius:16px;
-        border:4px solid #f3f3f3
+        border:4px solid ${props => props.theme.backgroundColor};
     }
 
     &::-webkit-scrollbar-button {
@@ -141,8 +159,6 @@ export const ItemHead = styled.div`
 export const ItemUserPhoto = styled.div`
     width: 38px;
     height: 38px;
-    background-color: #333;
-    border-radius: 50%;
     float: left;
 `;
 export const ItemRight = styled.div`
@@ -172,10 +188,13 @@ export const ItemSubject = styled.div`
     line-height: 26px;
 `;
 export const ItemContent = styled.div`
-    margin-bottom: 5px;
+    max-height: 90px;
+    overflow: hidden;
+    margin-bottom: 10px;
 `;
 export const ItemImgBox = styled.div`
     ${ClearFix}
+    margin: 10px 0;
 `;
 export const ItemTagWrap = styled.div`
 `;
@@ -234,9 +253,9 @@ export const ItemLikeText = styled.div`
 `;
 
 /*******************
-    Modal Style
+    List Style
 ********************/
-export const Modal = styled.div`
+export const ListModalWrap = styled.div`
     ${ModalActive}
     ${ModalInit}
     margin-left: -300px;
@@ -245,4 +264,52 @@ export const Modal = styled.div`
     border-radius: 5px 0 5px 5px;
     height: 90vh;
     padding: 10px;
+    background-color: ${props => props.theme.backgroundColor};
+`;
+
+/*******************
+    Insert Style
+********************/
+export const InsertModalWrap = styled.div`
+    ${ModalActive}
+    ${ModalInit}
+    margin-left: -300px;
+    margin-top: -45vh;
+    max-width: 600px;
+    border-radius: 5px 0px 5px 5px;
+    padding: 10px;
+    background-color: #ffffff;
+    padding-bottom: 47px;
+`;
+export const InsertSubmitBtn = styled.button`
+    background-color: ${props => props.theme.themeColor};
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    border-radius: 3px;
+    font-size: 16px;
+    padding: 12px 0;
+    margin-top: 15px;
+
+    position: absolute;
+    left: 0;
+    bottom: 0;
+`;
+
+/*******************
+    View Style
+********************/
+export const ViewWrap = styled.div`
+    background-color: ${props => props.theme.backgroundColor};
+`;
+export const ViewBox = styled.div`
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto 50px;
+    margin-top: 10px;
+    padding: 15px;
+`;
+export const ViewContent = styled.div`
+    margin-bottom: 10px;
 `;

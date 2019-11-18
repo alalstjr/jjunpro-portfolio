@@ -1,7 +1,35 @@
 import React, { Component, Fragment } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
+import ImageSlide from "../../widget/mainTitleSlide"
+import NormalHeader from "../../layout/header/normal/NormalHeader"
 import { pugjjigGetView, pugjjigLike } from "../../../actions/KakaoMapActions"
+
+import {
+    ViewWrap,
+    ViewBox,
+    ItemHead,
+    ItemRight,
+    ItemUserPhoto,
+    ItemUsername,
+    ItemUserInfo,
+    ItemStar,
+    ItemSubject,
+    ViewContent,
+    ItemImgBox,
+    ItemTagWrap,
+    ItemStateWrap,
+    ItemState,
+    ItemDetailWrap,
+    ItemDetail,
+    ItemDate,
+    ItemBottom,
+    ItemTag,
+    ItemLikeBtn,
+    ItemLikeText
+} from "../style"
+
+import SVG from "../../../static/svg/SVG"
 
 class PugjjigView extends Component {
 
@@ -24,27 +52,116 @@ class PugjjigView extends Component {
         if(pugjjig_like.data !==undefined) {
             this.handleLikeUpdate(pugjjig_view.data, pugjjig_like.data);
         }
-
+        
         return (
-            <Fragment>
+            <ViewWrap>
                 {
-                    pugjjig_view.data !== undefined ? 
-                    <div>
-                        <div>근처 대학교 : {pugjjig.uniName}</div>
-                        <div>작성자 : {pugjjig.account_nickname}</div>
-                        <div>제목 : {pugjjig.uniSubject}</div>
-                        <div>내용 : {pugjjig.uniContent}</div>
-                        <div>상점평점 : {pugjjig.uniStar}</div>
-                        <div>리뷰의 푹찍 갯수 : {pugjjig.uniLike}</div>
-                        {/* <div>리뷰 태그 : {pugjjig.uniTag}</div> */}
-                        <div>리뷰 최종 수정 날짜 : {pugjjig.modifiedDate}</div>
-                        <div>좋아요를 누른 상태 : {pugjjig.uniLikeState == true ? "푹찍~!" : "X"}</div>
-                        <button type="button" onClick={() => pugjjigLike(pugjjig.id)}>푹찍</button>
-                    </div>
+                    pugjjig_view.data !== undefined ?
+                    <Fragment>
+                        <NormalHeader/>
+                        <ViewBox>
+                            <ItemHead>
+                                <ItemUserPhoto>
+                                    <SVG name={"user"} width="38px" height="38px" color={"#E71D36"} />
+                                </ItemUserPhoto>
+                                <ItemRight>
+                                    <ItemUsername>{pugjjig.account_nickname}</ItemUsername>
+                                    <ItemUserInfo>유저정보</ItemUserInfo>
+                                </ItemRight>
+                                {
+                                    pugjjig.uniStar === 1 ?
+                                    <ItemStar>
+                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                                    </ItemStar>
+                                    :
+                                    pugjjig.uniStar === 2 ?
+                                    <ItemStar>
+                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                                    </ItemStar>
+                                    :
+                                    pugjjig.uniStar === 3 ?
+                                    <ItemStar>
+                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                                    </ItemStar>
+                                    :
+                                    pugjjig.uniStar === 4 ?
+                                    <ItemStar>
+                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                                    </ItemStar>
+                                    :
+                                    <ItemStar>
+                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                                    </ItemStar>
+                                }
+                            </ItemHead>
+                            <ItemSubject>{pugjjig.uniSubject}</ItemSubject>
+                            <ViewContent>
+                                {pugjjig.uniContent}
+                            </ViewContent>
+                            <ItemImgBox>
+                                <ImageSlide
+                                    slideShow = {1}
+                                    images = {pugjjig.files}
+                                    thumbnail = {false}
+                                />
+                            </ItemImgBox>
+                            <ItemTagWrap>
+                                <ItemTag>#{pugjjig.uniName} 맛집</ItemTag>
+                                {
+                                    pugjjig.uniTag.map((tag, index) => (
+                                        <ItemTag key={index}>#{tag}</ItemTag>
+                                    ))
+                                }
+                            </ItemTagWrap>
+                            <ItemDetailWrap>
+                                <ItemStateWrap>
+                                    <ItemDetail>
+                                        좋아요 {pugjjig.uniLike}개
+                                        댓글 0개
+                                    </ItemDetail>
+                                    <ItemDate>
+                                        {pugjjig.modifiedDate.split("T")[0]}
+                                    </ItemDate>
+                                </ItemStateWrap>
+                            </ItemDetailWrap>
+                            <ItemBottom>
+                                <ItemState>
+                                    <ItemLikeBtn onClick={() => pugjjigLike(pugjjig.id)}>
+                                        {
+                                            pugjjig.uniLikeState == true ?  
+                                            <SVG name={"heartCk"} width="14px" height="14px" color={"#d11d33"} />
+                                            :
+                                            <SVG name={"heart"} width="14px" height="14px" color={"#dddddd"} />
+                                        }
+                                        <ItemLikeText>
+                                            좋아요
+                                        </ItemLikeText>
+                                    </ItemLikeBtn>
+
+                                    <ItemLikeBtn>
+                                        <SVG name={"comment"} width="14px" height="14px" color={"#dddddd"} />
+                                        <ItemLikeText>
+                                            댓글
+                                        </ItemLikeText>
+                                    </ItemLikeBtn>
+                                </ItemState>
+                            </ItemBottom>
+                        </ViewBox>
+                    </Fragment>
                     :
                     <div>불러오는 중입니다...</div>
                 }
-            </Fragment>
+            </ViewWrap>
         )
     }
 }

@@ -32,15 +32,19 @@ public class File extends BaseDate {
     private Integer fileDivision;
 
     @Column(nullable = false)
+    private String fileOriginal;
+
+    @Column(nullable = false)
     private String fileThumbnail;
 
     @Builder
-    public File(Long id, String filename, long fileSize, String fileType, Integer fileDivision, String fileThumbnail) {
+    public File(Long id, String filename, long fileSize, String fileType, Integer fileDivision, String fileOriginal, String fileThumbnail) {
         this.id = id;
         this.filename = filename;
         this.fileSize = fileSize;
         this.fileType = fileType;
         this.fileDivision = fileDivision;
+        this.fileOriginal = fileOriginal;
         this.fileThumbnail = fileThumbnail;
     }
 }

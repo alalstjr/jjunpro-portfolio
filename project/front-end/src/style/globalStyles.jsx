@@ -260,7 +260,6 @@ export const ModalInit = css`
     left: 50%;
     width: 100%;
     box-shadow: 0px 3px 6px rgba(0,0,0,0.16);
-    background-color: #f3f3f3;
     z-index: 10;
 `;
 export const ModalOverlay = styled.div`

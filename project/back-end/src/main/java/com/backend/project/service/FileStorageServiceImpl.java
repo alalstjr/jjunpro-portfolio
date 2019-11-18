@@ -124,10 +124,12 @@ public class FileStorageServiceImpl implements FileStorageService{
             Integer resizeHeight = 300;
             String resizeContent = "-" + resizeWidth + "x" + resizeHeight;
 
+            String fileOriginal  = uuid + fileType;
             String thumbnailUrlt = uuid + resizeContent + fileType;
 
             // 이미지 자르기 (uploadfile은 MultipartFile 유형의 객체 임)
-            BufferedImage resizeImage = resize(file.getBytes(), resizeWidth, resizeHeight);
+            // BufferedImage resizeImage = resize(file.getBytes(), resizeWidth, resizeHeight);
+            BufferedImage resizeImage = cropImageSquare(file.getBytes());
 
             // Bufferedimage to Inputstream
             ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -143,6 +145,7 @@ public class FileStorageServiceImpl implements FileStorageService{
                     .fileType(fileType)
                     .fileSize(file.getSize())
                     .fileDivision(fileDivision)
+                    .fileOriginal(fileOriginal)
                     .fileThumbnail(thumbnailUrlt)
                     .build();
 
@@ -182,8 +185,8 @@ public class FileStorageServiceImpl implements FileStorageService{
         BufferedImage croppedImage = originalImage.getSubimage(
                 xc - (squareSize / 2), // x coordinate of the upper-left corner
                 yc - (squareSize / 2), // y coordinate of the upper-left corner
-                squareSize,            // widht
-                squareSize             // height
+                300,            // widht
+                300             // height
         );
 
         return croppedImage;

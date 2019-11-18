@@ -7,7 +7,11 @@ import {
     ModalCloseBtn,  
     ModalOverlay, 
     Modal
-} from "../../../style/globalStyles";
+} from "../../../style/globalStyles"
+
+import {
+    InsertModalWrap
+} from "../style"
 
 const InsertModal = ({
     modalState, 
@@ -24,13 +28,13 @@ const InsertModal = ({
                 transitionLeaveTimeout={200}
             >
             <ModalOverlay/>
-            <Modal>
+            <InsertModalWrap>
                 <ModalCloseBtn onClick={() => closeModal("insertModalState")}/>
                 <PugjjigWrite
                     stoId = {stoId}
                     stoAddress = {stoAddress}
                 />
-            </Modal>
+            </InsertModalWrap>
             </ReactTransitionGroup>
             :
             <ReactTransitionGroup transitionName={'Modal-anim'} transitionEnterTimeout={200} transitionLeaveTimeout={200} />

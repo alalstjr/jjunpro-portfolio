@@ -4,13 +4,14 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-d
 import MainProvider from "./components/mainPage/MainProvider"
 
 import PugjjigView from "./components/pugjjig/view/PugjjigView"
-import PugjjigViewList from "./components/myPage/myList/PugjjigViewList"
-import PugjjigLikeList from "./components/myPage/myList/PugjjigLikeList"
+import PugjjigViewList from "./components/member/myList/PugjjigViewList"
+import PugjjigLikeList from "./components/member/myList/PugjjigLikeList"
 
 import Board from "./components/board"
 import BoardWriteInsert from "./components/board/write/writeInsert"
 import BoardWriteUpdate from "./components/board/write/writeUpdate"
 import BoardView from "./components/board/view"
+import MyPage from "./components/member/myPage/MyPageProvider"
 
 const App = () => {
     return (
@@ -26,6 +27,8 @@ const App = () => {
           {/* Pugjjig Like */}
           <Route exact path="/pugjjigLikes" component={PugjjigLikeList} />
           <Route exact path="/pugjjigLikes/:userId" component={PugjjigLikeList} />
+          {/* User MyPage */}
+          <Route exact path="/mypage" component={MyPage} />
 
           {/* 게시판 */}
           <Route exact path="/board" component={Board} />

@@ -4,7 +4,7 @@ import { connect } from "react-redux"
 
 import UniversityItem from "./list/item/UniversityItem"
 import UniversitySearch from "./list/search/UniversitySearch"
-import AccountBox from "../myPage/account/container/AccountBox"
+import AccountBox from "../member/account/container/AccountBox"
 import { getUniversity } from "../../actions/PugjjigActions"
 
 import { 

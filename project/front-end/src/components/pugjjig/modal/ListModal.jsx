@@ -9,10 +9,10 @@ import {
 } from "../../../style/globalStyles";
 
 import {
-    Modal
+    ListModalWrap
 } from "../style"
 
-class InsertModal extends Component {
+class ListModal extends Component {
 
     render() {
 
@@ -33,13 +33,13 @@ class InsertModal extends Component {
                         transitionLeaveTimeout={200}
                     >
                     <ModalOverlay/>
-                    <Modal>
+                    <ListModalWrap>
                         <ModalCloseBtn onClick={() => closeModal("listModalState")}/>
                         <List
                             modalState = {modalState}
                             stoId = {stoId}
                         />
-                    </Modal>
+                    </ListModalWrap>
                     </ReactTransitionGroup>
                     :
                     <ReactTransitionGroup transitionName={'Modal-anim'} transitionEnterTimeout={200} transitionLeaveTimeout={200} />
@@ -49,4 +49,4 @@ class InsertModal extends Component {
     }
 }
 
-export default InsertModal;
+export default ListModal;

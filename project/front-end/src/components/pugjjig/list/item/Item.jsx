@@ -30,7 +30,9 @@ import SVG from "../../../../static/svg/SVG"
 const Item = ({pugjjig, pugjjigLike}) => (
     <PugjjigItem>
         <ItemHead>
-            <ItemUserPhoto></ItemUserPhoto>
+            <ItemUserPhoto>
+                <SVG name={"user"} width="38px" height="38px" color={"#E71D36"} />
+            </ItemUserPhoto>
             <ItemRight>
                 <ItemUsername>{pugjjig.account_nickname}</ItemUsername>
                 <ItemUserInfo>유저정보</ItemUserInfo>
@@ -72,9 +74,12 @@ const Item = ({pugjjig, pugjjigLike}) => (
             }
         </ItemHead>
         <ItemSubject>{pugjjig.uniSubject}</ItemSubject>
-        <ItemContent>{pugjjig.uniContent}</ItemContent>
-        <ItemImgBox>
+        <ItemContent>
             <Link to={`/pugjjig/${pugjjig.id}`} target="_blank">
+                {pugjjig.uniContent}
+            </Link>
+        </ItemContent>
+        <ItemImgBox>
             {
                 pugjjig.files.length < 4 ?
                 pugjjig.files.map((file) => (
@@ -87,10 +92,11 @@ const Item = ({pugjjig, pugjjigLike}) => (
                 ))
                 :
                 <ImageSlide
+                    slideShow = {3}
                     images = {pugjjig.files}
+                    thumbnail = {true}
                 />
             }
-            </Link>
         </ItemImgBox>
         <ItemTagWrap>
             {

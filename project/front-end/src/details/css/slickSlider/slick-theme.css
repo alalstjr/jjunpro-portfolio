@@ -9,6 +9,7 @@
 .slick-prev,
 .slick-next
 {
+    z-index: 10;
     font-size: 0;
     line-height: 0;
 
@@ -69,7 +70,7 @@
 
 .slick-prev
 {
-    left: -25px;
+    left: 5px;
 }
 [dir='rtl'] .slick-prev
 {
@@ -87,7 +88,7 @@
 
 .slick-next
 {
-    right: -25px;
+    right: 5px;
 }
 [dir='rtl'] .slick-next
 {
@@ -112,7 +113,7 @@
 .slick-dots
 {
     position: absolute;
-    bottom: -25px;
+    bottom: 4px;
 
     display: block;
 

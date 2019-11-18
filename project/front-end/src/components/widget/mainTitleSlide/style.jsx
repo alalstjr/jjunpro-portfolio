@@ -7,8 +7,10 @@ export const SliderWrap = styled.div`
 export const SliderImg = styled.div`
     background-image: url(${props => props.bgImg});
     padding-bottom: ${props => props.bgSize};
-    background-size: cover;
+    background-size: ${props => props.bgState};
     background-position: center center;
+    background-repeat: no-repeat;
+    background-color: #231f1f;
 `;
 export const SliderContent = styled.div`
     position: absolute;

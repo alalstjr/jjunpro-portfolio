@@ -45,6 +45,13 @@ export const SingUpBtn = styled.button`
     background-color: ${props => props.theme.themeColorHover};
     color: #fff;
     margin-bottom: 0;
+
+    > a {
+        display: block;
+        color: #fff;
+        font-size: 14px;
+        font-weight: bold;
+    }
 `;
 
 /*******************
@@ -124,4 +131,80 @@ export const Title = styled.h3`
 `;
 export const Content = styled.div`
     
+`;
+
+/*******************
+    MyPage Style
+********************/
+export const MyPageWrap = styled.div`
+    background-color: #fff;
+    border: 1px solid #dbdbdb;
+    border-radius: 3px;
+    margin: 60px auto 0;
+    max-width: 935px;
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+`;
+export const MyPageLeft = styled.div`
+    display: inherit;
+    flex-direction: column;
+    width: 230px;
+    border-right: 1px solid #dbdbdb;
+`;
+export const MyPageRight = styled.div`
+    display: inherit;
+    flex-direction: column;
+    width: calc(100% - 230px);
+`;
+export const MyPageList = styled.li`
+    cursor: pointer;
+    font-size: 16px;
+    padding: 16px 16px 16px 30px;
+    border-left: 2px solid transparent;
+    transition: 0.4s all ease;
+
+    ${
+        props => props.active === "repository" ?
+        `:nth-child(3)`
+        :
+        props => props.active === "password" ?
+        `:nth-child(2)`
+        :
+        `:nth-child(1)`
+    } { 
+        border-left-color: ${props => props.theme.themeColor};
+        color: ${props => props.theme.themeColor};
+        font-weight: 600;
+    }
+
+    &:hover {
+        background-color: #fafafa;
+        border-left-color: #dbdbdb;
+    }
+`;
+export const GroupBox = styled.div`
+    margin-bottom: 16px;
+    display: flex;
+`;
+export const ProfileLabel = styled.div`
+    flex-basis: 28%;
+    display: flex;
+    flex-direction: column;
+
+    text-align: right;
+    padding: 0 30px;
+    font-size: 16px;
+    font-weight: 600;
+`;
+export const ProfileInput = styled.div`
+    flex-basis: 72%;
+    display: flex;
+    flex-direction: column;
+
+    padding: 0 30px;
+    padding-right: 60px;
+`;
+export const ProfileWrap = styled.div`
+    margin-top: 30px;
 `;
