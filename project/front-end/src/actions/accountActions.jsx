@@ -1,8 +1,9 @@
 import axios from "axios"
-import { SERVER_URL } from "../routes"
+import { SERVER_URL, USER_ID } from "../routes"
 import { 
     GET_ERRORS,
     ACCOUNT_CREATE,
+    ACCOUNT_GET,
 
     CHECK_USER,
     CHECK_USER_SUCCESS,
@@ -42,32 +43,6 @@ export const accountInsert = (account, history) => async dispatch => {
     } catch (e) {
         console.log(e);
     }
-}
-
-/*
- *  관리자 로그인
- */
-export const adminAccountLogin = async (account) => {
-    return await axios.post("http://localhost:8080/api/account/login", account)
-    .then(res => {
-        const token = res.data.token;
-        const userId = res.data.userId;
-        const username = res.data.username;
-
-        if(token) {
-            const userInfo = JSON.stringify({
-                token,
-                userId,
-                username
-            });
-            localStorage.setItem('userInfo', userInfo);
-        } else {
-            return Promise.reject("잘못된 상태 입니다.");    
-        }
-    }, (error) => {
-        console.log(error);
-        return Promise.reject("정보가 틀립니다.");
-    });
 }
 
 /*
@@ -135,7 +110,7 @@ export const accountLogout = () => dispatch => {
 /*
  *  로그인 상태 체크
  */
-export const userLoginCheck = () => dispatch => {
+export const accountLoginCheck = () => dispatch => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     
     if(userInfo !== null) {
@@ -149,6 +124,63 @@ export const userLoginCheck = () => dispatch => {
         });
     }
 }
+
+/*
+ *  유저의 정보를 가져옵니다.
+ */
+export const accountGet = (history) => async dispatch => {
+    try {
+        await axios.get(`${SERVER_URL}/api/account/public/${USER_ID()}`)
+            .then(res => {
+                dispatch({
+                    type: ACCOUNT_GET,
+                    payload: res.data
+                });
+            });
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+/*
+ *  유저의 정보를 수정합니다.
+ */
+export const accountUpdate = (account, history) => async dispatch => {
+    try {
+        // 유저가 로그인 상태 라면
+        if(localStorage.getItem("userInfo")) {
+            axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
+            await axios.post(`${SERVER_URL}/api/account/${account.id}`, account)
+            .then(res => {
+                console.log(res);
+                switch(res.status) {
+                    case 200 : 
+                        console.log("200");
+                        // dispatch({
+                        //     type: ACCOUNT_CREATE,
+                        //     payload: true
+                        // });
+                        break;
+                        
+                    case 202 : 
+                        console.log("202");
+                        // dispatch({
+                        //     type: GET_ERRORS,
+                        //     payload: res.data
+                        // });
+                        break;
+
+                    default :
+                        console.log(res);
+                        break;
+                }
+            });
+        }
+    } catch (e) {
+        console.log(e);
+    }
+}
+
 
 /* 
  *  관리자 상태 체크
@@ -164,23 +196,27 @@ export const adminAccountCheck = async () => {
 }
 
 /*
- *  ex) 회원만 요청 가능
+ *  관리자 로그인
  */
-// export const memberTaskLogin = (account, history) => async dispatch => {
-//     try {
-//     axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
-//         await axios.get("http://localhost:8080/api/account/go",{ 
-//             headers: {
-//                 Authorization : `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqanVucHJvIiwiVVNFUk5BTUUiOiJhc2QiLCJVU0VSX1JPTEUiOiJST0xFX1VTRVIifQ.rGUlmMWPCEHMgY8YEakH7aMWSGUuCYnrxwQdRsMs1CY`
-//             }
-//         })
-//         .then(res => {
-//             console.log(res);
-//         });
-//     } catch (error) {
-//         dispatch({
-//             type: GET_ERRORS,
-//             payload: error.response.data
-//         });
-//     }
-// }
+export const adminAccountLogin = async (account) => {
+    return await axios.post("http://localhost:8080/api/account/login", account)
+    .then(res => {
+        const token = res.data.token;
+        const userId = res.data.userId;
+        const username = res.data.username;
+
+        if(token) {
+            const userInfo = JSON.stringify({
+                token,
+                userId,
+                username
+            });
+            localStorage.setItem('userInfo', userInfo);
+        } else {
+            return Promise.reject("잘못된 상태 입니다.");    
+        }
+    }, (error) => {
+        console.log(error);
+        return Promise.reject("정보가 틀립니다.");
+    });
+}

@@ -1,5 +1,6 @@
 import {
     ACCOUNT_CREATE,
+    ACCOUNT_GET,
 
     CHECK_USER,
     CHECK_USER_SUCCESS,
@@ -8,7 +9,8 @@ import {
 
 const initialState = {
     user_info : {},
-    account_create: {}
+    account_create: {},
+    account_get: {}
 };
 
 export default function(state=initialState, action) {
@@ -19,6 +21,14 @@ export default function(state=initialState, action) {
             return {
                 ...state,
                 account_create: {
+                    data: action.payload
+                }
+            };
+
+        case ACCOUNT_GET:
+            return {
+                ...state,
+                account_get: {
                     data: action.payload
                 }
             };

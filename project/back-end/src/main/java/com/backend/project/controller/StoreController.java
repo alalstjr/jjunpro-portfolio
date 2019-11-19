@@ -39,6 +39,7 @@ public class StoreController {
             HttpServletRequest request
     ) throws IOException {
         // Account Info
+        System.out.println(request);
         Account accountData = accountUtill.accountJWT(request);
 
         return storeService.findByStoreUniAll(storeId, accountData, offsetCount);

@@ -213,6 +213,21 @@ export const SubmitBtn = styled.button`
     margin-top: 15px;
 `;
 
+/*******************
+    Waring Style
+********************/
+export const WaringWrap = styled.div`
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 15px;
+    background-color: ${props => props.theme.themeColor};
+    color: #fff;
+    font-weight: 600;
+    font-size: 16px;
+`;
+
 /****************************************
     Active&Hover Style
 ****************************************/
@@ -303,10 +318,10 @@ export const ModalCloseBtn = styled.button`
     }
     &:before {
         transform: rotate(45deg);
-      }
+    }
     &:after {
         transform: rotate(-45deg);
-      }
+    }
 `;
 export const Title = styled.h3`
     font-size: 28px;

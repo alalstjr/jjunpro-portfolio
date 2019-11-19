@@ -24,6 +24,7 @@ export const GET_BOARD_PAGING = "GET_BOARD_PAGING";
  * ACCOUNT TYPES
  */
 export const ACCOUNT_CREATE = "ACCOUNT_CREATE";
+export const ACCOUNT_GET = "ACCOUNT_GET";
 
 export const CHECK_USER = "CHECK_USER";
 export const CHECK_USER_SUCCESS = "CHECK_USER_SUCCESS";

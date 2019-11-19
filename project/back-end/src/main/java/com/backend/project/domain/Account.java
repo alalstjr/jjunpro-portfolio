@@ -31,7 +31,8 @@ public class Account extends BaseEntity {
     private UserRole userRole = UserRole.USER;
 
     @Builder
-    public Account(String userId, String password, String nickname, String myUniversity, String email, String[] urlList) {
+    public Account(Long id, String userId, String password, String nickname, String myUniversity, String email, String[] urlList) {
+        this.id = id;
         this.userId = userId;
         this.password = password;
         this.nickname = nickname;

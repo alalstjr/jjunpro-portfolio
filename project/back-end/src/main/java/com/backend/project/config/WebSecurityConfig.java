@@ -91,8 +91,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         List<String> skipPath = new ArrayList<String>();
 
         skipPath.add("POST,/api/account");
-        skipPath.add("GET,/api/account");
-        skipPath.add("GET,/api/account/*");
+        skipPath.add("GET,/api/account/public");
+        skipPath.add("GET,/api/account/public/*");
 
         skipPath.add("GET,/api/store/**");
 

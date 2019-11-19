@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
-import { userLoginCheck } from "../../../../actions/accountActions"
+import { accountLoginCheck } from "../../../../actions/accountActions"
 import AccountBtn from "../AccountProvider"
 
 import { 
@@ -12,7 +12,7 @@ import {
 class LoginBox extends Component {
 
     componentDidMount() {
-        this.props.userLoginCheck();
+        this.props.accountLoginCheck();
     }
 
     render() {
@@ -64,5 +64,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { userLoginCheck }
+    { accountLoginCheck }
 )(LoginBox);

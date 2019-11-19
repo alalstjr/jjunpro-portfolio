@@ -1,7 +1,11 @@
 import React, { Component, Fragment } from "react"
+import PropTypes from "prop-types"
+import { connect } from "react-redux"
+import { accountLoginCheck, accountGet, accountUpdate } from "../../../actions/accountActions"
 import NormalHeader from "../../layout/header/normal/NormalHeader"
 import Profile from "./profile/Profile"
 
+import { WaringWrap } from "../../../style/globalStyles"
 import {
     MyPageWrap,
     MyPageLeft,
@@ -15,7 +19,34 @@ class MyPageProvider extends Component {
         super();
 
         this.state = {
-            page: "profile"
+            // 마이페이지 페이지상태
+            page: "profile",
+            // Input 경고문
+            warning: {
+                nickname: false,
+                password: false,
+                passwordRe: false,
+                email: false
+            },
+            warningText: {
+                nickname: "",
+                password: "",
+                passwordRe: "",
+                email: ""
+            }
+        }
+    }
+
+    componentDidMount() {
+        // 유저의 로그인상태를 체크합니다.
+        this.props.accountLoginCheck();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        // 유저가 비로그인 상태로 접근할 경우 메인으로 경로 이동
+        if(nextProps.user_info.data === undefined) {
+            alert("회원만 이용 가능합니다.");
+            this.props.history.push("/");
         }
     }
 
@@ -25,16 +56,93 @@ class MyPageProvider extends Component {
         });
     }
 
-    // Input Setup
-    onChange = (e) => {
-        this.setState({
-            [e.target.name]: e.target.value
-        });
+    /*
+     *  target {String name}, state {boolean}, message {String}
+     *  target, state 는 필수 값입니다.
+     *  경고문의 상태와 경고문을 설정하는 메소드입니다.
+     */
+    warningSet = (target, state, message) => {
+
+        // message undefined 값 체크
+        message = (message === undefined) ? "" : message;
+        
+        switch(target) {
+            case "nickname" : 
+                this.setState(prevState => ({
+                    warning: {
+                        ...prevState.warning,
+                        nickname: state
+                    },
+                    warningText: {
+                        ...prevState.warningText,
+                        nickname: message
+                    }
+                }));
+                break;
+
+            case "password" : 
+                this.setState(prevState => ({
+                    warning: {
+                        ...prevState.warning,
+                        password: state
+                    },
+                    warningText: {
+                        ...prevState.warningText,
+                        password: message
+                    }
+                }));
+                break;
+
+            case "passwordRe" :
+                this.setState(prevState => ({
+                    warning: {
+                        ...prevState.warning,
+                        passwordRe: state
+                    },
+                    warningText: {
+                        ...prevState.warningText,
+                        passwordRe: message
+                    }
+                }));
+                break;
+
+            case "email" :
+                this.setState(prevState => ({
+                    warning: {
+                        ...prevState.warning,
+                        email: state
+                    },
+                    warningText: {
+                        ...prevState.warningText,
+                        email: message
+                    }
+                }));
+                break;
+
+            default :
+                return false;
+        }
+    }
+
+    /*
+     *  경고문 상태 초기화 메소드입니다.
+     */
+    initWarning = () => {
+        this.setState(prevState => ({
+            warning: {
+                ...prevState.warning,
+                nickname: false,
+                password: false,
+                passwordRe: false,
+                email: false
+            }
+        }));
     }
 
     render() {
 
-        const { page } = this.state;
+        const { accountGet, account_get, accountUpdate } = this.props;
+        const { page, warning, warningText } = this.state;
 
         return (
             <Fragment>
@@ -56,14 +164,49 @@ class MyPageProvider extends Component {
                             "asd"
                             :
                             <Profile
-                                onChange = {this.onChange}
+                                accountGet = {accountGet}
+                                account_get = {account_get}
+                                warningSet = {this.warningSet}
+                                initWarning = {this.initWarning}
+                                accountUpdate = {accountUpdate}
                             />
                         }
                     </MyPageRight>
                 </MyPageWrap>
+                {
+                    warning.nickname ? 
+                    <WaringWrap>{warningText.nickname}</WaringWrap>
+                    :
+                    warning.email ?
+                    <WaringWrap>{warningText.email}</WaringWrap>
+                    :
+                    null
+                }
             </Fragment>
         )
     }
 }
 
-export default MyPageProvider;
+MyPageProvider.propTypes = {
+    accountLoginCheck: PropTypes.func.isRequired,
+    accountGet: PropTypes.func.isRequired,
+    accountUpdate: PropTypes.func.isRequired,
+    error: PropTypes.object.isRequired,
+    user_info: PropTypes.object.isRequired,
+    account_get: PropTypes.object.isRequired
+}
+  
+const mapStateToProps = state => ({
+    error: state.errors,
+    user_info: state.account.user_info,
+    account_get: state.account.account_get
+});
+
+export default connect(
+    mapStateToProps,
+    { 
+        accountLoginCheck,
+        accountGet,
+        accountUpdate
+    }
+)(MyPageProvider);

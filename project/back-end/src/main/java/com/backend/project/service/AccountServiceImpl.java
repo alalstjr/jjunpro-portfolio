@@ -2,6 +2,7 @@ package com.backend.project.service;
 
 import com.backend.project.domain.Account;
 import com.backend.project.dto.AccountSaveDTO;
+import com.backend.project.dto.AccountUpdateDTO;
 import com.backend.project.projection.AccountPublic;
 import com.backend.project.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,23 @@ public class AccountServiceImpl implements AccountService {
     private BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public AccountPublic findOnePublicAccount(Long id) {
-        return account.findOnePublicAccount(id);
+    public Optional<Account> findByUserId(String userId) {
+        return account.findByUserId(userId);
+    }
+
+    @Override
+    public Optional<Account> findByNickname(String nickname) {
+        return account.findByNickname(nickname);
+    }
+
+    @Override
+    public Optional<Account> findByEmail(String email) {
+        return account.findByEmail(email);
+    }
+
+    @Override
+    public AccountPublic findOnePublicAccount(String userId) {
+        return account.findOnePublicAccount(userId);
     }
 
     @Override
@@ -32,12 +48,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Optional<Account> findByUserId(String userId) {
-        return account.findByUserId(userId);
-    }
-
-    @Override
-    public Account saveOrUpdate(AccountSaveDTO dto) {
+    public Account save(AccountSaveDTO dto) {
 
         String rawPassword = dto.getPassword();
         String encodedPassword = passwordEncoder.encode(rawPassword);
@@ -47,7 +58,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Optional<Account> findByNickname(String nickname) {
-        return account.findByNickname(nickname);
+    public Long update(AccountUpdateDTO dto) {
+        return account.update(dto.toEntity());
     }
 }

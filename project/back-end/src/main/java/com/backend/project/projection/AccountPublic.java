@@ -10,6 +10,8 @@ public interface AccountPublic {
     Long getId();
     String getUser_id();
     String getNickname();
+    String getEmail();
+    String[] getUrlList();
     UserRole getUser_role();
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd", timezone = "Asia/Seoul")

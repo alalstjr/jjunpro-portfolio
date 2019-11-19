@@ -9,14 +9,14 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
-public interface AccountRepository extends JpaRepository<Account, Long> {
+public interface AccountRepository extends JpaRepository<Account, Long>, AccountRepositoryDSL {
 
     Optional<Account> findByUserId(String userId);
-
     Optional<Account> findByNickname(String nickname);
+    Optional<Account> findByEmail(String email);
 
-    @Query(value = "SELECT id, user_id, nickname, user_role, created_date, modified_date FROM Account AS a WHERE a.id = ?", nativeQuery = true)
-    AccountPublic findOnePublicAccount(Long id);
+    @Query(value = "SELECT id, user_id, nickname, user_role, email, url_list, created_date, modified_date FROM Account AS a WHERE a.user_id = ?", nativeQuery = true)
+    AccountPublic findOnePublicAccount(String userId);
 
     @Query(value = "SELECT id, user_id, nickname, user_role, created_date, modified_date FROM Account", nativeQuery = true)
     Page<AccountPublic> findByPublicAccountList(Pageable pageable);

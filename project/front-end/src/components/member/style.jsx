@@ -204,7 +204,77 @@ export const ProfileInput = styled.div`
 
     padding: 0 30px;
     padding-right: 60px;
+    position: relative;
+
+    > #urlListInput {
+        padding-right: 60px;
+    }
 `;
 export const ProfileWrap = styled.div`
     margin-top: 30px;
+`;
+export const UrlList = styled.ul`
+    padding: 0 15px;
+    border: 1px solid #e2e2e2;
+    margin-top: 10px;
+`;
+export const Url = styled.li`
+    position: relative;
+    padding: 5px 0;
+`;
+export const CloseBtn = styled.button.attrs({
+    type: "button"
+})`
+    position: absolute;
+    right: 0;
+    top: 7px;
+    width: 17px;
+    height: 17px;
+
+    &:before,
+    &:after {
+        position: absolute;
+        left: 8px;
+        top: 1px;
+        content: ' ';
+        height: 15px;
+        width: 1px;
+        background-color: #333;
+    }
+    &:before {
+        transform: rotate(45deg);
+    }
+    &:after {
+        transform: rotate(-45deg);
+    }
+`;
+export const UrlSaveBtn = styled.button.attrs({
+    type: "button"
+})`
+    width: 50px;
+    height: 25px;
+    border-radius: 3px;
+    background-color: ${props => props.theme.themeColor};
+    color: #fff;
+    position: absolute;
+    right: 63px;
+    top: 2px;
+
+    &:hover {
+        background-color: ${props => props.theme.themeColorHover};
+    }
+`;
+export const SaveBtn = styled.button.attrs({
+    type: "submit"
+})`
+    background: ${props => props.theme.themeColor};
+    color: #fff;
+    padding: 7px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 3px;
+
+    &:hover {
+        background-color: ${props => props.theme.themeColorHover};
+    }
 `;

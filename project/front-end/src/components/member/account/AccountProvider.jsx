@@ -201,8 +201,8 @@ class AccountProvider extends Component {
                                 close = {this.closeModal}
                                 warning = {warning}
                                 warningText = {warningText}
-                                warningSet={this.warningSet}
-                                initWarning={this.initWarning}
+                                warningSet = {this.warningSet}
+                                initWarning = {this.initWarning}
                             />
                         </Fragment>
                     );
