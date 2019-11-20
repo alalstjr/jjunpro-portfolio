@@ -1,22 +1,19 @@
 package com.backend.project.projection;
 
-import com.backend.project.enums.UserRole;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
-public interface AccountPublic {
-
-    Long getId();
-    String getUser_id();
-    String getNickname();
-    String getEmail();
-    String[] getUrlList();
-    UserRole getUser_role();
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd", timezone = "Asia/Seoul")
-    LocalDateTime getCreated_date();
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd", timezone = "Asia/Seoul")
-    LocalDateTime getModified_date();
+@Data
+@AllArgsConstructor
+public class AccountPublic {
+    private Long id;
+    private String userId;
+    private String nickname;
+    private String myUniversity;
+    private String email;
+    private String[] urlList;
+    private LocalDateTime modifiedDate;
+    private LocalDateTime createdDate;
 }

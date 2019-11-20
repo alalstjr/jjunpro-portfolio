@@ -3,6 +3,7 @@ package com.backend.project.controller;
 import com.backend.project.domain.Account;
 import com.backend.project.dto.AccountSaveDTO;
 import com.backend.project.dto.AccountUpdateDTO;
+import com.backend.project.projection.AccountPublicTest;
 import com.backend.project.projection.AccountPublic;
 import com.backend.project.respone.WebProcessRespone;
 import com.backend.project.security.token.PostAuthorizationToken;
@@ -10,8 +11,6 @@ import com.backend.project.service.AccountServiceImpl;
 import com.backend.project.util.AccountUtill;
 import com.backend.project.util.ValidityCheckUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -160,10 +160,8 @@ public class AccountController {
     }
 
     @GetMapping("/public")
-    public Page<AccountPublic> getPublicAccountList(
-            Pageable pageable
-    ) {
-        return accountService.findByPublicAccountList(pageable);
+    public List<AccountPublic> getPublicAccountList() {
+        return accountService.findByPublicAccountList();
     }
 
     @GetMapping("/public/{userId}")

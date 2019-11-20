@@ -4,9 +4,8 @@ import com.backend.project.domain.Account;
 import com.backend.project.dto.AccountSaveDTO;
 import com.backend.project.dto.AccountUpdateDTO;
 import com.backend.project.projection.AccountPublic;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface AccountService {
@@ -15,7 +14,7 @@ public interface AccountService {
     public Optional<Account> findByEmail(String email);
 
     public AccountPublic findOnePublicAccount(String userId);
-    public Page<AccountPublic> findByPublicAccountList(Pageable pageable);
+    public List<AccountPublic> findByPublicAccountList();
 
     public Account save(AccountSaveDTO dto);
     public Long update(AccountUpdateDTO dto);

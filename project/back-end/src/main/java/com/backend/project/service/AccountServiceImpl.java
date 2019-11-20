@@ -6,11 +6,10 @@ import com.backend.project.dto.AccountUpdateDTO;
 import com.backend.project.projection.AccountPublic;
 import com.backend.project.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -43,8 +42,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Page<AccountPublic> findByPublicAccountList(Pageable pageable) {
-        return account.findByPublicAccountList(pageable);
+    public List<AccountPublic> findByPublicAccountList() {
+        return account.findByPublicAccountList();
     }
 
     @Override
