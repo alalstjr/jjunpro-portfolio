@@ -3,7 +3,6 @@ package com.backend.project.controller;
 import com.backend.project.domain.Account;
 import com.backend.project.dto.AccountSaveDTO;
 import com.backend.project.dto.AccountUpdateDTO;
-import com.backend.project.projection.AccountPublicTest;
 import com.backend.project.projection.AccountPublic;
 import com.backend.project.respone.WebProcessRespone;
 import com.backend.project.security.token.PostAuthorizationToken;
@@ -112,6 +111,13 @@ public class AccountController {
 
         // Account Info
         Optional<Account> accountData = accountUtill.accountInfo(authentication);
+
+        // Field Check
+        if(bindingResult.hasErrors()) {
+            for(FieldError error : bindingResult.getFieldErrors()) {
+                errorMap.put(error.getField(), error.getDefaultMessage());
+            }
+        }
 
         // Dto and token Check
         if(dto.getId() != accountData.get().getId()) {

@@ -5,7 +5,7 @@ import { accountLoginCheck, accountGet, accountUpdate } from "../../../actions/a
 import NormalHeader from "../../layout/header/normal/NormalHeader"
 import Profile from "./profile/Profile"
 
-import { WaringWrap } from "../../../style/globalStyles"
+import { WaringWrap, SuccessWrap } from "../../../style/globalStyles"
 import {
     MyPageWrap,
     MyPageLeft,
@@ -26,13 +26,15 @@ class MyPageProvider extends Component {
                 nickname: false,
                 password: false,
                 passwordRe: false,
-                email: false
+                email: false,
+                success: false
             },
             warningText: {
                 nickname: "",
                 password: "",
                 passwordRe: "",
-                email: ""
+                email: "",
+                success: ""
             }
         }
     }
@@ -47,6 +49,21 @@ class MyPageProvider extends Component {
         if(nextProps.user_info.data === undefined) {
             alert("회원만 이용 가능합니다.");
             this.props.history.push("/");
+        }
+
+        // {Server} 유효성 검사 출력 코드입니다.
+        if(nextProps.error.data !== this.props.error.data) {
+            if(nextProps.error.data.nickname) {
+                this.warningSet("nickname", true, nextProps.error.data.nickname);
+            }
+            if(nextProps.error.data.email) {
+                this.warningSet("email", true, nextProps.error.data.email);
+            }
+        }
+
+        // 회원가입이 최종 완료된후 실행되는 이벤트 코드입니다.
+        if(nextProps.account_create.data === true) {
+            this.warningSet("success", true, "프로필 수정이 완료되었습니다.");
         }
     }
 
@@ -119,6 +136,19 @@ class MyPageProvider extends Component {
                 }));
                 break;
 
+            case "success" :
+                this.setState(prevState => ({
+                    warning: {
+                        ...prevState.warning,
+                        success: state
+                    },
+                    warningText: {
+                        ...prevState.warningText,
+                        success: message
+                    }
+                }));
+                break;
+
             default :
                 return false;
         }
@@ -134,7 +164,8 @@ class MyPageProvider extends Component {
                 nickname: false,
                 password: false,
                 passwordRe: false,
-                email: false
+                email: false,
+                success: false
             }
         }));
     }
@@ -180,6 +211,9 @@ class MyPageProvider extends Component {
                     warning.email ?
                     <WaringWrap>{warningText.email}</WaringWrap>
                     :
+                    warning.success ?
+                    <SuccessWrap>{warningText.success}</SuccessWrap>
+                    :
                     null
                 }
             </Fragment>
@@ -193,13 +227,15 @@ MyPageProvider.propTypes = {
     accountUpdate: PropTypes.func.isRequired,
     error: PropTypes.object.isRequired,
     user_info: PropTypes.object.isRequired,
-    account_get: PropTypes.object.isRequired
+    account_get: PropTypes.object.isRequired,
+    account_create: PropTypes.object.isRequired
 }
   
 const mapStateToProps = state => ({
     error: state.errors,
     user_info: state.account.user_info,
-    account_get: state.account.account_get
+    account_get: state.account.account_get,
+    account_create: state.account.account_create
 });
 
 export default connect(

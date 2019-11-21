@@ -24,7 +24,7 @@ public class Account extends BaseEntity {
     @Column(unique = true)
     private String email;
 
-    private String[] urlList;
+    private String[] urlList = new String[3];
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)

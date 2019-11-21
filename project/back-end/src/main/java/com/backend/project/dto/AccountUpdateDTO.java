@@ -22,7 +22,8 @@ public class AccountUpdateDTO {
     @Size(min=1, message = "올바른 이메일을 작성해 주세요.")
     private String email;
 
-    private String[] urlList;
+    @Size(max = 3, message = "태그는 3개만 입력 가능합니다.")
+    private String[] urlList = new String[3];
 
     public Account toEntity() {
         return Account.builder()

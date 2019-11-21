@@ -155,19 +155,17 @@ export const accountUpdate = (account, history) => async dispatch => {
                 console.log(res);
                 switch(res.status) {
                     case 200 : 
-                        console.log("200");
-                        // dispatch({
-                        //     type: ACCOUNT_CREATE,
-                        //     payload: true
-                        // });
+                        dispatch({
+                            type: ACCOUNT_CREATE,
+                            payload: true
+                        });
                         break;
                         
                     case 202 : 
-                        console.log("202");
-                        // dispatch({
-                        //     type: GET_ERRORS,
-                        //     payload: res.data
-                        // });
+                        dispatch({
+                            type: GET_ERRORS,
+                            payload: res.data
+                        });
                         break;
 
                     default :

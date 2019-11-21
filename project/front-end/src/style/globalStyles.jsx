@@ -216,16 +216,23 @@ export const SubmitBtn = styled.button`
 /*******************
     Waring Style
 ********************/
-export const WaringWrap = styled.div`
+export const WaringCss = css`
     position: fixed;
     bottom: 0;
     width: 100%;
     text-align: center;
     padding: 15px;
-    background-color: ${props => props.theme.themeColor};
     color: #fff;
     font-weight: 600;
     font-size: 16px;
+`;
+export const WaringWrap = styled.div`
+    ${WaringCss}
+    background-color: ${props => props.theme.themeColor};
+`;
+export const SuccessWrap = styled.div`
+    ${WaringCss}
+    background-color: #3897f0;
 `;
 
 /****************************************
