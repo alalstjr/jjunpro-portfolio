@@ -1,4 +1,6 @@
 import React, { Component, Fragment } from "react"
+import FileDrop from "../../../widget/fileDrop/FileDrop"
+import SVG from "../../../../static/svg/SVG"
 
 import {
     Form,
@@ -13,7 +15,9 @@ import {
     Url,
     CloseBtn,
     UrlSaveBtn,
-    SaveBtn
+    SaveBtn,
+    ProfileIamge,
+    ProfileId
 } from "../../style"
 
 class Profile extends Component {
@@ -27,7 +31,11 @@ class Profile extends Component {
             nickname: "",
             email: "",
             urlListInput: "",
-            urlList: []
+            urlList: [],
+            // FileDrop 필수 state
+            files: [],
+            registerFiles: [],
+            fileCount: 0
         }
     }
 
@@ -74,7 +82,8 @@ class Profile extends Component {
             id,
             nickname,
             urlList,
-            email
+            email,
+            files
         } = this.state;
 
         // Value Init
@@ -100,7 +109,7 @@ class Profile extends Component {
             return false;
         }
         
-        this.props.accountUpdate(account, this.props.history);
+        this.props.accountUpdate(account, files, this.props.history);
     }
 
     /*
@@ -142,16 +151,76 @@ class Profile extends Component {
         });
     }
 
+    // File Setup
+    fileState = (target) => {
+        this.setState({
+            files: target.map(fileItem => fileItem),
+            fileCount: target.length
+        });
+    }
+    
+    // registerFiles Setup
+    registerFileState = (file) => {
+        const { registerFiles, removeFiles } = this.state;
+        registerFiles.splice(registerFiles.indexOf(file), 1);
+
+        removeFiles.push(file.id)
+
+        this.setState({
+            registerFiles,
+            removeFiles
+        });
+    }
+
     render() {
-        const { initWarning } = this.props;
-        const { nickname, email, urlListInput, urlList } = this.state;
+        
+        // Props Init
+        const { 
+            initWarning, 
+            account_get 
+        } = this.props;
+
+        // State Init
+        const { 
+            nickname, 
+            email, 
+            urlListInput, 
+            urlList, 
+            registerFiles 
+        } = this.state;
 
         return (
             <Form onSubmit={this.onSubmit}>
                 <ProfileWrap>
                     <GroupBox>
-                        <ProfileLabel>사진</ProfileLabel>
-                        <ProfileInput>사진</ProfileInput>
+                        <ProfileLabel>
+                            <div>
+                                {
+                                    account_get.data !== undefined ?
+                                    <Fragment>
+                                        <ProfileId>{account_get.data.userId}</ProfileId>
+                                        {
+                                            account_get.data.photo === null ?
+                                            <SVG name={"user"} width="38px" height="38px" color={"#E71D36"} />
+                                            : 
+                                            <ProfileIamge
+                                                image = {require(`../../../../../../data/file/thumbnail/pugjjig/${account_get.data.photo.fileThumbnail}`)}
+                                            />
+                                        }
+                                    </Fragment>
+                                    : 
+                                    null
+                                }
+                            </div>
+                        </ProfileLabel>
+                        <ProfileInput>
+                            <FileDrop
+                                fileState = {this.fileState}
+                                registerFileState = {this.registerFileState}
+                                registerFiles = {registerFiles}
+                                multiple = {false}
+                            />
+                        </ProfileInput>
                     </GroupBox>
                     <GroupBox>
                         <ProfileLabel>닉네임</ProfileLabel>

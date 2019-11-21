@@ -112,7 +112,7 @@ class PugjjigWrite extends Component {
             uniName,
             uniTag,
             uniStar,
-            files,
+            files
         } = this.state;
 
         const {
@@ -255,9 +255,10 @@ class PugjjigWrite extends Component {
                     <FormGroup>
                         <Formlabel>사진</Formlabel>
                         <FileDrop
-                            fileState={this.fileState}
-                            registerFileState={this.registerFileState}
-                            registerFiles={registerFiles}
+                            fileState = {this.fileState}
+                            registerFileState = {this.registerFileState}
+                            registerFiles = {registerFiles}
+                            multiple = {true}
                         />
                     </FormGroup>
                 </Content>

@@ -1,5 +1,6 @@
 package com.backend.project.projection;
 
+import com.backend.project.domain.File;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -14,6 +15,7 @@ public class AccountPublic {
     private String myUniversity;
     private String email;
     private String[] urlList;
+    private File photo;
     private LocalDateTime modifiedDate;
     private LocalDateTime createdDate;
 }

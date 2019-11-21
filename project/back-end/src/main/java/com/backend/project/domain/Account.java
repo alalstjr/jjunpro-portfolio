@@ -1,7 +1,10 @@
 package com.backend.project.domain;
 
 import com.backend.project.enums.UserRole;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -24,14 +27,17 @@ public class Account extends BaseEntity {
     @Column(unique = true)
     private String email;
 
-    private String[] urlList = new String[3];
+    private String[] urlList;
+
+    @OneToOne
+    private File photo;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private UserRole userRole = UserRole.USER;
 
     @Builder
-    public Account(Long id, String userId, String password, String nickname, String myUniversity, String email, String[] urlList) {
+    public Account(Long id, String userId, String password, String nickname, String myUniversity, String email, String[] urlList, File photo) {
         this.id = id;
         this.userId = userId;
         this.password = password;
@@ -39,5 +45,6 @@ public class Account extends BaseEntity {
         this.myUniversity = myUniversity;
         this.email = email;
         this.urlList = urlList;
+        this.photo = photo;
     }
 }

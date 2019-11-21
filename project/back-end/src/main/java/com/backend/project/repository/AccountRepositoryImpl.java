@@ -2,6 +2,8 @@ package com.backend.project.repository;
 
 import com.backend.project.domain.Account;
 import com.backend.project.domain.QAccount;
+import com.backend.project.domain.QFile;
+import com.backend.project.dto.AccountPwdUpdateDTO;
 import com.backend.project.projection.AccountPublic;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -20,18 +22,39 @@ public class AccountRepositoryImpl implements AccountRepositoryDSL {
 
     private QAccount qAccount = QAccount.account;
 
+    private QFile qFile = QFile.file;
+
     @Override
     @Transactional
     public Long update(Account account) {
 
-        Long result = queryFactory.update(qAccount)
-                .where(qAccount.id.eq(account.getId()))
-                .set(qAccount.nickname, account.getNickname())
-                .set(qAccount.email, account.getEmail())
-                .set(qAccount.urlList, account.getUrlList())
-                .execute();
+        // 파일을 전송받는경우와 안받는 경우
+        if(account.getPhoto() != null) {
+            return queryFactory.update(qAccount)
+                    .where(qAccount.id.eq(account.getId()))
+                    .set(qAccount.nickname, account.getNickname())
+                    .set(qAccount.email, account.getEmail())
+                    .set(qAccount.urlList, account.getUrlList())
+                    .set(qAccount.photo, account.getPhoto())
+                    .execute();
+        } else {
+            return queryFactory.update(qAccount)
+                    .where(qAccount.id.eq(account.getId()))
+                    .set(qAccount.nickname, account.getNickname())
+                    .set(qAccount.email, account.getEmail())
+                    .set(qAccount.urlList, account.getUrlList())
+                    .execute();
+        }
+    }
 
-        return result;
+    @Override
+    @Transactional
+    public Long pwdUpdate(AccountPwdUpdateDTO dto) {
+
+        return queryFactory.update(qAccount)
+                .where(qAccount.id.eq(dto.getId()))
+                .set(qAccount.password, dto.getPassword())
+                .execute();
     }
 
     @Override
@@ -48,6 +71,7 @@ public class AccountRepositoryImpl implements AccountRepositoryDSL {
                         a.getMyUniversity(),
                         a.getEmail(),
                         a.getUrlList(),
+                        a.getPhoto(),
                         a.getCreatedDate(),
                         a.getModifiedDate()
                 )
@@ -68,11 +92,13 @@ public class AccountRepositoryImpl implements AccountRepositoryDSL {
                                 qAccount.myUniversity,
                                 qAccount.email,
                                 qAccount.urlList,
+                                qAccount.photo,
                                 qAccount.createdDate,
                                 qAccount.modifiedDate
                         )
                 )
                 .from(qAccount)
+                .leftJoin(qAccount.photo, qFile)
                 .where(qAccount.userId.eq(userId))
                 .fetchOne();
 

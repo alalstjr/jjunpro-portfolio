@@ -193,9 +193,10 @@ export const ProfileLabel = styled.div`
     flex-direction: column;
 
     text-align: right;
-    padding: 0 30px;
+    padding-right: 30px
     font-size: 16px;
     font-weight: 600;
+    margin: auto;
 `;
 export const ProfileInput = styled.div`
     flex-basis: 72%;
@@ -277,4 +278,18 @@ export const SaveBtn = styled.button.attrs({
     &:hover {
         background-color: ${props => props.theme.themeColorHover};
     }
+`;
+export const ProfileIamge = styled.div`
+    background-image: url(${props => props.image});
+
+    width: 38px;
+    height: 38px;
+    background-size: cover;
+    border-radius: 50%;
+    float: right;
+`;
+export const ProfileId = styled.div`
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 5px;
 `;

@@ -30,6 +30,7 @@ public class FileStorageServiceImpl implements FileStorageService{
 
     private final Path fileStorageLocation;
     private final Path fileStorageLocationThumbnail;
+    private final Path fileStorageLocationAccount;
 
     @Autowired
     private FileRepository fileRepository;
@@ -48,6 +49,9 @@ public class FileStorageServiceImpl implements FileStorageService{
         this.fileStorageLocationThumbnail = Paths.get(fileStorageProperties.getUploadDirThumbnail())
                 .toAbsolutePath().normalize();
 
+        // 유저정보 경로
+        this.fileStorageLocationAccount = Paths.get(fileStorageProperties.getUploadDirAccount())
+                .toAbsolutePath().normalize();
 
         try {
              // { Class File }
@@ -56,25 +60,26 @@ public class FileStorageServiceImpl implements FileStorageService{
 
             Files.createDirectories(this.fileStorageLocation);
             Files.createDirectories(this.fileStorageLocationThumbnail);
+            Files.createDirectories(this.fileStorageLocationAccount);
         } catch (Exception e) {
             throw new StoreFileException("업로드 된 파일을 저장할 디렉토리를 만들 수 없습니다.", e);
         }
     }
 
     @Override
-    public List<File> uploadMultipleFiles(MultipartFile[] files) {
+    public List<File> uploadMultipleFiles(MultipartFile[] files, String fileRouter) {
 
         // 서버로 받은 파일'들'을 List로 변환하여 하나씩 서버로 업로드 합니다.
         List<File> fileResult = Arrays.asList(files)
                 .stream()
-                .map(file -> uploadFile(file))
+                .map(file -> uploadFile(file, fileRouter))
                 .collect(Collectors.toList());
 
         return fileResult;
     }
 
     @Override
-    public File uploadFile(MultipartFile file) {
+    public File uploadFile(MultipartFile file, String fileRouter) {
         /*
          * 파일 이름 표준화
          * { Class StringUtils }
@@ -113,8 +118,22 @@ public class FileStorageServiceImpl implements FileStorageService{
              * */
             String fileUrl = uuid + fileType;
 
-            // 원본 이미지파일 저장
-            Path targetLocation = this.fileStorageLocation.resolve(fileUrl);
+            /*
+             *  원본 이미지파일 저장 & File 저장 경로 설정
+             */
+            Path targetLocation = null;
+
+            switch (fileRouter) {
+                case "pugjjig" : targetLocation = this.fileStorageLocation.resolve(fileUrl);
+                    break;
+
+                case "account" : targetLocation = this.fileStorageLocationAccount.resolve(fileUrl);
+                    break;
+
+                default:
+                    break;
+            }
+
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
             // 썸네일 이미지파일 저장

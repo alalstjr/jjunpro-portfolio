@@ -3,7 +3,7 @@ import { useDropzone } from 'react-dropzone';
 
 import { DropZoneWrap, DropZone, FileList, FileRemove } from "./style";
 
-const FileDrop = ({ fileState, registerFiles, registerFileState }) => {
+const FileDrop = ({ fileState, registerFiles, registerFileState, multiple }) => {
     const [myFiles, setMyFiles] = useState([]);
     const maxSize = 10000000;
     const onDrop = useCallback(acceptedFiles => {
@@ -15,7 +15,8 @@ const FileDrop = ({ fileState, registerFiles, registerFileState }) => {
         accept: 'image/jpeg, image/png',
         minSize: 0,
         maxSize,
-        maxFiles: 5
+        maxFiles: 5,
+        multiple
     });
 
     const isFileTooLarge = rejectedFiles.length > 0 && rejectedFiles[0].size > maxSize;

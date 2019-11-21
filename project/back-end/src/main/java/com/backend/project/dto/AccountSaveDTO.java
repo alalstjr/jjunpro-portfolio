@@ -36,7 +36,7 @@ public class AccountSaveDTO {
     @Size(min=1, message = "올바른 이메일을 작성해 주세요.")
     private String email;
 
-    private String[] urlList = new String[3];
+    private String[] urlList;
 
     public Account toEntity() {
         return Account.builder()

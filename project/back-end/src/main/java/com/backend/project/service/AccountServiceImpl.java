@@ -1,6 +1,7 @@
 package com.backend.project.service;
 
 import com.backend.project.domain.Account;
+import com.backend.project.dto.AccountPwdUpdateDTO;
 import com.backend.project.dto.AccountSaveDTO;
 import com.backend.project.dto.AccountUpdateDTO;
 import com.backend.project.projection.AccountPublic;
@@ -59,5 +60,15 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Long update(AccountUpdateDTO dto) {
         return account.update(dto.toEntity());
+    }
+
+    @Override
+    public Long pwdUpdate(AccountPwdUpdateDTO dto) {
+
+        String rawPassword = dto.getPassword();
+        String encodedPassword = passwordEncoder.encode(rawPassword);
+        dto.setPassword(encodedPassword);
+
+        return account.pwdUpdate(dto);
     }
 }

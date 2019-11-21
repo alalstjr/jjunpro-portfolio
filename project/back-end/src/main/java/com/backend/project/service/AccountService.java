@@ -1,6 +1,7 @@
 package com.backend.project.service;
 
 import com.backend.project.domain.Account;
+import com.backend.project.dto.AccountPwdUpdateDTO;
 import com.backend.project.dto.AccountSaveDTO;
 import com.backend.project.dto.AccountUpdateDTO;
 import com.backend.project.projection.AccountPublic;
@@ -18,4 +19,5 @@ public interface AccountService {
 
     public Account save(AccountSaveDTO dto);
     public Long update(AccountUpdateDTO dto);
+    public Long pwdUpdate(AccountPwdUpdateDTO dto);
 }

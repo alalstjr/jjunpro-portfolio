@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
-import { accountLoginCheck, accountGet, accountUpdate } from "../../../actions/accountActions"
+import { accountLoginCheck, accountGet, accountUpdate, accountPwdUpdate } from "../../../actions/accountActions"
 import NormalHeader from "../../layout/header/normal/NormalHeader"
 import Profile from "./profile/Profile"
+import PwdChange from "./pwdChange/PwdChange"
 
 import { WaringWrap, SuccessWrap } from "../../../style/globalStyles"
 import {
@@ -24,6 +25,7 @@ class MyPageProvider extends Component {
             // Input 경고문
             warning: {
                 nickname: false,
+                oldPassword: false,
                 password: false,
                 passwordRe: false,
                 email: false,
@@ -31,6 +33,7 @@ class MyPageProvider extends Component {
             },
             warningText: {
                 nickname: "",
+                oldPassword: "",
                 password: "",
                 passwordRe: "",
                 email: "",
@@ -59,11 +62,21 @@ class MyPageProvider extends Component {
             if(nextProps.error.data.email) {
                 this.warningSet("email", true, nextProps.error.data.email);
             }
+            if(nextProps.error.data.oldPassword) {
+                this.warningSet("oldPassword", true, nextProps.error.data.oldPassword);
+            }
+            if(nextProps.error.data.passwordRe) {
+                this.warningSet("passwordRe", true, nextProps.error.data.passwordRe);
+            }
         }
 
-        // 회원가입이 최종 완료된후 실행되는 이벤트 코드입니다.
+        // DB전송 최종 완료된후 실행되는 이벤트 코드입니다.
         if(nextProps.account_create.data === true) {
-            this.warningSet("success", true, "프로필 수정이 완료되었습니다.");
+            this.warningSet("success", true, "수정이 완료되었습니다.");
+
+            setTimeout(() => {
+                this.initWarning();
+            }, 3000);
         }
     }
 
@@ -93,6 +106,19 @@ class MyPageProvider extends Component {
                     warningText: {
                         ...prevState.warningText,
                         nickname: message
+                    }
+                }));
+                break;
+
+            case "oldPassword" : 
+                this.setState(prevState => ({
+                    warning: {
+                        ...prevState.warning,
+                        oldPassword: state
+                    },
+                    warningText: {
+                        ...prevState.warningText,
+                        oldPassword: message
                     }
                 }));
                 break;
@@ -162,6 +188,7 @@ class MyPageProvider extends Component {
             warning: {
                 ...prevState.warning,
                 nickname: false,
+                oldPassword: false,
                 password: false,
                 passwordRe: false,
                 email: false,
@@ -172,7 +199,7 @@ class MyPageProvider extends Component {
 
     render() {
 
-        const { accountGet, account_get, accountUpdate } = this.props;
+        const { accountGet, account_get, accountUpdate, accountPwdUpdate, account_create } = this.props;
         const { page, warning, warningText } = this.state;
 
         return (
@@ -189,7 +216,13 @@ class MyPageProvider extends Component {
                     <MyPageRight>
                         {
                             page === "password" ?
-                            "asd"
+                            <PwdChange
+                                account_get = {account_get}
+                                warningSet = {this.warningSet}
+                                initWarning = {this.initWarning}
+                                accountPwdUpdate = {accountPwdUpdate}
+                                account_create = {account_create}
+                            />
                             :
                             page === "repository" ?
                             "asd"
@@ -205,6 +238,7 @@ class MyPageProvider extends Component {
                     </MyPageRight>
                 </MyPageWrap>
                 {
+                    // 프로필 변경 안내문
                     warning.nickname ? 
                     <WaringWrap>{warningText.nickname}</WaringWrap>
                     :
@@ -213,6 +247,16 @@ class MyPageProvider extends Component {
                     :
                     warning.success ?
                     <SuccessWrap>{warningText.success}</SuccessWrap>
+                    :
+                    // 비밀번호 변경 안내문
+                    warning.oldPassword ?
+                    <WaringWrap>{warningText.oldPassword}</WaringWrap>
+                    :
+                    warning.password ?
+                    <WaringWrap>{warningText.password}</WaringWrap>
+                    :
+                    warning.passwordRe ?
+                    <WaringWrap>{warningText.passwordRe}</WaringWrap>
                     :
                     null
                 }
@@ -243,6 +287,7 @@ export default connect(
     { 
         accountLoginCheck,
         accountGet,
-        accountUpdate
+        accountUpdate,
+        accountPwdUpdate
     }
 )(MyPageProvider);

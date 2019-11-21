@@ -48,8 +48,10 @@ public class UniversitySaveDTO {
     @Column(nullable = false)
     private String stoAddress;
 
+    // 서버에 저장된 File 의 정보 files -> fileData 순으로 엔티티에 변환되어 저장
     private List<File> fileData;
 
+    // 클라이언트에서 받은 Files
     private MultipartFile[] files;
 
     public University toEntity() {

@@ -15,6 +15,7 @@ import {
 // 푹찍 리뷰 작성
 export const pugjjigInsert = (pugjjig, files, history) => async dispatch => {
 
+    // file upload form
     const formData = new FormData();
     const config = {
         headers: {

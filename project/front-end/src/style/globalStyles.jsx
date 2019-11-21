@@ -221,7 +221,7 @@ export const WaringCss = css`
     bottom: 0;
     width: 100%;
     text-align: center;
-    padding: 15px;
+    padding: 10px;
     color: #fff;
     font-weight: 600;
     font-size: 16px;
