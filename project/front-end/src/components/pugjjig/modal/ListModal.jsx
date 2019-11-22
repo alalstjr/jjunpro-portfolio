@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from "react"
 import ReactTransitionGroup from "react-addons-css-transition-group"
 
-import List from "../../../components/pugjjig/list/List"
+import StoreList from "../list/storeList/StoreList"
 
 import { 
     ModalCloseBtn,  
@@ -35,7 +35,7 @@ class ListModal extends Component {
                     <ModalOverlay/>
                     <ListModalWrap>
                         <ModalCloseBtn onClick={() => closeModal("listModalState")}/>
-                        <List
+                        <StoreList
                             modalState = {modalState}
                             stoId = {stoId}
                         />

@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
-import { pugjjigGetStoreList, pugjjigLike } from "../../../actions/KakaoMapActions"
-import Item from "../../../components/pugjjig/list/item/Item"
+import { pugjjigGetStoreList, pugjjigLike } from "../../../../actions/KakaoMapActions"
+import Item from "../item/Item"
 import InfiniteScroll from "react-infinite-scroller"
-import { PugjjigItemWrap } from "../style"
+import { PugjjigItemWrap } from "../../style"
 
-class List extends Component {
+class StoreList extends Component {
 
     constructor(props){
         super(props);
@@ -17,13 +17,25 @@ class List extends Component {
     }
 
     componentDidMount() {
-        const { stoId } = this.props;
 
-        this.props.pugjjigGetStoreList(stoId, 0);
+        // Props Init
+        const { 
+            stoId,
+            pugjjigGetStoreList
+        } = this.props;
+
+        // {stoId} 게시글 정보를 가져옵니다.
+        pugjjigGetStoreList(stoId, 0);
     }
 
     componentWillReceiveProps(nextProps) {
-        if(nextProps.pugjjig_store_list !== this.props.pugjjig_store_list) {
+
+        // Props Init
+        const { 
+            pugjjig_store_list
+        } = this.props;
+
+        if(nextProps.pugjjig_store_list !== pugjjig_store_list) {
             this.handleUpdate(nextProps.pugjjig_store_list);
         }
     }
@@ -40,7 +52,13 @@ class List extends Component {
     } 
 
     handleLoad = (page) => {
-        const { stoId, pugjjig_store_list } = this.props;
+        
+        // Props Init
+        const { 
+            stoId, 
+            pugjjig_store_list,
+            pugjjigGetStoreList
+        } = this.props;
         
         if(pugjjig_store_list.data !== undefined) {
             if(pugjjig_store_list.data.length <= 0) {
@@ -48,13 +66,18 @@ class List extends Component {
             }
         }
 
-        this.props.pugjjigGetStoreList(stoId, page);
+        pugjjigGetStoreList(stoId, page);
     }
 
     handleUpdate = (postData) => {
+
+        // Props Init
+        const {
+            pugjjig
+        } = this.state;
         
         this.setState({
-            pugjjig: this.state.pugjjig.concat(postData.data)
+            pugjjig: pugjjig.concat(postData.data)
         });
     }
 
@@ -126,7 +149,8 @@ class List extends Component {
     }
 }
 
-List.propTypes = {
+StoreList.propTypes = {
+    pugjjigGetStoreList: PropTypes.func.isRequired,
     pugjjigLike: PropTypes.func.isRequired,
     pugjjig_store_list: PropTypes.object.isRequired,
     pugjjig_like: PropTypes.object.isRequired,
@@ -145,4 +169,4 @@ export default connect(
         pugjjigGetStoreList,
         pugjjigLike 
     }
-  )(List);
+  )(StoreList);

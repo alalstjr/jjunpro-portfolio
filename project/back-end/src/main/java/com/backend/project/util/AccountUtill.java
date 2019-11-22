@@ -42,6 +42,8 @@ public class AccountUtill {
      *   단순히 로그인 || 비로그인 구분만 하는 메소드 입니다.
      *   Controller 에서 사용가능합니다.
      *   매개변수로 HttpServletRequest 필수 입니다.
+     *
+     *   만약 JWToken 값의 유저가 DB에 존재하지 않으면 에러가 발생합니다.
      */
     public Account accountJWT(HttpServletRequest request) throws IOException {
         if(request.getHeader("Authorization") != null) {

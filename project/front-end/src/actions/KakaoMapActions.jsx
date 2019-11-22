@@ -58,7 +58,7 @@ export const pugjjigLike = (id) => async dispatch => {
     // 유저 JWT Token정보
     USER_AUTH();
 
-    await axios.post(`${SERVER_URL}/api/university/${id}/like`)
+    await axios.post(`${SERVER_URL}/api/university/like/${id}`)
     .then(res => {
         dispatch({
             type: GET_PUGJJIG_LIKE,
@@ -125,11 +125,13 @@ export const pugjjigGetCount = (storeId) =>  async dispatch => {
 }
 
 // 푹찍 리뷰 {userId} 목록 조회
-export const pugjjigGetUserList = (history, userId) =>  async dispatch => {
+export const pugjjigGetUserList = (userId, offsetCount) =>  async dispatch => {
 
-    userId = (userId === undefined) ? USER_ID() : userId;
+    // 유저 {아이디값,페이지} 의 전달이 없는 경우 기본값 설정
+    userId = (userId === undefined || userId === null) ? USER_ID() : userId;
+    offsetCount = (offsetCount == null) ? 0 : offsetCount;
 
-    await axios.get(`${SERVER_URL}/api/university/pugjjigs/${userId}`)
+    await axios.get(`${SERVER_URL}/api/university/pugjjigs/${userId}/${offsetCount}`)
     .then(res => {
         dispatch({
             type: GET_PUGJJIG_LIST,
@@ -137,7 +139,6 @@ export const pugjjigGetUserList = (history, userId) =>  async dispatch => {
         });
     }).catch(error => {
         alert(error.response.data.error);
-        history.push("/");
     });
 }
 

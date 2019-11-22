@@ -5,13 +5,15 @@ import { accountLoginCheck, accountGet, accountUpdate, accountPwdUpdate } from "
 import NormalHeader from "../../layout/header/normal/NormalHeader"
 import Profile from "./profile/Profile"
 import PwdChange from "./pwdChange/PwdChange"
+import ActivityRecord from "./activityRecord/ActivityRecord"
 
 import { WaringWrap, SuccessWrap } from "../../../style/globalStyles"
 import {
     MyPageWrap,
     MyPageLeft,
     MyPageRight,
-    MyPageList
+    MyPageList,
+    MyPageWhite
 } from "../style"
 
 class MyPageProvider extends Component {
@@ -199,8 +201,21 @@ class MyPageProvider extends Component {
 
     render() {
 
-        const { accountGet, account_get, accountUpdate, accountPwdUpdate, account_create } = this.props;
-        const { page, warning, warningText } = this.state;
+        // Props Init
+        const { 
+            accountGet,         // {id}의 유저의 정보를 가져오는 메소드
+            account_get,        // {id}의 유저의 정보 변수
+            accountUpdate,      // {id}의 유저의 기본정보를 수정하는 메소드
+            accountPwdUpdate,   // {id}의 유저의 비밀번호를 수정하는 메소드
+            account_create     // {id}의 유저의 수정 상태 정보 변수
+        } = this.props;
+
+        // State Init
+        const { 
+            page, 
+            warning, 
+            warningText
+        } = this.state;
 
         return (
             <Fragment>
@@ -214,6 +229,7 @@ class MyPageProvider extends Component {
                         </ul>
                     </MyPageLeft>
                     <MyPageRight>
+                        <MyPageWhite>
                         {
                             page === "password" ?
                             <PwdChange
@@ -225,7 +241,7 @@ class MyPageProvider extends Component {
                             />
                             :
                             page === "repository" ?
-                            "asd"
+                            <ActivityRecord/>
                             :
                             <Profile
                                 accountGet = {accountGet}
@@ -235,6 +251,7 @@ class MyPageProvider extends Component {
                                 accountUpdate = {accountUpdate}
                             />
                         }
+                        </MyPageWhite>
                     </MyPageRight>
                 </MyPageWrap>
                 {
@@ -269,10 +286,11 @@ MyPageProvider.propTypes = {
     accountLoginCheck: PropTypes.func.isRequired,
     accountGet: PropTypes.func.isRequired,
     accountUpdate: PropTypes.func.isRequired,
+    accountPwdUpdate: PropTypes.func.isRequired,
     error: PropTypes.object.isRequired,
     user_info: PropTypes.object.isRequired,
     account_get: PropTypes.object.isRequired,
-    account_create: PropTypes.object.isRequired
+    account_create: PropTypes.object.isRequired,
 }
   
 const mapStateToProps = state => ({

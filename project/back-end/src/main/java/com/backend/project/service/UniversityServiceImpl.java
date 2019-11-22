@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,8 +41,8 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public Page<UniversityPublic> findByUniversityListWhereAccountId(Pageable pageable, Account account, String userId) {
-        return university.findByUniversityListWhereAccountId(pageable, account, userId);
+    public List<UniversityPublic> findByUniversityListWhereAccountId(Account account, String userId, Long offsetCount) {
+        return university.findByUniversityListWhereAccountId(account, userId, offsetCount);
     }
 
     @Override

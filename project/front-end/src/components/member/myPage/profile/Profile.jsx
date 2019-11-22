@@ -40,8 +40,14 @@ class Profile extends Component {
     }
 
     componentDidMount() {
+
+        // Props Init
+        const {
+            accountGet
+        } = this.props;
+
         // 유저의 정보를 가져옵니다.
-        this.props.accountGet();
+        accountGet();
     }
 
     componentWillReceiveProps(nextProps) {

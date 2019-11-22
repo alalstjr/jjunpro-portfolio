@@ -138,7 +138,6 @@ export const Content = styled.div`
 ********************/
 export const MyPageWrap = styled.div`
     background-color: #fff;
-    border: 1px solid #dbdbdb;
     border-radius: 3px;
     margin: 60px auto 0;
     max-width: 935px;
@@ -150,12 +149,17 @@ export const MyPageLeft = styled.div`
     display: inherit;
     flex-direction: column;
     width: 230px;
-    border-right: 1px solid #dbdbdb;
 `;
 export const MyPageRight = styled.div`
     display: inherit;
     flex-direction: column;
     width: calc(100% - 230px);
+
+    background-color: ${props => props.theme.backgroundColor};
+`;
+export const MyPageWhite = styled.div`
+    margin-left: 15px;
+    background-color: #fff;
 `;
 export const MyPageList = styled.li`
     cursor: pointer;
@@ -292,4 +296,12 @@ export const ProfileId = styled.div`
     font-size: 18px;
     font-weight: 400;
     margin-bottom: 5px;
+`;
+
+/*******************
+    ActivityRecord Style
+********************/
+export const ActivityRecordWrap = styled.ul`
+    height: 80vh;
+    background-color: ${props => props.theme.backgroundColor};
 `;

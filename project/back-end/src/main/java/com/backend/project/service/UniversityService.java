@@ -8,6 +8,7 @@ import com.backend.project.projection.UniversityPublic;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UniversityService {
@@ -15,7 +16,7 @@ public interface UniversityService {
     public Optional<University> findById(Long id);
     public UniversityPublic findByPublicId(Long id, Account account);
     public Page<UniversityPublic> findByUniversityList(Pageable pageable, Account account);
-    public Page<UniversityPublic> findByUniversityListWhereAccountId(Pageable pageable, Account account, String userId);
+    public List<UniversityPublic> findByUniversityListWhereAccountId(Account account, String userId, Long offsetCount);
     public Page<UniversityPublic> findByLikeListWhereAccountId(Pageable pageable, Account account, String userId);
     public Boolean findByIdLike(Long id, Account account);
 

@@ -4,8 +4,6 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-d
 import MainProvider from "./components/mainPage/MainProvider"
 
 import PugjjigView from "./components/pugjjig/view/PugjjigView"
-import PugjjigViewList from "./components/member/myList/PugjjigViewList"
-import PugjjigLikeList from "./components/member/myList/PugjjigLikeList"
 
 import Board from "./components/board"
 import BoardWriteInsert from "./components/board/write/writeInsert"
@@ -21,12 +19,6 @@ const App = () => {
           <Route exact path="/" component={MainProvider} />
           {/* Pugjjig Review */}
           <Route exact path="/pugjjig/:id" component={PugjjigView} />
-          {/* Pugjjig Reviews */}
-          <Route exact path="/pugjjigs" component={PugjjigViewList} />
-          <Route exact path="/pugjjigs/:userId" component={PugjjigViewList} />
-          {/* Pugjjig Like */}
-          <Route exact path="/pugjjigLikes" component={PugjjigLikeList} />
-          <Route exact path="/pugjjigLikes/:userId" component={PugjjigLikeList} />
           {/* User MyPage */}
           <Route exact path="/mypage" component={MyPage} />
 

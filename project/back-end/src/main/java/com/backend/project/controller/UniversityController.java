@@ -116,7 +116,7 @@ public class UniversityController {
     }
 
     // LKIE TRUE or FALSE
-    @PostMapping("/{id}/like")
+    @PostMapping("/like/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<UniLikeDTO> updateLike(
             @PathVariable Long id,
@@ -179,19 +179,22 @@ public class UniversityController {
     }
 
     // GET {userId} 의 푹찍 좋아요 목록
-    @GetMapping("/pugjjigs/{userId}")
-    public Page<UniversityPublic> getUserPugjjig(
-            Pageable pageable,
+    @GetMapping("/pugjjigs/{userId}/{offsetCount}")
+    public List<UniversityPublic> getUserPugjjig(
             @PathVariable String userId,
+            @PathVariable Long offsetCount,
             HttpServletRequest request
     ) throws IOException {
         if(userId == null) {
             throw new IOException("잘못된 접근입니다.");
         }
+        // offsetCount 없는경우 기본값 0 설정
+        offsetCount = (offsetCount == null) ? 0L : offsetCount;
+
         // Account Info
         Account accountData = accountUtill.accountJWT(request);
 
-        return universityService.findByUniversityListWhereAccountId(pageable, accountData, userId);
+        return universityService.findByUniversityListWhereAccountId(accountData, userId, offsetCount);
     }
 
     // GET 푹찍 {ID} 리뷰

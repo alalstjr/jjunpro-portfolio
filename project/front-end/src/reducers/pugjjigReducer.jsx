@@ -23,7 +23,7 @@ export default function(state=initialState, action) {
             return {
                 ...state,
                 pugjjig_list: {
-                    data: action.payload.content
+                    data: action.payload
                 }
             };
 

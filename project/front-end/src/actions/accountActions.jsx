@@ -98,7 +98,8 @@ export const accountLogin = (account, history) => async dispatch => {
  *  로그아웃
  */
 export const accountLogout = () => dispatch => {
-    
+    axios.defaults.headers.common['Authorization'] = null;
+
     if(localStorage.removeItem("userInfo") === undefined) {
         dispatch({
             type: CHECK_USER_FAILURE,
