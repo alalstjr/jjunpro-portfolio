@@ -76,9 +76,14 @@ export const Ellipsis = css`
 /*******************
     Flex Style
 ********************/
-export const FlexContainer  = css`
+export const FlexInit  = css`
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+
+    position: relative;
+`;
+export const FlexCenter = css`
+    margin: auto 0;
 `;
 export const FlexCol4  = css`
     display: flex;
@@ -212,6 +217,12 @@ export const SubmitBtn = styled.button`
     padding: 12px 0;
     margin-top: 15px;
 `;
+export const NotPost = styled.div`
+    text-align: center;
+    padding: 100px 0;
+    font-size: 26px;
+    color: #A99798;
+`;
 
 /*******************
     Waring Style
@@ -276,28 +287,25 @@ export const ListUl = styled.ul`
 /****************************************
     Modal Style
 ****************************************/
-export const ModalInit = css`
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    width: 100%;
-    box-shadow: 0px 3px 6px rgba(0,0,0,0.16);
-    z-index: 10;
-`;
-export const ModalOverlay = styled.div`
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background-color: rgba(0,0,0,0.6);
-    z-index: 9;
-`;
-export const Modal = styled.div`
+export const ModalWrap = styled.div`
+    ${FlexInit}
     ${ModalActive}
-    ${ModalInit}
-    margin-left: -300px;
-    margin-top: -45vh;
+
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+
+    align-items: center;
+    overflow-y: auto;
+    position: fixed;
+    z-index: 99999;
+    background-color: rgba(0, 0, 0, 0.65);
+`;
+export const ModalBox = styled.div`
+    ${FlexInit}
+    ${FlexCenter}
+
     max-width: 600px;
     border-radius: 5px;
     height: 90vh;

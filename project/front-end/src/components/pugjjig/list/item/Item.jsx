@@ -22,12 +22,14 @@ import {
     ItemBottom,
     ItemTag,
     ItemLikeBtn,
-    ItemLikeText
+    ItemLikeText,
+    ItemEditBtn
 } from "../../style"
 
 import SVG from "../../../../static/svg/SVG"
+import SVGEdit from "../../../../static/svg/SVGEdit"
 
-const Item = ({pugjjig, pugjjigLike}) => (
+const Item = ({pugjjig, pugjjigLike, selectModalState, openModal, closeModal}) => (
     <PugjjigItem>
         <ItemHead>
             <ItemUserPhoto>
@@ -136,6 +138,10 @@ const Item = ({pugjjig, pugjjigLike}) => (
                         댓글
                     </ItemLikeText>
                 </ItemLikeBtn>
+
+                <ItemEditBtn onClick = {() => openModal("selectModalState", pugjjig)} >
+                    <SVGEdit width="16px" height="16px" color={"#333333"} />
+                </ItemEditBtn>
             </ItemState>
         </ItemBottom>
     </PugjjigItem>

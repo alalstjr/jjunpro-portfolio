@@ -1,9 +1,6 @@
 package com.backend.project.repository;
 
-import com.backend.project.domain.Account;
-import com.backend.project.domain.QAccount;
-import com.backend.project.domain.QUniversity;
-import com.backend.project.domain.University;
+import com.backend.project.domain.*;
 import com.backend.project.projection.UniversityPublic;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -25,10 +22,9 @@ import static com.querydsl.core.group.GroupBy.list;
 public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
 
     private final JPAQueryFactory queryFactory;
-
     private QUniversity qUniversity = QUniversity.university;
-
-    private QAccount qAccount = QAccount.account;
+    private QAccount qAccount       = QAccount.account;
+    private QStore qStore           = QStore.store;
 
     @Override
     public Page<UniversityPublic> findByPublicAll(Pageable pageable, Account account) {
@@ -103,12 +99,17 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
 
     @Override
     @Transactional
-    public void deleteTask(Long id, Account accountData) {
+    public void deleteData(Long id, Account accountData) {
 
-        Long result = queryFactory
-                .delete(qUniversity)
-                .where(qUniversity.id.eq(id).and(qUniversity.account.eq(accountData)))
-                .execute();
+        queryFactory
+            .delete(qStore)
+            .where(qStore.stoUniList.any().id.eq(id))
+            .execute();
+
+        queryFactory
+            .delete(qUniversity)
+            .where(qUniversity.id.eq(id).and(qUniversity.account.eq(accountData)))
+            .execute();
     }
 
     private UniversityPublic getUniversityPublic(University data, Account account) {

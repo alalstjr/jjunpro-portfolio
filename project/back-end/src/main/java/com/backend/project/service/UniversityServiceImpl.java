@@ -85,7 +85,7 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public void deleteTask(Long id, Account accountData) {
-        university.deleteTask(id, accountData);
+    public void deleteData(Long id, Account accountData) {
+        university.deleteData(id, accountData);
     }
 }

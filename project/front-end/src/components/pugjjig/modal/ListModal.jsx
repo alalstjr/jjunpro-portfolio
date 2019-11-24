@@ -4,8 +4,8 @@ import ReactTransitionGroup from "react-addons-css-transition-group"
 import StoreList from "../list/storeList/StoreList"
 
 import { 
-    ModalCloseBtn,  
-    ModalOverlay
+    ModalCloseBtn, 
+    ModalWrap
 } from "../../../style/globalStyles";
 
 import {
@@ -32,14 +32,15 @@ class ListModal extends Component {
                         transitionEnterTimeout={200}
                         transitionLeaveTimeout={200}
                     >
-                    <ModalOverlay/>
-                    <ListModalWrap>
-                        <ModalCloseBtn onClick={() => closeModal("listModalState")}/>
-                        <StoreList
-                            modalState = {modalState}
-                            stoId = {stoId}
-                        />
-                    </ListModalWrap>
+                    <ModalWrap>
+                        <ListModalWrap>
+                            <ModalCloseBtn onClick={() => closeModal("listModalState")}/>
+                            <StoreList
+                                modalState = {modalState}
+                                stoId = {stoId}
+                            />
+                        </ListModalWrap>
+                    </ModalWrap>
                     </ReactTransitionGroup>
                     :
                     <ReactTransitionGroup transitionName={'Modal-anim'} transitionEnterTimeout={200} transitionLeaveTimeout={200} />

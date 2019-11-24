@@ -4,16 +4,18 @@ import {
     GET_PUGJJIG_LIKE,
     GET_PUGJJIG_VIEW,
     GET_PUGJJIG_COUNT,
-    GET_UNIVERSITY
+    GET_UNIVERSITY,
+    DELETE_PUGJJIG
 } from "../actions/types"
 
 const initialState = {
-    pugjjig_list: {},
+    pugjjig_list : {},
     pugjjig_store_list : {},
-    pugjjig_like: {},
+    pugjjig_like : {},
     pugjjig_view : {},
     pugjjig_count : {},
-    pugjjig_university: ""
+    pugjjig_university: "",
+    pugjjig_delete : 0
 };
 
 export default function(state=initialState, action) {
@@ -63,6 +65,12 @@ export default function(state=initialState, action) {
             return {
                 ...state,
                 pugjjig_university: action.payload
+            };
+
+        case DELETE_PUGJJIG:
+            return {
+                ...state,
+                pugjjig_delete: action.payload
             };
 
         default:

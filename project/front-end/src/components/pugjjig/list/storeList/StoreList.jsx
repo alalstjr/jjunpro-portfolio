@@ -4,6 +4,8 @@ import { connect } from "react-redux"
 import { pugjjigGetStoreList, pugjjigLike } from "../../../../actions/KakaoMapActions"
 import Item from "../item/Item"
 import InfiniteScroll from "react-infinite-scroller"
+
+import { NotPost } from "../../../../style/globalStyles"
 import { PugjjigItemWrap } from "../../style"
 
 class StoreList extends Component {
@@ -124,7 +126,7 @@ class StoreList extends Component {
                 );
             } else {
                 return (
-                    <div>푹찍이 존재하지 않습니다.</div>
+                    <NotPost>푹찍이 존재하지 않습니다.</NotPost>
                 );
             }
         }

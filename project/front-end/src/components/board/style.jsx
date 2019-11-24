@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { 
-    FlexContainer, 
     FlexCol4, 
     Ellipsis,
     Btn
@@ -28,7 +27,6 @@ export const CateGoryWrap = styled.div`
     margin-bottom: 0.625rem;
 `;
 export const CateGoryUl = styled.ul`
-    ${FlexContainer};
     li {
         font-size: 1rem;
         padding: 0.625rem 1.25rem;
@@ -51,7 +49,6 @@ export const ListBg = styled.div`
     background-color: #f9f9f9;
 `;
 export const ListWrap = styled.div`
-    ${FlexContainer};
     padding: 1.875rem 0;
 `;
 export const ItemWrap = styled.div`

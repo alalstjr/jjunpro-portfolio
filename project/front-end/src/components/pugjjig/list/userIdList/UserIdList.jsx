@@ -2,9 +2,14 @@ import React, { Component, Fragment } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import { pugjjigGetUserList, pugjjigLike } from "../../../../actions/KakaoMapActions"
+import { pugjjigDelete } from "../../../../actions/PugjjigActions"
 import Item from "../../../../components/pugjjig/list/item/Item"
 import InfiniteScroll from "react-infinite-scroller"
+import ItemEditModal from "../item/ItemEditModal"
+import InsertModal from "../../modal/InsertModal"
+
 import { PugjjigItemWrap } from "../../style"
+import { NotPost } from "../../../../style/globalStyles"
 
 class UserIdList extends Component {
 
@@ -12,7 +17,10 @@ class UserIdList extends Component {
         super(props);
     
         this.state = {
-            pugjjig: []
+            pugjjig: [],
+            editModalState: false,
+            selectModalState: false,
+            editPugjjig: {}
         }
     }
 
@@ -31,11 +39,16 @@ class UserIdList extends Component {
 
         // Props Init
         const { 
-            pugjjig_list
+            pugjjig_list,
+            pugjjig_delete
         } = this.props;
 
         if(nextProps.pugjjig_list !== pugjjig_list) {
             this.handleUpdate(nextProps.pugjjig_list);
+        }
+        
+        if(nextProps.pugjjig_delete !== pugjjig_delete) {
+            this.handleDeleteUpdate(nextProps.pugjjig_delete);
         }
     }
 
@@ -79,6 +92,50 @@ class UserIdList extends Component {
         });
     }
 
+    handleDelete = () => {
+        // Props Init
+        const { pugjjigDelete } = this.props;
+        
+        // State Init
+        const { editPugjjig } = this.state;
+
+        pugjjigDelete(editPugjjig.id);
+    }
+
+    handleDeleteUpdate = (postPugjjig) => {
+        // State Init
+        const { pugjjig } = this.state;
+        
+        this.closeModal("selectModalState");
+        this.setState({
+            pugjjig: pugjjig.filter(pugjjig => pugjjig.id !== postPugjjig)
+        });
+    }
+
+    /*
+     *  String target, Object pugjjig
+     *  모달상태를 true로 만들어주는 메소드 
+     *  pugjjig 값이 전달될 경우 상태변화를 저장합니다.
+     */
+    openModal = (target, pugjjig) => {
+        if(pugjjig) {
+            this.setState({
+                editPugjjig: pugjjig
+            });
+        }
+
+        this.setState({
+            editModalState: false,
+            selectModalState: false,
+            [target]: true
+        });
+    }
+    closeModal = (target) => {
+        this.setState({
+            [target]: false
+        });
+    }
+
     render() {
         // Props Init
         const { 
@@ -88,7 +145,10 @@ class UserIdList extends Component {
 
         // State Init
         const {
-            pugjjig
+            pugjjig,
+            editModalState,
+            selectModalState,
+            editPugjjig
         } = this.state;
 
         // Variables Init
@@ -100,9 +160,11 @@ class UserIdList extends Component {
             if(pugjjig !== undefined && pugjjig.length > 0) {
                 const data = pugjjig.map((pugjjig, index) => (
                     <Item 
-                        key         = {index}
-                        pugjjig     = {pugjjig}
-                        pugjjigLike = {pugjjigLike}
+                        key            = {index}
+                        pugjjig        = {pugjjig}
+                        pugjjigLike    = {pugjjigLike}
+                        selectModalState = {selectModalState}
+                        openModal      = {this.openModal}
                     />
                 ));
 
@@ -122,7 +184,7 @@ class UserIdList extends Component {
                 );
             } else {
                 return (
-                    <div>푹찍이 존재하지 않습니다.</div>
+                    <NotPost>푹찍이 존재하지 않습니다.</NotPost>
                 );
             }
         }
@@ -133,15 +195,30 @@ class UserIdList extends Component {
         return (
             <PugjjigItemWrap>
                 <InfiniteScroll
-                    pageStart   = {0}
-                    loadMore    = {this.handleLoad}
-                    hasMore     = {true}
-                    initialLoad = {false}
-                    useWindow   = {false}
-                    threshold   = {500}
+                    pageStart    = {0}
+                    loadMore     = {this.handleLoad}
+                    hasMore      = {true}
+                    initialLoad  = {false}
+                    useWindow    = {false}
+                    threshold    = {500}
                 >
                     {pugjjigContent}
                 </InfiniteScroll>
+                {/* Item Edit Select modal */}
+                <ItemEditModal
+                    modalState   = {selectModalState}
+                    closeModal   = {this.closeModal}
+                    openModal    = {this.openModal}
+                    handleDelete = {this.handleDelete}
+                />
+                {/* Edit Modal */}
+                <InsertModal
+                    modalState   = {editModalState}
+                    closeModal   = {this.closeModal}
+                    stoId        = {null}
+                    stoAddress   = {null}
+                    editPugjjig  = {editPugjjig}
+                />
             </PugjjigItemWrap>
         )
     }
@@ -150,21 +227,25 @@ class UserIdList extends Component {
 UserIdList.propTypes = {
     pugjjigGetUserList: PropTypes.func.isRequired,
     pugjjigLike: PropTypes.func.isRequired,
+    pugjjigDelete: PropTypes.func.isRequired,
     pugjjig_list: PropTypes.object.isRequired,
     pugjjig_like: PropTypes.object.isRequired,
-    error: PropTypes.object.isRequired
+    error: PropTypes.object.isRequired,
+    pugjjig_delete: PropTypes.number.isRequired
 }
   
 const mapStateToProps = state => ({
     error: state.errors,
     pugjjig_list: state.pugjjig.pugjjig_list,
-    pugjjig_like: state.pugjjig.pugjjig_like
+    pugjjig_like: state.pugjjig.pugjjig_like,
+    pugjjig_delete: state.pugjjig.pugjjig_delete
 });
   
 export default connect(
     mapStateToProps, 
     { 
         pugjjigGetUserList,
-        pugjjigLike 
+        pugjjigLike,
+        pugjjigDelete
     }
   )(UserIdList);

@@ -5,8 +5,7 @@ import PugjjigWrite from "../form/PugjjigWrite"
 
 import { 
     ModalCloseBtn,  
-    ModalOverlay, 
-    Modal
+    ModalWrap
 } from "../../../style/globalStyles"
 
 import {
@@ -17,7 +16,8 @@ const InsertModal = ({
     modalState, 
     closeModal,
     stoId,
-    stoAddress
+    stoAddress,
+    editPugjjig
 }) => (
     <Fragment>
         {
@@ -27,14 +27,16 @@ const InsertModal = ({
                 transitionEnterTimeout={200}
                 transitionLeaveTimeout={200}
             >
-            <ModalOverlay/>
-            <InsertModalWrap>
-                <ModalCloseBtn onClick={() => closeModal("insertModalState")}/>
-                <PugjjigWrite
-                    stoId = {stoId}
-                    stoAddress = {stoAddress}
-                />
-            </InsertModalWrap>
+            <ModalWrap>
+                <InsertModalWrap>
+                    <ModalCloseBtn onClick={() => closeModal("insertModalState")}/>
+                    <PugjjigWrite
+                        stoId       = {stoId}
+                        stoAddress  = {stoAddress}
+                        editPugjjig = {editPugjjig}
+                    />
+                </InsertModalWrap>
+            </ModalWrap>
             </ReactTransitionGroup>
             :
             <ReactTransitionGroup transitionName={'Modal-anim'} transitionEnterTimeout={200} transitionLeaveTimeout={200} />

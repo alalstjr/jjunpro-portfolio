@@ -17,5 +17,5 @@ public interface UniversityRepositoryDSL {
 
     Boolean findByIdLike(Long id, Account account);
 
-    void deleteTask(Long id, Account accountData);
+    void deleteData(Long id, Account accountData);
 }

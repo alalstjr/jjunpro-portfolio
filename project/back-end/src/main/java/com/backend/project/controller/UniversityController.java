@@ -230,7 +230,7 @@ public class UniversityController {
     // DELETE 특정 TASK 삭제
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<String> deleteTask(
+    public ResponseEntity<String> deletePugjjig(
             @PathVariable Long id,
             Authentication authentication
     ) {
@@ -240,8 +240,8 @@ public class UniversityController {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         Optional<Account> accountData =  accountService.findByUserId(userDetails.getUsername());
 
-        if(!accountData.isPresent()) {
-            universityService.deleteTask(id, accountData.get());
+        if(accountData.isPresent()) {
+            universityService.deleteData(id, accountData.get());
         } else {
             errorType = "AuthenticationError";
             errorText = "올바른 접근이 아닙니다.";

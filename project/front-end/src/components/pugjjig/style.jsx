@@ -2,7 +2,9 @@ import styled, { css } from "styled-components"
 import { 
     ClearFix,
     ModalActive,
-    ModalInit
+    ModalInit,
+    FlexInit,
+    FlexCenter
 } from "../../style/globalStyles"
 
 /*******************
@@ -10,6 +12,12 @@ import {
 ********************/
 export const WrapPadding = css`
     padding: 15px;
+`;
+export const ModalWrapCSS = css`
+    width: 100%;
+    max-width: 600px;
+    border-radius: 5px 0 5px 5px;
+    padding: 10px;
 `;
 
 /*******************
@@ -251,19 +259,49 @@ export const ItemLikeBtn = styled.button.attrs({
 export const ItemLikeText = styled.div`
     float: left;
 `;
+export const ItemEditBtn = styled.button.attrs({
+    type: "button"
+})`
+    float: right;
+    margin-top: 3px;
+`;
+export const ItemEditModalBox = styled.div`
+    ${FlexInit}
+    ${FlexCenter}
+    background-color: #fff;
+    width: 400px;
+    max-width: 100%;
+    border-radius: 15px;
+`;
+export const ItemEditModalBtn = styled.button.attrs({
+    type: "button"
+})`
+    font-size: 16px;
+    font-weight: 500;
+    height: 40px;
+    border-bottom: 1px solid #ddd;
+
+    ${
+        props => props.warring ?
+        `color: #ed4956`
+        :
+        `color: #333333`
+    }
+
+    &:last-child {
+        border-bottom: none;
+    }
+`;
 
 /*******************
     List Style
 ********************/
 export const ListModalWrap = styled.div`
-    ${ModalActive}
-    ${ModalInit}
-    margin-left: -300px;
-    margin-top: -45vh;
-    max-width: 600px;
-    border-radius: 5px 0 5px 5px;
+    ${FlexInit}
+    ${FlexCenter}
+    ${ModalWrapCSS}
+
     height: 90vh;
-    padding: 10px;
     background-color: ${props => props.theme.backgroundColor};
 `;
 
@@ -271,15 +309,12 @@ export const ListModalWrap = styled.div`
     Insert Style
 ********************/
 export const InsertModalWrap = styled.div`
-    ${ModalActive}
-    ${ModalInit}
-    margin-left: -300px;
-    margin-top: -45vh;
-    max-width: 600px;
-    border-radius: 5px 0px 5px 5px;
-    padding: 10px;
-    background-color: #ffffff;
+    ${FlexInit}
+    ${FlexCenter}
+    ${ModalWrapCSS}
+    
     padding-bottom: 47px;
+    background-color: #ffffff;
 `;
 export const InsertSubmitBtn = styled.button`
     background-color: ${props => props.theme.themeColor};

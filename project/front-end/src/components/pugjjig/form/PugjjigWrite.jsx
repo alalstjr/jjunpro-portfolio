@@ -45,31 +45,41 @@ class PugjjigWrite extends Component {
             // FileDrop 필수 state
             files: [],
             registerFiles: [],
-            fileCount: 0,
-            // inset state
-            insetSuccess: false
+            fileCount: 0
         }
     }
 
     componentDidMount() {
-        const { pugjjig_university } = this.props;
+        // Props Init
+        const { 
+            pugjjig_university,
+            editPugjjig 
+        } = this.props;
 
         this.setState({
             uniName: pugjjig_university
         });
+
+        // editPugjjig 값을 props 전달받은 경우 (Edit 상태)
+        if(editPugjjig !== undefined) {
+            console.log(editPugjjig);
+            this.setState({
+                uniSubject: editPugjjig.uniSubject,
+                uniContent: editPugjjig.uniContent,
+                uniName: editPugjjig.uniName,
+                uniTag: editPugjjig.uniTag,
+                uniStar: editPugjjig.uniStar,
+                files: editPugjjig.files
+            }); 
+
+            console.log(editPugjjig.uniStar);
+        }
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.pugjjig_university !== this.props.pugjjig_university) {
             this.setState({
                 uniName: nextProps.pugjjig_university
-            });
-        }
-
-        // 푹찍 게시물 작성이 완료되었는지 확인합니다.
-        if (nextProps.pugjjig_state !== this.props.pugjjig_state) {
-            this.setState({
-                insetSuccess: true
             });
         }
     }
@@ -275,14 +285,12 @@ class PugjjigWrite extends Component {
 PugjjigWrite.propTypes = {
     pugjjigInsert: PropTypes.func.isRequired,
     pugjjig_university: PropTypes.string.isRequired,
-    pugjjig_state: PropTypes.bool.isRequired,
     error: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
     error: state.errors,
-    pugjjig_university: state.pugjjig.pugjjig_university,
-    pugjjig_state: state.pugjjig.pugjjig_state
+    pugjjig_university: state.pugjjig.pugjjig_university
 });
   
 export default withRouter(connect(

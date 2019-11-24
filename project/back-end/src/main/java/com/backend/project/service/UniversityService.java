@@ -23,5 +23,5 @@ public interface UniversityService {
     public University saveOrUpdate(UniversitySaveDTO dto, StoreDTO storeDTO);
     public University saveOrUpdate(University universityData);
 
-    public void deleteTask(Long id, Account accountData);
+    public void deleteData(Long id, Account accountData);
 }
