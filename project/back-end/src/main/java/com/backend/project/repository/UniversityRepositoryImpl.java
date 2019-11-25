@@ -1,7 +1,9 @@
 package com.backend.project.repository;
 
 import com.backend.project.domain.*;
+import com.backend.project.projection.StorePublic;
 import com.backend.project.projection.UniversityPublic;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -43,18 +45,18 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
     @Override
     public List<UniversityPublic> findByUniversityListWhereAccountId(Account account, String userId, Long offsetCount) {
         Map<University, List<Account>> transform = queryFactory
-            .from(qUniversity)
-            .leftJoin(qUniversity.uniLike, qAccount)
-            .where(
-                qUniversity.publicStatus.eq(true)
-                .and(qUniversity.controlStatus.eq(false))
-                .and(qUniversity.account.userId.eq(userId))
-            )
-            .offset(8 * offsetCount)
-            .limit(8)
-            .transform(
-                groupBy(qUniversity).as(list(qAccount))
-            );
+                .from(qUniversity)
+                .leftJoin(qUniversity.uniLike, qAccount)
+                .where(
+                    qUniversity.publicStatus.eq(true)
+                    .and(qUniversity.controlStatus.eq(false))
+                    .and(qUniversity.account.userId.eq(userId))
+                )
+                .offset(8 * offsetCount)
+                .limit(8)
+                .transform(
+                    groupBy(qUniversity).as(list(qAccount))
+                );
 
         List<UniversityPublic> results = getUniversityPublicList(transform, account);
 
@@ -77,13 +79,13 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
     @Override
     public UniversityPublic findByPublicId(Long id, Account account) {
 
-        University data = queryFactory
+        University uniData = queryFactory
                 .select(qUniversity)
                 .from(qUniversity)
                 .where(qUniversity.id.eq(id))
                 .fetchOne();
 
-        return getUniversityPublic(data, account);
+        return getUniversityPublic(uniData, account);
     }
 
     @Override
@@ -126,7 +128,8 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                 data.getAccount().getNickname(),
                 data.getUniLike().size(),
                 data.getUniLike().contains(account),
-                data.getFiles()
+                data.getFiles(),
+                stoData(data.getId())
         );
     }
 
@@ -146,9 +149,28 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                                 u.getKey().getAccount().getNickname(),
                                 u.getValue().size(),
                                 u.getKey().getUniLike().contains(account),
-                                u.getKey().getFiles()
+                                u.getKey().getFiles(),
+                                stoData(u.getKey().getId())
                         )
                 )
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Long id
+     * University {id} 값을 필요로 합니다.
+     * Store 상점의 정보를 얻어오는 메소드
+     * */
+    private StorePublic stoData(Long id) {
+         return queryFactory
+                 .select(
+                         Projections.constructor(
+                                 StorePublic.class,
+                                 qStore.stoId
+                         )
+                 )
+                .from(qStore)
+                .where(qStore.stoUniList.any().id.eq(id))
+                .fetchOne();
     }
 }

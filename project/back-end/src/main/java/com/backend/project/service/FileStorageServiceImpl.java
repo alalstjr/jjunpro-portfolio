@@ -160,7 +160,7 @@ public class FileStorageServiceImpl implements FileStorageService{
 
             // DB Save Code
             File dbFile = File.builder()
-                    .filename(file.getName())
+                    .filename(file.getOriginalFilename())
                     .fileType(fileType)
                     .fileSize(file.getSize())
                     .fileDivision(fileDivision)

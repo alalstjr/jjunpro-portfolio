@@ -35,44 +35,53 @@ class PugjjigWrite extends Component {
         super(props);
     
         this.state = {
+            // update id
+            uniId: null,
+            stoId: null,
+            stoAddress: null,
             // input value
             uniSubject: "",
             uniContent: "",
             uniName: "",
             uniTag: [],
             uniTagText: "",
-            uniStar: "",
+            uniStar: 0,
             // FileDrop 필수 state
-            files: [],
-            registerFiles: [],
+            files: [],         // INSERT file
+            registerFiles: [], // UPDATE file
+            removeFiles: [],   // UPDATE REMOVE file 기존 파일 삭제목록
             fileCount: 0
         }
     }
 
     componentDidMount() {
         // Props Init
-        const { 
+        const {
+            stoId,
+            stoAddress,
             pugjjig_university,
-            editPugjjig 
+            editPugjjig
         } = this.props;
 
         this.setState({
-            uniName: pugjjig_university
+            uniName: pugjjig_university,
+            stoId,
+            stoAddress
         });
 
         // editPugjjig 값을 props 전달받은 경우 (Edit 상태)
         if(editPugjjig !== undefined) {
             console.log(editPugjjig);
             this.setState({
+                uniId: editPugjjig.id,
                 uniSubject: editPugjjig.uniSubject,
                 uniContent: editPugjjig.uniContent,
                 uniName: editPugjjig.uniName,
                 uniTag: editPugjjig.uniTag,
                 uniStar: editPugjjig.uniStar,
-                files: editPugjjig.files
+                registerFiles: editPugjjig.files,
+                stoId: editPugjjig.storePublic.stoId
             }); 
-
-            console.log(editPugjjig.uniStar);
         }
     }
 
@@ -88,6 +97,13 @@ class PugjjigWrite extends Component {
     onChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value
+        });
+    }
+    // Input Value값의 경우 String 형으로 받기 때문에
+    // 점수와 같은 값은 *1 을 해주어서 값을 Integer 로 변경하여 저장합니다.
+    onChangeInt = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value * 1
         });
     }
 
@@ -116,21 +132,22 @@ class PugjjigWrite extends Component {
     onSubmit = (e) => {
         e.preventDefault();
 
-        const { 
+        const {
+            stoId,
+            stoAddress,
+            uniId,
             uniSubject, 
             uniContent,
             uniName,
             uniTag,
             uniStar,
-            files
+            files,
+            registerFiles,
+            removeFiles
         } = this.state;
 
-        const {
-            stoId,
-            stoAddress
-        } = this.props;
-
         const pugjjig = {
+            uniId,
             uniSubject, 
             uniContent,
             uniName,
@@ -140,7 +157,7 @@ class PugjjigWrite extends Component {
             stoAddress
         };
         
-        this.props.pugjjigInsert(pugjjig, files, this.props.history);
+        this.props.pugjjigInsert(pugjjig, files, removeFiles, this.props.history);
     }
 
     // 태그 메소드
@@ -202,28 +219,28 @@ class PugjjigWrite extends Component {
                     <RatingWrap>
                         <Rating>
                             <RatingPointInput id="star5" name="uniStar" value="5"
-                                checked={uniStar === '5'} 
-                                onChange={this.onChange}
+                                checked={uniStar === 5} 
+                                onChange={this.onChangeInt}
                             />
                             <RatingPointLabel htmlFor="star5"/>
                             <RatingPointInput id="star4" name="uniStar" value="4"
-                                checked={uniStar === '4'} 
-                                onChange={this.onChange}
+                                checked={uniStar === 4} 
+                                onChange={this.onChangeInt}
                             />
                             <RatingPointLabel htmlFor="star4"/>
                             <RatingPointInput id="star3" name="uniStar" value="3"
-                                checked={uniStar === '3'} 
-                                onChange={this.onChange}
+                                checked={uniStar === 3} 
+                                onChange={this.onChangeInt}
                             />
                             <RatingPointLabel htmlFor="star3"/>
                             <RatingPointInput id="star2" name="uniStar" value="2"
-                                checked={uniStar === '2'} 
-                                onChange={this.onChange}
+                                checked={uniStar === 2} 
+                                onChange={this.onChangeInt}
                             />
                             <RatingPointLabel htmlFor="star2"/>
                             <RatingPointInput id="star1" name="uniStar" value="1"
-                                checked={uniStar === '1'} 
-                                onChange={this.onChange}
+                                checked={uniStar === 1} 
+                                onChange={this.onChangeInt}
                             />
                             <RatingPointLabel htmlFor="star1"/>
                         </Rating>

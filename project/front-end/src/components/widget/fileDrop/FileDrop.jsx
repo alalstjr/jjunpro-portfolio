@@ -3,7 +3,7 @@ import { useDropzone } from 'react-dropzone';
 
 import { DropZoneWrap, DropZone, FileList, FileRemove } from "./style";
 
-const FileDrop = ({ fileState, registerFiles, registerFileState, multiple }) => {
+const FileDrop = ({ fileState, registerFileState, registerFiles, multiple }) => {
     const [myFiles, setMyFiles] = useState([]);
     const maxSize = 10000000;
     const onDrop = useCallback(acceptedFiles => {
@@ -61,7 +61,7 @@ const FileDrop = ({ fileState, registerFiles, registerFileState, multiple }) => 
                 {/* 게시글 수정시 등록된 파일 목록 */}
                 {registerFiles.length > 0 && registerFiles.map(acceptedFile => (
                     <FileList key={acceptedFile.fileNo}>
-                        {acceptedFile.fileName} - {acceptedFile.fileSize} bytes{" "}
+                        {acceptedFile.filename} - {acceptedFile.fileSize} bytes{" "}
                         <FileRemove 
                             type="button" 
                             onClick={registerFileState.bind(this, acceptedFile)}

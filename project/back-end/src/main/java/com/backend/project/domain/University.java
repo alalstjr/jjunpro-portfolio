@@ -46,7 +46,8 @@ public class University extends BaseEntity {
     private List<File> files;
 
     @Builder
-    public University(String uniSubject, String uniContent, String uniName, String[] uniTag, Integer uniStar, Set<Account> uniLike, String uniIp, Account account, List<File> files) {
+    public University(Long id, String uniSubject, String uniContent, String uniName, String[] uniTag, Integer uniStar, Set<Account> uniLike, String uniIp, Account account, List<File> files) {
+        this.id = id;
         this.uniSubject = uniSubject;
         this.uniContent = uniContent;
         this.uniName = uniName;

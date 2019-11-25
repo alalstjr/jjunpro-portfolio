@@ -58,7 +58,7 @@ class Profile extends Component {
 
             let account = nextProps.account_get.data;
             // url 값이 존재하지 않으면 빈 배열 기본값 
-            account.urlList = (account.urlList === undefined || account.urlList.length <= 0) ? [] : account.urlList;
+            account.urlList = (account.urlList === null || account.urlList.length <= 0) ? [] : account.urlList;
             
             this.setState({
                 id: account.id,

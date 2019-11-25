@@ -52,10 +52,18 @@ public class UniversityServiceImpl implements UniversityService {
 
     @Override
     public University saveOrUpdate(UniversitySaveDTO dto, StoreDTO storeDTO) {
-        University universityData =  university.save(dto.toEntity());
+
+        // update 경우 dto 기본값을 설정하여 UPDATE 해줍니다.
+        if(dto.getId() != null) {
+            University updateDto = university.findById(dto.getId()).get();
+            dto.setId(updateDto.getId());
+            dto.setUniLike(updateDto.getUniLike());
+            dto.setUniName(updateDto.getUniName());
+        }
+
+        University universityData = university.save(dto.toEntity());
 
         storeDTO.setStoId(dto.getStoId());
-
         // DB 상에 음식점의 정보가 있는지 확인
         Optional<Store> storeData = store.findByStoId(storeDTO.getStoId());
 

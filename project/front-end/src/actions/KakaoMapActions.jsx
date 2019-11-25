@@ -13,7 +13,7 @@ import {
 ****************************************/
 
 // 푹찍 리뷰 작성
-export const pugjjigInsert = (pugjjig, files, history) => async dispatch => {
+export const pugjjigInsert = (pugjjig, files, removeFiles, history) => async dispatch => {
 
     // file upload form
     const formData = new FormData();
@@ -36,6 +36,12 @@ export const pugjjigInsert = (pugjjig, files, history) => async dispatch => {
     formData.append("uniStar", pugjjig.uniStar);
     formData.append("stoId", pugjjig.stoId);
     formData.append("stoAddress", pugjjig.stoAddress);
+
+    // pugjjig update 일경우 id값 전달
+    if(pugjjig.uniId !== null) {
+        formData.append("id", pugjjig.uniId);
+        // removeFiles 활용
+    }
     
     files.forEach(function(file) {
         formData.append('files', file); 

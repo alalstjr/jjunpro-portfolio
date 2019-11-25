@@ -20,6 +20,8 @@ import java.util.Set;
 @NoArgsConstructor
 public class UniversitySaveDTO {
 
+    private Long id;
+
     @Size(max=50, message = "제목이 너무 깁니다.")
     @NotBlank(message = "제목을 작성해 주세요.")
     private String uniSubject;
@@ -56,6 +58,7 @@ public class UniversitySaveDTO {
 
     public University toEntity() {
         return University.builder()
+                .id(id)
                 .uniSubject(uniSubject)
                 .uniContent(uniContent)
                 .uniName(uniName)
