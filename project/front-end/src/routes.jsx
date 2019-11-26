@@ -17,5 +17,12 @@ export const USER_AUTH = () => {
     }
 }
 export const USER_ID = () => {
-    return JSON.parse(localStorage.getItem("userInfo")).userId;
+    if(localStorage.getItem("userInfo")) {
+        return JSON.parse(localStorage.getItem("userInfo")).userId;
+    }
+}
+export const USER_LONG_ID = () => {
+    if(localStorage.getItem("userInfo")) {
+        return JSON.parse(localStorage.getItem("userInfo")).id;
+    }
 }

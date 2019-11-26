@@ -230,6 +230,7 @@ export const NotPost = styled.div`
 export const WaringCss = css`
     position: fixed;
     bottom: 0;
+    left: 0;
     width: 100%;
     text-align: center;
     padding: 10px;
@@ -308,7 +309,7 @@ export const ModalBox = styled.div`
 
     max-width: 600px;
     border-radius: 5px;
-    height: 90vh;
+    height: 80vh; 
     padding: 10px;
 `;
 export const ModalCloseBtn = styled.button`
@@ -347,6 +348,26 @@ export const Title = styled.h3`
 `;
 export const Content = styled.div`
     
+`;
+export const Loding = styled.div`
+    ${FlexInit}
+    align-items: center;
+
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    border-radius: 4px;
+
+    > svg {
+        ${FlexInit}
+        ${FlexCenter}
+
+        width: 30px;
+        height: 30px;
+    }
 `;
 
 /* Main Style */
@@ -400,7 +421,9 @@ export const MainMap = styled.div`
     z-index: 0;
 `;
 
-/* Img */
+/*******************
+    Image Style
+********************/
 export const ImgBox = styled.div`
     background-image: url(${props => props.bgImg});
     padding-bottom: ${props => props.bgSize};
@@ -412,4 +435,14 @@ export const Image = styled.img`
     display: block;
     vertical-align: top;
     margin: 0.625rem auto;
+`;
+
+export const ProfileIamge = styled.div`
+    background-image: url(${props => props.image});
+
+    width: 38px;
+    height: 38px;
+    background-size: cover;
+    border-radius: 50%;
+    float: right;
 `;

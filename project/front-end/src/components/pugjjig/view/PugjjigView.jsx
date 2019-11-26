@@ -1,10 +1,19 @@
 import React, { Component, Fragment } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
+import { USER_LONG_ID } from "../../../routes"
+
 import ImageSlide from "../../widget/mainTitleSlide"
 import NormalHeader from "../../layout/header/normal/NormalHeader"
 import { pugjjigGetView, pugjjigLike } from "../../../actions/KakaoMapActions"
 
+import ItemEditModal from "../list/item/ItemEditModal"
+import InsertModal from "../modal/InsertModal"
+
+import {
+    ProfileIamge,
+    NotPost
+} from "../../../style/globalStyles"
 import {
     ViewWrap,
     ViewBox,
@@ -26,15 +35,52 @@ import {
     ItemBottom,
     ItemTag,
     ItemLikeBtn,
-    ItemLikeText
+    ItemLikeText,
+    ItemEditBtn
 } from "../style"
 
 import SVG from "../../../static/svg/SVG"
+import SVGEdit from "../../../static/svg/SVGEdit"
 
 class PugjjigView extends Component {
 
+    constructor(props){
+        super(props);
+    
+        this.state = {
+            pugjjig: [],
+            insertModalState: false,
+            selectModalState: false,
+            editPugjjig: {},
+            edit: false
+        }
+    }
+
     componentDidMount() {
-        this.props.pugjjigGetView(this.props.match.params.id, this.props.history);
+
+        // Props Init
+        const { 
+            pugjjigGetView,
+            match,
+            history
+        } = this.props;
+
+        pugjjigGetView(match.params.id, history);
+    }
+
+    componentWillReceiveProps(nextProps) {
+
+        // Props Init
+        const { 
+            pugjjig_view
+        } = this.props;
+
+        if(nextProps.pugjjig_view !== pugjjig_view) {
+            this.setState({
+                insertModalState: false,
+                selectModalState: false
+            });   
+        }
     }
 
     handleLikeUpdate = (preData, postData) => {
@@ -44,9 +90,75 @@ class PugjjigView extends Component {
         }
     } 
 
+    /*
+     *  DELETE 메소드
+     */
+    handleDelete = () => {
+        // Props Init
+        const { pugjjigDelete } = this.props;
+        
+        // State Init
+        const { editPugjjig } = this.state;
+
+        pugjjigDelete(editPugjjig.id);
+    }
+
+    handleDeleteUpdate = (postPugjjig) => {
+        // State Init
+        const { pugjjig } = this.state;
+        
+        this.closeModal("selectModalState");
+        this.setState({
+            pugjjig: pugjjig.filter(pugjjig => pugjjig.id !== postPugjjig)
+        });
+    }
+
+    /*
+     *  String target, Object pugjjig
+     *  모달상태를 true로 만들어주는 메소드 
+     *  pugjjig 값이 전달될 경우 상태변화를 저장합니다.
+     */
+    openModal = (target, pugjjig) => {
+        // 클릭한 Item의 정보를 담습니다.
+        if(pugjjig) {
+            // 클릭한 DATA의 정보가 로그인한 유저의 DATA인지 확인합니다.
+            let edit = pugjjig.account_id === USER_LONG_ID() ? true : false;
+
+            this.setState({
+                editPugjjig: pugjjig,
+                edit
+            });
+        }
+
+        this.setState({
+            insertModalState: false,
+            selectModalState: false,
+            [target]: true
+        });
+    }
+    closeModal = (target) => {
+        this.setState({
+            [target]: false
+        });
+    }
+
     render() {
 
-        const { pugjjigLike, pugjjig_view, pugjjig_like } = this.props;
+        // Props Init
+        const { 
+            pugjjigLike, 
+            pugjjig_view, 
+            pugjjig_like,
+        } = this.props;
+
+        // State Init
+        const { 
+            insertModalState,
+            selectModalState,
+            editPugjjig,
+            edit
+        } = this.state;
+
         const pugjjig = pugjjig_view.data;
         
         if(pugjjig_like.data !==undefined) {
@@ -62,7 +174,14 @@ class PugjjigView extends Component {
                         <ViewBox>
                             <ItemHead>
                                 <ItemUserPhoto>
+                                {
+                                    pugjjig.photo === null ?
                                     <SVG name={"user"} width="38px" height="38px" color={"#E71D36"} />
+                                    : 
+                                    <ProfileIamge
+                                        image = {require(`../../../../../data/file/thumbnail/pugjjig/${pugjjig.photo.fileThumbnail}`)}
+                                    />
+                                }
                                 </ItemUserPhoto>
                                 <ItemRight>
                                     <ItemUsername>{pugjjig.account_nickname}</ItemUsername>
@@ -154,12 +273,33 @@ class PugjjigView extends Component {
                                             댓글
                                         </ItemLikeText>
                                     </ItemLikeBtn>
+
+                                    <ItemEditBtn onClick = {() => this.openModal("selectModalState", pugjjig)} >
+                                        <SVGEdit width="16px" height="16px" color={"#333333"} />
+                                    </ItemEditBtn>
                                 </ItemState>
                             </ItemBottom>
                         </ViewBox>
+
+                        {/* Item Edit Select modal */}
+                        <ItemEditModal
+                            modalState   = {selectModalState}
+                            closeModal   = {this.closeModal}
+                            openModal    = {this.openModal}
+                            handleDelete = {this.handleDelete}
+                            edit         = {edit}
+                        />
+                        {/* Edit Modal */}
+                        <InsertModal
+                            modalState   = {insertModalState}
+                            closeModal   = {this.closeModal}
+                            stoId        = {null}
+                            stoAddress   = {null}
+                            editPugjjig  = {editPugjjig}
+                        />
                     </Fragment>
                     :
-                    <div>불러오는 중입니다...</div>
+                    <NotPost>불러오는 중입니다...</NotPost>
                 }
             </ViewWrap>
         )

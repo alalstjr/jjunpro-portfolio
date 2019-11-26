@@ -1,6 +1,7 @@
 package com.backend.project.service;
 
 import com.backend.project.domain.Account;
+import com.backend.project.domain.File;
 import com.backend.project.domain.Store;
 import com.backend.project.domain.University;
 import com.backend.project.dto.StoreDTO;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UniversityServiceImpl implements UniversityService {
@@ -51,14 +53,30 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public University saveOrUpdate(UniversitySaveDTO dto, StoreDTO storeDTO) {
+    public UniversityPublic saveOrUpdate(UniversitySaveDTO dto, StoreDTO storeDTO, Account accountData) {
 
-        // update 경우 dto 기본값을 설정하여 UPDATE 해줍니다.
+        // UPDATE 경우 dto 기본값을 설정하여 UPDATE 해줍니다.
         if(dto.getId() != null) {
             University updateDto = university.findById(dto.getId()).get();
             dto.setId(updateDto.getId());
             dto.setUniLike(updateDto.getUniLike());
             dto.setUniName(updateDto.getUniName());
+
+            List<File> updateFile = updateDto.getFiles();
+
+            // UPDATE 기존 file의 제거되는게 있는경우
+            if(dto.getRemoveFiles().length > 0) {
+                for(int i = 0; i < dto.getRemoveFiles().length; i++) {
+                    updateFile = updateFileFilter(updateFile, dto, i);
+                }
+            }
+
+            // UPDATE file 존재하는 경우와 아닌경우
+            if(dto.getFileData() == null) {
+                dto.setFileData(updateFile);
+            } else {
+                dto.getFileData().addAll(updateFile);
+            }
         }
 
         University universityData = university.save(dto.toEntity());
@@ -79,7 +97,7 @@ public class UniversityServiceImpl implements UniversityService {
             store.save(storeDTO.toEntity());
         }
 
-        return universityData;
+        return findByPublicId(universityData.getId(), accountData);
     }
 
     @Override
@@ -95,5 +113,16 @@ public class UniversityServiceImpl implements UniversityService {
     @Override
     public void deleteData(Long id, Account accountData) {
         university.deleteData(id, accountData);
+    }
+
+    /**
+    * Client 에서 기존 업로드된 파일의 제거된 {id}값을 기존 file와 비교하여 제거하는 메소드
+    **/
+    private List<File> updateFileFilter(List<File> result, UniversitySaveDTO dto, Integer i) {
+        return result
+                .stream()
+                .filter(
+                        f -> f.getId() != dto.getRemoveFiles()[i]).collect(Collectors.toList()
+                );
     }
 }

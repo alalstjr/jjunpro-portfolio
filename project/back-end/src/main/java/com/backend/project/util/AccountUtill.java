@@ -5,6 +5,7 @@ import com.backend.project.security.context.AccountContext;
 import com.backend.project.security.jwt.HeaderTokenExtractor;
 import com.backend.project.security.jwt.JwtDecoder;
 import com.backend.project.service.AccountServiceImpl;
+import com.backend.project.service.UniversityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +20,9 @@ public class AccountUtill {
 
     @Autowired
     AccountServiceImpl accountService;
+
+    @Autowired
+    UniversityServiceImpl universityService;
 
     @Autowired
     private JwtDecoder jwtDecoder;
@@ -54,5 +58,19 @@ public class AccountUtill {
         } else {
             return null;
         }
+    }
+
+    /*
+     *   JWToken의 유저 정보를 가져옵니다.
+     */
+    public boolean userDataCheck(Long id, Optional<Account> accountData) {
+        // 해당 데이터의 작성자 {id} 값을 가져옵니다.
+        Long data = universityService.findById(id).get().getAccount().getId();
+
+        // 해당 데이터의 작성자가 맞는지 검사합니다.
+        if(!data.equals(accountData.get().getId())) {
+            return false;
+        }
+        return true;
     }
 }

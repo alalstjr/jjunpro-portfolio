@@ -20,7 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,7 +57,7 @@ public class UniversityController {
     // CREATE or UADATE 생성
     @PostMapping("")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<University> saveOrUpdate(
+    public ResponseEntity<UniversityPublic> saveOrUpdate(
             @Valid @ModelAttribute UniversitySaveDTO dto,
             BindingResult bindingResult,
             Authentication authentication,
@@ -75,6 +74,17 @@ public class UniversityController {
 
         // Account Info
         Optional<Account> accountData = accountUtill.accountInfo(authentication);
+
+        // UPDATE 경우 작성한 유저 유효성 검사
+        if(dto.getId() != null) {
+
+            // 해당 데이터의 작성자가 맞는지 검사합니다.
+            if(!accountUtill.userDataCheck(dto.getId(), accountData)) {
+                errorType = "AuthenticationError";
+                errorText = "잘못된 계정 접근입니다.";
+                return webProcessRespone.webErrorRespone(errorType, errorText);
+            }
+        }
 
         if(!accountData.isPresent()) {
             errorType = "AuthenticationError";
@@ -110,9 +120,9 @@ public class UniversityController {
         dto.setAccount(accountData.get());
         dto.setUniIp(ipUtil.getUserIp(request));
 
-        University newUniversity = universityService.saveOrUpdate(dto, storeDTO);
+        UniversityPublic newUniversity = universityService.saveOrUpdate(dto, storeDTO, accountData.get());
 
-        return new ResponseEntity<University>(newUniversity, HttpStatus.CREATED);
+        return new ResponseEntity<UniversityPublic>(newUniversity, HttpStatus.CREATED);
     }
 
     // LKIE TRUE or FALSE
@@ -237,10 +247,16 @@ public class UniversityController {
         String errorType = null;
         String errorText = null;
 
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        Optional<Account> accountData =  accountService.findByUserId(userDetails.getUsername());
+        Optional<Account> accountData = accountUtill.accountInfo(authentication);
 
         if(accountData.isPresent()) {
+
+            if(!accountUtill.userDataCheck(id, accountData)) {
+                errorType = "AuthenticationError";
+                errorText = "잘못된 계정 접근입니다.";
+                return webProcessRespone.webErrorRespone(errorType, errorText);
+            }
+
             universityService.deleteData(id, accountData.get());
         } else {
             errorType = "AuthenticationError";

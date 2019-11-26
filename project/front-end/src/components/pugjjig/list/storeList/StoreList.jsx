@@ -1,9 +1,15 @@
 import React, { Component, Fragment } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
+
 import { pugjjigGetStoreList, pugjjigLike } from "../../../../actions/KakaoMapActions"
+import { pugjjigDelete } from "../../../../actions/PugjjigActions"
+
 import Item from "../item/Item"
 import InfiniteScroll from "react-infinite-scroller"
+
+import ItemEditModal from "../item/ItemEditModal"
+import InsertModal from "../../modal/InsertModal"
 
 import { NotPost } from "../../../../style/globalStyles"
 import { PugjjigItemWrap } from "../../style"
@@ -14,7 +20,10 @@ class StoreList extends Component {
         super(props);
     
         this.state = {
-            pugjjig: []
+            pugjjig: [],
+            insertModalState: false,
+            selectModalState: false,
+            editPugjjig: {}
         }
     }
 
@@ -34,11 +43,16 @@ class StoreList extends Component {
 
         // Props Init
         const { 
-            pugjjig_store_list
+            pugjjig_store_list,
+            pugjjig_delete
         } = this.props;
 
         if(nextProps.pugjjig_store_list !== pugjjig_store_list) {
             this.handleUpdate(nextProps.pugjjig_store_list);
+        }
+
+        if(nextProps.pugjjig_delete !== pugjjig_delete) {
+            this.handleDeleteUpdate(nextProps.pugjjig_delete);
         }
     }
 
@@ -83,6 +97,53 @@ class StoreList extends Component {
         });
     }
 
+    /*
+     *  DELETE 메소드
+     */
+    handleDelete = () => {
+        // Props Init
+        const { pugjjigDelete } = this.props;
+        
+        // State Init
+        const { editPugjjig } = this.state;
+
+        pugjjigDelete(editPugjjig.id);
+    }
+
+    handleDeleteUpdate = (postPugjjig) => {
+        // State Init
+        const { pugjjig } = this.state;
+        
+        this.closeModal("selectModalState");
+        this.setState({
+            pugjjig: pugjjig.filter(pugjjig => pugjjig.id !== postPugjjig)
+        });
+    }
+
+    /*
+     *  String target, Object pugjjig
+     *  모달상태를 true로 만들어주는 메소드 
+     *  pugjjig 값이 전달될 경우 상태변화를 저장합니다.
+     */
+    openModal = (target, pugjjig) => {
+        if(pugjjig) {
+            this.setState({
+                editPugjjig: pugjjig
+            });
+        }
+
+        this.setState({
+            insertModalState: false,
+            selectModalState: false,
+            [target]: true
+        });
+    }
+    closeModal = (target) => {
+        this.setState({
+            [target]: false
+        });
+    }
+
     render() {
         // Props Init
         const { 
@@ -92,7 +153,10 @@ class StoreList extends Component {
 
         // State Init
         const {
-            pugjjig
+            pugjjig,
+            insertModalState,
+            selectModalState,
+            editPugjjig
         } = this.state;
 
         // Variables Init
@@ -104,9 +168,11 @@ class StoreList extends Component {
             if(pugjjig !== undefined && pugjjig.length > 0) {
                 const data = pugjjig.map((pugjjig, index) => (
                     <Item 
-                        key         = {index}
-                        pugjjig     = {pugjjig}
-                        pugjjigLike = {pugjjigLike}
+                        key              = {index}
+                        pugjjig          = {pugjjig}
+                        pugjjigLike      = {pugjjigLike}
+                        selectModalState = {selectModalState}
+                        openModal        = {this.openModal}
                     />
                 ));
 
@@ -146,6 +212,21 @@ class StoreList extends Component {
                 >
                     {pugjjigContent}
                 </InfiniteScroll>
+                {/* Item Edit Select modal */}
+                <ItemEditModal
+                    modalState   = {selectModalState}
+                    closeModal   = {this.closeModal}
+                    openModal    = {this.openModal}
+                    handleDelete = {this.handleDelete}
+                />
+                {/* Edit Modal */}
+                <InsertModal
+                    modalState   = {insertModalState}
+                    closeModal   = {this.closeModal}
+                    stoId        = {null}
+                    stoAddress   = {null}
+                    editPugjjig  = {editPugjjig}
+                />
             </PugjjigItemWrap>
         )
     }
@@ -154,21 +235,25 @@ class StoreList extends Component {
 StoreList.propTypes = {
     pugjjigGetStoreList: PropTypes.func.isRequired,
     pugjjigLike: PropTypes.func.isRequired,
+    pugjjigDelete: PropTypes.func.isRequired,
     pugjjig_store_list: PropTypes.object.isRequired,
     pugjjig_like: PropTypes.object.isRequired,
-    error: PropTypes.object.isRequired
+    error: PropTypes.object.isRequired,
+    pugjjig_delete: PropTypes.number.isRequired
 }
   
 const mapStateToProps = state => ({
     error: state.errors,
     pugjjig_store_list: state.pugjjig.pugjjig_store_list,
-    pugjjig_like: state.pugjjig.pugjjig_like
+    pugjjig_like: state.pugjjig.pugjjig_like,
+    pugjjig_delete: state.pugjjig.pugjjig_delete
 });
   
 export default connect(
     mapStateToProps, 
     { 
         pugjjigGetStoreList,
-        pugjjigLike 
+        pugjjigLike,
+        pugjjigDelete
     }
   )(StoreList);

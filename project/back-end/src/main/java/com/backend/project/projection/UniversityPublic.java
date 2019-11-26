@@ -24,6 +24,7 @@ public class UniversityPublic implements Comparable<UniversityPublic> {
     private Integer uniLike;
     private Boolean uniLikeState;
     private List<File> files;
+    private File photo;
     private StorePublic storePublic;
 
     @Override

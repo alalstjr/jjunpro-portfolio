@@ -11,6 +11,9 @@ import lombok.Setter;
 public class TokenDTO {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Long id;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String token;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -19,10 +22,11 @@ public class TokenDTO {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String nickname;
 
-    public TokenDTO(String token, String userId, String nickname) {
+    public TokenDTO(Long id, String token, String userId, String nickname) {
         super();
-        this.token = token;
-        this.userId = userId;
+        this.id       = id;
+        this.token    = token;
+        this.userId   = userId;
         this.nickname = nickname;
     }
 }

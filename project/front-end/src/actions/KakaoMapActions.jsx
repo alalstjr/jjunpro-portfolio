@@ -13,7 +13,7 @@ import {
 ****************************************/
 
 // 푹찍 리뷰 작성
-export const pugjjigInsert = (pugjjig, files, removeFiles, history) => async dispatch => {
+export const pugjjigInsert = (pugjjig, files, history) => async dispatch => {
 
     // file upload form
     const formData = new FormData();
@@ -40,7 +40,7 @@ export const pugjjigInsert = (pugjjig, files, removeFiles, history) => async dis
     // pugjjig update 일경우 id값 전달
     if(pugjjig.uniId !== null) {
         formData.append("id", pugjjig.uniId);
-        // removeFiles 활용
+        formData.append("removeFiles", pugjjig.removeFiles);
     }
     
     files.forEach(function(file) {
@@ -52,7 +52,12 @@ export const pugjjigInsert = (pugjjig, files, removeFiles, history) => async dis
 
     await axios.post(`${SERVER_URL}/api/university`, formData, config)
     .then(res => {
+        console.log(res);
         history.push(`/pugjjig/${res.data.id}`);
+        dispatch({
+            type: GET_PUGJJIG_VIEW,
+            payload: res.data
+        });
     }).catch(error => {
         console.log(error);
     });
@@ -133,6 +138,8 @@ export const pugjjigGetCount = (storeId) =>  async dispatch => {
 // 푹찍 리뷰 {userId} 목록 조회
 export const pugjjigGetUserList = (userId, offsetCount) =>  async dispatch => {
 
+    axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
+    
     // 유저 {아이디값,페이지} 의 전달이 없는 경우 기본값 설정
     userId = (userId === undefined || userId === null) ? USER_ID() : userId;
     offsetCount = (offsetCount == null) ? 0 : offsetCount;

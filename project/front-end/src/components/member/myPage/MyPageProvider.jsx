@@ -50,14 +50,21 @@ class MyPageProvider extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+
+        // Props Init
+        const { 
+            history, 
+            error 
+        } = this.props;
+
         // 유저가 비로그인 상태로 접근할 경우 메인으로 경로 이동
         if(nextProps.user_info.data === undefined) {
             alert("회원만 이용 가능합니다.");
-            this.props.history.push("/");
+            history.push("/");
         }
 
         // {Server} 유효성 검사 출력 코드입니다.
-        if(nextProps.error.data !== this.props.error.data) {
+        if(nextProps.error.data !== error.data) {
             if(nextProps.error.data.nickname) {
                 this.warningSet("nickname", true, nextProps.error.data.nickname);
             }
@@ -75,10 +82,7 @@ class MyPageProvider extends Component {
         // DB전송 최종 완료된후 실행되는 이벤트 코드입니다.
         if(nextProps.account_create.data === true) {
             this.warningSet("success", true, "수정이 완료되었습니다.");
-
-            setTimeout(() => {
-                this.initWarning();
-            }, 3000);
+            this.initWarning();
         }
     }
 
@@ -110,6 +114,7 @@ class MyPageProvider extends Component {
                         nickname: message
                     }
                 }));
+                this.initWarning();
                 break;
 
             case "oldPassword" : 
@@ -123,6 +128,7 @@ class MyPageProvider extends Component {
                         oldPassword: message
                     }
                 }));
+                this.initWarning();
                 break;
 
             case "password" : 
@@ -136,6 +142,7 @@ class MyPageProvider extends Component {
                         password: message
                     }
                 }));
+                this.initWarning();
                 break;
 
             case "passwordRe" :
@@ -149,6 +156,7 @@ class MyPageProvider extends Component {
                         passwordRe: message
                     }
                 }));
+                this.initWarning();
                 break;
 
             case "email" :
@@ -162,6 +170,7 @@ class MyPageProvider extends Component {
                         email: message
                     }
                 }));
+                this.initWarning();
                 break;
 
             case "success" :
@@ -175,6 +184,7 @@ class MyPageProvider extends Component {
                         success: message
                     }
                 }));
+                this.initWarning();
                 break;
 
             default :
@@ -186,17 +196,19 @@ class MyPageProvider extends Component {
      *  경고문 상태 초기화 메소드입니다.
      */
     initWarning = () => {
-        this.setState(prevState => ({
-            warning: {
-                ...prevState.warning,
-                nickname: false,
-                oldPassword: false,
-                password: false,
-                passwordRe: false,
-                email: false,
-                success: false
-            }
-        }));
+        setTimeout(() => {
+            this.setState(prevState => ({
+                warning: {
+                    ...prevState.warning,
+                    nickname: false,
+                    oldPassword: false,
+                    password: false,
+                    passwordRe: false,
+                    email: false,
+                    success: false
+                }
+            }));
+        }, 2000);
     }
 
     render() {
@@ -207,7 +219,7 @@ class MyPageProvider extends Component {
             account_get,        // {id}의 유저의 정보 변수
             accountUpdate,      // {id}의 유저의 기본정보를 수정하는 메소드
             accountPwdUpdate,   // {id}의 유저의 비밀번호를 수정하는 메소드
-            account_create     // {id}의 유저의 수정 상태 정보 변수
+            account_create      // {id}의 유저의 수정 상태 정보 변수
         } = this.props;
 
         // State Init
@@ -235,7 +247,6 @@ class MyPageProvider extends Component {
                             <PwdChange
                                 account_get = {account_get}
                                 warningSet = {this.warningSet}
-                                initWarning = {this.initWarning}
                                 accountPwdUpdate = {accountPwdUpdate}
                                 account_create = {account_create}
                             />
@@ -247,7 +258,6 @@ class MyPageProvider extends Component {
                                 accountGet = {accountGet}
                                 account_get = {account_get}
                                 warningSet = {this.warningSet}
-                                initWarning = {this.initWarning}
                                 accountUpdate = {accountUpdate}
                             />
                         }

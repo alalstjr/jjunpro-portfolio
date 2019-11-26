@@ -24,11 +24,23 @@ export const pugjjigDelete = (id) =>  async dispatch => {
     try {
         axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
         
-        await axios.delete(`${SERVER_URL}/api/university/${id}`)
-        dispatch({
-            type: DELETE_PUGJJIG,
-            payload: id
-        });
+        const res = await axios.delete(`${SERVER_URL}/api/university/${id}`);
+
+        switch(res.status) {
+            case 200 :
+                dispatch({
+                    type: DELETE_PUGJJIG,
+                    payload: id
+                });
+                break;
+            case 202 :
+                alert(res.data.AuthenticationError);
+                break;
+
+            default :
+                alert("잘못된 접근입니다.");
+        }
+        
     } catch (error) {
         alert(error.response.data.error);
     }

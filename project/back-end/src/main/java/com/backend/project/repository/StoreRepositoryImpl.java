@@ -67,6 +67,7 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
                         u.getUniLike().size(),
                         u.getUniLike().contains(account),
                         u.getFiles(),
+                        u.getAccount().getPhoto(),
                         stoData(u.getId())
                 )
         ).collect(Collectors.toList());

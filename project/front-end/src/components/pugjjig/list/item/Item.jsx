@@ -1,6 +1,10 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import ImageSlide from "../../../widget/mainTitleSlide"
+
+import {
+    ProfileIamge
+} from "../../../../style/globalStyles"
 import { 
     PugjjigItem,
     ItemHead,
@@ -29,11 +33,18 @@ import {
 import SVG from "../../../../static/svg/SVG"
 import SVGEdit from "../../../../static/svg/SVGEdit"
 
-const Item = ({pugjjig, pugjjigLike, selectModalState, openModal, closeModal}) => (
+const Item = ({pugjjig, pugjjigLike, openModal}) => (
     <PugjjigItem>
         <ItemHead>
             <ItemUserPhoto>
-                <SVG name={"user"} width="38px" height="38px" color={"#E71D36"} />
+                {
+                    pugjjig.photo === null ?
+                    <SVG name={"user"} width="38px" height="38px" color={"#E71D36"} />
+                    : 
+                    <ProfileIamge
+                        image = {require(`../../../../../../data/file/thumbnail/pugjjig/${pugjjig.photo.fileThumbnail}`)}
+                    />
+                }
             </ItemUserPhoto>
             <ItemRight>
                 <ItemUsername>{pugjjig.account_nickname}</ItemUsername>

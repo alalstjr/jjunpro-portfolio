@@ -4,7 +4,8 @@ import SVG from "../../../../static/svg/SVG"
 
 import {
     Form,
-    InputClean
+    InputClean,
+    ProfileIamge
 } from "../../../../style/globalStyles"
 import {
     ProfileWrap,
@@ -16,7 +17,6 @@ import {
     CloseBtn,
     UrlSaveBtn,
     SaveBtn,
-    ProfileIamge,
     ProfileId
 } from "../../style"
 
@@ -181,8 +181,7 @@ class Profile extends Component {
     render() {
         
         // Props Init
-        const { 
-            initWarning, 
+        const {  
             account_get 
         } = this.props;
 
@@ -237,7 +236,6 @@ class Profile extends Component {
                                 type="text"
                                 value={nickname}
                                 onChange={this.onChange}
-                                onKeyDown={initWarning}
                             />
                         </ProfileInput>
                     </GroupBox>
@@ -250,7 +248,6 @@ class Profile extends Component {
                                 type="text"
                                 value={email}
                                 onChange={this.onChange}
-                                onKeyDown={initWarning}
                             />
                         </ProfileInput>
                     </GroupBox>

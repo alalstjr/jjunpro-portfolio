@@ -283,15 +283,6 @@ export const SaveBtn = styled.button.attrs({
         background-color: ${props => props.theme.themeColorHover};
     }
 `;
-export const ProfileIamge = styled.div`
-    background-image: url(${props => props.image});
-
-    width: 38px;
-    height: 38px;
-    background-size: cover;
-    border-radius: 50%;
-    float: right;
-`;
 export const ProfileId = styled.div`
     font-size: 18px;
     font-weight: 400;

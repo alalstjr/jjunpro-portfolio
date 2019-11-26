@@ -9,7 +9,7 @@ import {
     ItemEditModalBtn
 } from "../../style"
 
-const ItemEditModal = ({ modalState, closeModal, openModal, handleDelete }) => (
+const ItemEditModal = ({ modalState, closeModal, openModal, handleDelete, edit }) => (
     <Fragment>
         {
             modalState ? 
@@ -21,11 +21,18 @@ const ItemEditModal = ({ modalState, closeModal, openModal, handleDelete }) => (
             <ModalWrap>
                 <ItemEditModalBox>
                     <ItemEditModalBtn warring = {true} >게시물 신고</ItemEditModalBtn>
-                    <ItemEditModalBtn 
-                        onClick = {handleDelete}
-                        warring = {true} 
-                    >게시물 삭제</ItemEditModalBtn>
-                    <ItemEditModalBtn onClick={() => openModal("editModalState")}>게시물 수정</ItemEditModalBtn>
+                    {
+                        edit ?
+                        <Fragment>
+                            <ItemEditModalBtn 
+                                onClick = {handleDelete}
+                                warring = {true} 
+                            >게시물 삭제</ItemEditModalBtn>
+                            <ItemEditModalBtn onClick={() => openModal("insertModalState")}>게시물 수정</ItemEditModalBtn>
+                        </Fragment>
+                        :
+                        null
+                    }
                     <ItemEditModalBtn>공유하기</ItemEditModalBtn>
                     <ItemEditModalBtn onClick={() => closeModal("selectModalState")}>취소</ItemEditModalBtn>
                 </ItemEditModalBox>

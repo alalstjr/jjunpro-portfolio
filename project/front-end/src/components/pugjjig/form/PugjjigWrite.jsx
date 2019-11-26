@@ -5,12 +5,14 @@ import { withRouter } from "react-router-dom"
 
 import { pugjjigInsert } from "../../../actions/KakaoMapActions"
 import FileDrop from "../../widget/fileDrop/FileDrop"
+import SVGLoading from "../../../static/svg/SVGLoading"
 
 import { 
     InputClean, 
     Formlabel, 
     FormGroup, 
-    Textarea
+    Textarea,
+    WaringWrap
 } from "../../../style/globalStyles"
 
 import {
@@ -48,9 +50,20 @@ class PugjjigWrite extends Component {
             uniStar: 0,
             // FileDrop 필수 state
             files: [],         // INSERT file
-            registerFiles: [], // UPDATE file
+            registerFiles: [], // UPDATE file (사용 X)
             removeFiles: [],   // UPDATE REMOVE file 기존 파일 삭제목록
-            fileCount: 0
+            fileCount: 0,
+            // Form State
+            loding: false,
+            // Input 경고문
+            warning: {
+                subejct: false,
+                content: false
+            },
+            warningText: {
+                subejct: "",
+                content: ""
+            }
         }
     }
 
@@ -71,7 +84,6 @@ class PugjjigWrite extends Component {
 
         // editPugjjig 값을 props 전달받은 경우 (Edit 상태)
         if(editPugjjig !== undefined) {
-            console.log(editPugjjig);
             this.setState({
                 uniId: editPugjjig.id,
                 uniSubject: editPugjjig.uniSubject,
@@ -86,9 +98,16 @@ class PugjjigWrite extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.pugjjig_university !== this.props.pugjjig_university) {
+
+        // Props Init
+        const {
+            pugjjig_university
+        } = this.props;
+
+        if (nextProps.pugjjig_university !== pugjjig_university) {
             this.setState({
-                uniName: nextProps.pugjjig_university
+                uniName: nextProps.pugjjig_university,
+                loding: false
             });
         }
     }
@@ -142,7 +161,6 @@ class PugjjigWrite extends Component {
             uniTag,
             uniStar,
             files,
-            registerFiles,
             removeFiles
         } = this.state;
 
@@ -154,10 +172,25 @@ class PugjjigWrite extends Component {
             uniTag,
             uniStar: uniStar*1,
             stoId,
-            stoAddress
+            stoAddress,
+            removeFiles
         };
+
+        // {Client} 유효성 검사 출력 코드입니다.
+        if(!pugjjig.uniSubject) {
+            this.warningSet("subject", true, "제목 작성은 필수입니다.");
+            return false;
+        }
+        if(!pugjjig.content) {
+            this.warningSet("content", true, "내용 작성은 필수입니다.");
+            return false;
+        }
+
+        this.setState({
+            loding: true
+        });
         
-        this.props.pugjjigInsert(pugjjig, files, removeFiles, this.props.history);
+        this.props.pugjjigInsert(pugjjig, files, this.props.history);
     }
 
     // 태그 메소드
@@ -188,15 +221,78 @@ class PugjjigWrite extends Component {
         });
     }
 
+    /*
+     *  target {String name}, state {boolean}, message {String}
+     *  target, state 는 필수 값입니다.
+     *  경고문의 상태와 경고문을 설정하는 메소드입니다.
+     */
+    warningSet = (target, state, message) => {
+
+        // message undefined 값 체크
+        message = (message === undefined) ? "" : message;
+        
+        switch(target) {
+            case "subject" : 
+                this.setState(prevState => ({
+                    warning: {
+                        ...prevState.warning,
+                        subject: state
+                    },
+                    warningText: {
+                        ...prevState.warningText,
+                        subject: message
+                    }
+                }));
+                this.initWarning();
+                break;
+
+            case "content" : 
+                this.setState(prevState => ({
+                    warning: {
+                        ...prevState.warning,
+                        content: state
+                    },
+                    warningText: {
+                        ...prevState.warningText,
+                        content: message
+                    }
+                }));
+                this.initWarning();
+                break;
+
+            default :
+                return false;
+        }
+    }
+
+    /*
+     *  경고문 상태 초기화 메소드입니다.
+     */
+    initWarning = () => {
+        setTimeout(() => {
+            this.setState(prevState => ({
+                warning: {
+                    ...prevState.warning,
+                    subject: false,
+                    content: false
+                }
+            }));
+        }, 2000);
+    }
+
     render() {
 
+        // State Init
         const { 
             uniSubject, 
             uniContent,
             uniTag,
             uniTagText,
             uniStar,
-            registerFiles
+            registerFiles,
+            loding,
+            warning, 
+            warningText
         } = this.state;
 
         const tags = uniTag.map((tag, index) => (
@@ -294,6 +390,25 @@ class PugjjigWrite extends Component {
                 >
                         작성 완료
                 </InsertSubmitBtn>
+
+                {/* 작성 완료 클릭시 Loding 대기화면 */}
+                {
+                    loding ? 
+                    <SVGLoading/>
+                    :
+                    null
+                }
+
+                {/* Write 안내문 */}
+                {
+                    warning.subject ? 
+                    <WaringWrap>{warningText.subject}</WaringWrap>
+                    :
+                    warning.content ?
+                    <WaringWrap>{warningText.content}</WaringWrap>
+                    :
+                    null
+                }
             </Form>
         )
     }

@@ -1,15 +1,19 @@
 import React, { Component, Fragment } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
+import { USER_LONG_ID } from "../../../../routes"
+
 import { pugjjigGetUserList, pugjjigLike } from "../../../../actions/KakaoMapActions"
 import { pugjjigDelete } from "../../../../actions/PugjjigActions"
+
 import Item from "../../../../components/pugjjig/list/item/Item"
 import InfiniteScroll from "react-infinite-scroller"
+
 import ItemEditModal from "../item/ItemEditModal"
 import InsertModal from "../../modal/InsertModal"
 
-import { PugjjigItemWrap } from "../../style"
 import { NotPost } from "../../../../style/globalStyles"
+import { PugjjigItemWrap } from "../../style"
 
 class UserIdList extends Component {
 
@@ -18,9 +22,10 @@ class UserIdList extends Component {
     
         this.state = {
             pugjjig: [],
-            editModalState: false,
+            insertModalState: false,
             selectModalState: false,
-            editPugjjig: {}
+            editPugjjig: {},
+            edit: false
         }
     }
 
@@ -92,6 +97,9 @@ class UserIdList extends Component {
         });
     }
 
+    /*
+     *  DELETE 메소드
+     */
     handleDelete = () => {
         // Props Init
         const { pugjjigDelete } = this.props;
@@ -118,14 +126,19 @@ class UserIdList extends Component {
      *  pugjjig 값이 전달될 경우 상태변화를 저장합니다.
      */
     openModal = (target, pugjjig) => {
+        // 클릭한 Item의 정보를 담습니다.
         if(pugjjig) {
+            // 클릭한 DATA의 정보가 로그인한 유저의 DATA인지 확인합니다.
+            let edit = pugjjig.account_id === USER_LONG_ID() ? true : false;
+
             this.setState({
-                editPugjjig: pugjjig
+                editPugjjig: pugjjig,
+                edit
             });
         }
 
         this.setState({
-            editModalState: false,
+            insertModalState: false,
             selectModalState: false,
             [target]: true
         });
@@ -146,9 +159,10 @@ class UserIdList extends Component {
         // State Init
         const {
             pugjjig,
-            editModalState,
+            insertModalState,
             selectModalState,
-            editPugjjig
+            editPugjjig,
+            edit
         } = this.state;
 
         // Variables Init
@@ -160,11 +174,11 @@ class UserIdList extends Component {
             if(pugjjig !== undefined && pugjjig.length > 0) {
                 const data = pugjjig.map((pugjjig, index) => (
                     <Item 
-                        key            = {index}
-                        pugjjig        = {pugjjig}
-                        pugjjigLike    = {pugjjigLike}
+                        key              = {index}
+                        pugjjig          = {pugjjig}
+                        pugjjigLike      = {pugjjigLike}
                         selectModalState = {selectModalState}
-                        openModal      = {this.openModal}
+                        openModal        = {this.openModal}
                     />
                 ));
 
@@ -210,10 +224,11 @@ class UserIdList extends Component {
                     closeModal   = {this.closeModal}
                     openModal    = {this.openModal}
                     handleDelete = {this.handleDelete}
+                    edit         = {edit}
                 />
                 {/* Edit Modal */}
                 <InsertModal
-                    modalState   = {editModalState}
+                    modalState   = {insertModalState}
                     closeModal   = {this.closeModal}
                     stoId        = {null}
                     stoAddress   = {null}

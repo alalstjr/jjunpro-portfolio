@@ -52,18 +52,20 @@ export const accountLogin = (account, history) => async dispatch => {
     try {
         await axios.post("http://localhost:8080/api/account/login", account)
         .then(res => {
+            const id = res.data.id;
             const token = res.data.token;
             const userId = res.data.userId;
-            const username = res.data.username;
+            const nickname = res.data.nickname;
 
             if(token) {
                 /*
                  *  사용자가 서버에 서 로그인 인증을 받았을경우 localStorage에 Token을 저장합니다.
                  */
                 const userInfo = JSON.stringify({
+                    id,
                     token,
                     userId,
-                    username
+                    nickname
                 });
                 localStorage.setItem("userInfo", userInfo);
 
@@ -74,9 +76,10 @@ export const accountLogin = (account, history) => async dispatch => {
                 dispatch({
                     type: CHECK_USER_SUCCESS,
                     payload: {
+                        id: res.data.id,
                         token: res.data.token,
                         userId: res.data.userId,
-                        username: res.data.username,
+                        nickname: res.data.nickname,
                     }
                 });
             }
@@ -184,7 +187,7 @@ export const accountUpdate = (account, files, history) => async dispatch => {
                             payload: true
                         });
                         if(files.length > 0) {
-                            history.push("/mypage")
+                            window.location.reload();
                         }
                         break;
                         

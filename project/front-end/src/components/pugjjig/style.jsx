@@ -14,10 +14,11 @@ export const WrapPadding = css`
     padding: 15px;
 `;
 export const ModalWrapCSS = css`
-    width: 100%;
+    width: 100%; 
     max-width: 600px;
     border-radius: 5px 0 5px 5px;
     padding: 10px;
+    height: 80vh;
 `;
 
 /*******************
@@ -36,7 +37,7 @@ export const Form = styled.form`
     
 `;
 export const Content = styled.div`
-    height: 550px;
+    height: 70vh;
     overflow-y: scroll;
     padding-right: 3px;
 
@@ -301,7 +302,7 @@ export const ListModalWrap = styled.div`
     ${FlexCenter}
     ${ModalWrapCSS}
 
-    height: 90vh;
+    height: 80vh;
     background-color: ${props => props.theme.backgroundColor};
 `;
 

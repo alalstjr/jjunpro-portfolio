@@ -100,11 +100,6 @@ class PwdChange extends Component {
 
     render() {
 
-        // Props Init
-        const { 
-            initWarning
-        } = this.props;
-
         // State Init
         const { 
             oldPassword,
@@ -124,7 +119,6 @@ class PwdChange extends Component {
                                 type="password"
                                 value={oldPassword}
                                 onChange={this.onChange}
-                                onKeyDown={initWarning}
                             />
                         </ProfileInput>
                     </GroupBox>
@@ -137,7 +131,6 @@ class PwdChange extends Component {
                                 type="password"
                                 value={password}
                                 onChange={this.onChange}
-                                onKeyDown={initWarning}
                             />
                         </ProfileInput>
                     </GroupBox>
@@ -150,7 +143,6 @@ class PwdChange extends Component {
                                 type="password"
                                 value={passwordRe}
                                 onChange={this.onChange}
-                                onKeyDown={initWarning}
                             />
                         </ProfileInput>
                     </GroupBox>
