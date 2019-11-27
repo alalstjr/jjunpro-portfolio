@@ -33,25 +33,39 @@ class SignUp extends Component {
     // Lifecycle Methods
     componentWillReceiveProps(nextProps) {
 
+        // Props Init
+        const {
+            error,
+            warningSet,
+            closeModal,
+            account_create
+        } = this.props;
+
         // {Server} 유효성 검사 출력 코드입니다.
-        if(nextProps.error.data !== this.props.error.data) {
+        if(nextProps.error.data !== error.data) {
             if(nextProps.error.data.userId) {
-                this.props.warningSet("userId", true, nextProps.error.data.userId);
+                warningSet("userId", true, nextProps.error.data.userId);
             }
             if(nextProps.error.data.nickname) {
-                this.props.warningSet("nickname", true, nextProps.error.data.nickname);
+                warningSet("nickname", true, nextProps.error.data.nickname);
             }
             if(nextProps.error.data.password) {
-                this.props.warningSet("password", true, nextProps.error.data.password);
+                warningSet("password", true, nextProps.error.data.password);
             }
             if(nextProps.error.data.email) {
-                this.props.warningSet("email", true, nextProps.error.data.email);
+                warningSet("email", true, nextProps.error.data.email);
             }
         }
         
         // 회원가입이 최종 완료된후 실행되는 이벤트 코드입니다.
-        if(nextProps.account_create.data !== this.props.account_create.data) {
-            this.props.SingUpHandler();
+        if(nextProps.account_create.data !== account_create.data) {
+            if(nextProps.account_create.data === true) {
+                closeModal();
+                warningSet("success", true, "회원가입이 완료되었습니다.");
+                this.props.openModal("loginModal");
+            } else {
+                warningSet("userId", true, "서버와의 연결이 원활하지 않습니다.");
+            }
         }
     }
 
@@ -122,7 +136,7 @@ class SignUp extends Component {
         const { 
             warning, 
             warningText, 
-            initWarning 
+            initWarning
         } = this.props;
 
         // State Init
@@ -188,6 +202,7 @@ class SignUp extends Component {
                             value={password}
                             onChange={this.onChange}
                             onKeyDown={initWarning}
+                            autocomplete="current-password"
                         />
                         {
                             warning.password ? 
@@ -209,6 +224,7 @@ class SignUp extends Component {
                             value={passwordRe}
                             onChange={this.onChange}
                             onKeyDown={initWarning}
+                            autocomplete="current-password"
                         />
                         {
                             warning.passwordRe ? 

@@ -20,7 +20,7 @@ export const accountInsert = (account, history) => async dispatch => {
             await axios.post(`${SERVER_URL}/api/account`, account)
             .then(res => {
                 switch(res.status) {
-                    case 200 : 
+                    case 201 : 
                         dispatch({
                             type: ACCOUNT_CREATE,
                             payload: true

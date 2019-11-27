@@ -52,7 +52,7 @@ public class AccountController {
     FileStorageServiceImpl fileStorageService;
 
     @PostMapping("")
-    public ResponseEntity<Account> accountInsert(
+    public ResponseEntity<Boolean> accountInsert(
             @Valid @RequestBody AccountSaveDTO dto,
             BindingResult bindingResult
     ) {
@@ -106,7 +106,9 @@ public class AccountController {
         }
 
         Account newAccount = accountService.save(dto);
-        return new ResponseEntity<Account>(newAccount, HttpStatus.CREATED);
+        Boolean result = (newAccount.getId() != null) ? true : false;
+
+        return new ResponseEntity<Boolean>(result, HttpStatus.CREATED);
     }
 
     @PostMapping("/{id}")

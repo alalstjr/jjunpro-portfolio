@@ -33,10 +33,25 @@ class LoginModal extends Component {
 
     // Lifecycle Methods
     componentWillReceiveProps(nextProps) {
+
+        // Props Init
+        const {
+            error,
+            warningSet,
+            user_info,
+            closeModal
+        } = this.props;
+
         // {Server} 유효성 검사 출력 코드입니다.
-        if(nextProps.error.data !== this.props.error.data) {
+        if(nextProps.error.data !== error.data) {
             if(nextProps.error.data.AuthenticationError) {
-                this.props.warningSet("userId", true, nextProps.error.data.AuthenticationError);
+                warningSet("userId", true, nextProps.error.data.AuthenticationError);
+            }
+        }
+
+        if(nextProps.user_info !== user_info) {
+            if(nextProps.user_info) {
+                closeModal();
             }
         }
     }
@@ -52,13 +67,13 @@ class LoginModal extends Component {
     onSubmit = (e) => {
         e.preventDefault();
 
-        // state Init
+        // State Init
         const { 
             userId,
             password
         } = this.state;
 
-        // value Init
+        // Value Init
         const account = {
             userId,
             password
@@ -78,19 +93,31 @@ class LoginModal extends Component {
     }
 
     render(){
-        const { isOpen, close, warning, warningText, initWarning } = this.props;
-        const { userId, password } = this.state;
+        // Props Init
+        const { 
+            loginModal, 
+            closeModal, 
+            warning, 
+            warningText, 
+            initWarning 
+        } = this.props;
+
+        // State Init
+        const { 
+            userId, 
+            password 
+        } = this.state;
 
         return (
             <Fragment>
                 {
-                    isOpen ?
+                    loginModal ?
                     <ReactTransitionGroup
                         transitionName={'Modal-anim'}
                         transitionEnterTimeout={200}
                         transitionLeaveTimeout={200}
                     >
-                    <ModalOverlay onClick={close} />
+                    <ModalOverlay onClick={closeModal} />
                     <Modal>
                         <Form
                             onSubmit={this.onSubmit}
@@ -130,6 +157,7 @@ class LoginModal extends Component {
                                         value={password}
                                         onChange={this.onChange}
                                         onKeyDown={initWarning}
+                                        autocomplete="current-password"
                                     />
                                     {
                                         // 비밀번호 입력 경고문
@@ -173,11 +201,13 @@ class LoginModal extends Component {
   
 accountLogin.propTypes = {
     accountLogin: PropTypes.func.isRequired,
-    error: PropTypes.object.isRequired
+    error: PropTypes.object.isRequired,
+    user_info: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
-    error: state.errors
+    error: state.errors,
+    user_info: state.account.user_info
 });
 
 export default connect(

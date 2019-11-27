@@ -237,6 +237,7 @@ export const WaringCss = css`
     color: #fff;
     font-weight: 600;
     font-size: 16px;
+    z-index: 10;
 `;
 export const WaringWrap = styled.div`
     ${WaringCss}

@@ -2,7 +2,6 @@ import React, { Fragment, Component } from 'react';
 
 import ReactTransitionGroup from 'react-addons-css-transition-group';
 import SignUp from "../form/SignUp"
-import SignUpResult from "../container/SingUpResult"
 
 import { 
     Title,
@@ -13,43 +12,36 @@ import {
 } from "../../style";
 
 const SingUpModal = ({
-    isOpen, 
-    close, 
+    signUpModal, 
+    closeModal, 
     warning, 
     warningText, 
     initWarning,
     warningSet,
-    singUp,
-    SingUpHandler
+    openModal
 }) => (
     <Fragment>
         {
-            isOpen ?
+            signUpModal ?
             <ReactTransitionGroup
                 transitionName={'Modal-anim'}
                 transitionEnterTimeout={200}
                 transitionLeaveTimeout={200}
             >
-            <ModalOverlay onClick={close} />
+            <ModalOverlay onClick = {closeModal} />
             <Modal>
                 <TitleWrap>
                     <TitleLogo>푹찍</TitleLogo>
-                    <Title>
-                        {singUp ? "환영합니다." : "푹찍 회원가입"}
-                    </Title>
+                    <Title>푹찍 회원가입</Title>
                 </TitleWrap>
-                {
-                    singUp ? 
-                    <SignUpResult/>
-                    :
-                    <SignUp
-                        warning={warning}
-                        warningText={warningText}
-                        initWarning={initWarning}
-                        warningSet={warningSet}
-                        SingUpHandler={SingUpHandler}
-                    />
-                }
+                <SignUp
+                    warning     = {warning}
+                    warningText = {warningText}
+                    initWarning = {initWarning}
+                    warningSet  = {warningSet}
+                    closeModal  = {closeModal}
+                    openModal   = {openModal}
+                />
             </Modal>
             </ReactTransitionGroup>
             :

@@ -8,6 +8,7 @@ import SingUpModal from "./modal/SignUpModal"
 
 import { accountLogout } from "../../../actions/accountActions"
 
+import { SuccessWrap } from "../../../style/globalStyles"
 import {
     LoginBtn,
     SingUpBtn
@@ -18,23 +19,24 @@ class AccountProvider extends Component {
         super(props);
 
         this.state = {
-            isModalOpen: false,
+            loginModal: false,
+            signUpModal: false,
             warning: {
                 userId: false,
                 nickname: false,
                 password: false,
                 passwordRe: false,
-                email: false
+                email: false,
+                success: false
             },
             warningText: {
                 userId: "",
                 nickname: "",
                 password: "",
                 passwordRe: "",
-                email: ""
+                email: "",
+                success: ""
             },
-            // 서버 전송상태 확인 (회원가입 완료 체크)
-            singUp: false
         }
     }
 
@@ -48,17 +50,18 @@ class AccountProvider extends Component {
         document.removeEventListener("keydown", this.escFunction, false);
     }
 
-    openModal = () => {
+    openModal = (target) => {
         this.initWarning();
         this.setState({
-            isModalOpen: true
+            [target]: true
         });
     }
     
     closeModal = () => {
         this.initWarning();
         this.setState({
-            isModalOpen: false
+            loginModal: false,
+            signUpModal: false
         });
     }
 
@@ -66,16 +69,18 @@ class AccountProvider extends Component {
      *  경고문 상태 초기화 메소드입니다.
      */
     initWarning = () => {
-        this.setState(prevState => ({
-            warning: {
-                ...prevState.warning,
-                userId: false,
-                nickname: false,
-                password: false,
-                passwordRe: false,
-                email: false
-            }
-        }));
+        setTimeout(() => {
+            this.setState(prevState => ({
+                warning: {
+                    ...prevState.warning,
+                    userId: false,
+                    nickname: false,
+                    password: false,
+                    passwordRe: false,
+                    email: false
+                }
+            }));
+        }, 2000);
     }
 
     /*
@@ -92,15 +97,6 @@ class AccountProvider extends Component {
      */
     logoutHandler = () => {
         this.props.accountLogout();
-    }
-
-    /*
-     *  로그아웃 메소드입니다.
-     */
-    SingUpHandler = () => {
-        this.setState({
-            singUp: true
-        });
     }
 
     /*
@@ -124,6 +120,7 @@ class AccountProvider extends Component {
                         userId: message
                     }
                 }));
+                this.initWarning();
                 break;
                 
             case "nickname" : 
@@ -137,6 +134,7 @@ class AccountProvider extends Component {
                         nickname: message
                     }
                 }));
+                this.initWarning();
                 break;
 
             case "password" : 
@@ -150,6 +148,7 @@ class AccountProvider extends Component {
                         password: message
                     }
                 }));
+                this.initWarning();
                 break;
 
             case "passwordRe" :
@@ -163,6 +162,7 @@ class AccountProvider extends Component {
                         passwordRe: message
                     }
                 }));
+                this.initWarning();
                 break;
 
             case "email" :
@@ -176,6 +176,21 @@ class AccountProvider extends Component {
                         email: message
                     }
                 }));
+                this.initWarning();
+                break;
+
+            case "success" :
+                this.setState(prevState => ({
+                    warning: {
+                        ...prevState.warning,
+                        success: state
+                    },
+                    warningText: {
+                        ...prevState.warningText,
+                        success: message
+                    }
+                }));
+                this.initWarning();
                 break;
 
             default :
@@ -185,8 +200,19 @@ class AccountProvider extends Component {
 
     render() {
 
-        const { text, req } = this.props;
-        const { warning, warningText, singUp } = this.state;
+        // Props Init
+        const { 
+            text, 
+            req 
+        } = this.props;
+
+        // State Init
+        const { 
+            warning, 
+            warningText,
+            loginModal,
+            signUpModal
+        } = this.state; 
 
         let modalContainer;
 
@@ -195,31 +221,13 @@ class AccountProvider extends Component {
                 case "login" :
                     return(
                         <Fragment>
-                            <LoginBtn onClick = {this.openModal}>{text}</LoginBtn>
-                            <LoginModal 
-                                isOpen = {this.state.isModalOpen} 
-                                close = {this.closeModal}
-                                warning = {warning}
-                                warningText = {warningText}
-                                warningSet = {this.warningSet}
-                                initWarning = {this.initWarning}
-                            />
+                            <LoginBtn onClick = {() => this.openModal("loginModal")}>{text}</LoginBtn>
                         </Fragment>
                     );
                 case "singUp" : 
                     return(
                         <Fragment>
-                            <SingUpBtn onClick = {this.openModal}>{text}</SingUpBtn>
-                            <SingUpModal 
-                                isOpen = {this.state.isModalOpen} 
-                                close = {this.closeModal}
-                                warning = {warning}
-                                warningText = {warningText}
-                                warningSet={this.warningSet}
-                                initWarning={this.initWarning}
-                                singUp={singUp}
-                                SingUpHandler={this.SingUpHandler}
-                            />
+                            <SingUpBtn onClick = {() => this.openModal("signUpModal")}>{text}</SingUpBtn>
                         </Fragment>
                     );
                 case "myPage" : 
@@ -240,6 +248,32 @@ class AccountProvider extends Component {
         return (
             <Fragment>
                 {modalContainer}
+
+                {/* Form Modal */}
+                <LoginModal 
+                    loginModal = {loginModal}
+                    closeModal = {this.closeModal}
+                    warning = {warning}
+                    warningText = {warningText}
+                    warningSet = {this.warningSet}
+                    initWarning = {this.initWarning}
+                />
+                <SingUpModal 
+                    signUpModal = {signUpModal}
+                    closeModal = {this.closeModal}
+                    warning = {warning}
+                    warningText = {warningText}
+                    warningSet={this.warningSet}
+                    initWarning={this.initWarning}
+                    openModal = {this.openModal}
+                />
+                {
+                    // 회원가입 안내문
+                    warning.success ? 
+                    <SuccessWrap>{warningText.success}</SuccessWrap>
+                    :
+                    null
+                }
             </Fragment>
         )
     }
