@@ -6,10 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -45,17 +42,21 @@ public class University extends BaseEntity {
     @ManyToMany
     private List<File> files;
 
+    @ManyToMany
+    private Set<Comment> comments = new HashSet<>();
+
     @Builder
-    public University(Long id, String uniSubject, String uniContent, String uniName, String[] uniTag, Integer uniStar, Set<Account> uniLike, String uniIp, Account account, List<File> files) {
-        this.id = id;
+    public University(Long id, String uniSubject, String uniContent, String uniName, String[] uniTag, Integer uniStar, Set<Account> uniLike, String uniIp, Account account, List<File> files, Set<Comment> comments) {
+        this.id         = id;
         this.uniSubject = uniSubject;
         this.uniContent = uniContent;
-        this.uniName = uniName;
-        this.uniTag = uniTag;
-        this.uniStar = uniStar;
-        this.uniLike = uniLike;
-        this.uniIp = uniIp;
-        this.account = account;
-        this.files = files;
+        this.uniName    = uniName;
+        this.uniTag     = uniTag;
+        this.uniStar    = uniStar;
+        this.uniLike    = uniLike;
+        this.uniIp      = uniIp;
+        this.account    = account;
+        this.files      = files;
+        this.comments   = comments;
     }
 }

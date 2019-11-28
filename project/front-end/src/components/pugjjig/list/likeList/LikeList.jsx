@@ -3,10 +3,10 @@ import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import { USER_LONG_ID } from "../../../../routes"
 
-import { pugjjigGetStoreList, pugjjigLike } from "../../../../actions/KakaoMapActions"
+import { pugjjigLikeGetUserList, pugjjigLike } from "../../../../actions/KakaoMapActions"
 import { pugjjigDelete } from "../../../../actions/PugjjigActions"
 
-import Item from "../item/Item"
+import Item from "../../../../components/pugjjig/list/item/Item"
 import InfiniteScroll from "react-infinite-scroller"
 
 import ItemEditModal from "../item/ItemEditModal"
@@ -15,7 +15,7 @@ import InsertModal from "../../modal/InsertModal"
 import { NotPost } from "../../../../style/globalStyles"
 import { PugjjigItemWrap } from "../../style"
 
-class StoreList extends Component {
+class LikeList extends Component {
 
     constructor(props){
         super(props);
@@ -33,26 +33,25 @@ class StoreList extends Component {
 
         // Props Init
         const { 
-            stoId,
-            pugjjigGetStoreList
+            pugjjigLikeGetUserList
         } = this.props;
 
-        // {stoId} 게시글 정보를 가져옵니다.
-        pugjjigGetStoreList(stoId, 0);
+        // {userId} 게시글 정보를 가져옵니다.
+        pugjjigLikeGetUserList(null, 0);
     }
 
     componentWillReceiveProps(nextProps) {
 
         // Props Init
         const { 
-            pugjjig_store_list,
+            pugjjig_list,
             pugjjig_delete
         } = this.props;
 
-        if(nextProps.pugjjig_store_list !== pugjjig_store_list) {
-            this.handleUpdate(nextProps.pugjjig_store_list);
+        if(nextProps.pugjjig_list !== pugjjig_list) {
+            this.handleUpdate(nextProps.pugjjig_list);
         }
-
+        
         if(nextProps.pugjjig_delete !== pugjjig_delete) {
             this.handleDeleteUpdate(nextProps.pugjjig_delete);
         }
@@ -70,21 +69,20 @@ class StoreList extends Component {
     } 
 
     handleLoad = (page) => {
-        
+
         // Props Init
         const { 
-            stoId, 
-            pugjjig_store_list,
-            pugjjigGetStoreList
+            pugjjigLikeGetUserList,
+            pugjjig_list
         } = this.props;
         
-        if(pugjjig_store_list.data !== undefined) {
-            if(pugjjig_store_list.data.length <= 0) {
+        if(pugjjig_list.data !== undefined) {
+            if(pugjjig_list.data.length <= 0) {
                 return false;
             }
         }
 
-        pugjjigGetStoreList(stoId, page);
+        pugjjigLikeGetUserList(null, page);
     }
 
     handleUpdate = (postData) => {
@@ -128,7 +126,6 @@ class StoreList extends Component {
      *  pugjjig 값이 전달될 경우 상태변화를 저장합니다.
      */
     openModal = (target, pugjjig) => {
-
         // 클릭한 Item의 정보를 담습니다.
         if(pugjjig) {
             // 클릭한 DATA의 정보가 로그인한 유저의 DATA인지 확인합니다.
@@ -176,7 +173,7 @@ class StoreList extends Component {
         const pugjjigGet = (pugjjig) => {
             if(pugjjig !== undefined && pugjjig.length > 0) {
                 const data = pugjjig.map((pugjjig, index) => (
-                    <Item 
+                    <Item
                         key              = {index}
                         pugjjig          = {pugjjig}
                         pugjjigLike      = {pugjjigLike}
@@ -212,12 +209,12 @@ class StoreList extends Component {
         return (
             <PugjjigItemWrap>
                 <InfiniteScroll
-                    pageStart   = {0}
-                    loadMore    = {this.handleLoad}
-                    hasMore     = {true}
-                    initialLoad = {false}
-                    useWindow   = {false}
-                    threshold   = {500}
+                    pageStart    = {0}
+                    loadMore     = {this.handleLoad}
+                    hasMore      = {true}
+                    initialLoad  = {false}
+                    useWindow    = {false}
+                    threshold    = {500}
                 >
                     {pugjjigContent}
                 </InfiniteScroll>
@@ -242,11 +239,11 @@ class StoreList extends Component {
     }
 }
 
-StoreList.propTypes = {
-    pugjjigGetStoreList: PropTypes.func.isRequired,
+LikeList.propTypes = {
+    pugjjigLikeGetUserList: PropTypes.func.isRequired,
     pugjjigLike: PropTypes.func.isRequired,
     pugjjigDelete: PropTypes.func.isRequired,
-    pugjjig_store_list: PropTypes.object.isRequired,
+    pugjjig_list: PropTypes.object.isRequired,
     pugjjig_like: PropTypes.object.isRequired,
     error: PropTypes.object.isRequired,
     pugjjig_delete: PropTypes.number.isRequired
@@ -254,7 +251,7 @@ StoreList.propTypes = {
   
 const mapStateToProps = state => ({
     error: state.errors,
-    pugjjig_store_list: state.pugjjig.pugjjig_store_list,
+    pugjjig_list: state.pugjjig.pugjjig_list,
     pugjjig_like: state.pugjjig.pugjjig_like,
     pugjjig_delete: state.pugjjig.pugjjig_delete
 });
@@ -262,8 +259,8 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps, 
     { 
-        pugjjigGetStoreList,
+        pugjjigLikeGetUserList,
         pugjjigLike,
         pugjjigDelete
     }
-  )(StoreList);
+  )(LikeList);

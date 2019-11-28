@@ -207,6 +207,16 @@ export const ItemImgBox = styled.div`
 `;
 export const ItemTagWrap = styled.div`
 `;
+export const ItemLocalWrap = styled.div`
+    a > {
+        display: block;
+        margin-bottom: 3px;
+    }
+    span {
+        color: ${props => props.theme.themeColor};
+        font-weight: 400;
+    }
+`;
 export const ItemStateWrap = styled.div`
 `;
 export const ItemState = styled.div`

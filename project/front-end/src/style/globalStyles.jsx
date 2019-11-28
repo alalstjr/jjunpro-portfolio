@@ -61,6 +61,26 @@ export const ModalActive = css`
         opacity: 0.00;
     }
 `;
+export const WaringActive = css`
+    &.Waring-anim-enter {
+        opacity: 0.00;
+        transform: translateY(15px);
+        transition: all 0.2s;
+    }
+    &.Waring-anim-enter.Waring-anim-enter-active {
+        transform: translateY(0px);
+        opacity: 1;
+    }
+    &.Waring-anim-leave {
+        transform: translateY(0px);
+        opacity: 1;
+        transition: all 0.2s;
+    }
+    &.Waring-anim-leave.Waring-anim-leave-active {
+        transform: translateY(15px);
+        opacity: 0.00;
+    }
+`;
 
 /*******************
     Text Style
@@ -228,6 +248,8 @@ export const NotPost = styled.div`
     Waring Style
 ********************/
 export const WaringCss = css`
+    ${WaringActive}
+
     position: fixed;
     bottom: 0;
     left: 0;

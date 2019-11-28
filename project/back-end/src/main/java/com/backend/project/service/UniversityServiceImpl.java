@@ -48,8 +48,8 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public Page<UniversityPublic> findByLikeListWhereAccountId(Pageable pageable, Account account, String userId) {
-        return university.findByLikeListWhereAccountId(pageable, account, userId);
+    public List<UniversityPublic> findByLikeListWhereAccountId(Account account, String userId, Long offsetCount) {
+        return university.findByLikeListWhereAccountId(account, userId, offsetCount);
     }
 
     @Override

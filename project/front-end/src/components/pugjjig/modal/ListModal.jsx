@@ -26,7 +26,7 @@ class ListModal extends Component {
         return (
             <Fragment>
                 {
-                    modalState ?
+                    modalState ? 
                     <ReactTransitionGroup
                         transitionName={'Modal-anim'}
                         transitionEnterTimeout={200}

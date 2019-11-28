@@ -169,6 +169,9 @@ export const MyPageList = styled.li`
     transition: 0.4s all ease;
 
     ${
+        props => props.active === "likeRecord" ?
+        `:nth-child(4)`
+        :
         props => props.active === "repository" ?
         `:nth-child(3)`
         :

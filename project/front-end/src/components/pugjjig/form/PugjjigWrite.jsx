@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import { withRouter } from "react-router-dom"
+import ReactTransitionGroup from "react-addons-css-transition-group"
 
 import { pugjjigInsert } from "../../../actions/KakaoMapActions"
 import FileDrop from "../../widget/fileDrop/FileDrop"
@@ -400,6 +401,11 @@ class PugjjigWrite extends Component {
                 }
 
                 {/* Write 안내문 */}
+                <ReactTransitionGroup
+                    transitionName={'Waring-anim'}
+                    transitionEnterTimeout={200}
+                    transitionLeaveTimeout={200}
+                >
                 {
                     warning.subject ? 
                     <WaringWrap>{warningText.subject}</WaringWrap>
@@ -409,6 +415,7 @@ class PugjjigWrite extends Component {
                     :
                     null
                 }
+                </ReactTransitionGroup>
             </Form>
         )
     }

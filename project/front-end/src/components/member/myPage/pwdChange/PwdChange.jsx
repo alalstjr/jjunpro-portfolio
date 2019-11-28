@@ -26,6 +26,15 @@ class PwdChange extends Component {
         }
     }
 
+    componentDidMount() {
+        // Props Init
+        const { account_get } = this.props;
+
+        this.setState({
+            id: account_get.id
+        });
+    }
+
     componentWillReceiveProps(nextProps) {
         // 로그인한 유저의 정보를 DTO에 담습니다.
         if(nextProps.account_get.data !== undefined){
@@ -75,6 +84,10 @@ class PwdChange extends Component {
             password,
             passwordRe
         };
+
+        if(account.id === undefined) {
+            account.id = this.props.account_get.data.id;
+        }
 
         // {Client} 유효성 검사 출력 코드입니다.
         if(!account.id) {

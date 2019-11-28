@@ -1,11 +1,14 @@
 import React, { Component, Fragment } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
+import ReactTransitionGroup from "react-addons-css-transition-group"
+
 import { accountLoginCheck, accountGet, accountUpdate, accountPwdUpdate } from "../../../actions/accountActions"
 import NormalHeader from "../../layout/header/normal/NormalHeader"
 import Profile from "./profile/Profile"
 import PwdChange from "./pwdChange/PwdChange"
 import ActivityRecord from "./activityRecord/ActivityRecord"
+import LikeRecord from "./likeRecord/LikeRecord"
 
 import { WaringWrap, SuccessWrap } from "../../../style/globalStyles"
 import {
@@ -238,6 +241,7 @@ class MyPageProvider extends Component {
                             <MyPageList active={page} onClick={() => this.handlePageChange("profile")}>프로필 편집</MyPageList>
                             <MyPageList active={page} onClick={() => this.handlePageChange("password")}>비밀번호 변경</MyPageList>
                             <MyPageList active={page} onClick={() => this.handlePageChange("repository")}>활동기록보기</MyPageList>
+                            <MyPageList active={page} onClick={() => this.handlePageChange("likeRecord")}>좋아요한 푹찍</MyPageList>
                         </ul>
                     </MyPageLeft>
                     <MyPageRight>
@@ -254,6 +258,9 @@ class MyPageProvider extends Component {
                             page === "repository" ?
                             <ActivityRecord/>
                             :
+                            page === "likeRecord" ?
+                            <LikeRecord/>
+                            :
                             <Profile
                                 accountGet = {accountGet}
                                 account_get = {account_get}
@@ -264,6 +271,12 @@ class MyPageProvider extends Component {
                         </MyPageWhite>
                     </MyPageRight>
                 </MyPageWrap>
+                
+                <ReactTransitionGroup
+                    transitionName={'Waring-anim'}
+                    transitionEnterTimeout={200}
+                    transitionLeaveTimeout={200}
+                >
                 {
                     // 프로필 변경 안내문
                     warning.nickname ? 
@@ -287,6 +300,7 @@ class MyPageProvider extends Component {
                     :
                     null
                 }
+                </ReactTransitionGroup>
             </Fragment>
         )
     }

@@ -27,7 +27,8 @@ import {
     ItemTag,
     ItemLikeBtn,
     ItemLikeText,
-    ItemEditBtn
+    ItemEditBtn,
+    ItemLocalWrap
 } from "../../style"
 
 import SVG from "../../../../static/svg/SVG"
@@ -86,12 +87,12 @@ const Item = ({pugjjig, pugjjigLike, openModal}) => (
                 </ItemStar>
             }
         </ItemHead>
-        <ItemSubject>{pugjjig.uniSubject}</ItemSubject>
-        <ItemContent>
             <Link to={`/pugjjig/${pugjjig.id}`} target="_blank">
-                {pugjjig.uniContent}
+                <ItemSubject>{pugjjig.uniSubject}</ItemSubject>
+                <ItemContent>
+                        {pugjjig.uniContent}
+                </ItemContent>
             </Link>
-        </ItemContent>
         <ItemImgBox>
             {
                 pugjjig.files.length < 4 ?
@@ -111,6 +112,17 @@ const Item = ({pugjjig, pugjjigLike, openModal}) => (
                 />
             }
         </ItemImgBox>
+        <ItemLocalWrap>
+            {
+                // SERVER 에서 불러오는 속도와 React 에서 storePublic 랜더링하는 속도와 맞춰주는 코드
+                pugjjig.storePublic !== null ?
+                    <Link to={`${pugjjig.storePublic.stoId}`}>
+                        <span>{pugjjig.uniName}</span> 맛집 {pugjjig.storePublic.stoAddress}
+                    </Link>
+                :
+                null
+            }
+        </ItemLocalWrap>
         <ItemTagWrap>
             {
                 pugjjig.uniTag.map((tag, index) => (

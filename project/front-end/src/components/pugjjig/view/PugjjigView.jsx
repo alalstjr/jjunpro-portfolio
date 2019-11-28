@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react"
+import { Link } from "react-router-dom"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import { USER_LONG_ID } from "../../../routes"
@@ -36,7 +37,8 @@ import {
     ItemTag,
     ItemLikeBtn,
     ItemLikeText,
-    ItemEditBtn
+    ItemEditBtn,
+    ItemLocalWrap
 } from "../style"
 
 import SVG from "../../../static/svg/SVG"
@@ -234,8 +236,18 @@ class PugjjigView extends Component {
                                     thumbnail = {false}
                                 />
                             </ItemImgBox>
+                            <ItemLocalWrap>
+                                {
+                                    // SERVER 에서 불러오는 속도와 React 에서 storePublic 랜더링하는 속도와 맞춰주는 코드
+                                    pugjjig.storePublic !== null ?
+                                        <Link to={`${pugjjig.storePublic.stoId}`}>
+                                            <span>{pugjjig.uniName}</span> 맛집 {pugjjig.storePublic.stoAddress}
+                                        </Link>
+                                    :
+                                    null
+                                }
+                            </ItemLocalWrap>
                             <ItemTagWrap>
-                                <ItemTag>#{pugjjig.uniName} 맛집</ItemTag>
                                 {
                                     pugjjig.uniTag.map((tag, index) => (
                                         <ItemTag key={index}>#{tag}</ItemTag>

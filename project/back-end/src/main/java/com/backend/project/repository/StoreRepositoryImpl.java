@@ -121,7 +121,8 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
                 .select(
                         Projections.constructor(
                                 StorePublic.class,
-                                qStore.stoId
+                                qStore.stoId,
+                                qStore.stoAddress
                         )
                 )
                 .from(qStore)

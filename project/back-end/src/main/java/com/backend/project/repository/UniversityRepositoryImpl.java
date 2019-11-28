@@ -50,9 +50,9 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                 .from(qUniversity)
                 .leftJoin(qUniversity.uniLike, qAccount)
                 .where(
-                    qUniversity.publicStatus.eq(true)
-                    .and(qUniversity.controlStatus.eq(false))
-                    .and(qUniversity.account.userId.eq(userId))
+                        qUniversity.publicStatus.eq(true)
+                        .and(qUniversity.controlStatus.eq(false))
+                        .and(qUniversity.account.userId.eq(userId))
                 )
                 .offset(8 * offsetCount)
                 .limit(8)
@@ -66,16 +66,24 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
     }
 
     @Override
-    public Page<UniversityPublic> findByLikeListWhereAccountId(Pageable pageable, Account account, String userId) {
+    public List<UniversityPublic> findByLikeListWhereAccountId(Account account, String userId, Long offsetCount) {
         Map<University, List<Account>> transform = queryFactory
                 .from(qUniversity)
                 .leftJoin(qUniversity.uniLike, qAccount)
-                .where(qUniversity.publicStatus.eq(true).and(qUniversity.controlStatus.eq(false)).and(qUniversity.uniLike.any().userId.eq(userId)))
-                .transform(groupBy(qUniversity).as(list(qAccount)));
+                .where(
+                        qUniversity.publicStatus.eq(true)
+                        .and(qUniversity.controlStatus.eq(false))
+                        .and(qUniversity.uniLike.any().userId.eq(userId))
+                )
+                .offset(8 * offsetCount)
+                .limit(8)
+                .transform(
+                        groupBy(qUniversity).as(list(qAccount))
+                );
 
         List<UniversityPublic> results = getUniversityPublicList(transform, account);
 
-        return new PageImpl<>(results, pageable, results.size());
+        return results;
     }
 
     @Override
@@ -176,7 +184,8 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                  .select(
                          Projections.constructor(
                                  StorePublic.class,
-                                 qStore.stoId
+                                 qStore.stoId,
+                                 qStore.stoAddress
                          )
                  )
                 .from(qStore)

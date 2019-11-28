@@ -222,19 +222,22 @@ public class UniversityController {
     }
 
     // GET 푹찍한 모든 리뷰 목록
-    @GetMapping("/pugjjigLikes/{userId}")
-    public Page<UniversityPublic> getUserPugjjigLike(
-            Pageable pageable,
+    @GetMapping("/pugjjigLikes/{userId}/{offsetCount}")
+    public List<UniversityPublic> getUserPugjjigLike(
             @PathVariable String userId,
+            @PathVariable Long offsetCount,
             HttpServletRequest request
     ) throws IOException {
         if(userId == null) {
             throw new IOException("잘못된 접근입니다.");
         }
+        // offsetCount 없는경우 기본값 0 설정
+        offsetCount = (offsetCount == null) ? 0L : offsetCount;
+
         // Account Info
         Account accountData = accountUtill.accountJWT(request);
 
-        return universityService.findByLikeListWhereAccountId(pageable, accountData, userId);
+        return universityService.findByLikeListWhereAccountId(accountData, userId, offsetCount);
     }
 
     // DELETE 특정 TASK 삭제

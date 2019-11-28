@@ -11,7 +11,7 @@ public interface UniversityRepositoryDSL {
 
     Page<UniversityPublic> findByPublicAll(Pageable pageable, Account account);
     List<UniversityPublic> findByUniversityListWhereAccountId(Account account, String userId, Long offsetCount);
-    Page<UniversityPublic> findByLikeListWhereAccountId(Pageable pageable, Account account, String userId);
+    List<UniversityPublic> findByLikeListWhereAccountId(Account account, String userId, Long offsetCount);
 
     UniversityPublic findByPublicId(Long id, Account account);
 
