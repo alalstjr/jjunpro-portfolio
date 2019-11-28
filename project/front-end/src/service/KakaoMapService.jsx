@@ -1,6 +1,7 @@
 import $script from 'scriptjs'
 import { Item, ItemUniName, ItemUniCount, Pagination } from '../components/university/style'
 import markerIcon from '../static/images/kakao/marker.png';
+import { async } from 'q';
 
 const API_KEY = "e4886ec63d8dacf6d7f11ab426759a84";
 const KAKAO_URL =  `http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${API_KEY}&libraries=services`;
@@ -116,7 +117,7 @@ class KakaoMapService {
     /****************************************
         검색 결과 목록과 마커를 표출하는 함수입니다.
     ****************************************/
-    displayPlaces = (places) => {
+    displayPlaces = async (places) => {
 
         // 좌측 리스트
         let listEl = document.getElementById('universityList');
@@ -135,7 +136,7 @@ class KakaoMapService {
             // 마커를 생성하고 지도에 표시합니다
             let placePosition = new kakao.maps.LatLng(places[i].y, places[i].x);
             let marker = this.addMarker(placePosition, i);
-            let itemEl = this.getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
+            let itemEl = await this.getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
 
             // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
             // LatLngBounds 객체에 좌표를 추가합니다
@@ -195,28 +196,16 @@ class KakaoMapService {
     /****************************************
         검색결과 항목을 Element로 반환하는 함수입니다.
     ****************************************/
-    getListItem = (index, places) => {
+    getListItem = async (index, places) => {
+
+        let pugjjig = new Object;
+        pugjjig = await this.pugjjigGetCount(places.id);
 
         let el = document.createElement('button');
         let item = `
             <span class="${ItemUniName.componentStyle.componentId} ${ItemUniName.componentStyle.lastClassName}">${places.place_name}</span>
-            <span class="${ItemUniCount.componentStyle.componentId} ${ItemUniCount.componentStyle.lastClassName}">0명 푹찍</span>
-        `;
-
-        // let el = document.createElement('li'),
-        // itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
-        //             '<div class="info">' +
-        //             '   <h5>' + places.place_name + '</h5>';
-
-        // if (places.road_address_name) {
-        //     itemStr += '    <span>' + places.road_address_name + '</span>' +
-        //                 '   <span class="jibun gray">' +  places.address_name  + '</span>';
-        // } else {
-        //     itemStr += '    <span>' +  places.address_name  + '</span>'; 
-        // }
-                    
-        // itemStr += '  <span class="tel">' + places.phone  + '</span>' +
-        //             '</div>';           
+            <span class="${ItemUniCount.componentStyle.componentId} ${ItemUniCount.componentStyle.lastClassName}">${pugjjig.count}명 푹찍</span>
+        `;       
 
         el.innerHTML = item;
         el.className = `${Item.componentStyle.componentId} ${Item.componentStyle.lastClassName}`;
@@ -298,8 +287,8 @@ class KakaoMapService {
         const thatThis = this.thatThis;
 
         let content = `
-            <div style="padding:5px;z-index:1;">
-                <div>${title}</div>
+            <div style="padding:5px;z-index:1;text-align: center;font-size: 14px;font-weight: 400;">
+                ${title.place_name}
             </div>
         `;
         
@@ -319,16 +308,18 @@ class KakaoMapService {
         pugjjig = await this.pugjjigGetCount(store.id);
 
         let overlayWarp = document.createElement("div"); 
-        overlayWarp.setAttribute("style", "padding:5px;z-index:1;background-color: #fff;");
+        overlayWarp.setAttribute("style", "padding:10px 15px;z-index:3;background-color: #fff;border: 1px solid #d11d33;width: 300px;");
 
         let overlayTitle = document.createElement("div"); 
         let overlayTitleText = document.createTextNode(store.place_name); 
         overlayTitle.appendChild(overlayTitleText);
+        overlayTitle.setAttribute("style", "font-weight: 500;font-size: 16px;margin-bottom: 3px;");
 
         let overlayReview = document.createElement("button"); 
         overlayReview.type = "button";
-        let overlayReviewText = document.createTextNode(`평점 0점 | 리뷰 ${pugjjig.count}개`); 
+        let overlayReviewText = document.createTextNode(`평점 0점 | 리뷰 ${pugjjig.count}개 리뷰보기`); 
         overlayReview.appendChild(overlayReviewText);
+        overlayReview.setAttribute("style", "color: #d11d33;font-weight: 400; margin-bottom: 4px;");
 
         overlayReview.addEventListener('click', function(){
             classThis.openModal("listModalState", store.id, store.address_name);
@@ -337,22 +328,26 @@ class KakaoMapService {
         let overlayAddr = document.createElement("div"); 
         let overlayAddrText = document.createTextNode(`${store.address_name}`); 
         overlayAddr.appendChild(overlayAddrText);
+        overlayAddr.setAttribute("style", "color: #000;");
         
         let overlayPhone = document.createElement("a");
         overlayPhone.href = `tel: ${store.phone}`;
         overlayPhone.target = `_blank`;
         let overlayPhoneText = document.createTextNode(`${store.phone}`); 
         overlayPhone.appendChild(overlayPhoneText);
+        overlayPhone.setAttribute("style", "color: #288756;");
 
         let overlayInfo = document.createElement("a"); 
         overlayInfo.href = `${store.place_url}`;
         overlayInfo.target = `_blank`;
         let overlayInfoText = document.createTextNode(`상세정보`); 
         overlayInfo.appendChild(overlayInfoText);
+        overlayInfo.setAttribute("style", "color: #3d75cc;margin-left: 5px;");
 
         let overlayWrite = document.createElement("button"); 
         let overlayWritewText = document.createTextNode("리뷰 작성하기"); 
         overlayWrite.appendChild(overlayWritewText);
+        overlayWrite.setAttribute("style", "width: 100%;display: block;background-color: #d11d33;color: #fff;padding: 3px 0;border-radius: 3px;margin-top: 10px;");
 
         overlayWarp.appendChild(overlayTitle);
         overlayWarp.appendChild(overlayReview);
@@ -406,8 +401,11 @@ class KakaoMapService {
     }
 
     // 키워드 검색 완료 시 호출되는 콜백함수 입니다
-    placesSearchCB = (places, status, pagination) => {
+    placesSearchCB = async (places, status, pagination) => {
         if (status === kakao.maps.services.Status.OK) {
+
+            // 키워드 검색시 표시된 customOverlay 제거
+            this.thatThis.customOverlay.setMap(null);
 
             // 좌측 리스트
             let listEl = document.getElementById('universityList');
@@ -425,7 +423,7 @@ class KakaoMapService {
                 // 마커를 생성하고 지도에 표시합니다
                 let placePosition = this.thatThis.latLng(places[i].y, places[i].x);
                 let marker = this.addMarker(placePosition, i);
-                let itemEl = this.getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
+                let itemEl = await this.getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
 
                 // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
                 // LatLngBounds 객체에 좌표를 추가합니다

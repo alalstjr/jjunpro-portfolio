@@ -15,7 +15,9 @@ import {
     PagingBox,
     Pagination,
     NextBtn,
-    PrevBtn
+    PrevBtn,
+    SearchSetTimeWrap,
+    SearchSetFoodWrap
  } from "./style"
 
 class UniversityProvider extends Component {
@@ -286,64 +288,80 @@ class UniversityProvider extends Component {
                     {
                         searchState !== false && storeState === 3 ? 
                         <SearchSet>
-                            <div>
-                                <span>
-                                    도보기준 :
-                                </span> 
-                                <label htmlFor="radius-1">5~10분</label>
-                                <input type="radio" name="radius" id="radius-1"
-                                    value={300}
-                                    checked={radius == "300"}
-                                    onChange={this.onChange}
-                                />
-                                <label htmlFor="radius-2">10~20분</label>
-                                <input type="radio" name="radius" id="radius-2"
-                                    value={600}
-                                    checked={radius === "600"}
-                                    onChange={this.onChange}
-                                />
-                                <label htmlFor="radius-3">20분 이상</label>
-                                <input type="radio" name="radius" id="radius-3"
-                                    value={1200}
-                                    checked={radius === "1200"}
-                                    onChange={this.onChange}
-                                />
-                            </div> 
-                            <div>
-                                <span>
-                                    음식종류 :
-                                </span> 
-                                <input type="radio" name="category" id="category-1"
-                                    value={""}
-                                    checked={category === ""}
-                                    onChange={this.onChange}
-                                />
-                                <label htmlFor="category-1">전부</label>
-                                <input type="radio" name="category" id="category-2"
-                                    value={"일식"}
-                                    checked={category === "일식"}
-                                    onChange={this.onChange}
-                                />
-                                <label htmlFor="category-2">일식</label>
-                                <input type="radio" name="category" id="category-3"
-                                    value={"중식"}
-                                    checked={category === "중식"}
-                                    onChange={this.onChange}
-                                />
-                                <label htmlFor="category-3">중식</label>
-                                <input type="radio" name="category" id="category-4"
-                                    value={"한식"}
-                                    checked={category === "한식"}
-                                    onChange={this.onChange}
-                                />
-                                <label htmlFor="category-4">한식</label>
-                                <input type="radio" name="category" id="category-5"
-                                    value={"카페"}
-                                    checked={category === "카페"}
-                                    onChange={this.onChange}
-                                />
-                                <label htmlFor="category-5">카페</label>
-                            </div> 
+                            <SearchSetTimeWrap
+                                initSearch = {initSearch}
+                            >
+                                <div>도보기준</div> 
+                                <div>
+                                    <input type="radio" name="radius" id="radius-1"
+                                        value={300}
+                                        checked={radius == "300"}
+                                        onChange={this.onChange}
+                                    />
+                                    <label htmlFor="radius-1">5~10분</label>
+                                </div>
+                                <div>
+                                    <input type="radio" name="radius" id="radius-2"
+                                        value={600}
+                                        checked={radius === "600"}
+                                        onChange={this.onChange}
+                                    />
+                                    <label htmlFor="radius-2">10~20분</label>
+                                </div>
+                                <div>
+                                    <input type="radio" name="radius" id="radius-3"
+                                        value={1200}
+                                        checked={radius === "1200"}
+                                        onChange={this.onChange}
+                                    />
+                                    <label htmlFor="radius-3">20분 이상</label>
+                                </div>
+                            </SearchSetTimeWrap> 
+                            <SearchSetFoodWrap
+                                initSearch = {initSearch}
+                            >
+                                <div>음식종류</div> 
+                                <div>
+                                    <input type="radio" name="category" id="category-1"
+                                        value={""}
+                                        checked={category === ""}
+                                        onChange={this.onChange}
+                                    />
+                                    <label htmlFor="category-1">전부</label>
+                                </div>
+                                <div>
+                                    <input type="radio" name="category" id="category-2"
+                                        value={"일식"}
+                                        checked={category === "일식"}
+                                        onChange={this.onChange}
+                                    />
+                                    <label htmlFor="category-2">일식</label>
+                                </div>
+                                <div>
+                                    <input type="radio" name="category" id="category-3"
+                                        value={"중식"}
+                                        checked={category === "중식"}
+                                        onChange={this.onChange}
+                                    />
+                                    <label htmlFor="category-3">중식</label>
+                                </div>
+                                <div>
+                                    <input type="radio" name="category" id="category-4"
+                                        value={"한식"}
+                                        checked={category === "한식"}
+                                        onChange={this.onChange}
+                                    />
+                                    <label htmlFor="category-4">한식</label>
+                                </div>
+                                <div>
+                                    <input type="radio" name="category" id="category-5"
+                                        value={"카페"}
+                                        checked={category === "카페"}
+                                        onChange={this.onChange}
+                                    />
+                                    <label htmlFor="category-5">카페</label>
+                                </div>
+                            </SearchSetFoodWrap> 
                         </SearchSet>
                         :
                         null

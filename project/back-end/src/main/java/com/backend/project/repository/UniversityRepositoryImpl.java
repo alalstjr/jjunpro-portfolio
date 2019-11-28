@@ -12,8 +12,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.querydsl.core.group.GroupBy.groupBy;
@@ -85,6 +87,8 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                 .where(qUniversity.id.eq(id))
                 .fetchOne();
 
+        System.out.println(uniData.getAccount().getUserId());
+
         return getUniversityPublic(uniData, account);
     }
 
@@ -115,6 +119,10 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
     }
 
     private UniversityPublic getUniversityPublic(University data, Account account) {
+
+        // INSERT 직후 해당 {id} 값을 조회하면 Hash 값이 null 로 표시되는 오류를 조치하는 코드
+        Set<Account> uniLike = data.getUniLike() == null ? new HashSet<>() : data.getUniLike();
+
         return new UniversityPublic(
                 data.getId(),
                 data.getUniSubject(),
@@ -126,8 +134,8 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                 data.getModifiedDate(),
                 data.getAccount().getId(),
                 data.getAccount().getNickname(),
-                data.getUniLike().size(),
-                data.getUniLike().contains(account),
+                uniLike.size(),
+                uniLike.contains(account),
                 data.getFiles(),
                 data.getAccount().getPhoto(),
                 stoData(data.getId())

@@ -181,7 +181,7 @@ class PugjjigWrite extends Component {
             this.warningSet("subject", true, "제목 작성은 필수입니다.");
             return false;
         }
-        if(!pugjjig.content) {
+        if(!pugjjig.uniContent) {
             this.warningSet("content", true, "내용 작성은 필수입니다.");
             return false;
         }

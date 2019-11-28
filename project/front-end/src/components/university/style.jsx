@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components"
-import { ClearFix, InitTransition } from "../../style/globalStyles"
+import { ClearFix, InitTransition, FlexInit } from "../../style/globalStyles"
 
 /*******************
     List Style
@@ -19,7 +19,7 @@ export const ListWrap = styled.div`
         props => props.initSearch === true ?
         `
             left: 50%;
-            padding-top: 500px;
+            padding-top: 490px;
             width: 500px;
             margin-left: -250px;
         `
@@ -78,18 +78,20 @@ export const ItemUniName = styled.span`
     float: left;
     color: #4c4c4c;
     font-size: 0.875rem;
+    font-weight: 400;
 `;
 export const ItemUniCount = styled.span`
     float: right;
     color: #a6a6a6;
     font-size: 0.75rem;
+    font-weight: 400;
 `;
 
 /*******************
     Search Style
 ********************/
 export const SearchWrap = styled.div`
-    padding: 0.3125rem;
+    padding: 0 0.3125rem;
     position: relative;
     z-index: 1;
 `;
@@ -235,7 +237,77 @@ export const SearchNotice = styled.div`
 `;
 export const SearchSet = styled.div`
     border-bottom: 0.0625rem solid #e3e3e3;
+    padding: 0 0.3125rem;
 `;
+
+export const SearchSetWrapCSS = css`
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px 0;
+
+    > div:first-child {
+        ${
+            props => props.initSearch ? 
+            null
+            :
+            `display: none`
+        }
+
+        max-width: 80px;
+        text-align: left;
+    }
+
+    > div {
+        display: flex;
+        flex-direction: column;
+
+        font-size: 14px;
+        font-weight: 500;
+        text-align: center;
+        margin: auto 0;
+    }
+    
+    > div input {
+        display: none;
+    }
+    > div input + label {
+        text-align: center;
+        padding: 7px 0px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        border-radius: 3px;
+    }
+    > div input:checked + label {
+        background-color: ${props => props.theme.themeColor};
+        color: #fff;
+    }
+`;
+export const SearchSetTimeWrap = styled.div`
+    ${SearchSetWrapCSS}
+
+    > div {
+        ${
+            props => props.initSearch ? 
+            `flex-basis: 27%;`
+            :
+            `flex-basis: 33.333%;`
+        }
+    }
+`;
+export const SearchSetFoodWrap = styled.div`
+    ${SearchSetWrapCSS}
+
+    > div {
+        ${
+            props => props.initSearch ? 
+            `flex-basis: 16.7%;`
+            :
+            `flex-basis: 20%;`
+        }
+    }
+`;
+
 export const NoticeText = styled.div`
     transition: all 0.2s ease-in-out;
     visibility: hidden;
