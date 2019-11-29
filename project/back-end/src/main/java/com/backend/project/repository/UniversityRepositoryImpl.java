@@ -1,11 +1,13 @@
 package com.backend.project.repository;
 
 import com.backend.project.domain.*;
+import com.backend.project.projection.CommentPublic;
 import com.backend.project.projection.StorePublic;
 import com.backend.project.projection.UniversityPublic;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -25,10 +27,15 @@ import static com.querydsl.core.group.GroupBy.list;
 @RequiredArgsConstructor
 public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
 
+    @Autowired
+    private CommentRepository commentRepository;
+
     private final JPAQueryFactory queryFactory;
     private QUniversity qUniversity = QUniversity.university;
     private QAccount qAccount       = QAccount.account;
     private QStore qStore           = QStore.store;
+    private QComment qComment       = QComment.comment;
+    private QFile qFile             = QFile.file;
 
     @Override
     public Page<UniversityPublic> findByPublicAll(Pageable pageable, Account account) {
@@ -87,6 +94,31 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
     }
 
     @Override
+    public List<CommentPublic> findByCommentList(Long id) {
+
+        List<CommentPublic> result = queryFactory
+                .select(
+                        Projections.constructor(
+                                CommentPublic.class,
+                                qComment.id,
+                                qComment.content,
+                                qComment.ip,
+                                qComment.modifiedDate,
+                                qComment.account.id,
+                                qComment.account.nickname,
+                                qComment.account.photo
+                        )
+                )
+                .from(qUniversity)
+                .leftJoin(qUniversity.comments, qComment)
+                .leftJoin(qComment.account.photo, qFile)
+                .where(qUniversity.id.eq(3L))
+                .fetch();
+
+        return result;
+    }
+
+    @Override
     public UniversityPublic findByPublicId(Long id, Account account) {
 
         University uniData = queryFactory
@@ -94,8 +126,6 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                 .from(qUniversity)
                 .where(qUniversity.id.eq(id))
                 .fetchOne();
-
-        System.out.println(uniData.getAccount().getUserId());
 
         return getUniversityPublic(uniData, account);
     }
@@ -146,7 +176,9 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                 uniLike.contains(account),
                 data.getFiles(),
                 data.getAccount().getPhoto(),
-                stoData(data.getId())
+                stoData(data.getId()),
+                // Comment List 가져오는 메소드
+                findByCommentList(data.getId())
         );
     }
 
@@ -168,7 +200,9 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                                 u.getKey().getUniLike().contains(account),
                                 u.getKey().getFiles(),
                                 u.getKey().getAccount().getPhoto(),
-                                stoData(u.getKey().getId())
+                                stoData(u.getKey().getId()),
+                                // Comment List 가져오는 메소드
+                                findByCommentList(u.getKey().getId())
                         )
                 )
                 .collect(Collectors.toList());

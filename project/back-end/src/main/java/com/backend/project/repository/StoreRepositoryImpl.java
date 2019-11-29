@@ -3,9 +3,11 @@ package com.backend.project.repository;
 import com.backend.project.domain.*;
 import com.backend.project.projection.StorePublic;
 import com.backend.project.projection.UniversityPublic;
+import com.backend.project.service.UniversityServiceImpl;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,12 +17,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class StoreRepositoryImpl implements StoreRepositoryDSL {
 
+    @Autowired
+    private UniversityServiceImpl universityService;
+
     private final JPAQueryFactory queryFactory;
-
     private QStore qStore = QStore.store;
-
     private QUniversity qUniversity = QUniversity.university;
-
     private QFile qFile = QFile.file;
 
     @Override
@@ -68,7 +70,9 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
                         u.getUniLike().contains(account),
                         u.getFiles(),
                         u.getAccount().getPhoto(),
-                        stoData(u.getId())
+                        stoData(u.getId()),
+                        // Comment List 가져오는 메소드
+                        universityService.findByCommentList(u.getId())
                 )
         ).collect(Collectors.toList());
 

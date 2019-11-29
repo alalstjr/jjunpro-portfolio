@@ -26,6 +26,7 @@ public class UniversityPublic implements Comparable<UniversityPublic> {
     private List<File> files;
     private File photo;
     private StorePublic storePublic;
+    private List<CommentPublic> commentPublic;
 
     @Override
     public int compareTo(UniversityPublic o) {

@@ -6,6 +6,7 @@ import com.backend.project.domain.Store;
 import com.backend.project.domain.University;
 import com.backend.project.dto.StoreDTO;
 import com.backend.project.dto.UniversitySaveDTO;
+import com.backend.project.projection.CommentPublic;
 import com.backend.project.projection.UniversityPublic;
 import com.backend.project.repository.StoreRepository;
 import com.backend.project.repository.UniversityRepository;
@@ -108,6 +109,11 @@ public class UniversityServiceImpl implements UniversityService {
     @Override
     public Boolean findByIdLike(Long id, Account account) {
         return university.findByIdLike(id, account);
+    }
+
+    @Override
+    public List<CommentPublic> findByCommentList(Long id) {
+        return university.findByCommentList(id);
     }
 
     @Override
