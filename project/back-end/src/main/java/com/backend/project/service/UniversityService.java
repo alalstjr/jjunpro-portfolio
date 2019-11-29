@@ -4,7 +4,6 @@ import com.backend.project.domain.Account;
 import com.backend.project.domain.University;
 import com.backend.project.dto.StoreDTO;
 import com.backend.project.dto.UniversitySaveDTO;
-import com.backend.project.projection.CommentPublic;
 import com.backend.project.projection.UniversityPublic;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,8 +19,6 @@ public interface UniversityService {
     public List<UniversityPublic> findByUniversityListWhereAccountId(Account account, String userId, Long offsetCount);
     public List<UniversityPublic> findByLikeListWhereAccountId(Account account, String userId, Long offsetCount);
     public Boolean findByIdLike(Long id, Account account);
-
-    public List<CommentPublic> findByCommentList(Long id);
 
     public UniversityPublic saveOrUpdate(UniversitySaveDTO dto, StoreDTO storeDTO, Account accountData);
     public University saveOrUpdate(University universityData);

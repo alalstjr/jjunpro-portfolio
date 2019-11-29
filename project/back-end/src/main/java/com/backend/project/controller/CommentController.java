@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -82,5 +83,15 @@ public class CommentController {
         CommentPublic newComment = commentService.save(dto);
 
         return new ResponseEntity<CommentPublic>(newComment, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public List<CommentPublic> saveOrUpdate(
+            @PathVariable Long id,
+            Authentication authentication,
+            HttpServletRequest request
+    ) {
+        return commentService.findByCommentList(id);
     }
 }

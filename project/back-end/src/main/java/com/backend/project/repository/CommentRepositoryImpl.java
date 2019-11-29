@@ -10,6 +10,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class CommentRepositoryImpl implements CommentRepositoryDSL {
@@ -42,6 +44,31 @@ public class CommentRepositoryImpl implements CommentRepositoryDSL {
                         qComment.id.eq(id)
                 )
                 .fetchOne();
+
+        return result;
+    }
+
+    @Override
+    public List<CommentPublic> findByCommentList(Long id) {
+
+        List<CommentPublic> result = queryFactory
+                .select(
+                        Projections.constructor(
+                                CommentPublic.class,
+                                qComment.id,
+                                qComment.content,
+                                qComment.ip,
+                                qComment.modifiedDate,
+                                qComment.account.id,
+                                qComment.account.nickname,
+                                qComment.account.photo
+                        )
+                )
+                .from(qUniversity)
+                .leftJoin(qUniversity.comments, qComment)
+                .leftJoin(qComment.account.photo, qFile)
+                .where(qUniversity.id.eq(id))
+                .fetch();
 
         return result;
     }

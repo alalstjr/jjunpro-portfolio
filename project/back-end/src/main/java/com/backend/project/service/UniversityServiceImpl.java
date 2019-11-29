@@ -112,11 +112,6 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public List<CommentPublic> findByCommentList(Long id) {
-        return university.findByCommentList(id);
-    }
-
-    @Override
     public void deleteData(Long id, Account accountData) {
         university.deleteData(id, accountData);
     }

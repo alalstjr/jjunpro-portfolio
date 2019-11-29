@@ -70,9 +70,7 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
                         u.getUniLike().contains(account),
                         u.getFiles(),
                         u.getAccount().getPhoto(),
-                        stoData(u.getId()),
-                        // Comment List 가져오는 메소드
-                        universityService.findByCommentList(u.getId())
+                        stoData(u.getId())
                 )
         ).collect(Collectors.toList());
 

@@ -9,6 +9,7 @@ import com.backend.project.repository.UniversityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,5 +37,10 @@ public class CommentServiceImpl implements CommentService {
         }
 
         return comment.findByPublicId(commentData.getId());
+    }
+
+    @Override
+    public List<CommentPublic> findByCommentList(Long id) {
+        return comment.findByCommentList(id);
     }
 }
