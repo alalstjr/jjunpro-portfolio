@@ -26,7 +26,8 @@ public class Comment extends BaseEntity {
     private Account account;
 
     @Builder
-    public Comment(String content, String ip, Account account) {
+    public Comment(Long id, String content, String ip, Account account) {
+        this.id      = id;
         this.content = content;
         this.ip      = ip;
         this.account = account;

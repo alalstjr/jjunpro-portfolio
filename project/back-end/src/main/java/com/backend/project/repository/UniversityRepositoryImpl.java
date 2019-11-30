@@ -146,7 +146,8 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                 uniLike.contains(account),
                 data.getFiles(),
                 data.getAccount().getPhoto(),
-                stoData(data.getId())
+                stoData(data.getId()),
+                data.getComments().size()
         );
     }
 
@@ -168,7 +169,8 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                                 u.getKey().getUniLike().contains(account),
                                 u.getKey().getFiles(),
                                 u.getKey().getAccount().getPhoto(),
-                                stoData(u.getKey().getId())
+                                stoData(u.getKey().getId()),
+                                u.getKey().getComments().size()
                         )
                 )
                 .collect(Collectors.toList());

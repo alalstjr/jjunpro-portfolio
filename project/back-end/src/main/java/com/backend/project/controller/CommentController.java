@@ -87,7 +87,7 @@ public class CommentController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public List<CommentPublic> saveOrUpdate(
+    public List<CommentPublic> commentGetList(
             @PathVariable Long id,
             Authentication authentication,
             HttpServletRequest request

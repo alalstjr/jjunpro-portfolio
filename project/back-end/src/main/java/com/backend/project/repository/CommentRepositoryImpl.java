@@ -68,6 +68,7 @@ public class CommentRepositoryImpl implements CommentRepositoryDSL {
                 .leftJoin(qUniversity.comments, qComment)
                 .leftJoin(qComment.account.photo, qFile)
                 .where(qUniversity.id.eq(id))
+                .orderBy(qComment.modifiedDate.desc())
                 .fetch();
 
         return result;

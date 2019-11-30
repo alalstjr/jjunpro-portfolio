@@ -7,9 +7,11 @@ import { USER_LONG_ID } from "../../../routes"
 import ImageSlide from "../../widget/mainTitleSlide"
 import NormalHeader from "../../layout/header/normal/NormalHeader"
 import { pugjjigGetView, pugjjigLike } from "../../../actions/KakaoMapActions"
+import { pugjjigCommentGetList } from "../../../actions/PugjjigActions"
 
 import ItemEditModal from "../list/item/ItemEditModal"
 import InsertModal from "../modal/InsertModal"
+import CommentWrite from "../form/CommentWrite"
 
 import {
     ProfileIamge,
@@ -38,7 +40,12 @@ import {
     ItemLikeBtn,
     ItemLikeText,
     ItemEditBtn,
-    ItemLocalWrap
+    ItemLocalWrap,
+    CommentNickname,
+    CommentContent,
+    CommentDate,
+    CommentWrap,
+    Comment
 } from "../style"
 
 import SVG from "../../../static/svg/SVG"
@@ -51,6 +58,7 @@ class PugjjigView extends Component {
     
         this.state = {
             pugjjig: [],
+            comment: [],
             insertModalState: false,
             selectModalState: false,
             editPugjjig: {},
@@ -63,18 +71,22 @@ class PugjjigView extends Component {
         // Props Init
         const { 
             pugjjigGetView,
+            pugjjigCommentGetList,
             match,
             history
         } = this.props;
 
-        pugjjigGetView(match.params.id, history);
+        pugjjigGetView(match.params.id, history);   // {id} 게시물의 {DATA}를 받아옵니다.
+        pugjjigCommentGetList(match.params.id);     // {id} 게시물의 {COMMENT}을 받아옵니다.
     }
 
     componentWillReceiveProps(nextProps) {
 
         // Props Init
         const { 
-            pugjjig_view
+            pugjjig_view,
+            pugjjig_comment,
+            pugjjig_comment_list
         } = this.props;
 
         if(nextProps.pugjjig_view !== pugjjig_view) {
@@ -83,7 +95,30 @@ class PugjjigView extends Component {
                 selectModalState: false
             });   
         }
+
+        // 댓글 {DATA} 배열 생성
+        if(nextProps.pugjjig_comment_list !== pugjjig_comment_list) {
+            this.handleUpdate(nextProps.pugjjig_comment_list);
+        }
+
+        // 댓글 {INSERT DATA} 배열 생성
+        if(nextProps.pugjjig_comment !== pugjjig_comment) {
+            this.handleUpdate(nextProps.pugjjig_comment);
+        }
     }
+
+    handleUpdate = (postData) => {
+
+        // Props Init
+        const {
+            comment
+        } = this.state;
+        
+        this.setState({
+            comment: comment.concat(postData.data)
+        });
+    }
+
 
     handleLikeUpdate = (preData, postData) => {
         if(preData.uniLikeState !== postData.uniLikeState) {
@@ -150,7 +185,7 @@ class PugjjigView extends Component {
         const { 
             pugjjigLike, 
             pugjjig_view, 
-            pugjjig_like,
+            pugjjig_like
         } = this.props;
 
         // State Init
@@ -158,9 +193,11 @@ class PugjjigView extends Component {
             insertModalState,
             selectModalState,
             editPugjjig,
-            edit
+            edit,
+            comment
         } = this.state;
 
+        // Data Init
         const pugjjig = pugjjig_view.data;
         
         if(pugjjig_like.data !==undefined) {
@@ -170,7 +207,7 @@ class PugjjigView extends Component {
         return (
             <ViewWrap>
                 {
-                    pugjjig_view.data !== undefined ?
+                    pugjjig !== undefined ?
                     <Fragment>
                         <NormalHeader/>
                         <ViewBox>
@@ -258,7 +295,7 @@ class PugjjigView extends Component {
                                 <ItemStateWrap>
                                     <ItemDetail>
                                         좋아요 {pugjjig.uniLike}개
-                                        댓글 0개
+                                        댓글 {pugjjig.uniComment}개
                                     </ItemDetail>
                                     <ItemDate>
                                         {pugjjig.modifiedDate.split("T")[0]}
@@ -290,6 +327,31 @@ class PugjjigView extends Component {
                                         <SVGEdit width="16px" height="16px" color={"#333333"} />
                                     </ItemEditBtn>
                                 </ItemState>
+                                <CommentWrite
+                                    uniId = {pugjjig.id}
+                                />
+                                {
+                                    comment !== undefined ?
+                                    <CommentWrap>
+                                    {
+                                        comment.map((comment, index) => (
+                                            <Comment key={index}>
+                                                <CommentNickname>
+                                                    {comment.account_nickname}
+                                                </CommentNickname>
+                                                <CommentContent>
+                                                    {comment.content}
+                                                </CommentContent>
+                                                <CommentDate>
+                                                    {comment.modifiedDate.split("T")[0]}
+                                                </CommentDate>
+                                            </Comment>
+                                        ))
+                                    }
+                                    </CommentWrap>
+                                    :
+                                    null
+                                }
                             </ItemBottom>
                         </ViewBox>
 
@@ -321,8 +383,11 @@ class PugjjigView extends Component {
 PugjjigView.propTypes = {
     pugjjigGetView: PropTypes.func.isRequired,
     pugjjigLike: PropTypes.func.isRequired,
+    pugjjigCommentGetList: PropTypes.func.isRequired,
     pugjjig_view: PropTypes.object.isRequired,
     pugjjig_like: PropTypes.object.isRequired,
+    pugjjig_comment: PropTypes.object.isRequired,
+    pugjjig_comment_list: PropTypes.object.isRequired,
     error: PropTypes.object.isRequired
   }
   
@@ -330,13 +395,16 @@ PugjjigView.propTypes = {
   const mapStateToProps = state => ({
     error: state.errors,
     pugjjig_view: state.pugjjig.pugjjig_view,
-    pugjjig_like: state.pugjjig.pugjjig_like
+    pugjjig_like: state.pugjjig.pugjjig_like,
+    pugjjig_comment: state.pugjjig.pugjjig_comment,
+    pugjjig_comment_list: state.pugjjig.pugjjig_comment_list
   });
   
   export default connect(
     mapStateToProps, 
     { 
         pugjjigGetView,
-        pugjjigLike
+        pugjjigLike,
+        pugjjigCommentGetList
     }
   )(PugjjigView);

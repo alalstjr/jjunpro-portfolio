@@ -134,7 +134,7 @@ const Item = ({pugjjig, pugjjigLike, openModal}) => (
             <ItemStateWrap>
                 <ItemDetail>
                     좋아요 {pugjjig.uniLike}개
-                    댓글 0개
+                    댓글 {pugjjig.uniComment}개
                 </ItemDetail>
                 <ItemDate>
                     {pugjjig.modifiedDate.split("T")[0]}

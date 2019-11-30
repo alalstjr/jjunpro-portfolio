@@ -14,6 +14,8 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class CommentSaveDTO {
 
+    private Long id;
+
     private Long uniId;
 
     private String ip;
@@ -26,6 +28,7 @@ public class CommentSaveDTO {
 
     public Comment toEntity() {
         return Comment.builder()
+                .id(id)
                 .content(content)
                 .ip(ip)
                 .account(account)

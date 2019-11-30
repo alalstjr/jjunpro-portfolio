@@ -43,7 +43,7 @@
     "filepond": "^4.7.4",
     "filepond-plugin-image-exif-orientation": "^1.0.6",
     "filepond-plugin-image-preview": "^4.5.0",
-    "react-dropzone": "^10.2.0",
+    "react-dropzone": "^10.2.1",
     "react-filepond": "^7.0.1",
     "react-infinite-scroller": "^1.2.4",
     "react-scrollreveal": "^1.2.0",

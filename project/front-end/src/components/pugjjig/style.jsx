@@ -290,7 +290,7 @@ export const ItemEditModalBtn = styled.button.attrs({
     font-size: 16px;
     font-weight: 500;
     height: 40px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #eee;
 
     ${
         props => props.warring ?
@@ -358,4 +358,52 @@ export const ViewBox = styled.div`
 `;
 export const ViewContent = styled.div`
     margin-bottom: 10px;
+`;
+
+/*******************
+    Comment Style
+********************/
+export const CommentNickname = styled.span`
+    font-weight: 600;
+    margin-right: 5px;
+`;
+export const CommentContent = styled.span`
+    font-size: 14px;
+    font-weight: 300;
+`;
+export const CommentDate = styled.div`
+    font-size: 12px;
+    color: #999;
+`;
+export const CommentWrap = styled.ul`
+    margin-top: 3px;
+`;
+export const Comment = styled.li`
+    padding: 3px 0;
+`;
+export const InputCommentWrap = styled.div`
+    ${ClearFix}
+
+    margin-top: 7px;
+    height: 42px;
+    border: 1px solid #eee;
+`;
+export const InputComment = styled.textarea.attrs({
+})`
+    border: none;
+    width: 100%;
+    padding: 10px;
+    height: 40px;
+    width: calc(100% - 60px);
+    float: left;
+    resize : none;
+`;
+export const CommentBtn = styled.button`
+    width: 60px;
+    height: 40px;
+    float: left;
+
+    font-size: 16px;
+    font-weight: 500;
+    color: #3897f0;
 `;
