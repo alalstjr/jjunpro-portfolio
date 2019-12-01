@@ -3,13 +3,16 @@ package com.backend.project.repository;
 import com.backend.project.domain.*;
 import com.backend.project.projection.StorePublic;
 import com.backend.project.projection.UniversityPublic;
+import com.backend.project.service.CommentServiceImpl;
+import com.backend.project.service.FileStorageServiceImpl;
+import com.backend.project.service.UniversityServiceImpl;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
@@ -21,7 +24,6 @@ import java.util.stream.Collectors;
 import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.group.GroupBy.list;
 
-@Repository
 @RequiredArgsConstructor
 public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
 
@@ -29,8 +31,41 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
     private QUniversity qUniversity = QUniversity.university;
     private QAccount qAccount       = QAccount.account;
     private QStore qStore           = QStore.store;
-    private QComment qComment       = QComment.comment;
-    private QFile qFile             = QFile.file;
+
+    @Autowired
+    private UniversityServiceImpl universityService;
+
+    @Autowired
+    private FileStorageServiceImpl fileStorageService;
+
+    @Autowired
+    private CommentServiceImpl commentService;
+
+    @Override
+    @Transactional
+    public void deleteData(Long id, Account accountData) {
+
+        // University File Data
+        List<File> uniFiles = universityService.findById(id).get().getFiles();
+
+        // qStore 삭제
+        queryFactory
+                .delete(qStore)
+                .where(qStore.stoUniList.any().id.eq(id))
+                .execute();
+
+        // University 삭제
+        queryFactory
+                .delete(qUniversity)
+                .where(qUniversity.id.eq(id).and(qUniversity.account.eq(accountData)))
+                .execute();
+
+        // University 저장된 Comment 삭제
+        commentService.deleteUniComment(id, accountData);
+
+        // University 저장된 File 삭제
+        fileStorageService.filesDelete(uniFiles);
+    }
 
     @Override
     public Page<UniversityPublic> findByPublicAll(Pageable pageable, Account account) {
@@ -109,21 +144,6 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                 .fetchOne();
 
         return (result == null ? false : true);
-    }
-
-    @Override
-    @Transactional
-    public void deleteData(Long id, Account accountData) {
-
-        queryFactory
-            .delete(qStore)
-            .where(qStore.stoUniList.any().id.eq(id))
-            .execute();
-
-        queryFactory
-            .delete(qUniversity)
-            .where(qUniversity.id.eq(id).and(qUniversity.account.eq(accountData)))
-            .execute();
     }
 
     private UniversityPublic getUniversityPublic(University data, Account account) {

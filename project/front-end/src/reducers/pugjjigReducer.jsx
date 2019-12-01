@@ -7,7 +7,8 @@ import {
     GET_UNIVERSITY,
     DELETE_PUGJJIG,
     GET_PUGJJIG_COMMENT,
-    GET_PUGJJIG_COMMENT_LIST
+    GET_PUGJJIG_COMMENT_LIST,
+    DELETE_PUGJJIG_COMMENT
 } from "../actions/types"
 
 const initialState = {
@@ -19,7 +20,8 @@ const initialState = {
     pugjjig_university: "",
     pugjjig_delete : 0,
     pugjjig_comment: {},
-    pugjjig_comment_list: {}
+    pugjjig_comment_list: {},
+    pugjjig_comment_delete : 0
 };
 
 export default function(state=initialState, action) {
@@ -81,7 +83,7 @@ export default function(state=initialState, action) {
             return {
                 ...state,
                 pugjjig_comment: {
-                    data: action.payload
+                    data: [action.payload]
                 }
             };
 
@@ -91,6 +93,12 @@ export default function(state=initialState, action) {
                 pugjjig_comment_list: {
                     data: action.payload
                 }
+            };
+
+        case DELETE_PUGJJIG_COMMENT:
+            return {
+                ...state,
+                pugjjig_comment_delete: action.payload
             };
 
         default:

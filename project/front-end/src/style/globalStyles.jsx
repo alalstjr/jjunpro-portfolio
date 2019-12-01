@@ -243,6 +243,9 @@ export const NotPost = styled.div`
     font-size: 26px;
     color: #A99798;
 `;
+export const HiddenBtn = styled.button`
+    outline: none;
+`;
 
 /*******************
     Waring Style

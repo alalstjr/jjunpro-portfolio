@@ -22,7 +22,6 @@ class CommentWrite extends Component {
     
         this.state = {
             // update id
-            id: null,
             uniId: null,
             content: "",
             // Input 경고문
@@ -47,6 +46,20 @@ class CommentWrite extends Component {
         });
     }
 
+    componentWillReceiveProps(nextProps) {
+
+        // Props Init
+        const { 
+            pugjjig_comment
+        } = this.props;
+
+        // 댓글 {INSERT DATA} 배열 생성
+        if(nextProps.pugjjig_comment !== pugjjig_comment) {
+            this.setState({
+                content: ""
+            });
+        }
+    }
 
     // Input Setup
     onChange = (e) => {
@@ -60,13 +73,11 @@ class CommentWrite extends Component {
         e.preventDefault();
 
         const {
-            id,
             uniId,
             content
         } = this.state;
 
         const commentData = {
-            id,
             uniId,
             content
         };
@@ -158,18 +169,18 @@ class CommentWrite extends Component {
                 </InputCommentWrap>
 
                 {/* Write 안내문 */}
-                <ReactTransitionGroup
-                    transitionName={'Waring-anim'}
-                    transitionEnterTimeout={200}
-                    transitionLeaveTimeout={200}
-                >
                 {
                     warning.content ? 
+                    <ReactTransitionGroup
+                        transitionName={'Waring-anim'}
+                        transitionEnterTimeout={200}
+                        transitionLeaveTimeout={200}
+                    >
                     <WaringWrap>{warningText.content}</WaringWrap>
+                    </ReactTransitionGroup>
                     :
                     null
                 }
-                </ReactTransitionGroup>
             </Form>
         )
     }
@@ -177,12 +188,14 @@ class CommentWrite extends Component {
 
 CommentWrite.propTypes = {
     pugjjigCommentInsert: PropTypes.func.isRequired,
+    pugjjig_comment: PropTypes.object.isRequired,
     error: PropTypes.object.isRequired
   }
   
   
   const mapStateToProps = state => ({
-    error: state.errors
+    error: state.errors,
+    pugjjig_comment: state.pugjjig.pugjjig_comment
   });
   
   export default connect(

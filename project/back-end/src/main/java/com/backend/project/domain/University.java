@@ -42,7 +42,7 @@ public class University extends BaseEntity {
     @ManyToMany
     private List<File> files;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "university")
     private Set<Comment> comments = new HashSet<>();
 
     @Builder

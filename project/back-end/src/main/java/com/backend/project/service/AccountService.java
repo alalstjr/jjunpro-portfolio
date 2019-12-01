@@ -10,14 +10,15 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AccountService {
+    public Account save(AccountSaveDTO dto);
+    public Long update(AccountUpdateDTO dto);
+    public Long pwdUpdate(AccountPwdUpdateDTO dto);
+
+    public Optional<Account> findById(Long id);
     public Optional<Account> findByUserId(String userId);
     public Optional<Account> findByNickname(String nickname);
     public Optional<Account> findByEmail(String email);
 
     public AccountPublic findOnePublicAccount(String userId);
     public List<AccountPublic> findByPublicAccountList();
-
-    public Account save(AccountSaveDTO dto);
-    public Long update(AccountUpdateDTO dto);
-    public Long pwdUpdate(AccountPwdUpdateDTO dto);
 }

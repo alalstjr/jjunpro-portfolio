@@ -374,6 +374,10 @@ export const CommentContent = styled.span`
 export const CommentDate = styled.div`
     font-size: 12px;
     color: #999;
+
+    > button {
+        margin-left: 8px;
+    }
 `;
 export const CommentWrap = styled.ul`
     margin-top: 3px;

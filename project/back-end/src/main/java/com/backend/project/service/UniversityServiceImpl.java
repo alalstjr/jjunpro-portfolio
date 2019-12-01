@@ -6,7 +6,6 @@ import com.backend.project.domain.Store;
 import com.backend.project.domain.University;
 import com.backend.project.dto.StoreDTO;
 import com.backend.project.dto.UniversitySaveDTO;
-import com.backend.project.projection.CommentPublic;
 import com.backend.project.projection.UniversityPublic;
 import com.backend.project.repository.StoreRepository;
 import com.backend.project.repository.UniversityRepository;
@@ -23,10 +22,10 @@ import java.util.stream.Collectors;
 public class UniversityServiceImpl implements UniversityService {
 
     @Autowired
-    UniversityRepository university;
+    private UniversityRepository university;
 
     @Autowired
-    StoreRepository store;
+    private StoreRepository store;
 
     @Override
     public Optional<University> findById(Long id) {
@@ -62,6 +61,7 @@ public class UniversityServiceImpl implements UniversityService {
             dto.setId(updateDto.getId());
             dto.setUniLike(updateDto.getUniLike());
             dto.setUniName(updateDto.getUniName());
+            dto.setComments(updateDto.getComments());
 
             List<File> updateFile = updateDto.getFiles();
 

@@ -67,6 +67,18 @@ public class FileStorageServiceImpl implements FileStorageService{
     }
 
     @Override
+    public void fileDelete(File file) {
+        fileRepository.delete(file);
+    }
+
+    @Override
+    public void filesDelete(List<File> file) {
+        for(var i = 0; file.size() > i; i++) {
+            fileDelete(file.get(i));
+        }
+    }
+
+    @Override
     public List<File> uploadMultipleFiles(MultipartFile[] files, String fileRouter) {
 
         // 서버로 받은 파일'들'을 List로 변환하여 하나씩 서버로 업로드 합니다.

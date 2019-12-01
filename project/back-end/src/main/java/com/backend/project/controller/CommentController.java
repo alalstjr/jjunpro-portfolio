@@ -4,7 +4,7 @@ import com.backend.project.domain.Account;
 import com.backend.project.dto.CommentSaveDTO;
 import com.backend.project.projection.CommentPublic;
 import com.backend.project.respone.WebProcessRespone;
-import com.backend.project.service.CommentServiceImpl;
+import com.backend.project.service.CommentService;
 import com.backend.project.util.AccountUtill;
 import com.backend.project.util.IpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ import java.util.Optional;
 public class CommentController {
 
     @Autowired
-    CommentServiceImpl commentService;
+    private CommentService commentService;
 
     @Autowired
     private WebProcessRespone webProcessRespone;
@@ -85,6 +85,7 @@ public class CommentController {
         return new ResponseEntity<CommentPublic>(newComment, HttpStatus.CREATED);
     }
 
+    // COMMENT GET LIST
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
     public List<CommentPublic> commentGetList(
@@ -93,5 +94,35 @@ public class CommentController {
             HttpServletRequest request
     ) {
         return commentService.findByCommentList(id);
+    }
+
+    // DELETE 특정 DATA 삭제
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<String> deletePugjjig(
+            @PathVariable Long id,
+            Authentication authentication
+    ) {
+        String errorType = null;
+        String errorText = null;
+
+        Optional<Account> accountData = accountUtill.accountInfo(authentication);
+
+        if(accountData.isPresent()) {
+
+            if(!accountUtill.userDataCheck(id, accountData, "comment")) {
+                errorType = "AuthenticationError";
+                errorText = "잘못된 계정 접근입니다.";
+                return webProcessRespone.webErrorRespone(errorType, errorText);
+            }
+
+            commentService.deleteData(id, accountData.get());
+        } else {
+            errorType = "AuthenticationError";
+            errorText = "올바른 접근이 아닙니다.";
+            return webProcessRespone.webErrorRespone(errorType, errorText);
+        }
+
+        return new ResponseEntity<String>("처리가 완료되었습니다.", HttpStatus.OK);
     }
 }

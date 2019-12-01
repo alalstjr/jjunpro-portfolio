@@ -5,6 +5,7 @@ import com.backend.project.security.context.AccountContext;
 import com.backend.project.security.jwt.HeaderTokenExtractor;
 import com.backend.project.security.jwt.JwtDecoder;
 import com.backend.project.service.AccountServiceImpl;
+import com.backend.project.service.CommentServiceImpl;
 import com.backend.project.service.UniversityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -19,10 +20,13 @@ import java.util.Optional;
 public class AccountUtill {
 
     @Autowired
-    AccountServiceImpl accountService;
+    private AccountServiceImpl accountService;
 
     @Autowired
-    UniversityServiceImpl universityService;
+    private UniversityServiceImpl universityService;
+
+    @Autowired
+    private CommentServiceImpl commentService;
 
     @Autowired
     private JwtDecoder jwtDecoder;
@@ -61,14 +65,32 @@ public class AccountUtill {
     }
 
     /*
-     *   JWToken의 유저 정보를 가져옵니다.
+     *  Domain 의 특정 {id} DATA 값이 DB 에 존재하는지 확인하는 메소드입니다.
+     *  String checkDomain 값은 검색하는 Domain 의 이름값입니다.
+     *  DATA 가 존재하지 않을경우 NULL 을 반환합니다.
      */
-    public boolean userDataCheck(Long id, Optional<Account> accountData) {
+    public boolean userDataCheck(Long id, Optional<Account> accountData, String checkDomain) {
+        Long data = null;
+
         // 해당 데이터의 작성자 {id} 값을 가져옵니다.
-        Long data = universityService.findById(id).get().getAccount().getId();
+        switch (checkDomain) {
+            case "university" :
+                data = universityService.findById(id).get().getAccount().getId();
+                break;
+
+            case "comment" :
+                data = commentService.findById(id).get().getAccount().getId();
+                break;
+
+            case "account" :
+                data = accountService.findById(id).get().getId();
+
+            default:
+                break;
+        }
 
         // 해당 데이터의 작성자가 맞는지 검사합니다.
-        if(!data.equals(accountData.get().getId())) {
+        if(!data.equals(accountData.get().getId()) || data == null) {
             return false;
         }
         return true;

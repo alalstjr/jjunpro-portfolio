@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react"
 import { connect } from "react-redux"
 import PropTypes from "prop-types"
 import { Link } from "react-router-dom"
+import ReactTransitionGroup from "react-addons-css-transition-group"
 
 import LoginModal from "./modal/LoginModal"
 import SingUpModal from "./modal/SignUpModal"
@@ -69,15 +70,27 @@ class AccountProvider extends Component {
      *  경고문 상태 초기화 메소드입니다.
      */
     initWarning = () => {
+        this.setState(prevState => ({
+            warning: {
+                ...prevState.warning,
+                userId: false,
+                nickname: false,
+                password: false,
+                passwordRe: false,
+                email: false
+            }
+        }));
+    }
+
+    /*
+     *  success 상태 초기화 메소드입니다.
+     */
+    successWarning = () => {
         setTimeout(() => {
             this.setState(prevState => ({
                 warning: {
                     ...prevState.warning,
-                    userId: false,
-                    nickname: false,
-                    password: false,
-                    passwordRe: false,
-                    email: false
+                    success: false
                 }
             }));
         }, 2000);
@@ -120,7 +133,6 @@ class AccountProvider extends Component {
                         userId: message
                     }
                 }));
-                this.initWarning();
                 break;
                 
             case "nickname" : 
@@ -134,7 +146,6 @@ class AccountProvider extends Component {
                         nickname: message
                     }
                 }));
-                this.initWarning();
                 break;
 
             case "password" : 
@@ -148,7 +159,6 @@ class AccountProvider extends Component {
                         password: message
                     }
                 }));
-                this.initWarning();
                 break;
 
             case "passwordRe" :
@@ -162,7 +172,6 @@ class AccountProvider extends Component {
                         passwordRe: message
                     }
                 }));
-                this.initWarning();
                 break;
 
             case "email" :
@@ -176,7 +185,6 @@ class AccountProvider extends Component {
                         email: message
                     }
                 }));
-                this.initWarning();
                 break;
 
             case "success" :
@@ -190,7 +198,7 @@ class AccountProvider extends Component {
                         success: message
                     }
                 }));
-                this.initWarning();
+                this.successWarning();
                 break;
 
             default :
@@ -269,8 +277,14 @@ class AccountProvider extends Component {
                 />
                 {
                     // 회원가입 안내문
-                    warning.success ? 
+                    warning.success ?
+                    <ReactTransitionGroup
+                        transitionName={'Waring-anim'}
+                        transitionEnterTimeout={200}
+                        transitionLeaveTimeout={200}
+                    >
                     <SuccessWrap>{warningText.success}</SuccessWrap>
+                    </ReactTransitionGroup>
                     :
                     null
                 }

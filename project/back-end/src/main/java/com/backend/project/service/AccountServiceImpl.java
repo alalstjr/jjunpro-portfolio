@@ -23,31 +23,6 @@ public class AccountServiceImpl implements AccountService {
     private BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public Optional<Account> findByUserId(String userId) {
-        return account.findByUserId(userId);
-    }
-
-    @Override
-    public Optional<Account> findByNickname(String nickname) {
-        return account.findByNickname(nickname);
-    }
-
-    @Override
-    public Optional<Account> findByEmail(String email) {
-        return account.findByEmail(email);
-    }
-
-    @Override
-    public AccountPublic findOnePublicAccount(String userId) {
-        return account.findOnePublicAccount(userId);
-    }
-
-    @Override
-    public List<AccountPublic> findByPublicAccountList() {
-        return account.findByPublicAccountList();
-    }
-
-    @Override
     public Account save(AccountSaveDTO dto) {
 
         String rawPassword = dto.getPassword();
@@ -70,5 +45,35 @@ public class AccountServiceImpl implements AccountService {
         dto.setPassword(encodedPassword);
 
         return account.pwdUpdate(dto);
+    }
+
+    @Override
+    public Optional<Account> findById(Long id) {
+        return account.findById(id);
+    }
+
+    @Override
+    public Optional<Account> findByUserId(String userId) {
+        return account.findByUserId(userId);
+    }
+
+    @Override
+    public Optional<Account> findByNickname(String nickname) {
+        return account.findByNickname(nickname);
+    }
+
+    @Override
+    public Optional<Account> findByEmail(String email) {
+        return account.findByEmail(email);
+    }
+
+    @Override
+    public AccountPublic findOnePublicAccount(String userId) {
+        return account.findOnePublicAccount(userId);
+    }
+
+    @Override
+    public List<AccountPublic> findByPublicAccountList() {
+        return account.findByPublicAccountList();
     }
 }

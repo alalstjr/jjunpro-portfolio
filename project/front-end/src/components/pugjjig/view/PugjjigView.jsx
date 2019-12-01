@@ -7,7 +7,7 @@ import { USER_LONG_ID } from "../../../routes"
 import ImageSlide from "../../widget/mainTitleSlide"
 import NormalHeader from "../../layout/header/normal/NormalHeader"
 import { pugjjigGetView, pugjjigLike } from "../../../actions/KakaoMapActions"
-import { pugjjigCommentGetList } from "../../../actions/PugjjigActions"
+import { pugjjigCommentGetList, pugjjigDelete, pugjjigCommentDelete } from "../../../actions/PugjjigActions"
 
 import ItemEditModal from "../list/item/ItemEditModal"
 import InsertModal from "../modal/InsertModal"
@@ -15,7 +15,8 @@ import CommentWrite from "../form/CommentWrite"
 
 import {
     ProfileIamge,
-    NotPost
+    NotPost,
+    HiddenBtn
 } from "../../../style/globalStyles"
 import {
     ViewWrap,
@@ -86,7 +87,8 @@ class PugjjigView extends Component {
         const { 
             pugjjig_view,
             pugjjig_comment,
-            pugjjig_comment_list
+            pugjjig_comment_list,
+            pugjjig_comment_delete
         } = this.props;
 
         if(nextProps.pugjjig_view !== pugjjig_view) {
@@ -105,6 +107,11 @@ class PugjjigView extends Component {
         if(nextProps.pugjjig_comment !== pugjjig_comment) {
             this.handleUpdate(nextProps.pugjjig_comment);
         }
+
+        // 댓글 {DELETE DATA} 재구성
+        if(nextProps.pugjjig_comment_delete !== pugjjig_comment_delete) {
+            this.handleCommentDeleteUpdate(nextProps.pugjjig_comment_delete);
+        }
     }
 
     handleUpdate = (postData) => {
@@ -113,10 +120,13 @@ class PugjjigView extends Component {
         const {
             comment
         } = this.state;
-        
-        this.setState({
-            comment: comment.concat(postData.data)
-        });
+
+        // 서버에서 받아온 COMMENT 존재한는 경우 실행
+        if(postData.data.length > 0 || comment.length > 0) {
+            this.setState({
+                comment: postData.data.concat(comment)
+            });
+        }
     }
 
 
@@ -128,7 +138,7 @@ class PugjjigView extends Component {
     } 
 
     /*
-     *  DELETE 메소드
+     *  DELETE Post 메소드
      */
     handleDelete = () => {
         // Props Init
@@ -140,13 +150,22 @@ class PugjjigView extends Component {
         pugjjigDelete(editPugjjig.id);
     }
 
-    handleDeleteUpdate = (postPugjjig) => {
+    /*
+     *  DELETE Comment 메소드
+     */
+    handleCommentDelete = (id) => {
+        // Props Init
+        const { pugjjigCommentDelete } = this.props;
+
+        pugjjigCommentDelete(id);
+    }
+
+    handleCommentDeleteUpdate = (id) => {
         // State Init
-        const { pugjjig } = this.state;
+        const { comment } = this.state;
         
-        this.closeModal("selectModalState");
         this.setState({
-            pugjjig: pugjjig.filter(pugjjig => pugjjig.id !== postPugjjig)
+            comment: comment.filter(comment => comment.id !== id)
         });
     }
 
@@ -179,11 +198,22 @@ class PugjjigView extends Component {
         });
     }
 
+    /**
+     *  실시간으로 댓글의 갯수를 반환하는 메소드
+     */
+    handleCommentCount = () => {
+        const {
+            comment
+        } = this.state;
+
+        return comment.length;
+    }
+
     render() {
 
         // Props Init
         const { 
-            pugjjigLike, 
+            pugjjigLike,
             pugjjig_view, 
             pugjjig_like
         } = this.props;
@@ -266,13 +296,18 @@ class PugjjigView extends Component {
                             <ViewContent>
                                 {pugjjig.uniContent}
                             </ViewContent>
-                            <ItemImgBox>
-                                <ImageSlide
-                                    slideShow = {1}
-                                    images = {pugjjig.files}
-                                    thumbnail = {false}
-                                />
-                            </ItemImgBox>
+                            {
+                                pugjjig.files ? 
+                                <ItemImgBox>
+                                    <ImageSlide
+                                        slideShow = {1}
+                                        images = {pugjjig.files}
+                                        thumbnail = {false}
+                                    />
+                                </ItemImgBox>
+                                :
+                                null
+                            }
                             <ItemLocalWrap>
                                 {
                                     // SERVER 에서 불러오는 속도와 React 에서 storePublic 랜더링하는 속도와 맞춰주는 코드
@@ -295,7 +330,7 @@ class PugjjigView extends Component {
                                 <ItemStateWrap>
                                     <ItemDetail>
                                         좋아요 {pugjjig.uniLike}개
-                                        댓글 {pugjjig.uniComment}개
+                                        댓글 {this.handleCommentCount()}개
                                     </ItemDetail>
                                     <ItemDate>
                                         {pugjjig.modifiedDate.split("T")[0]}
@@ -331,7 +366,7 @@ class PugjjigView extends Component {
                                     uniId = {pugjjig.id}
                                 />
                                 {
-                                    comment !== undefined ?
+                                    (comment !== undefined && comment.length > 0) ?
                                     <CommentWrap>
                                     {
                                         comment.map((comment, index) => (
@@ -344,6 +379,17 @@ class PugjjigView extends Component {
                                                 </CommentContent>
                                                 <CommentDate>
                                                     {comment.modifiedDate.split("T")[0]}
+                                                    {
+                                                        // 작성자가 본인인 경우 수정 권한
+                                                        USER_LONG_ID() === comment.account_id ?
+                                                        <HiddenBtn
+                                                            onClick = {() => this.handleCommentDelete(comment.id)}
+                                                        >
+                                                            <SVG name={"close"} width="8px" height="8px" color={"#333333"} />
+                                                        </HiddenBtn>
+                                                        :
+                                                        null
+                                                    }
                                                 </CommentDate>
                                             </Comment>
                                         ))
@@ -384,11 +430,14 @@ PugjjigView.propTypes = {
     pugjjigGetView: PropTypes.func.isRequired,
     pugjjigLike: PropTypes.func.isRequired,
     pugjjigCommentGetList: PropTypes.func.isRequired,
+    pugjjigDelete: PropTypes.func.isRequired,
+    pugjjigCommentDelete: PropTypes.func.isRequired,
     pugjjig_view: PropTypes.object.isRequired,
     pugjjig_like: PropTypes.object.isRequired,
     pugjjig_comment: PropTypes.object.isRequired,
     pugjjig_comment_list: PropTypes.object.isRequired,
-    error: PropTypes.object.isRequired
+    error: PropTypes.object.isRequired,
+    pugjjig_comment_delete: PropTypes.number.isRequired
   }
   
   
@@ -397,7 +446,8 @@ PugjjigView.propTypes = {
     pugjjig_view: state.pugjjig.pugjjig_view,
     pugjjig_like: state.pugjjig.pugjjig_like,
     pugjjig_comment: state.pugjjig.pugjjig_comment,
-    pugjjig_comment_list: state.pugjjig.pugjjig_comment_list
+    pugjjig_comment_list: state.pugjjig.pugjjig_comment_list,
+    pugjjig_comment_delete: state.pugjjig.pugjjig_comment_delete
   });
   
   export default connect(
@@ -405,6 +455,8 @@ PugjjigView.propTypes = {
     { 
         pugjjigGetView,
         pugjjigLike,
-        pugjjigCommentGetList
+        pugjjigCommentGetList,
+        pugjjigDelete,
+        pugjjigCommentDelete
     }
   )(PugjjigView);

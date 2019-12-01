@@ -8,9 +8,9 @@ import com.backend.project.dto.UniLikeDTO;
 import com.backend.project.dto.UniversitySaveDTO;
 import com.backend.project.projection.UniversityPublic;
 import com.backend.project.respone.WebProcessRespone;
-import com.backend.project.service.AccountServiceImpl;
-import com.backend.project.service.FileStorageServiceImpl;
-import com.backend.project.service.UniversityServiceImpl;
+import com.backend.project.service.AccountService;
+import com.backend.project.service.FileStorageService;
+import com.backend.project.service.UniversityService;
 import com.backend.project.util.AccountUtill;
 import com.backend.project.util.IpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,13 +37,13 @@ import java.util.Optional;
 public class UniversityController {
 
     @Autowired
-    UniversityServiceImpl universityService;
+    private UniversityService universityService;
 
     @Autowired
-    AccountServiceImpl accountService;
+    private AccountService accountService;
 
     @Autowired
-    FileStorageServiceImpl fileStorageService;
+    private FileStorageService fileStorageService;
 
     @Autowired
     private WebProcessRespone webProcessRespone;
@@ -79,7 +79,7 @@ public class UniversityController {
         if(dto.getId() != null) {
 
             // 해당 데이터의 작성자가 맞는지 검사합니다.
-            if(!accountUtill.userDataCheck(dto.getId(), accountData)) {
+            if(!accountUtill.userDataCheck(dto.getId(), accountData, "university")) {
                 errorType = "AuthenticationError";
                 errorText = "잘못된 계정 접근입니다.";
                 return webProcessRespone.webErrorRespone(errorType, errorText);
@@ -240,7 +240,7 @@ public class UniversityController {
         return universityService.findByLikeListWhereAccountId(accountData, userId, offsetCount);
     }
 
-    // DELETE 특정 TASK 삭제
+    // DELETE 특정 DATA 삭제
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<String> deletePugjjig(
@@ -254,7 +254,7 @@ public class UniversityController {
 
         if(accountData.isPresent()) {
 
-            if(!accountUtill.userDataCheck(id, accountData)) {
+            if(!accountUtill.userDataCheck(id, accountData, "university")) {
                 errorType = "AuthenticationError";
                 errorText = "잘못된 계정 접근입니다.";
                 return webProcessRespone.webErrorRespone(errorType, errorText);

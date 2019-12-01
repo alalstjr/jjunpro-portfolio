@@ -2,7 +2,7 @@ package com.backend.project.controller;
 
 import com.backend.project.domain.Account;
 import com.backend.project.projection.UniversityPublic;
-import com.backend.project.service.StoreServiceImpl;
+import com.backend.project.service.StoreService;
 import com.backend.project.util.AccountUtill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +22,7 @@ import java.util.Map;
 public class StoreController {
 
     @Autowired
-    private StoreServiceImpl storeService;
+    private StoreService storeService;
 
     @Autowired
     private AccountUtill accountUtill;

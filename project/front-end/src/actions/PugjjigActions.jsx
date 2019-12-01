@@ -4,7 +4,8 @@ import {
     GET_UNIVERSITY,
     DELETE_PUGJJIG,
     GET_PUGJJIG_COMMENT,
-    GET_PUGJJIG_COMMENT_LIST
+    GET_PUGJJIG_COMMENT_LIST,
+    DELETE_PUGJJIG_COMMENT
 } from "./types" 
 
 /****************************************
@@ -82,6 +83,28 @@ export const pugjjigCommentInsert = (comment) =>  async dispatch => {
                 dispatch({
                     type: GET_PUGJJIG_COMMENT,
                     payload: res.data
+                });
+                break;
+        }
+    } catch(error) {
+        alert(error.response.data.error);
+    }
+}
+
+/****************************************
+    Pugjjig Comment Delete 저장하기
+****************************************/
+export const pugjjigCommentDelete = (id) =>  async dispatch => {
+    try {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
+
+        const res = await axios.delete(`${SERVER_URL}/api/comment/${id}`);
+
+        switch(res.status) {
+            case 200 :
+                dispatch({
+                    type: DELETE_PUGJJIG_COMMENT,
+                    payload: id
                 });
                 break;
         }

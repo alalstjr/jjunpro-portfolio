@@ -8,8 +8,8 @@ import com.backend.project.dto.AccountUpdateDTO;
 import com.backend.project.projection.AccountPublic;
 import com.backend.project.respone.WebProcessRespone;
 import com.backend.project.security.token.PostAuthorizationToken;
-import com.backend.project.service.AccountServiceImpl;
-import com.backend.project.service.FileStorageServiceImpl;
+import com.backend.project.service.AccountService;
+import com.backend.project.service.FileStorageService;
 import com.backend.project.util.AccountUtill;
 import com.backend.project.util.ValidityCheckUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,10 @@ import java.util.Optional;
 public class AccountController {
 
     @Autowired
-    private AccountServiceImpl accountService;
+    private AccountService accountService;
+
+    @Autowired
+    private FileStorageService fileStorageService;
 
     @Autowired
     private WebProcessRespone webProcessRespone;
@@ -47,9 +50,6 @@ public class AccountController {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
-
-    @Autowired
-    FileStorageServiceImpl fileStorageService;
 
     @PostMapping("")
     public ResponseEntity<Boolean> accountInsert(

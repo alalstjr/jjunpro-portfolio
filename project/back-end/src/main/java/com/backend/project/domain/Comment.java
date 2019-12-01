@@ -25,11 +25,15 @@ public class Comment extends BaseEntity {
     @ManyToOne
     private Account account;
 
+    @ManyToOne
+    private University university;
+
     @Builder
-    public Comment(Long id, String content, String ip, Account account) {
-        this.id      = id;
-        this.content = content;
-        this.ip      = ip;
-        this.account = account;
+    public Comment(Long id, String content, String ip, Account account, University university) {
+        this.id         = id;
+        this.content    = content;
+        this.ip         = ip;
+        this.account    = account;
+        this.university = university;
     }
 }

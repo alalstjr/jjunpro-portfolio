@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface UniversityRepositoryDSL {
 
+    void deleteData(Long id, Account accountData);
+
     Page<UniversityPublic> findByPublicAll(Pageable pageable, Account account);
     List<UniversityPublic> findByUniversityListWhereAccountId(Account account, String userId, Long offsetCount);
     List<UniversityPublic> findByLikeListWhereAccountId(Account account, String userId, Long offsetCount);
@@ -16,6 +18,4 @@ public interface UniversityRepositoryDSL {
     UniversityPublic findByPublicId(Long id, Account account);
 
     Boolean findByIdLike(Long id, Account account);
-
-    void deleteData(Long id, Account accountData);
 }

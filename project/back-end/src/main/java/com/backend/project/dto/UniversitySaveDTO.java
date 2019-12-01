@@ -1,6 +1,7 @@
 package com.backend.project.dto;
 
 import com.backend.project.domain.Account;
+import com.backend.project.domain.Comment;
 import com.backend.project.domain.File;
 import com.backend.project.domain.University;
 import lombok.Getter;
@@ -12,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -59,6 +61,9 @@ public class UniversitySaveDTO {
     // 클라이언트에서 받은 Files
     private MultipartFile[] files;
 
+    // Comment
+    private Set<Comment> comments = new HashSet<>();
+
     public University toEntity() {
         return University.builder()
                 .id(id)
@@ -71,6 +76,7 @@ public class UniversitySaveDTO {
                 .uniIp(uniIp)
                 .account(account)
                 .files(fileData)
+                .comments(comments)
                 .build();
     }
 }
