@@ -44,13 +44,21 @@ public class UniversitySaveDTO {
 
     private String uniIp;
 
+    // ACCOUNT DATA
     private Account account;
 
+    // STORE DATA
     @Column(nullable = false)
     private String stoId;
 
     @Column(nullable = false)
+    private String stoName;
+
+    @Column(nullable = false)
     private String stoAddress;
+
+    @Column(nullable = false)
+    private String stoUrl;
 
     // 서버에 저장된 File 의 정보 files -> fileData 순으로 엔티티에 변환되어 저장
     private List<File> fileData;
@@ -61,7 +69,7 @@ public class UniversitySaveDTO {
     // 클라이언트에서 받은 Files
     private MultipartFile[] files;
 
-    // Comment
+    // COMMENT DATA
     private Set<Comment> comments = new HashSet<>();
 
     public University toEntity() {

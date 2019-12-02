@@ -13,7 +13,9 @@ class PugjjigProvider extends Component {
             insertModalState,
             listModalState,
             stoId,
-            stoAddress
+            stoName,
+            stoAddress,
+            stoUrl
         } = this.props;
 
         return (
@@ -21,8 +23,10 @@ class PugjjigProvider extends Component {
                 <InsertModal
                     closeModal = {closeModal}
                     modalState = {insertModalState}
-                    stoId = {stoId}
+                    stoId      = {stoId}
+                    stoName    = {stoName}
                     stoAddress = {stoAddress}
+                    stoUrl     = {stoUrl}
                 />
                 <ListModal
                     stoId = {stoId}

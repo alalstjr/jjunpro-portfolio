@@ -92,7 +92,9 @@ public class UniversityServiceImpl implements UniversityService {
 
             store.save(storeData.get());
         } else {
+            storeDTO.setStoName(dto.getStoName());
             storeDTO.setStoAddress(dto.getStoAddress());
+            storeDTO.setStoUrl(dto.getStoUrl());
             storeDTO.getStoUniList().add(universityData);
 
             store.save(storeDTO.toEntity());

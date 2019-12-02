@@ -31,15 +31,17 @@ export const pugjjigInsert = (pugjjig, files, history) => async dispatch => {
     // pugjjig form 데이터
     formData.append("uniSubject", pugjjig.uniSubject);
     formData.append("uniContent", pugjjig.uniContent);
-    formData.append("uniName", pugjjig.uniName);
-    formData.append("uniTag", pugjjig.uniTag);
-    formData.append("uniStar", pugjjig.uniStar);
-    formData.append("stoId", pugjjig.stoId);
+    formData.append("uniName",    pugjjig.uniName);
+    formData.append("uniTag",     pugjjig.uniTag);
+    formData.append("uniStar",    pugjjig.uniStar);
+    formData.append("stoId",      pugjjig.stoId);
+    formData.append("stoName",    pugjjig.stoName);
     formData.append("stoAddress", pugjjig.stoAddress);
+    formData.append("stoUrl",     pugjjig.stoUrl);
 
     // pugjjig update 일경우 id값 전달
     if(pugjjig.uniId !== null) {
-        formData.append("id", pugjjig.uniId);
+        formData.append("id",     pugjjig.uniId);
         formData.append("removeFiles", pugjjig.removeFiles);
     }
     

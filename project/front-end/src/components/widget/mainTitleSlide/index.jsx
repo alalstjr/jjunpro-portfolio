@@ -42,9 +42,9 @@ class MainTitleSlide extends Component {
                             bgSize = {"66%"}
                             bgImg = {
                                 thumbnail ?
-                                require(`../../../../../data/file/thumbnail/pugjjig/${image.fileThumbnail}`)
+                                require(`../../../../../data/file/thumbnail/${image.fileThumbnail}`)
                                 :
-                                require(`../../../../../data/file/pugjjig/${image.fileOriginal}`)
+                                require(`../../../../../data/file/university/${image.fileOriginal}`)
                             }
                             bgState = { thumbnail ? "cover" : "contain" }
                         />

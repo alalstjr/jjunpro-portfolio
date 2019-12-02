@@ -6,6 +6,7 @@ import ReactTransitionGroup from "react-addons-css-transition-group"
 
 import { pugjjigInsert } from "../../../actions/KakaoMapActions"
 import FileDrop from "../../widget/fileDrop/FileDrop"
+import SVG from "../../../static/svg/SVG"
 import SVGLoading from "../../../static/svg/SVGLoading"
 
 import { 
@@ -41,7 +42,9 @@ class PugjjigWrite extends Component {
             // update id
             uniId: null,
             stoId: null,
+            stoName: null,
             stoAddress: null,
+            stoUrl: null,
             // input value
             uniSubject: "",
             uniContent: "",
@@ -72,7 +75,9 @@ class PugjjigWrite extends Component {
         // Props Init
         const {
             stoId,
+            stoName,
             stoAddress,
+            stoUrl,
             pugjjig_university,
             editPugjjig
         } = this.props;
@@ -80,7 +85,9 @@ class PugjjigWrite extends Component {
         this.setState({
             uniName: pugjjig_university,
             stoId,
-            stoAddress
+            stoName,
+            stoAddress,
+            stoUrl
         });
 
         // editPugjjig 값을 props 전달받은 경우 (Edit 상태)
@@ -154,7 +161,9 @@ class PugjjigWrite extends Component {
 
         const {
             stoId,
+            stoName,
             stoAddress,
+            stoUrl,
             uniId,
             uniSubject, 
             uniContent,
@@ -173,7 +182,9 @@ class PugjjigWrite extends Component {
             uniTag,
             uniStar: uniStar*1,
             stoId,
+            stoName,
             stoAddress,
+            stoUrl,
             removeFiles
         };
 
@@ -299,7 +310,9 @@ class PugjjigWrite extends Component {
         const tags = uniTag.map((tag, index) => (
             <TagPart key={index}>
                 {tag}
-                <CloseBtn onClick={ () => this.handleTagRemove(tag)} key={index} >X</CloseBtn>
+                <CloseBtn onClick={ () => this.handleTagRemove(tag)} key={index} >
+                    <SVG name={"close"} width="8px" height="8px" color={"#ffffff"} />
+                </CloseBtn>
             </TagPart>
         ));
 
@@ -344,20 +357,6 @@ class PugjjigWrite extends Component {
                         <RatingMessage>5점 만점에 몇 점인가요?</RatingMessage>
                     </RatingWrap>
                     <FormGroup>
-                        <Formlabel>태그</Formlabel>
-                        <TagWrap>
-                            {tags}
-                            <InputClean
-                                id = "uniTagText"
-                                name = "uniTagText"
-                                type = "text"
-                                value = {uniTagText}
-                                onChange = {this.onChange}
-                                onKeyDown = {this.handleTagEvent}
-                            />
-                        </TagWrap>
-                    </FormGroup>
-                    <FormGroup>
                         <Formlabel>제목</Formlabel>
                         <InputClean                                    
                             id="uniSubject"
@@ -375,6 +374,20 @@ class PugjjigWrite extends Component {
                             value={uniContent}
                             onChange={this.onChange}
                         />
+                    </FormGroup>
+                    <FormGroup>
+                        <Formlabel>태그</Formlabel>
+                        <TagWrap>
+                            {tags}
+                            <InputClean
+                                id = "uniTagText"
+                                name = "uniTagText"
+                                type = "text"
+                                value = {uniTagText}
+                                onChange = {this.onChange}
+                                onKeyDown = {this.handleTagEvent}
+                            />
+                        </TagWrap>
                     </FormGroup>
                     <FormGroup>
                         <Formlabel>사진</Formlabel>

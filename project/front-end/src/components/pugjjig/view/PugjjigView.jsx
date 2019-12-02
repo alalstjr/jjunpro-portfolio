@@ -88,7 +88,9 @@ class PugjjigView extends Component {
             pugjjig_view,
             pugjjig_comment,
             pugjjig_comment_list,
-            pugjjig_comment_delete
+            pugjjig_comment_delete,
+            pugjjig_delete,
+            history
         } = this.props;
 
         if(nextProps.pugjjig_view !== pugjjig_view) {
@@ -111,6 +113,11 @@ class PugjjigView extends Component {
         // 댓글 {DELETE DATA} 재구성
         if(nextProps.pugjjig_comment_delete !== pugjjig_comment_delete) {
             this.handleCommentDeleteUpdate(nextProps.pugjjig_comment_delete);
+        }
+
+        // {DELETE DATA} POST 삭제 메인으로 이동
+        if(nextProps.pugjjig_delete !== pugjjig_delete) {
+            history.push("/");
         }
     }
 
@@ -248,7 +255,7 @@ class PugjjigView extends Component {
                                     <SVG name={"user"} width="38px" height="38px" color={"#E71D36"} />
                                     : 
                                     <ProfileIamge
-                                        image = {require(`../../../../../data/file/thumbnail/pugjjig/${pugjjig.photo.fileThumbnail}`)}
+                                        image = {require(`../../../../../data/file/thumbnail/${pugjjig.photo.fileThumbnail}`)}
                                     />
                                 }
                                 </ItemUserPhoto>
@@ -312,9 +319,9 @@ class PugjjigView extends Component {
                                 {
                                     // SERVER 에서 불러오는 속도와 React 에서 storePublic 랜더링하는 속도와 맞춰주는 코드
                                     pugjjig.storePublic !== null ?
-                                        <Link to={`${pugjjig.storePublic.stoId}`}>
-                                            <span>{pugjjig.uniName}</span> 맛집 {pugjjig.storePublic.stoAddress}
-                                        </Link>
+                                        <a href = {`${pugjjig.storePublic.stoUrl}`} target="_blank">
+                                            <span>{pugjjig.uniName} {pugjjig.storePublic.stoName}</span> {pugjjig.storePublic.stoAddress}
+                                        </a>
                                     :
                                     null
                                 }
@@ -437,6 +444,7 @@ PugjjigView.propTypes = {
     pugjjig_comment: PropTypes.object.isRequired,
     pugjjig_comment_list: PropTypes.object.isRequired,
     error: PropTypes.object.isRequired,
+    pugjjig_delete: PropTypes.number.isRequired,
     pugjjig_comment_delete: PropTypes.number.isRequired
   }
   
@@ -447,7 +455,8 @@ PugjjigView.propTypes = {
     pugjjig_like: state.pugjjig.pugjjig_like,
     pugjjig_comment: state.pugjjig.pugjjig_comment,
     pugjjig_comment_list: state.pugjjig.pugjjig_comment_list,
-    pugjjig_comment_delete: state.pugjjig.pugjjig_comment_delete
+    pugjjig_comment_delete: state.pugjjig.pugjjig_comment_delete,
+    pugjjig_delete: state.pugjjig.pugjjig_delete
   });
   
   export default connect(

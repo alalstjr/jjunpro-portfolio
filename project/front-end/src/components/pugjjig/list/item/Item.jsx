@@ -43,7 +43,7 @@ const Item = ({pugjjig, pugjjigLike, openModal}) => (
                     <SVG name={"user"} width="38px" height="38px" color={"#E71D36"} />
                     : 
                     <ProfileIamge
-                        image = {require(`../../../../../../data/file/thumbnail/pugjjig/${pugjjig.photo.fileThumbnail}`)}
+                        image = {require(`../../../../../../data/file/thumbnail/${pugjjig.photo.fileThumbnail}`)}
                     />
                 }
             </ItemUserPhoto>
@@ -99,7 +99,7 @@ const Item = ({pugjjig, pugjjigLike, openModal}) => (
                 pugjjig.files.map((file) => (
                     <ImgList key={file.id}>
                         <img 
-                            src={require(`../../../../../../data/file/thumbnail/pugjjig/${file.fileThumbnail}`)}
+                            src={require(`../../../../../../data/file/thumbnail/${file.fileThumbnail}`)}
                             alt="음식점 사진"
                         />
                     </ImgList>

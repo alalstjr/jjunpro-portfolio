@@ -22,6 +22,7 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
     public Long findByUniCount(String stoId) {
 
         Long result = queryFactory
+                .select(qUniversity)
                 .from(qStore)
                 .leftJoin(qStore.stoUniList, qUniversity)
                 .where(qStore.stoId.eq(stoId))
@@ -63,7 +64,7 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
                         u.getUniLike().contains(account),
                         u.getFiles(),
                         u.getAccount().getPhoto(),
-                        stoData(u.getId()),
+                        findByStoreOne(u.getId()),
                         u.getComments().size()
                 )
         ).collect(Collectors.toList());
@@ -112,13 +113,16 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
      * University {id} 값을 필요로 합니다.
      * Store 상점의 정보를 얻어오는 메소드
      * */
-    private StorePublic stoData(Long id) {
+    @Override
+    public StorePublic findByStoreOne(Long id) {
         return queryFactory
                 .select(
                         Projections.constructor(
                                 StorePublic.class,
                                 qStore.stoId,
-                                qStore.stoAddress
+                                qStore.stoName,
+                                qStore.stoAddress,
+                                qStore.stoUrl
                         )
                 )
                 .from(qStore)

@@ -209,7 +209,7 @@ class Profile extends Component {
                                             <SVG name={"user"} width="38px" height="38px" color={"#E71D36"} />
                                             : 
                                             <ProfileIamge
-                                                image = {require(`../../../../../../data/file/thumbnail/pugjjig/${account_get.data.photo.fileThumbnail}`)}
+                                                image = {require(`../../../../../../data/file/thumbnail/${account_get.data.photo.fileThumbnail}`)}
                                             />
                                         }
                                     </Fragment>

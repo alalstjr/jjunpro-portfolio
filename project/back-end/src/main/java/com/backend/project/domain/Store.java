@@ -20,15 +20,23 @@ public class Store extends BaseEntity {
     private String stoId;
 
     @Column(nullable = false)
+    private String stoName;
+
+    @Column(nullable = false)
     private String stoAddress;
+
+    @Column(nullable = false)
+    private String stoUrl;
 
     @OneToMany
     private Set<University> stoUniList = new HashSet<>();
 
     @Builder
-    public Store(String stoId, String stoAddress, Set<University> stoUniList) {
-        this.stoId = stoId;
+    public Store(String stoId, String stoName, String stoAddress, String stoUrl, Set<University> stoUniList) {
+        this.stoId      = stoId;
+        this.stoName    = stoName;
         this.stoAddress = stoAddress;
+        this.stoUrl     = stoUrl;
         this.stoUniList = stoUniList;
     }
 }

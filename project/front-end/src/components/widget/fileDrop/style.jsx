@@ -14,7 +14,7 @@ export const FileList = styled.li`
     color: #fff;
     padding: 10px 15px;
     border-radius: 7px;
-    background-color: #369763;
+    background-color: ${props => props.theme.themeColor};
     margin-bottom: 5px;
     position: relative;
     &:last-child {

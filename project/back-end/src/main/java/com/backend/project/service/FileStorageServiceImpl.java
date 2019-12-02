@@ -29,8 +29,8 @@ import java.util.stream.Collectors;
 public class FileStorageServiceImpl implements FileStorageService{
 
     private final Path fileStorageLocation;
-    private final Path fileStorageLocationThumbnail;
     private final Path fileStorageLocationAccount;
+    private final Path fileStorageLocationThumbnail;
 
     @Autowired
     private FileRepository fileRepository;
@@ -45,12 +45,12 @@ public class FileStorageServiceImpl implements FileStorageService{
         this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir())
                 .toAbsolutePath().normalize();
 
-        // 썸네일 경로
-        this.fileStorageLocationThumbnail = Paths.get(fileStorageProperties.getUploadDirThumbnail())
-                .toAbsolutePath().normalize();
-
         // 유저정보 경로
         this.fileStorageLocationAccount = Paths.get(fileStorageProperties.getUploadDirAccount())
+                .toAbsolutePath().normalize();
+
+        // 썸네일 경로
+        this.fileStorageLocationThumbnail = Paths.get(fileStorageProperties.getUploadDirThumbnail())
                 .toAbsolutePath().normalize();
 
         try {
@@ -59,39 +59,75 @@ public class FileStorageServiceImpl implements FileStorageService{
              // 존재하지 않는 모든 부모 디렉토리를 먼저 작성하여 디렉토리를 작성합니다.
 
             Files.createDirectories(this.fileStorageLocation);
-            Files.createDirectories(this.fileStorageLocationThumbnail);
             Files.createDirectories(this.fileStorageLocationAccount);
+            Files.createDirectories(this.fileStorageLocationThumbnail);
         } catch (Exception e) {
             throw new StoreFileException("업로드 된 파일을 저장할 디렉토리를 만들 수 없습니다.", e);
         }
     }
 
     @Override
-    public void fileDelete(File file) {
-        fileRepository.delete(file);
-    }
+    public void fileDelete(File file, String domain) {
 
-    @Override
-    public void filesDelete(List<File> file) {
-        for(var i = 0; file.size() > i; i++) {
-            fileDelete(file.get(i));
+        String fileUrl = file.getFileOriginal();
+        String thumbnailUrl = file.getFileThumbnail();
+
+        String targetOriginal = handleLocation(domain, fileUrl).toString();
+        String targetThumbnail = handleLocation("thumbnail", thumbnailUrl).toString();
+
+        // 경로 추적
+        System.out.println(targetOriginal);
+        System.out.println(targetThumbnail);
+
+        fileRepository.delete(file);
+
+        boolean originalResult = false;
+        boolean thumbnailResult = false;
+
+        java.io.File originalFile = new java.io.File(targetOriginal);
+        java.io.File thumbnailFile = new java.io.File(targetThumbnail);
+
+        if(originalFile.exists()) {
+            originalResult = originalFile.delete();
+            thumbnailResult = thumbnailFile.delete();
+
+            if(originalResult) {
+                System.out.println("true");
+            } else {
+                System.out.println("false");
+            }
+
+            if(thumbnailResult) {
+                System.out.println("true");
+            } else {
+                System.out.println("false");
+            }
+        } else {
+            System.out.println("Does not exist");
         }
     }
 
     @Override
-    public List<File> uploadMultipleFiles(MultipartFile[] files, String fileRouter) {
+    public void filesDelete(List<File> file, String domain) {
+        for(var i = 0; file.size() > i; i++) {
+            fileDelete(file.get(i), domain);
+        }
+    }
+
+    @Override
+    public List<File> uploadMultipleFiles(MultipartFile[] files, String domain) {
 
         // 서버로 받은 파일'들'을 List로 변환하여 하나씩 서버로 업로드 합니다.
         List<File> fileResult = Arrays.asList(files)
                 .stream()
-                .map(file -> uploadFile(file, fileRouter))
+                .map(file -> uploadFile(file, domain))
                 .collect(Collectors.toList());
 
         return fileResult;
     }
 
     @Override
-    public File uploadFile(MultipartFile file, String fileRouter) {
+    public File uploadFile(MultipartFile file, String domain) {
         /*
          * 파일 이름 표준화
          * { Class StringUtils }
@@ -133,18 +169,7 @@ public class FileStorageServiceImpl implements FileStorageService{
             /*
              *  원본 이미지파일 저장 & File 저장 경로 설정
              */
-            Path targetLocation = null;
-
-            switch (fileRouter) {
-                case "pugjjig" : targetLocation = this.fileStorageLocation.resolve(fileUrl);
-                    break;
-
-                case "account" : targetLocation = this.fileStorageLocationAccount.resolve(fileUrl);
-                    break;
-
-                default:
-                    break;
-            }
+            Path targetLocation = handleLocation(domain, fileUrl);
 
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
@@ -279,5 +304,26 @@ public class FileStorageServiceImpl implements FileStorageService{
         }
 
         return new Dimension(new_width, new_height);
+    }
+
+    /**
+     *  원본 이미지파일 저장 & File 저장 경로 설정하는 메소드
+     */
+    private Path handleLocation(String domain, String fileUrl) {
+
+        Path targetLocation = null;
+
+        switch (domain) {
+            case "university" : targetLocation = this.fileStorageLocation.resolve(fileUrl);
+                break;
+
+            case "account" : targetLocation = this.fileStorageLocationAccount.resolve(fileUrl);
+                break;
+
+            default: targetLocation = this.fileStorageLocationThumbnail.resolve(fileUrl);
+                break;
+        }
+
+        return targetLocation;
     }
 }

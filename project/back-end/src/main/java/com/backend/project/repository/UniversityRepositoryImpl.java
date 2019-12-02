@@ -1,12 +1,11 @@
 package com.backend.project.repository;
 
 import com.backend.project.domain.*;
-import com.backend.project.projection.StorePublic;
 import com.backend.project.projection.UniversityPublic;
 import com.backend.project.service.CommentServiceImpl;
 import com.backend.project.service.FileStorageServiceImpl;
+import com.backend.project.service.StoreService;
 import com.backend.project.service.UniversityServiceImpl;
-import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,12 +40,18 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
     @Autowired
     private CommentServiceImpl commentService;
 
+    @Autowired
+    private StoreService storeService;
+
     @Override
     @Transactional
     public void deleteData(Long id, Account accountData) {
 
         // University File Data
         List<File> uniFiles = universityService.findById(id).get().getFiles();
+        if(!uniFiles.isEmpty()) {
+            System.out.println(uniFiles.get(0).getId());
+        }
 
         // qStore 삭제
         queryFactory
@@ -63,8 +68,10 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
         // University 저장된 Comment 삭제
         commentService.deleteUniComment(id, accountData);
 
-        // University 저장된 File 삭제
-        fileStorageService.filesDelete(uniFiles);
+        if(!uniFiles.isEmpty()) {
+            // University 저장된 File 삭제
+            fileStorageService.filesDelete(uniFiles, "university");
+        }
     }
 
     @Override
@@ -166,7 +173,7 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                 uniLike.contains(account),
                 data.getFiles(),
                 data.getAccount().getPhoto(),
-                stoData(data.getId()),
+                storeService.findByStoreOne(data.getId()),
                 data.getComments().size()
         );
     }
@@ -189,29 +196,10 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                                 u.getKey().getUniLike().contains(account),
                                 u.getKey().getFiles(),
                                 u.getKey().getAccount().getPhoto(),
-                                stoData(u.getKey().getId()),
+                                storeService.findByStoreOne(u.getKey().getId()),
                                 u.getKey().getComments().size()
                         )
                 )
                 .collect(Collectors.toList());
-    }
-
-    /**
-     * Long id
-     * University {id} 값을 필요로 합니다.
-     * Store 상점의 정보를 얻어오는 메소드
-     * */
-    private StorePublic stoData(Long id) {
-         return queryFactory
-                 .select(
-                         Projections.constructor(
-                                 StorePublic.class,
-                                 qStore.stoId,
-                                 qStore.stoAddress
-                         )
-                 )
-                .from(qStore)
-                .where(qStore.stoUniList.any().id.eq(id))
-                .fetchOne();
     }
 }

@@ -19,14 +19,22 @@ public class StoreDTO {
     private String stoId;
 
     @Column(nullable = false)
+    private String stoName;
+
+    @Column(nullable = false)
     private String stoAddress;
+
+    @Column(nullable = false)
+    private String stoUrl;
 
     private Set<University> stoUniList = new HashSet<>();
 
     public Store toEntity() {
         return Store.builder()
                 .stoId(stoId)
+                .stoName(stoName)
                 .stoAddress(stoAddress)
+                .stoUrl(stoUrl)
                 .stoUniList(stoUniList)
                 .build();
     }

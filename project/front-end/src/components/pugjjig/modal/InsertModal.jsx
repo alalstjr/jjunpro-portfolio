@@ -16,7 +16,9 @@ const InsertModal = ({
     modalState, 
     closeModal,
     stoId,
+    stoName,
     stoAddress,
+    stoUrl,
     editPugjjig
 }) => (
     <Fragment>
@@ -32,7 +34,9 @@ const InsertModal = ({
                     <ModalCloseBtn onClick={() => closeModal("insertModalState")}/>
                     <PugjjigWrite
                         stoId       = {stoId}
+                        stoName     = {stoName}
                         stoAddress  = {stoAddress}
+                        stoUrl      = {stoUrl}
                         editPugjjig = {editPugjjig}
                     />
                 </InsertModalWrap>

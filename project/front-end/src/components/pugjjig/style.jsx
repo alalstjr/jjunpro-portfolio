@@ -108,14 +108,14 @@ export const TagWrap = styled.div`
     padding: 5px 0;
 `;
 export const TagPart = styled.span`
-    border-radius: 3;
-    padding: 3px 0px 3px 10px;
+    padding: 2px 0px 2px 10px;
     background-color: ${props => props.theme.themeColor};
     color: #fff;
-    font-weight: bold;
+    font-weight: 400;
     margin-right: 5px;
     margin-bottom: 5px;
     display: inline-block;
+    border-radius: 2px;
 `;
 export const CloseBtn = styled.div`
     float: right;

@@ -322,7 +322,7 @@ class KakaoMapService {
         overlayReview.setAttribute("style", "color: #d11d33;font-weight: 400; margin-bottom: 4px;");
 
         overlayReview.addEventListener('click', function(){
-            classThis.openModal("listModalState", store.id, store.address_name);
+            classThis.openModal("listModalState", store.id, store.place_name, store.address_name, store.place_url);
         });
 
         let overlayAddr = document.createElement("div"); 
@@ -357,7 +357,7 @@ class KakaoMapService {
         overlayWarp.appendChild(overlayWrite);
         
         overlayWrite.addEventListener('click', function(){
-            classThis.storeSet(store.id, store.address_name);
+            classThis.storeSet(store.id, store.place_name, store.address_name, store.place_url);
         });
 
         this.thatThis.customOverlay.setPosition(placePosition);
@@ -366,8 +366,12 @@ class KakaoMapService {
         this.thatThis.customOverlay.setMap(this.thatThis.map);
     }
 
-    storeSet = (id, address_name) => {
-        this.openModal("insertModalState", id, address_name);
+    /*
+     * DB 에 저장하는 STORE 정보를 담아주도록 해주는 메소드
+     * API 에서 받은 정보를 담아줍니다.
+     */
+    storeSet = (id, place_name, address_name, place_url) => {
+        this.openModal("insertModalState", id, place_name, address_name, place_url);
     }
 
     /****************************************

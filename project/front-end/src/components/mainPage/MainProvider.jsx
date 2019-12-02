@@ -31,7 +31,9 @@ class MainProvider extends Component {
       initSearch: true,
       // 상점 정보 리뷰작성시 필요정보 PugjjigProvider로 넘어갑니다.
       stoId: "",
-      stoAddress: ""
+      stoName: "",
+      stoAddress: "",
+      stoUrl: ""
     }
 
     this.appRef = createRef();
@@ -52,18 +54,22 @@ class MainProvider extends Component {
   }
 
   // Modal State
-  openModal = (target, id, address_name) => {
+  openModal = (target, stoId, stoName, stoAddress, stoUrl) => {
     this.setState({
       [target]: true,
-      stoId: id,
-      stoAddress: address_name
+      stoId,
+      stoName,
+      stoAddress,
+      stoUrl
     });
   }
   closeModal = (target) => {
     this.setState({
       [target]: false,
       stoId: "",
-      stoAddress: ""
+      stoName: "",
+      stoAddress: "",
+      stoUrl: ""
     });
   }
 
@@ -88,7 +94,9 @@ class MainProvider extends Component {
       listModalState, 
       initSearch,
       stoId,
-      stoAddress
+      stoName,
+      stoAddress,
+      stoUrl
     } = this.state;
     
     return (
@@ -98,21 +106,23 @@ class MainProvider extends Component {
           :
           <Fragment>
             <FirstSection
-              searchPlaces={map.searchPlaces}
-              searchPlacesSetting={map.searchPlacesSetting}
-              categorySearch={map.categorySearch}
-              initSearch={initSearch}
-              hendleInitSearch={this.hendleInitSearch}
+              searchPlaces        = {map.searchPlaces}
+              searchPlacesSetting = {map.searchPlacesSetting}
+              categorySearch      = {map.categorySearch}
+              initSearch          = {initSearch}
+              hendleInitSearch    = {this.hendleInitSearch}
             />
             <MainMap
               ref = {this.appRef}
             />
             <PugjjigProvider
-              closeModal={this.closeModal}
-              insertModalState={insertModalState}
-              listModalState={listModalState}
-              stoId={stoId}
-              stoAddress={stoAddress}
+              closeModal          = {this.closeModal}
+              insertModalState    = {insertModalState}
+              listModalState      = {listModalState}
+              stoId               = {stoId}
+              stoName             = {stoName}
+              stoAddress          = {stoAddress}
+              stoUrl              = {stoUrl}
             />
           </Fragment>
         }
