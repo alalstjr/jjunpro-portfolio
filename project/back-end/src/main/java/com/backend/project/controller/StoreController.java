@@ -31,11 +31,10 @@ public class StoreController {
     /**
      *  GET University List DATA StoreId
      */
-    @GetMapping("/{storeId}")
+    @GetMapping("/{keyword}")
     @PreAuthorize("permitAll()")
     public ResponseEntity<?> getStoreIdUniList(
             @PathVariable String keyword,
-            @RequestParam("classification") String classification,
             @RequestParam("offsetCount") Long offsetCount,
             HttpServletRequest request
     ) throws IOException {
