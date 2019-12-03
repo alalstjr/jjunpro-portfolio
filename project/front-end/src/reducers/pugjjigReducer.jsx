@@ -1,6 +1,5 @@
 import {
     GET_PUGJJIG_LIST,
-    GET_PUGJJIG_STORE_LIST,
     GET_PUGJJIG_LIKE,
     GET_PUGJJIG_VIEW,
     GET_PUGJJIG_COUNT,
@@ -13,7 +12,6 @@ import {
 
 const initialState = {
     pugjjig_list : {},
-    pugjjig_store_list : {},
     pugjjig_like : {},
     pugjjig_view : {},
     pugjjig_count : {},
@@ -31,14 +29,6 @@ export default function(state=initialState, action) {
             return {
                 ...state,
                 pugjjig_list: {
-                    data: action.payload
-                }
-            };
-
-        case GET_PUGJJIG_STORE_LIST:
-            return {
-                ...state,
-                pugjjig_store_list: {
                     data: action.payload
                 }
             };

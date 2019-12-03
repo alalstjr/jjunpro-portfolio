@@ -275,19 +275,20 @@ class AccountProvider extends Component {
                     initWarning={this.initWarning}
                     openModal = {this.openModal}
                 />
+
+                <ReactTransitionGroup
+                    transitionName={'Waring-anim'}
+                    transitionEnterTimeout={200}
+                    transitionLeaveTimeout={200}
+                >
                 {
                     // 회원가입 안내문
                     warning.success ?
-                    <ReactTransitionGroup
-                        transitionName={'Waring-anim'}
-                        transitionEnterTimeout={200}
-                        transitionLeaveTimeout={200}
-                    >
                     <SuccessWrap>{warningText.success}</SuccessWrap>
-                    </ReactTransitionGroup>
                     :
                     null
                 }
+                </ReactTransitionGroup>
             </Fragment>
         )
     }

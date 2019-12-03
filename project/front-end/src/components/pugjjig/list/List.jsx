@@ -1,21 +1,27 @@
 import React, { Component, Fragment } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
-import { USER_LONG_ID } from "../../../../routes"
+import { USER_LONG_ID } from "../../../routes"
 
-import { pugjjigLikeGetUserList, pugjjigLike } from "../../../../actions/KakaoMapActions"
-import { pugjjigDelete } from "../../../../actions/PugjjigActions"
+import { pugjjigLike, } from "../../../actions/KakaoMapActions"
+import { 
+    pugjjigDelete, 
+    getUniListStoreId,
+    getUniListUniLike,
+    getUniListUserId,
+    getUniListSearch
+} from "../../../actions/PugjjigActions"
 
-import Item from "../../../../components/pugjjig/list/item/Item"
+import Item from "./item/Item"
 import InfiniteScroll from "react-infinite-scroller"
 
-import ItemEditModal from "../item/ItemEditModal"
-import InsertModal from "../../modal/InsertModal"
+import ItemEditModal from "./item/ItemEditModal"
+import InsertModal from "../modal/InsertModal"
 
-import { NotPost } from "../../../../style/globalStyles"
-import { PugjjigItemWrap } from "../../style"
+import { NotPost } from "../../../style/globalStyles"
+import { PugjjigItemWrap } from "../style"
 
-class LikeList extends Component {
+class List extends Component {
 
     constructor(props){
         super(props);
@@ -32,12 +38,21 @@ class LikeList extends Component {
     componentDidMount() {
 
         // Props Init
-        const { 
-            pugjjigLikeGetUserList
+        const {
+            keyword,
+            classification,
+            offsetCount
         } = this.props;
 
-        // {userId} 게시글 정보를 가져옵니다.
-        pugjjigLikeGetUserList(null, 0);
+        // Search DTO 생성
+        const searchDTO = {
+            keyword,
+            classification,
+            offsetCount: 0
+        };
+
+        // {stoId} 게시글 정보를 가져옵니다.
+        this.handleAction(searchDTO);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -51,9 +66,44 @@ class LikeList extends Component {
         if(nextProps.pugjjig_list !== pugjjig_list) {
             this.handleUpdate(nextProps.pugjjig_list);
         }
-        
+
         if(nextProps.pugjjig_delete !== pugjjig_delete) {
             this.handleDeleteUpdate(nextProps.pugjjig_delete);
+        }
+    }
+
+    // { keyword } 게시글 정보를 가져옵니다.
+    handleAction = (searchDTO) => {
+        const { 
+            getUniListStoreId,
+            getUniListUniLike,
+            getUniListUserId,
+            getUniListSearch
+        } = this.props;
+
+        switch(searchDTO.classification) {
+            case "storeId" :
+                getUniListStoreId(searchDTO);
+                break;
+
+            case "uniLike" :
+                getUniListUniLike(searchDTO);
+                break;
+
+            case "userId" :
+                getUniListUserId(searchDTO);
+                break;
+
+            case "stoId" :
+                getUniListStoreId(searchDTO);
+                break;
+
+            case "uniName" :
+                getUniListSearch(searchDTO);
+                break;
+
+            default:
+                break;
         }
     }
 
@@ -68,13 +118,20 @@ class LikeList extends Component {
         });
     } 
 
-    handleLoad = (page) => {
-
+    handleLoad = (offsetCount) => {
+        
         // Props Init
         const { 
-            pugjjigLikeGetUserList,
+            // search value
+            keyword, 
             pugjjig_list
         } = this.props;
+
+        // Search DTO 생성
+        const searchDTO = {
+            keyword,
+            offsetCount
+        };
         
         if(pugjjig_list.data !== undefined) {
             if(pugjjig_list.data.length <= 0) {
@@ -82,7 +139,7 @@ class LikeList extends Component {
             }
         }
 
-        pugjjigLikeGetUserList(null, page);
+        this.handleAction(searchDTO);
     }
 
     handleUpdate = (postData) => {
@@ -126,6 +183,7 @@ class LikeList extends Component {
      *  pugjjig 값이 전달될 경우 상태변화를 저장합니다.
      */
     openModal = (target, pugjjig) => {
+
         // 클릭한 Item의 정보를 담습니다.
         if(pugjjig) {
             // 클릭한 DATA의 정보가 로그인한 유저의 DATA인지 확인합니다.
@@ -173,7 +231,7 @@ class LikeList extends Component {
         const pugjjigGet = (pugjjig) => {
             if(pugjjig !== undefined && pugjjig.length > 0) {
                 const data = pugjjig.map((pugjjig, index) => (
-                    <Item
+                    <Item 
                         key              = {index}
                         pugjjig          = {pugjjig}
                         pugjjigLike      = {pugjjigLike}
@@ -209,12 +267,12 @@ class LikeList extends Component {
         return (
             <PugjjigItemWrap>
                 <InfiniteScroll
-                    pageStart    = {0}
-                    loadMore     = {this.handleLoad}
-                    hasMore      = {true}
-                    initialLoad  = {false}
-                    useWindow    = {false}
-                    threshold    = {500}
+                    pageStart   = {0}
+                    loadMore    = {this.handleLoad}
+                    hasMore     = {true}
+                    initialLoad = {false}
+                    useWindow   = {false}
+                    threshold   = {500}
                 >
                     {pugjjigContent}
                 </InfiniteScroll>
@@ -239,8 +297,11 @@ class LikeList extends Component {
     }
 }
 
-LikeList.propTypes = {
-    pugjjigLikeGetUserList: PropTypes.func.isRequired,
+List.propTypes = {
+    getUniListStoreId: PropTypes.func.isRequired,
+    getUniListUniLike: PropTypes.func.isRequired,
+    getUniListUserId: PropTypes.func.isRequired,
+    getUniListSearch: PropTypes.func.isRequired,
     pugjjigLike: PropTypes.func.isRequired,
     pugjjigDelete: PropTypes.func.isRequired,
     pugjjig_list: PropTypes.object.isRequired,
@@ -259,8 +320,11 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps, 
     { 
-        pugjjigLikeGetUserList,
+        getUniListStoreId,
+        getUniListUniLike,
+        getUniListUserId,
+        getUniListSearch,
         pugjjigLike,
         pugjjigDelete
     }
-  )(LikeList);
+  )(List);

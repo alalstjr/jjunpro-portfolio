@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react"
-import UserIdList from "../../../pugjjig/list/userIdList/UserIdList"
+import List from "../../../pugjjig/list/List"
 import { ActivityRecordWrap } from "../../style"
 
 class ActivityRecord extends Component {
@@ -7,7 +7,7 @@ class ActivityRecord extends Component {
     render() {
         return (
             <ActivityRecordWrap>
-                <UserIdList/>
+                <List classification = {"userId"} />
             </ActivityRecordWrap>
         );
     }

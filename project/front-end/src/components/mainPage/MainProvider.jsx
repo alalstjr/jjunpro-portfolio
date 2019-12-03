@@ -30,10 +30,10 @@ class MainProvider extends Component {
       // 초기 화면
       initSearch: true,
       // 상점 정보 리뷰작성시 필요정보 PugjjigProvider로 넘어갑니다.
-      stoId: "",
-      stoName: "",
-      stoAddress: "",
-      stoUrl: ""
+      stoId: null,
+      stoName: null,
+      stoAddress: null,
+      stoUrl: null
     }
 
     this.appRef = createRef();
@@ -106,24 +106,29 @@ class MainProvider extends Component {
           :
           <Fragment>
             <FirstSection
-              searchPlaces        = {map.searchPlaces}
-              searchPlacesSetting = {map.searchPlacesSetting}
-              categorySearch      = {map.categorySearch}
-              initSearch          = {initSearch}
-              hendleInitSearch    = {this.hendleInitSearch}
+              searchPlaces          = {map.searchPlaces}
+              searchPlacesSetting   = {map.searchPlacesSetting}
+              categorySearch        = {map.categorySearch}
+              initSearch            = {initSearch}
+              hendleInitSearch      = {this.hendleInitSearch}
             />
             <MainMap
               ref = {this.appRef}
             />
-            <PugjjigProvider
-              closeModal          = {this.closeModal}
-              insertModalState    = {insertModalState}
-              listModalState      = {listModalState}
-              stoId               = {stoId}
-              stoName             = {stoName}
-              stoAddress          = {stoAddress}
-              stoUrl              = {stoUrl}
-            />
+            {
+              (stoId !== null) ?
+              <PugjjigProvider
+                closeModal          = {this.closeModal}
+                insertModalState    = {insertModalState}
+                listModalState      = {listModalState}
+                stoId               = {stoId}
+                stoName             = {stoName}
+                stoAddress          = {stoAddress}
+                stoUrl              = {stoUrl}
+              />
+              :
+              null
+            }
           </Fragment>
         }
       </Main>

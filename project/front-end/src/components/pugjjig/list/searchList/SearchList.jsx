@@ -3,8 +3,8 @@ import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import { USER_LONG_ID } from "../../../../routes"
 
-import { pugjjigGetStoreList, pugjjigLike } from "../../../../actions/KakaoMapActions"
-import { pugjjigDelete } from "../../../../actions/PugjjigActions"
+import { pugjjigLike } from "../../../../actions/KakaoMapActions"
+import { getUniListSearch, pugjjigDelete, getUniListStoreId } from "../../../../actions/PugjjigActions"
 
 import Item from "../item/Item"
 import InfiniteScroll from "react-infinite-scroller"
@@ -15,7 +15,7 @@ import InsertModal from "../../modal/InsertModal"
 import { NotPost } from "../../../../style/globalStyles"
 import { PugjjigItemWrap } from "../../style"
 
-class StoreList extends Component {
+class SearchList extends Component {
 
     constructor(props){
         super(props);
@@ -33,28 +33,52 @@ class StoreList extends Component {
 
         // Props Init
         const { 
-            stoId,
-            pugjjigGetStoreList
+            keyword,
+            classification,
+            offsetCount
         } = this.props;
 
-        // {stoId} 게시글 정보를 가져옵니다.
-        pugjjigGetStoreList(stoId, 0);
+        // Search DTO 생성
+        const searchDTO = {
+            keyword,
+            classification,
+            offsetCount
+        };
+
+        this.handleAction(searchDTO);
     }
 
     componentWillReceiveProps(nextProps) {
 
         // Props Init
         const { 
-            pugjjig_store_list,
+            pugjjig_list,
             pugjjig_delete
         } = this.props;
 
-        if(nextProps.pugjjig_store_list !== pugjjig_store_list) {
-            this.handleUpdate(nextProps.pugjjig_store_list);
+        if(nextProps.pugjjig_list !== pugjjig_list) {
+            this.handleUpdate(nextProps.pugjjig_list);
         }
 
         if(nextProps.pugjjig_delete !== pugjjig_delete) {
             this.handleDeleteUpdate(nextProps.pugjjig_delete);
+        }
+    }
+
+    // { searchDTO } 게시글 정보를 가져옵니다.
+    handleAction = (searchDTO) => {
+        const {
+            getUniListSearch,
+            getUniListStoreId
+        } = this.props;
+
+        switch(searchDTO.classification) {
+            case "stoId" :
+                getUniListStoreId(searchDTO);
+                break;
+
+            default:
+                getUniListSearch(searchDTO);
         }
     }
 
@@ -74,17 +98,17 @@ class StoreList extends Component {
         // Props Init
         const { 
             stoId, 
-            pugjjig_store_list,
-            pugjjigGetStoreList
+            pugjjig_list,
+            getUniListSearch
         } = this.props;
         
-        if(pugjjig_store_list.data !== undefined) {
-            if(pugjjig_store_list.data.length <= 0) {
+        if(pugjjig_list.data !== undefined) {
+            if(pugjjig_list.data.length <= 0) {
                 return false;
             }
         }
 
-        pugjjigGetStoreList(stoId, page);
+        getUniListSearch(stoId, page);
     }
 
     handleUpdate = (postData) => {
@@ -242,11 +266,12 @@ class StoreList extends Component {
     }
 }
 
-StoreList.propTypes = {
-    pugjjigGetStoreList: PropTypes.func.isRequired,
+SearchList.propTypes = {
+    getUniListSearch: PropTypes.func.isRequired,
+    getUniListStoreId: PropTypes.func.isRequired,
     pugjjigLike: PropTypes.func.isRequired,
     pugjjigDelete: PropTypes.func.isRequired,
-    pugjjig_store_list: PropTypes.object.isRequired,
+    pugjjig_list: PropTypes.object.isRequired,
     pugjjig_like: PropTypes.object.isRequired,
     error: PropTypes.object.isRequired,
     pugjjig_delete: PropTypes.number.isRequired
@@ -254,7 +279,7 @@ StoreList.propTypes = {
   
 const mapStateToProps = state => ({
     error: state.errors,
-    pugjjig_store_list: state.pugjjig.pugjjig_store_list,
+    pugjjig_list: state.pugjjig.pugjjig_list,
     pugjjig_like: state.pugjjig.pugjjig_like,
     pugjjig_delete: state.pugjjig.pugjjig_delete
 });
@@ -262,8 +287,9 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps, 
     { 
-        pugjjigGetStoreList,
+        getUniListSearch,
+        getUniListStoreId,
         pugjjigLike,
         pugjjigDelete
     }
-  )(StoreList);
+  )(SearchList);

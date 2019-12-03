@@ -40,7 +40,7 @@ class AccountRepositoryTest {
 //        accountRepository.findAll();
 //        universityRepository.findAll();
 
-            universityRepository.findByIdLike(2L);
+//            universityRepository.findByIdLike(2L);
 
 //        assertThat(entityManager.contains(account)).isTrue();
 

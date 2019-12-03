@@ -74,6 +74,13 @@ public class AccountController {
             errorMap.put(errorType, errorText);
         }
 
+        // Account Id Check
+        if(dto.getUserId() != null && !validityCheck.enNumCheck(dto.getUserId())) {
+            errorType = "userId";
+            errorText = "아이디는 영문 숫자만 입력 가능합니다.";
+            errorMap.put(errorType, errorText);
+        }
+
         // Account Id DB Check
         if(accountService.findByUserId(dto.getUserId()).isPresent()) {
             errorType = "userId";

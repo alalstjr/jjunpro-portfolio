@@ -1,6 +1,6 @@
 package com.backend.project.repository;
 
-import com.backend.project.domain.Account;
+import com.backend.project.dto.SearchDTO;
 import com.backend.project.projection.StorePublic;
 import com.backend.project.projection.UniversityPublic;
 
@@ -10,6 +10,6 @@ public interface StoreRepositoryDSL {
 
     public Long findByUniCount(String stoId);
 
-    public List<UniversityPublic> findByStoreUniAll(String storeId, Account account, Long offsetCount);
+    public List<UniversityPublic> findByStoreUniAll(SearchDTO searchDTO);
     public StorePublic findByStoreOne(Long id);
 }

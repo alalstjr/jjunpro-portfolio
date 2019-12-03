@@ -25,6 +25,12 @@ export const accountInsert = (account, history) => async dispatch => {
                             type: ACCOUNT_CREATE,
                             payload: true
                         });
+                        
+                        // create 상태 init
+                        dispatch({
+                            type: ACCOUNT_CREATE,
+                            payload: false
+                        });
                         break;
                         
                     case 202 : 
@@ -186,6 +192,13 @@ export const accountUpdate = (account, files, history) => async dispatch => {
                             type: ACCOUNT_CREATE,
                             payload: true
                         });
+
+                        // create 상태 init
+                        dispatch({
+                            type: ACCOUNT_CREATE,
+                            payload: false
+                        });
+                        
                         if(files.length > 0) {
                             window.location.reload();
                         }

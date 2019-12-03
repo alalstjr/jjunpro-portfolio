@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from "react"
 import ReactTransitionGroup from "react-addons-css-transition-group"
 
-import StoreList from "../list/storeList/StoreList"
+import List from "../list/List"
 
 import { 
     ModalCloseBtn, 
@@ -18,9 +18,9 @@ class ListModal extends Component {
 
         // props Init
         const { 
-            modalState, 
-            closeModal,
-            stoId
+            keyword,
+            modalState,
+            closeModal
         } = this.props;
         
         return (
@@ -28,16 +28,17 @@ class ListModal extends Component {
                 {
                     modalState ? 
                     <ReactTransitionGroup
-                        transitionName={'Modal-anim'}
-                        transitionEnterTimeout={200}
-                        transitionLeaveTimeout={200}
+                        transitionName         = {'Modal-anim'}
+                        transitionEnterTimeout = {200}
+                        transitionLeaveTimeout = {200}
                     >
                     <ModalWrap>
                         <ListModalWrap>
                             <ModalCloseBtn onClick={() => closeModal("listModalState")}/>
-                            <StoreList
-                                modalState = {modalState}
-                                stoId = {stoId}
+                            <List
+                                keyword        = {keyword}
+                                classification = {"storeId"}
+                                modalState     = {modalState}
                             />
                         </ListModalWrap>
                     </ModalWrap>

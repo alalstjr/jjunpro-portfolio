@@ -4,7 +4,6 @@ import InsertModal from "./modal/InsertModal"
 import ListModal from "../pugjjig/modal/ListModal"
 
 class PugjjigProvider extends Component {
-
     render() {
 
         // Props Init
@@ -29,9 +28,9 @@ class PugjjigProvider extends Component {
                     stoUrl     = {stoUrl}
                 />
                 <ListModal
-                    stoId = {stoId}
-                    modalState = {listModalState}
-                    closeModal = {closeModal}
+                    keyword     = {stoId}
+                    modalState  = {listModalState}
+                    closeModal  = {closeModal}
                 />
             </Fragment>
         )

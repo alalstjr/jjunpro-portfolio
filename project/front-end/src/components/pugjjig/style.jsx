@@ -208,8 +208,9 @@ export const ItemImgBox = styled.div`
 export const ItemTagWrap = styled.div`
 `;
 export const ItemLocalWrap = styled.div`
-    a > {
-        display: block;
+    a {
+        display: inline-block;
+        margin-right: 5px;
         margin-bottom: 3px;
     }
     span {
@@ -265,6 +266,10 @@ export const ItemLikeBtn = styled.button.attrs({
         float: left;
         margin-top: 2px;
         margin-right: 5px;
+    }
+
+    a {
+        color: #999;
     }
 `;  
 export const ItemLikeText = styled.div`

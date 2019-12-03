@@ -319,9 +319,17 @@ class PugjjigView extends Component {
                                 {
                                     // SERVER 에서 불러오는 속도와 React 에서 storePublic 랜더링하는 속도와 맞춰주는 코드
                                     pugjjig.storePublic !== null ?
+                                    <Fragment>
+                                        <Link to={`/pugjjig/uniSearch/${pugjjig.uniName}`}>
+                                            <span>{pugjjig.uniName}</span> 
+                                        </Link>
+                                        <Link to={`/pugjjig/uniSearch/${pugjjig.storePublic.stoId}`}>
+                                            <span>{pugjjig.storePublic.stoName}</span> 
+                                        </Link>
                                         <a href = {`${pugjjig.storePublic.stoUrl}`} target="_blank">
-                                            <span>{pugjjig.uniName} {pugjjig.storePublic.stoName}</span> {pugjjig.storePublic.stoAddress}
+                                            {pugjjig.storePublic.stoAddress}
                                         </a>
+                                    </Fragment>
                                     :
                                     null
                                 }

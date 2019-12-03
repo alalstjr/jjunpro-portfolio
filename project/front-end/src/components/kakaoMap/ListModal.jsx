@@ -12,10 +12,34 @@ import {
 
 class InsertModal extends Component {
 
+    constructor(props){
+        super(props);
+    
+        this.state = {
+            searchDTO: {
+                keyword: null,
+                offsetCount: null
+            }
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
-        if ((nextProps.modalState !== this.props.modalState) && this.props.modalState == false) {
-            const { stoId } = nextProps;
-            this.props.pugjjigGetStoreList(stoId);
+        if (
+            (nextProps.modalState !== this.props.modalState) && 
+            this.props.modalState == false
+        ) {
+            // Search DTO 생성
+            const searchDTO = {
+                keyword: nextProps.stoId,
+                offsetCount: 0
+            };
+
+            this.setState({
+                searchDTO
+            });
+
+            // {stoId} 게시글 정보를 가져옵니다.
+            this.props.getUniListStoreId(searchDTO);
         }
     }
 
@@ -39,7 +63,7 @@ class InsertModal extends Component {
         // Variables Init
         let pugjjigContent;
         let pugjjigList = [];
-        
+        console.log("asd");
         // pugjjigList
         const pugjjigGet = (pugjjig) => {
             if(pugjjig.data !== undefined) {

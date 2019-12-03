@@ -1,6 +1,6 @@
 package com.backend.project.service;
 
-import com.backend.project.domain.Account;
+import com.backend.project.dto.SearchDTO;
 import com.backend.project.projection.StorePublic;
 import com.backend.project.projection.UniversityPublic;
 import com.backend.project.repository.StoreRepository;
@@ -21,8 +21,8 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public List<UniversityPublic> findByStoreUniAll(String storeId, Account account, Long offsetCount) {
-        return store.findByStoreUniAll(storeId, account, offsetCount);
+    public List<UniversityPublic> findByStoreUniAll(SearchDTO searchDTO) {
+        return store.findByStoreUniAll(searchDTO);
     }
 
     @Override

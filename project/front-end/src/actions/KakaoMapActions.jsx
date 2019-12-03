@@ -2,10 +2,8 @@ import axios from "axios"
 import { SERVER_URL, USER_AUTH, USER_ID } from "../routes"
 import { 
     GET_PUGJJIG_LIST, 
-    GET_PUGJJIG_STORE_LIST, 
     GET_PUGJJIG_LIKE, 
-    GET_PUGJJIG_VIEW,
-    GET_ERRORS
+    GET_PUGJJIG_VIEW
 } from "./types"
 
 /****************************************
@@ -82,30 +80,6 @@ export const pugjjigLike = (id) => async dispatch => {
     });
 }
 
-/****************************************
-    GET 푹찍 리뷰 
-****************************************/
-
-// 푹찍 가게 {id} 조회
-export const pugjjigGetStoreList = (storeId, offsetCount) => async dispatch => {
-
-    // 유저 JWT Token정보
-    USER_AUTH();
-
-    await axios.get(`${SERVER_URL}/api/store/${storeId}/${offsetCount}`)
-    .then(res => {
-        dispatch({
-            type: GET_PUGJJIG_STORE_LIST,
-            payload: res.data
-        });
-    }).catch(error => {
-        dispatch({
-            type: GET_ERRORS,
-            payload: error.response.data
-        });    
-    })
-}
-
 // 푹찍 리뷰 {id} 조회
 export const pugjjigGetView = (id, history) =>  async dispatch => {
 
@@ -135,44 +109,4 @@ export const pugjjigGetCount = (storeId) =>  async dispatch => {
         return res.data;
     });
 
-}
-
-// 푹찍 리뷰 {userId} 목록 조회
-export const pugjjigGetUserList = (userId, offsetCount) =>  async dispatch => {
-
-    axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
-    
-    // 유저 {아이디값,페이지} 의 전달이 없는 경우 기본값 설정
-    userId = (userId === undefined || userId === null) ? USER_ID() : userId;
-    offsetCount = (offsetCount == null) ? 0 : offsetCount;
-
-    await axios.get(`${SERVER_URL}/api/university/pugjjigs/${userId}/${offsetCount}`)
-    .then(res => {
-        dispatch({
-            type: GET_PUGJJIG_LIST,
-            payload: res.data
-        });
-    }).catch(error => {
-        alert(error.response.data.error);
-    });
-}
-
-// 푹찍 리뷰 좋아요 {userId} 목록 조회
-export const pugjjigLikeGetUserList = (userId, offsetCount) =>  async dispatch => {
-
-    axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
-
-    // 유저 {아이디값,페이지} 의 전달이 없는 경우 기본값 설정
-    userId = (userId === undefined || userId === null) ? USER_ID() : userId;
-    offsetCount = (offsetCount == null) ? 0 : offsetCount;
-
-    await axios.get(`${SERVER_URL}/api/university/pugjjigLikes/${userId}/${offsetCount}`)
-    .then(res => {
-        dispatch({
-            type: GET_PUGJJIG_LIST,
-            payload: res.data
-        });
-    }).catch(error => {
-        alert(error.response.data.error);
-    });
 }

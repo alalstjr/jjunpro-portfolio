@@ -1,6 +1,7 @@
 package com.backend.project.controller;
 
 import com.backend.project.domain.Account;
+import com.backend.project.dto.SearchDTO;
 import com.backend.project.projection.UniversityPublic;
 import com.backend.project.service.StoreService;
 import com.backend.project.util.AccountUtill;
@@ -27,21 +28,40 @@ public class StoreController {
     @Autowired
     private AccountUtill accountUtill;
 
-    // GET LIST
     /**
-     *  storeId 상점 고유번호 & offsetCount 페이지 번호
+     *  GET University List DATA StoreId
      */
-    @GetMapping("/{storeId}/{offsetCount}")
+    @GetMapping("/{storeId}")
     @PreAuthorize("permitAll()")
-    public List<UniversityPublic> getStoreIdUniList(
-            @PathVariable String storeId,
-            @PathVariable Long offsetCount,
+    public ResponseEntity<?> getStoreIdUniList(
+            @PathVariable String keyword,
+            @RequestParam("classification") String classification,
+            @RequestParam("offsetCount") Long offsetCount,
             HttpServletRequest request
     ) throws IOException {
+
+        // Search DTO 생성
+        SearchDTO searchDTO = new SearchDTO();
+
         // Account Info
         Account accountData = accountUtill.accountJWT(request);
 
-        return storeService.findByStoreUniAll(storeId, accountData, offsetCount);
+        if(keyword != null || offsetCount != null)
+        {
+            // Param 값을 DTO 에 담아줍니다.
+            // (관리하기 쉽게 DTO 한곳에 모아줍니다.)
+            searchDTO.setKeyword(keyword);
+            searchDTO.setOffsetCount(offsetCount);
+            searchDTO.setAccount(accountData);
+        }
+        else
+        {
+            throw new IOException("검색에 필요한 정보를 전부 받지 못했습니다.");
+        }
+
+        List<UniversityPublic> result = storeService.findByStoreUniAll(searchDTO);
+
+        return new ResponseEntity<List<UniversityPublic>>(result, HttpStatus.OK);
     }
 
     @GetMapping("/{storeId}/count")

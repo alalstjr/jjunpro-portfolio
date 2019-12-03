@@ -202,7 +202,7 @@ export const ProfileLabel = styled.div`
     text-align: right;
     padding-right: 30px
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 400;
     margin: auto;
 `;
 export const ProfileInput = styled.div`

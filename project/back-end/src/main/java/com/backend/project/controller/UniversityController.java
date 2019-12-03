@@ -6,6 +6,7 @@ import com.backend.project.domain.University;
 import com.backend.project.dto.StoreDTO;
 import com.backend.project.dto.UniLikeDTO;
 import com.backend.project.dto.UniversitySaveDTO;
+import com.backend.project.dto.SearchDTO;
 import com.backend.project.projection.UniversityPublic;
 import com.backend.project.respone.WebProcessRespone;
 import com.backend.project.service.AccountService;
@@ -188,23 +189,39 @@ public class UniversityController {
         return universityService.findByUniversityList(pageable, accountData);
     }
 
-    // GET {userId} 의 푹찍 좋아요 목록
-    @GetMapping("/pugjjigs/{userId}/{offsetCount}")
-    public List<UniversityPublic> getUserPugjjig(
-            @PathVariable String userId,
-            @PathVariable Long offsetCount,
+    /**
+     * GET University List DATA userId
+     */
+    @GetMapping("/pugjjigs/{keyword}")
+    public ResponseEntity<?> getUniListUserId(
+            @PathVariable String keyword,
+            @RequestParam("offsetCount") Long offsetCount,
             HttpServletRequest request
     ) throws IOException {
-        if(userId == null) {
-            throw new IOException("잘못된 접근입니다.");
-        }
-        // offsetCount 없는경우 기본값 0 설정
-        offsetCount = (offsetCount == null) ? 0L : offsetCount;
+        // Search DTO 생성
+        SearchDTO searchDTO = new SearchDTO();
 
         // Account Info
         Account accountData = accountUtill.accountJWT(request);
 
-        return universityService.findByUniversityListWhereAccountId(accountData, userId, offsetCount);
+        // offsetCount 없는경우 기본값 0 설정
+        offsetCount = (offsetCount == null) ? 0L : offsetCount;
+
+        if(keyword != null || offsetCount != null)
+        {
+            // Param 값을 DTO 에 담아줍니다.
+            // (관리하기 쉽게 DTO 한곳에 모아줍니다.)
+            searchDTO.setKeyword(keyword);
+            searchDTO.setOffsetCount(offsetCount);
+            searchDTO.setAccount(accountData);
+        }
+        else
+        {
+            throw new IOException("검색에 필요한 정보를 전부 받지 못했습니다.");
+        }
+
+        List<UniversityPublic> result = universityService.findByUniversityListWhereAccountId(searchDTO);
+        return new ResponseEntity<List<UniversityPublic>>(result, HttpStatus.OK);
     }
 
     // GET 푹찍 {ID} 리뷰
@@ -221,23 +238,78 @@ public class UniversityController {
         return new ResponseEntity<UniversityPublic>(result, HttpStatus.OK);
     }
 
-    // GET 푹찍한 모든 리뷰 목록
-    @GetMapping("/pugjjigLikes/{userId}/{offsetCount}")
-    public List<UniversityPublic> getUserPugjjigLike(
-            @PathVariable String userId,
-            @PathVariable Long offsetCount,
+    /**
+     * GET University List DATA uniLike
+     */
+    @GetMapping("/pugjjigLikes/{keyword}")
+    public ResponseEntity<?> getUniListUniLike(
+            @PathVariable String keyword,
+            @RequestParam("offsetCount") Long offsetCount,
             HttpServletRequest request
     ) throws IOException {
-        if(userId == null) {
-            throw new IOException("잘못된 접근입니다.");
+        // Search DTO 생성
+        SearchDTO searchDTO = new SearchDTO();
+
+        // Account Info
+        Account accountData = accountUtill.accountJWT(request);
+
+        // offsetCount 없는경우 기본값 0 설정
+        offsetCount = (offsetCount == null) ? 0L : offsetCount;
+
+        if(keyword != null || offsetCount != null)
+        {
+            // Param 값을 DTO 에 담아줍니다.
+            // (관리하기 쉽게 DTO 한곳에 모아줍니다.)
+            searchDTO.setKeyword(keyword);
+            searchDTO.setOffsetCount(offsetCount);
+            searchDTO.setAccount(accountData);
         }
+        else
+        {
+            throw new IOException("검색에 필요한 정보를 전부 받지 못했습니다.");
+        }
+
+        List<UniversityPublic> result = universityService.findByLikeListWhereAccountId(searchDTO);
+        return new ResponseEntity<List<UniversityPublic>>(result, HttpStatus.OK);
+    }
+
+    /**
+     * GET University List DATA Search
+     */
+    @GetMapping("/search/{keyword}")
+    public ResponseEntity<?> getUniListSearch(
+            @PathVariable String keyword,
+            @RequestParam("classification") String classification,
+            @RequestParam("offsetCount") Long offsetCount,
+            HttpServletRequest request
+    ) throws IOException
+    {
+        // Search DTO 생성
+        SearchDTO searchDTO = new SearchDTO();
+
         // offsetCount 없는경우 기본값 0 설정
         offsetCount = (offsetCount == null) ? 0L : offsetCount;
 
         // Account Info
         Account accountData = accountUtill.accountJWT(request);
 
-        return universityService.findByLikeListWhereAccountId(accountData, userId, offsetCount);
+        if(keyword != null || classification != null || offsetCount != null)
+        {
+            // Param 값을 DTO 에 담아줍니다.
+            // (관리하기 쉽게 DTO 한곳에 모아줍니다.)
+            searchDTO.setKeyword(keyword);
+            searchDTO.setClassification(classification);
+            searchDTO.setOffsetCount(offsetCount);
+            searchDTO.setAccount(accountData);
+        }
+        else
+        {
+            throw new IOException("검색에 필요한 정보를 전부 받지 못했습니다.");
+        }
+
+        List<UniversityPublic> result = universityService.findByUniversityListWhereKeyword(searchDTO);
+
+        return new ResponseEntity<List<UniversityPublic>>(result, HttpStatus.OK);
     }
 
     // DELETE 특정 DATA 삭제

@@ -6,6 +6,7 @@ import com.backend.project.domain.Store;
 import com.backend.project.domain.University;
 import com.backend.project.dto.StoreDTO;
 import com.backend.project.dto.UniversitySaveDTO;
+import com.backend.project.dto.SearchDTO;
 import com.backend.project.projection.UniversityPublic;
 import com.backend.project.repository.StoreRepository;
 import com.backend.project.repository.UniversityRepository;
@@ -43,13 +44,13 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public List<UniversityPublic> findByUniversityListWhereAccountId(Account account, String userId, Long offsetCount) {
-        return university.findByUniversityListWhereAccountId(account, userId, offsetCount);
+    public List<UniversityPublic> findByUniversityListWhereAccountId(SearchDTO searchDTO) {
+        return university.findByUniversityListWhereAccountId(searchDTO);
     }
 
     @Override
-    public List<UniversityPublic> findByLikeListWhereAccountId(Account account, String userId, Long offsetCount) {
-        return university.findByLikeListWhereAccountId(account, userId, offsetCount);
+    public List<UniversityPublic> findByLikeListWhereAccountId(SearchDTO searchDTO) {
+        return university.findByLikeListWhereAccountId(searchDTO);
     }
 
     @Override
@@ -111,6 +112,11 @@ public class UniversityServiceImpl implements UniversityService {
     @Override
     public Boolean findByIdLike(Long id, Account account) {
         return university.findByIdLike(id, account);
+    }
+
+    @Override
+    public List<UniversityPublic> findByUniversityListWhereKeyword(SearchDTO searchDTO) {
+        return university.findByUniversityListWhereKeyword(searchDTO);
     }
 
     @Override

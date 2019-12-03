@@ -17,6 +17,12 @@ react dropfile
 https://github.com/pqina/filepond-docs/blob/master/content/patterns/API/server.md
 https://itnext.io/uploading-files-with-react-and-filepond-f8a798308557
 
+## 인텔리제이 톰켓 Tomcat 설치
+
+https://m.blog.naver.com/PostView.nhn?blogId=varkiry05&logNo=221192586011&proxyReferer=https%3A%2F%2Fwww.google.com%2F
+
+플러그인 사용
+
 ## JPA 설명
 
 https://jojoldu.tistory.com/251

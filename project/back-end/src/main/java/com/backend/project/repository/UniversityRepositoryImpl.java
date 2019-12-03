@@ -1,11 +1,13 @@
 package com.backend.project.repository;
 
 import com.backend.project.domain.*;
+import com.backend.project.dto.SearchDTO;
 import com.backend.project.projection.UniversityPublic;
 import com.backend.project.service.CommentServiceImpl;
 import com.backend.project.service.FileStorageServiceImpl;
 import com.backend.project.service.StoreService;
 import com.backend.project.service.UniversityServiceImpl;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,43 +91,80 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
     }
 
     @Override
-    public List<UniversityPublic> findByUniversityListWhereAccountId(Account account, String userId, Long offsetCount) {
+    public List<UniversityPublic> findByUniversityListWhereAccountId(SearchDTO searchDTO) {
         Map<University, List<Account>> transform = queryFactory
                 .from(qUniversity)
                 .leftJoin(qUniversity.uniLike, qAccount)
                 .where(
                         qUniversity.publicStatus.eq(true)
                         .and(qUniversity.controlStatus.eq(false))
-                        .and(qUniversity.account.userId.eq(userId))
+                        .and(qUniversity.account.userId.eq(searchDTO.getKeyword()))
                 )
-                .offset(8 * offsetCount)
+                .offset(8 * searchDTO.getOffsetCount())
                 .limit(8)
                 .transform(
                     groupBy(qUniversity).as(list(qAccount))
                 );
 
-        List<UniversityPublic> results = getUniversityPublicList(transform, account);
+        List<UniversityPublic> results = getUniversityPublicList(transform, searchDTO.getAccount());
 
         return results;
     }
 
     @Override
-    public List<UniversityPublic> findByLikeListWhereAccountId(Account account, String userId, Long offsetCount) {
+    public List<UniversityPublic> findByLikeListWhereAccountId(SearchDTO searchDTO) {
         Map<University, List<Account>> transform = queryFactory
                 .from(qUniversity)
                 .leftJoin(qUniversity.uniLike, qAccount)
                 .where(
                         qUniversity.publicStatus.eq(true)
                         .and(qUniversity.controlStatus.eq(false))
-                        .and(qUniversity.uniLike.any().userId.eq(userId))
+                        .and(qUniversity.uniLike.any().userId.eq(searchDTO.getKeyword()))
                 )
-                .offset(8 * offsetCount)
+                .offset(8 * searchDTO.getOffsetCount())
                 .limit(8)
                 .transform(
                         groupBy(qUniversity).as(list(qAccount))
                 );
 
-        List<UniversityPublic> results = getUniversityPublicList(transform, account);
+        List<UniversityPublic> results = getUniversityPublicList(transform, searchDTO.getAccount());
+
+        return results;
+    }
+
+    @Override
+    public List<UniversityPublic> findByUniversityListWhereKeyword(SearchDTO searchDTO) {
+
+        // 검색 대상 분류 동적 조건
+        BooleanBuilder builder = new BooleanBuilder();
+        switch (searchDTO.getClassification()) {
+            case "uniName" :
+                builder.and(qUniversity.uniName.contains(searchDTO.getKeyword()));
+                break;
+
+            case "stoId" :
+                builder.and(qStore.stoId.contains(searchDTO.getKeyword()));
+                break;
+
+            default:
+                break;
+        }
+
+        Map<University, List<Account>> transform = queryFactory
+                .from(qUniversity)
+                .leftJoin(qUniversity.uniLike, qAccount)
+                .where(
+                        qUniversity.publicStatus.eq(true)
+                        .and(qUniversity.controlStatus.eq(false))
+                        .and(builder)
+                )
+                .offset(8 * searchDTO.getOffsetCount())
+                .limit(8)
+                .transform(
+                        groupBy(qUniversity).as(list(qAccount))
+                );
+
+        List<UniversityPublic> results = getUniversityPublicList(transform, searchDTO.getAccount());
 
         return results;
     }

@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react"
-import LikeList from "../../../pugjjig/list/likeList/LikeList"
+import List from "../../../pugjjig/list/List"
 import { ActivityRecordWrap } from "../../style"
 
 class LikeRecord extends Component {
@@ -7,7 +7,7 @@ class LikeRecord extends Component {
     render() {
         return (
             <ActivityRecordWrap>
-                <LikeList/>
+                <List classification = {"uniLike"} />
             </ActivityRecordWrap>
         );
     }

@@ -111,13 +111,16 @@ export const FlexCol4  = css`
     flex-basis: 25%;
     width: 25%;
 `;
-
 export const Container = styled.div`
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
 `;
-
+export const FlexBottom = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin: auto 0 0;
+`;
 
 /*******************
     Botton Style
@@ -238,6 +241,7 @@ export const SubmitBtn = styled.button`
     margin-top: 15px;
 `;
 export const NotPost = styled.div`
+    width: 100%;
     text-align: center;
     padding: 100px 0;
     font-size: 26px;

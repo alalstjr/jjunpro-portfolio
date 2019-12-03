@@ -82,7 +82,7 @@ class MyPageProvider extends Component {
             }
         }
 
-        // DB전송 최종 완료된후 실행되는 이벤트 코드입니다.
+        // DB 전송 최종 완료된후 실행되는 이벤트 코드입니다.
         if(nextProps.account_create.data === true) {
             this.warningSet("success", true, "수정이 완료되었습니다.");
             this.initWarning();

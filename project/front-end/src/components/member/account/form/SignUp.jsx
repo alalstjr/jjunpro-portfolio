@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { accountInsert } from "../../../../actions/accountActions";
+import SVGLoading from "../../../../static/svg/SVGLoading"
 
 import { 
     Content
@@ -26,7 +27,9 @@ class SignUp extends Component {
             nickname: "",
             password: "",
             passwordRe: "",
-            email: ""
+            email: "",
+            // Form State
+            loding: false
         }
     }
 
@@ -38,7 +41,7 @@ class SignUp extends Component {
             error,
             warningSet,
             closeModal,
-            account_create
+            account_create 
         } = this.props;
 
         // {Server} 유효성 검사 출력 코드입니다.
@@ -55,16 +58,17 @@ class SignUp extends Component {
             if(nextProps.error.data.email) {
                 warningSet("email", true, nextProps.error.data.email);
             }
+
+            this.setState({ loding: false });
         }
         
-        // 회원가입이 최종 완료된후 실행되는 이벤트 코드입니다.
+        // DB 전송 최종 완료된후 실행되는 이벤트 코드입니다.
         if(nextProps.account_create.data !== account_create.data) {
             if(nextProps.account_create.data === true) {
+                this.setState({ loding: false });
                 closeModal();
                 warningSet("success", true, "회원가입이 완료되었습니다.");
                 this.props.openModal("loginModal");
-            } else {
-                warningSet("userId", true, "서버와의 연결이 원활하지 않습니다.");
             }
         }
     }
@@ -127,6 +131,10 @@ class SignUp extends Component {
             return false;
         }
 
+        this.setState({
+            loding: true
+        });
+
         this.props.accountInsert(account, this.props.history);
     }
 
@@ -145,7 +153,8 @@ class SignUp extends Component {
             nickname,
             password,
             passwordRe,
-            email
+            email,
+            loding
         } = this.state;
 
         return (
@@ -264,6 +273,14 @@ class SignUp extends Component {
                 >
                         회원가입
                 </SubmitBtn>
+                
+                {/* 작성 완료 클릭시 Loding 대기화면 */}
+                {
+                    loding ? 
+                    <SVGLoading/>
+                    :
+                    null
+                }
             </Form>
         )
     }

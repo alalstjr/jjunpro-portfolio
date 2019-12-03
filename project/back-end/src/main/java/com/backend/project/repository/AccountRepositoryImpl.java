@@ -1,13 +1,17 @@
 package com.backend.project.repository;
 
 import com.backend.project.domain.Account;
+import com.backend.project.domain.File;
 import com.backend.project.domain.QAccount;
 import com.backend.project.domain.QFile;
 import com.backend.project.dto.AccountPwdUpdateDTO;
 import com.backend.project.projection.AccountPublic;
+import com.backend.project.service.AccountService;
+import com.backend.project.service.FileStorageService;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -17,10 +21,14 @@ import java.util.stream.Collectors;
 public class AccountRepositoryImpl implements AccountRepositoryDSL {
 
     private final JPAQueryFactory queryFactory;
-
     private QAccount qAccount = QAccount.account;
-
     private QFile qFile = QFile.file;
+
+    @Autowired
+    AccountService accountService;
+
+    @Autowired
+    FileStorageService fileStorageService;
 
     @Override
     @Transactional
@@ -28,6 +36,16 @@ public class AccountRepositoryImpl implements AccountRepositoryDSL {
 
         // 파일을 전송받는경우와 안받는 경우
         if(account.getPhoto() != null) {
+
+            // Account File Data
+            File accountFile = accountService.findById(account.getId()).get().getPhoto();
+
+            // 기존에 업로드된 파일이 존재할 경우
+            if(accountFile != null) {
+                // Account 저장된 File 삭제
+                fileStorageService.fileDelete(accountFile, "account");
+            }
+
             return queryFactory.update(qAccount)
                     .where(qAccount.id.eq(account.getId()))
                     .set(qAccount.nickname, account.getNickname())

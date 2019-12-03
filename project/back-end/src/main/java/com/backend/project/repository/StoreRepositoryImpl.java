@@ -1,6 +1,10 @@
 package com.backend.project.repository;
 
-import com.backend.project.domain.*;
+import com.backend.project.domain.QFile;
+import com.backend.project.domain.QStore;
+import com.backend.project.domain.QUniversity;
+import com.backend.project.domain.University;
+import com.backend.project.dto.SearchDTO;
 import com.backend.project.projection.StorePublic;
 import com.backend.project.projection.UniversityPublic;
 import com.querydsl.core.types.Projections;
@@ -32,7 +36,7 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
     }
 
     @Override
-    public List<UniversityPublic> findByStoreUniAll(String storeId, Account account, Long offsetCount) {
+    public List<UniversityPublic> findByStoreUniAll(SearchDTO searchDTO) {
 
         List<University> uniData = queryFactory
                 .select(qUniversity)
@@ -41,10 +45,10 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
                 .where(
                     qUniversity.publicStatus.eq(true)
                     .and(qUniversity.controlStatus.eq(false))
-                    .and(qStore.stoId.eq(storeId))
+                    .and(qStore.stoId.eq(searchDTO.getKeyword()))
                 )
                 .orderBy(qUniversity.uniLike.size().desc())
-                .offset(8 * offsetCount)
+                .offset(8 * searchDTO.getOffsetCount())
                 .limit(8)
                 .fetch();
 
@@ -61,7 +65,7 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
                         u.getAccount().getId(),
                         u.getAccount().getNickname(),
                         u.getUniLike().size(),
-                        u.getUniLike().contains(account),
+                        u.getUniLike().contains(searchDTO.getAccount()),
                         u.getFiles(),
                         u.getAccount().getPhoto(),
                         findByStoreOne(u.getId()),
