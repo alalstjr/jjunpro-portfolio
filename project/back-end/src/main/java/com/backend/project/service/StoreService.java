@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface StoreService {
 
-    public Long findByUniCount(String storeId);
+    public Long findByUniCount(String keyword);
     public List<UniversityPublic> findByStoreUniAll(SearchDTO searchDTO);
     public StorePublic findByStoreOne(Long id);
 }

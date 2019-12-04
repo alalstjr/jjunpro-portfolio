@@ -25,7 +25,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/comment")
 @CrossOrigin
-public class CommentController {
+public class CommentController
+{
 
     @Autowired
     private CommentService commentService;
@@ -39,41 +40,48 @@ public class CommentController {
     @Autowired
     private AccountUtill accountUtill;
 
-    // CREATE or UADATE 생성
+    /**
+     * INSERT Comment DATA
+     */
     @PostMapping("")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<CommentPublic> saveOrUpdate(
+    public ResponseEntity<CommentPublic> insertComment(
             @Valid @RequestBody CommentSaveDTO dto,
             BindingResult bindingResult,
             Authentication authentication,
             HttpServletRequest request
-    ) {
+    )
+    {
         Map<String, String> errorMap = new HashMap<String, String>();
         String errorType = null;
         String errorText = null;
 
         // Field Check
-        if(bindingResult.hasErrors()) {
+        if(bindingResult.hasErrors())
+        {
             return webProcessRespone.webErrorRespone(bindingResult);
         }
 
         // Account Info
         Optional<Account> accountData = accountUtill.accountInfo(authentication);
 
-        if(!accountData.isPresent()) {
+        if(!accountData.isPresent())
+        {
             errorType = "AuthenticationError";
             errorText = "잘못된 계정 접근입니다.";
             return webProcessRespone.webErrorRespone(errorType, errorText);
         }
 
-        if(ipUtil.getUserIp(request).equals("0.0.0.0")) {
+        if(ipUtil.getUserIp(request).equals("0.0.0.0"))
+        {
             errorType = "AuthenticationError";
             errorText = "잘못된 IP 정보 접근입니다.";
             return webProcessRespone.webErrorRespone(errorType, errorText);
         }
 
         // 유효성 검사 최종 반환
-        if(errorMap.size() > 0) {
+        if(errorMap.size() > 0)
+        {
             return webProcessRespone.webErrorRespone(errorMap);
         }
 
@@ -85,39 +93,47 @@ public class CommentController {
         return new ResponseEntity<CommentPublic>(newComment, HttpStatus.CREATED);
     }
 
-    // COMMENT GET LIST
-    @GetMapping("/{id}")
+    /**
+     * GET Comment List DATA UniId
+     */
+    @GetMapping("/{uniId}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public List<CommentPublic> commentGetList(
-            @PathVariable Long id,
-            Authentication authentication,
-            HttpServletRequest request
-    ) {
-        return commentService.findByCommentList(id);
+    public List<CommentPublic> getCommentListUniId(
+            @PathVariable Long uniId
+    )
+    {
+        return commentService.findByCommentList(uniId);
     }
 
-    // DELETE 특정 DATA 삭제
+    /**
+     * DELETE Comment DATA id
+     */
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<String> deletePugjjig(
+    public ResponseEntity<String> deleteCommentId(
             @PathVariable Long id,
             Authentication authentication
-    ) {
+    )
+    {
         String errorType = null;
         String errorText = null;
 
         Optional<Account> accountData = accountUtill.accountInfo(authentication);
 
-        if(accountData.isPresent()) {
+        if(accountData.isPresent())
+        {
 
-            if(!accountUtill.userDataCheck(id, accountData, "comment")) {
+            if(!accountUtill.userDataCheck(id, accountData, "comment"))
+            {
                 errorType = "AuthenticationError";
                 errorText = "잘못된 계정 접근입니다.";
                 return webProcessRespone.webErrorRespone(errorType, errorText);
             }
 
             commentService.deleteData(id, accountData.get());
-        } else {
+        }
+        else
+        {
             errorType = "AuthenticationError";
             errorText = "올바른 접근이 아닙니다.";
             return webProcessRespone.webErrorRespone(errorType, errorText);

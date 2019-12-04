@@ -3,13 +3,13 @@ import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import { USER_LONG_ID } from "../../../routes"
 
-import { pugjjigLike, } from "../../../actions/KakaoMapActions"
 import { 
-    pugjjigDelete, 
+    deleteUniversityuniId, 
     getUniListStoreId,
     getUniListUniLike,
     getUniListUserId,
-    getUniListSearch
+    getUniListSearch,
+    UpdateUniLikeUniId
 } from "../../../actions/PugjjigActions"
 
 import Item from "./item/Item"
@@ -159,12 +159,12 @@ class List extends Component {
      */
     handleDelete = () => {
         // Props Init
-        const { pugjjigDelete } = this.props;
+        const { deleteUniversityuniId } = this.props;
         
         // State Init
         const { editPugjjig } = this.state;
 
-        pugjjigDelete(editPugjjig.id);
+        deleteUniversityuniId(editPugjjig.id);
     }
 
     handleDeleteUpdate = (postPugjjig) => {
@@ -210,7 +210,7 @@ class List extends Component {
     render() {
         // Props Init
         const { 
-            pugjjigLike,
+            UpdateUniLikeUniId,
             pugjjig_like
         } = this.props;
 
@@ -232,11 +232,11 @@ class List extends Component {
             if(pugjjig !== undefined && pugjjig.length > 0) {
                 const data = pugjjig.map((pugjjig, index) => (
                     <Item 
-                        key              = {index}
-                        pugjjig          = {pugjjig}
-                        pugjjigLike      = {pugjjigLike}
-                        selectModalState = {selectModalState}
-                        openModal        = {this.openModal}
+                        key                = {index}
+                        pugjjig            = {pugjjig}
+                        UpdateUniLikeUniId = {UpdateUniLikeUniId}
+                        selectModalState   = {selectModalState}
+                        openModal          = {this.openModal}
                     />
                 ));
 
@@ -302,8 +302,8 @@ List.propTypes = {
     getUniListUniLike: PropTypes.func.isRequired,
     getUniListUserId: PropTypes.func.isRequired,
     getUniListSearch: PropTypes.func.isRequired,
-    pugjjigLike: PropTypes.func.isRequired,
-    pugjjigDelete: PropTypes.func.isRequired,
+    UpdateUniLikeUniId: PropTypes.func.isRequired,
+    deleteUniversityuniId: PropTypes.func.isRequired,
     pugjjig_list: PropTypes.object.isRequired,
     pugjjig_like: PropTypes.object.isRequired,
     error: PropTypes.object.isRequired,
@@ -324,7 +324,7 @@ export default connect(
         getUniListUniLike,
         getUniListUserId,
         getUniListSearch,
-        pugjjigLike,
-        pugjjigDelete
+        UpdateUniLikeUniId,
+        deleteUniversityuniId
     }
   )(List);

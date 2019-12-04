@@ -23,13 +23,13 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
     private QFile qFile = QFile.file;
 
     @Override
-    public Long findByUniCount(String stoId) {
+    public Long findByUniCount(String keyword) {
 
         Long result = queryFactory
                 .select(qUniversity)
                 .from(qStore)
                 .leftJoin(qStore.stoUniList, qUniversity)
-                .where(qStore.stoId.eq(stoId))
+                .where(qStore.stoId.eq(keyword))
                 .fetchCount();
 
         return result;

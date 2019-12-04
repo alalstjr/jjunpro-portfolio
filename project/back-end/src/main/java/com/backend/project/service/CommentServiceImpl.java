@@ -57,13 +57,13 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentPublic> findByCommentList(Long id) {
+    public List<CommentPublic> findByCommentList(Long uniId) {
 
         List<CommentPublic> result = null;
 
         // 해당 POST에 댓글이 존재하는지 확인합니다. 불필요한 DB검색 방지
-        if(!university.findById(id).get().getComments().isEmpty()) {
-            result = comment.findByCommentList(id);
+        if(!university.findById(uniId).get().getComments().isEmpty()) {
+            result = comment.findByCommentList(uniId);
         }
 
         return result;

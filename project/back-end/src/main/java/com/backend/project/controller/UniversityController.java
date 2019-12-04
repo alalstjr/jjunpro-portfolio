@@ -55,21 +55,25 @@ public class UniversityController {
     @Autowired
     private AccountUtill accountUtill;
 
-    // CREATE or UADATE 생성
+    /**
+     * INSERT University DATA
+     */
     @PostMapping("")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<UniversityPublic> saveOrUpdate(
+    public ResponseEntity<UniversityPublic> insertUniversity(
             @Valid @ModelAttribute UniversitySaveDTO dto,
             BindingResult bindingResult,
             Authentication authentication,
             HttpServletRequest request
-    ) {
+    )
+    {
         Map<String, String> errorMap = new HashMap<String, String>();
         String errorType = null;
         String errorText = null;
 
         // Field Check
-        if(bindingResult.hasErrors()) {
+        if(bindingResult.hasErrors())
+        {
             return webProcessRespone.webErrorRespone(bindingResult);
         }
 
@@ -77,41 +81,48 @@ public class UniversityController {
         Optional<Account> accountData = accountUtill.accountInfo(authentication);
 
         // UPDATE 경우 작성한 유저 유효성 검사
-        if(dto.getId() != null) {
+        if(dto.getId() != null)
+        {
 
             // 해당 데이터의 작성자가 맞는지 검사합니다.
-            if(!accountUtill.userDataCheck(dto.getId(), accountData, "university")) {
+            if(!accountUtill.userDataCheck(dto.getId(), accountData, "university"))
+            {
                 errorType = "AuthenticationError";
                 errorText = "잘못된 계정 접근입니다.";
                 return webProcessRespone.webErrorRespone(errorType, errorText);
             }
         }
 
-        if(!accountData.isPresent()) {
+        if(!accountData.isPresent())
+        {
             errorType = "AuthenticationError";
             errorText = "잘못된 계정 접근입니다.";
             return webProcessRespone.webErrorRespone(errorType, errorText);
         }
 
-        if(ipUtil.getUserIp(request).equals("0.0.0.0")) {
+        if(ipUtil.getUserIp(request).equals("0.0.0.0"))
+        {
             errorType = "AuthenticationError";
             errorText = "잘못된 IP 정보 접근입니다.";
             return webProcessRespone.webErrorRespone(errorType, errorText);
         }
 
-        if(dto.getUniStar() < 0 || dto.getUniStar() >= 6) {
+        if(dto.getUniStar() < 0 || dto.getUniStar() >= 6)
+        {
             errorType = "AuthenticationError";
             errorText = "잘못된 점수입니다.";
             return webProcessRespone.webErrorRespone(errorType, errorText);
         }
 
         // 유효성 검사 최종 반환
-        if(errorMap.size() > 0) {
+        if(errorMap.size() > 0)
+        {
             return webProcessRespone.webErrorRespone(errorMap);
         }
 
         // 첨부파일이 존재하는 경우 파일 업로드 메소드
-        if(dto.getFiles() != null) {
+        if(dto.getFiles() != null)
+        {
             List<File> fileData = fileStorageService.uploadMultipleFiles(dto.getFiles(), "university");
             dto.setFileData(fileData);
         }
@@ -126,14 +137,17 @@ public class UniversityController {
         return new ResponseEntity<UniversityPublic>(newUniversity, HttpStatus.CREATED);
     }
 
-    // LKIE TRUE or FALSE
+    /**
+     * UPDATE UniLike DATA uniId
+     */
     @PostMapping("/like/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<UniLikeDTO> updateLike(
+    public ResponseEntity<UniLikeDTO> UpdateUniLikeUniId(
             @PathVariable Long id,
             Authentication authentication,
             HttpServletRequest request
-    ) {
+    )
+    {
         Map<String, String> errorMap = new HashMap<String, String>();
         String errorType = null;
         String errorText = null;
@@ -145,22 +159,27 @@ public class UniversityController {
         // University
         University universityData = universityService.findById(id).get();
 
-        if(!accountData.isPresent()) {
+        if(!accountData.isPresent())
+        {
             errorType = "AuthenticationError";
             errorText = "올바른 접근이 아닙니다.";
             return webProcessRespone.webErrorRespone(errorType, errorText);
         }
 
         // 유효성 검사 최종 반환
-        if(errorMap.size() > 0) {
+        if(errorMap.size() > 0)
+        {
             return webProcessRespone.webErrorRespone(errorMap);
         }
 
         // Like State Check
-        if(universityData.getUniLike().contains(accountData.get())) {
+        if(universityData.getUniLike().contains(accountData.get()))
+        {
             // Like False
             universityData.getUniLike().remove(accountData.get());
-        } else {
+        }
+        else
+        {
             // Like True
             universityData.getUniLike().add(accountData.get());
             uniLikeState = true;
@@ -182,7 +201,8 @@ public class UniversityController {
     public Page<UniversityPublic> getPugjjig(
             Pageable pageable,
             HttpServletRequest request
-    ) throws IOException {
+    ) throws IOException
+    {
         // Account Info
         Account accountData = accountUtill.accountJWT(request);
 
@@ -197,7 +217,8 @@ public class UniversityController {
             @PathVariable String keyword,
             @RequestParam("offsetCount") Long offsetCount,
             HttpServletRequest request
-    ) throws IOException {
+    ) throws IOException
+    {
         // Search DTO 생성
         SearchDTO searchDTO = new SearchDTO();
 
@@ -224,12 +245,15 @@ public class UniversityController {
         return new ResponseEntity<List<UniversityPublic>>(result, HttpStatus.OK);
     }
 
-    // GET 푹찍 {ID} 리뷰
+    /**
+     * GET University DATA uniId
+     */
     @GetMapping("/{id}")
-    public ResponseEntity<UniversityPublic> getPublicAccountList(
+    public ResponseEntity<UniversityPublic> getUniversityUniId(
             @PathVariable Long id,
             HttpServletRequest request
-    ) throws IOException {
+    ) throws IOException
+    {
         // Account Info
         Account accountData = accountUtill.accountJWT(request);
 
@@ -246,7 +270,8 @@ public class UniversityController {
             @PathVariable String keyword,
             @RequestParam("offsetCount") Long offsetCount,
             HttpServletRequest request
-    ) throws IOException {
+    ) throws IOException
+    {
         // Search DTO 생성
         SearchDTO searchDTO = new SearchDTO();
 
@@ -312,28 +337,35 @@ public class UniversityController {
         return new ResponseEntity<List<UniversityPublic>>(result, HttpStatus.OK);
     }
 
-    // DELETE 특정 DATA 삭제
+    /**
+     * DELETE University DATA uniId
+     */
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<String> deletePugjjig(
+    public ResponseEntity<String> deleteUniversityuniId(
             @PathVariable Long id,
             Authentication authentication
-    ) {
+    )
+    {
         String errorType = null;
         String errorText = null;
 
         Optional<Account> accountData = accountUtill.accountInfo(authentication);
 
-        if(accountData.isPresent()) {
+        if(accountData.isPresent())
+        {
 
-            if(!accountUtill.userDataCheck(id, accountData, "university")) {
+            if(!accountUtill.userDataCheck(id, accountData, "university"))
+            {
                 errorType = "AuthenticationError";
                 errorText = "잘못된 계정 접근입니다.";
                 return webProcessRespone.webErrorRespone(errorType, errorText);
             }
 
             universityService.deleteData(id, accountData.get());
-        } else {
+        }
+        else
+        {
             errorType = "AuthenticationError";
             errorText = "올바른 접근이 아닙니다.";
             return webProcessRespone.webErrorRespone(errorType, errorText);

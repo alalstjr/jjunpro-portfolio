@@ -4,7 +4,7 @@ import { connect } from "react-redux"
 import { withRouter } from "react-router-dom"
 import ReactTransitionGroup from "react-addons-css-transition-group"
 
-import { pugjjigInsert } from "../../../actions/KakaoMapActions"
+import { insertUniversity } from "../../../actions/PugjjigActions"
 import FileDrop from "../../widget/fileDrop/FileDrop"
 import SVG from "../../../static/svg/SVG"
 import SVGLoading from "../../../static/svg/SVGLoading"
@@ -202,7 +202,7 @@ class PugjjigWrite extends Component {
             loding: true
         });
         
-        this.props.pugjjigInsert(pugjjig, files, this.props.history);
+        this.props.insertUniversity(pugjjig, files, this.props.history);
     }
 
     // 태그 메소드
@@ -435,7 +435,7 @@ class PugjjigWrite extends Component {
 }
 
 PugjjigWrite.propTypes = {
-    pugjjigInsert: PropTypes.func.isRequired,
+    insertUniversity: PropTypes.func.isRequired,
     pugjjig_university: PropTypes.string.isRequired,
     error: PropTypes.object.isRequired
 }
@@ -447,5 +447,5 @@ const mapStateToProps = state => ({
   
 export default withRouter(connect(
     mapStateToProps, 
-    { pugjjigInsert }
+    { insertUniversity }
 )(PugjjigWrite));

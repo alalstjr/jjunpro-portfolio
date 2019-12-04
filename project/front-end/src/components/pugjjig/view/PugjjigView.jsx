@@ -6,8 +6,7 @@ import { USER_LONG_ID } from "../../../routes"
 
 import ImageSlide from "../../widget/mainTitleSlide"
 import NormalHeader from "../../layout/header/normal/NormalHeader"
-import { pugjjigGetView, pugjjigLike } from "../../../actions/KakaoMapActions"
-import { pugjjigCommentGetList, pugjjigDelete, pugjjigCommentDelete } from "../../../actions/PugjjigActions"
+import { getCommentListUniId, deleteUniversityuniId, deleteCommentId, getUniversityUniId, UpdateUniLikeUniId } from "../../../actions/PugjjigActions"
 
 import ItemEditModal from "../list/item/ItemEditModal"
 import InsertModal from "../modal/InsertModal"
@@ -71,14 +70,14 @@ class PugjjigView extends Component {
 
         // Props Init
         const { 
-            pugjjigGetView,
-            pugjjigCommentGetList,
+            getUniversityUniId,
+            getCommentListUniId,
             match,
             history
         } = this.props;
 
-        pugjjigGetView(match.params.id, history);   // {id} 게시물의 {DATA}를 받아옵니다.
-        pugjjigCommentGetList(match.params.id);     // {id} 게시물의 {COMMENT}을 받아옵니다.
+        getUniversityUniId(match.params.id, history);   // {id} 게시물의 {DATA}를 받아옵니다.
+        getCommentListUniId(match.params.id);     // {id} 게시물의 {COMMENT}을 받아옵니다.
     }
 
     componentWillReceiveProps(nextProps) {
@@ -149,12 +148,12 @@ class PugjjigView extends Component {
      */
     handleDelete = () => {
         // Props Init
-        const { pugjjigDelete } = this.props;
+        const { deleteUniversityuniId } = this.props;
         
         // State Init
         const { editPugjjig } = this.state;
 
-        pugjjigDelete(editPugjjig.id);
+        deleteUniversityuniId(editPugjjig.id);
     }
 
     /*
@@ -162,9 +161,9 @@ class PugjjigView extends Component {
      */
     handleCommentDelete = (id) => {
         // Props Init
-        const { pugjjigCommentDelete } = this.props;
+        const { deleteCommentId } = this.props;
 
-        pugjjigCommentDelete(id);
+        deleteCommentId(id);
     }
 
     handleCommentDeleteUpdate = (id) => {
@@ -220,7 +219,7 @@ class PugjjigView extends Component {
 
         // Props Init
         const { 
-            pugjjigLike,
+            UpdateUniLikeUniId,
             pugjjig_view, 
             pugjjig_like
         } = this.props;
@@ -323,7 +322,7 @@ class PugjjigView extends Component {
                                         <Link to={`/pugjjig/uniSearch/${pugjjig.uniName}`}>
                                             <span>{pugjjig.uniName}</span> 
                                         </Link>
-                                        <Link to={`/pugjjig/uniSearch/${pugjjig.storePublic.stoId}`}>
+                                        <Link to={`/pugjjig/stoSearch/${pugjjig.storePublic.stoId}`}>
                                             <span>{pugjjig.storePublic.stoName}</span> 
                                         </Link>
                                         <a href = {`${pugjjig.storePublic.stoUrl}`} target="_blank">
@@ -354,7 +353,7 @@ class PugjjigView extends Component {
                             </ItemDetailWrap>
                             <ItemBottom>
                                 <ItemState>
-                                    <ItemLikeBtn onClick={() => pugjjigLike(pugjjig.id)}>
+                                    <ItemLikeBtn onClick={() => UpdateUniLikeUniId(pugjjig.id)}>
                                         {
                                             pugjjig.uniLikeState == true ?  
                                             <SVG name={"heartCk"} width="14px" height="14px" color={"#d11d33"} />
@@ -442,11 +441,11 @@ class PugjjigView extends Component {
 }
 
 PugjjigView.propTypes = {
-    pugjjigGetView: PropTypes.func.isRequired,
-    pugjjigLike: PropTypes.func.isRequired,
-    pugjjigCommentGetList: PropTypes.func.isRequired,
-    pugjjigDelete: PropTypes.func.isRequired,
-    pugjjigCommentDelete: PropTypes.func.isRequired,
+    getUniversityUniId: PropTypes.func.isRequired,
+    UpdateUniLikeUniId: PropTypes.func.isRequired,
+    getCommentListUniId: PropTypes.func.isRequired,
+    deleteUniversityuniId: PropTypes.func.isRequired,
+    deleteCommentId: PropTypes.func.isRequired,
     pugjjig_view: PropTypes.object.isRequired,
     pugjjig_like: PropTypes.object.isRequired,
     pugjjig_comment: PropTypes.object.isRequired,
@@ -470,10 +469,10 @@ PugjjigView.propTypes = {
   export default connect(
     mapStateToProps, 
     { 
-        pugjjigGetView,
-        pugjjigLike,
-        pugjjigCommentGetList,
-        pugjjigDelete,
-        pugjjigCommentDelete
+        getUniversityUniId,
+        UpdateUniLikeUniId,
+        getCommentListUniId,
+        deleteUniversityuniId,
+        deleteCommentId
     }
   )(PugjjigView);

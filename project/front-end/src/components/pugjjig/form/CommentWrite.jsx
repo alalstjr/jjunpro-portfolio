@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import ReactTransitionGroup from "react-addons-css-transition-group"
 
-import { pugjjigCommentInsert } from "../../../actions/PugjjigActions"
+import { insertComment } from "../../../actions/PugjjigActions"
 
 import { 
     WaringWrap
@@ -94,7 +94,7 @@ class CommentWrite extends Component {
             return false;
         }
         
-        this.props.pugjjigCommentInsert(commentData);
+        this.props.insertComment(commentData);
     }
 
     /*
@@ -187,7 +187,7 @@ class CommentWrite extends Component {
 }
 
 CommentWrite.propTypes = {
-    pugjjigCommentInsert: PropTypes.func.isRequired,
+    insertComment: PropTypes.func.isRequired,
     pugjjig_comment: PropTypes.object.isRequired,
     error: PropTypes.object.isRequired
   }
@@ -201,6 +201,6 @@ CommentWrite.propTypes = {
   export default connect(
     mapStateToProps, 
     { 
-        pugjjigCommentInsert
+        insertComment
     }
   )(CommentWrite);

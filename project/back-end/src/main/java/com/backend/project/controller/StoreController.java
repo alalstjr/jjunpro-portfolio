@@ -20,7 +20,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/store")
 @CrossOrigin
-public class StoreController {
+public class StoreController
+{
 
     @Autowired
     private StoreService storeService;
@@ -37,7 +38,8 @@ public class StoreController {
             @PathVariable String keyword,
             @RequestParam("offsetCount") Long offsetCount,
             HttpServletRequest request
-    ) throws IOException {
+    ) throws IOException
+    {
 
         // Search DTO 생성
         SearchDTO searchDTO = new SearchDTO();
@@ -63,12 +65,16 @@ public class StoreController {
         return new ResponseEntity<List<UniversityPublic>>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/{storeId}/count")
+    /**
+     *  GET University Count DATA StoreId
+     */
+    @GetMapping("/count/{keyword}")
     @PreAuthorize("permitAll()")
-    public ResponseEntity<Map<String, Long>> getStoreIdCount(
-            @PathVariable String storeId
-    ) {
-        Long uniCountData = storeService.findByUniCount(storeId);
+    public ResponseEntity<Map<String, Long>> getUniCountStoId(
+            @PathVariable String keyword
+    )
+    {
+        Long uniCountData = storeService.findByUniCount(keyword);
 
         Map<String, Long> resMap = new HashMap<String, Long>();
         resMap.put("count", uniCountData);

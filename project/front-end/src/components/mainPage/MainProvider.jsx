@@ -6,7 +6,7 @@ import FirstSection from "./firstSection"
 import PugjjigProvider from "../../components/pugjjig/PugjjigProvider"
 
 import KakaoMapService from "../../service/KakaoMapService"
-import { pugjjigGetCount } from "../../actions/KakaoMapActions"
+import { getUniCountStoId } from "../../actions/PugjjigActions"
 
 import { Main, MainMap } from "../../style/globalStyles"
 
@@ -44,7 +44,7 @@ class MainProvider extends Component {
       this,
       this.state.LatLng, 
       this.openModal,
-      this.pugjjigGetCount
+      this.getUniCountStoId
     );
   
     this.setState({ 
@@ -74,8 +74,8 @@ class MainProvider extends Component {
   }
 
   // 음식점 리뷰 갯수 가져오는 함수
-  pugjjigGetCount = (storeId) => {
-    return this.props.pugjjigGetCount(storeId);
+  getUniCountStoId = (storeId) => {
+    return this.props.getUniCountStoId(storeId);
   }
 
   // 초기화면에서 검색하면 검색창 제거
@@ -137,7 +137,7 @@ class MainProvider extends Component {
 }
 
 MainProvider.propTypes = {
-  pugjjigGetCount: PropTypes.func.isRequired,
+  getUniCountStoId: PropTypes.func.isRequired,
   pugjjig_count: PropTypes.object.isRequired,
   error: PropTypes.object.isRequired
 }
@@ -150,5 +150,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps, 
-  { pugjjigGetCount }
+  { getUniCountStoId }
 )(MainProvider);

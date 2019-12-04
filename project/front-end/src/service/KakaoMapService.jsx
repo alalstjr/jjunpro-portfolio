@@ -15,18 +15,18 @@ class KakaoMapService {
     thatThis = null;
     latLng = null;
     openModal = null;
-    pugjjigGetCount = null;
+    getUniCountStoId = null;
 
     constructor(
         thatThis,
         latLng,
         openModal,
-        pugjjigGetCount
+        getUniCountStoId
     ) {
         this.thatThis = thatThis
         this.latLng = latLng
         this.openModal = openModal
-        this.pugjjigGetCount = pugjjigGetCount
+        this.getUniCountStoId = getUniCountStoId
 
         // kakao 콜백함수에 전달해주는 변수
         const classThis = this;
@@ -199,7 +199,7 @@ class KakaoMapService {
     getListItem = async (index, places) => {
 
         let pugjjig = new Object;
-        pugjjig = await this.pugjjigGetCount(places.id);
+        pugjjig = await this.getUniCountStoId(places.id);
 
         let el = document.createElement('button');
         let item = `
@@ -305,7 +305,7 @@ class KakaoMapService {
 
         // 푹찍 리뷰 오브젝트 생성
         let pugjjig = new Object;
-        pugjjig = await this.pugjjigGetCount(store.id);
+        pugjjig = await this.getUniCountStoId(store.id);
 
         let overlayWarp = document.createElement("div"); 
         overlayWarp.setAttribute("style", "padding:10px 15px;z-index:3;background-color: #fff;border: 1px solid #d11d33;width: 300px;");

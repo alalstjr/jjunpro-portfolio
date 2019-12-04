@@ -1,12 +1,14 @@
 import axios from "axios"
 import { SERVER_URL, USER_AUTH, USER_ID } from "../routes"
 import { 
-    GET_UNIVERSITY,
     DELETE_PUGJJIG,
+    DELETE_PUGJJIG_COMMENT,
+    GET_UNIVERSITY,
     GET_PUGJJIG_LIST,
     GET_PUGJJIG_COMMENT,
     GET_PUGJJIG_COMMENT_LIST,
-    DELETE_PUGJJIG_COMMENT,
+    GET_PUGJJIG_LIKE,
+    GET_PUGJJIG_VIEW,
     GET_ERRORS
 } from "./types" 
 
@@ -22,53 +24,74 @@ export const getUniversity = (uniName) => dispatch => {
 }
 
 /****************************************
-    Pugjjig Comment Insert 저장하기
+    INSERT University DATA
 ****************************************/
-export const pugjjigCommentInsert = (comment) =>  async dispatch => {
+export const insertUniversity = (pugjjig, files, history) => async dispatch => {
     try {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
+        // file upload form
+        const formData = new FormData();
+        const config = {
+            headers: {
+                'Accept': 'application/json',
+                'content-type': 'multipart/form-data'
+            },
+            // File Upload 진행상황
+            onUploadProgress: progressEvent => {
+                console.log("업로드 진행률.." + Math.round(progressEvent.loaded / progressEvent.total*100) + "%");
+            }
+        };
 
-        const res = await axios.post(`${SERVER_URL}/api/comment`, comment);
+        // pugjjig form 데이터
+        formData.append("uniSubject", pugjjig.uniSubject);
+        formData.append("uniContent", pugjjig.uniContent);
+        formData.append("uniName",    pugjjig.uniName);
+        formData.append("uniTag",     pugjjig.uniTag);
+        formData.append("uniStar",    pugjjig.uniStar);
+        formData.append("stoId",      pugjjig.stoId);
+        formData.append("stoName",    pugjjig.stoName);
+        formData.append("stoAddress", pugjjig.stoAddress);
+        formData.append("stoUrl",     pugjjig.stoUrl);
+
+        // pugjjig update 일경우 id값 전달
+        if(pugjjig.uniId !== null) {
+            formData.append("id",     pugjjig.uniId);
+            formData.append("removeFiles", pugjjig.removeFiles);
+        }
+        
+        files.forEach(function(file) {
+            formData.append('files', file); 
+        });
+
+        // 유저 JWT Token정보
+        USER_AUTH();
+        
+        const res = await axios.post(`${SERVER_URL}/api/university`, formData, config);
 
         switch(res.status) {
             case 201 :
+                history.push(`/pugjjig/${res.data.id}`);
                 dispatch({
-                    type: GET_PUGJJIG_COMMENT,
+                    type: GET_PUGJJIG_VIEW,
                     payload: res.data
                 });
                 break;
-        }
-    } catch(error) {
-        alert(error.response.data.error);
-    }
-}
-
-/****************************************
-    Pugjjig Comment Delete 저장하기
-****************************************/
-export const pugjjigCommentDelete = (id) =>  async dispatch => {
-    try {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
-
-        const res = await axios.delete(`${SERVER_URL}/api/comment/${id}`);
-
-        switch(res.status) {
-            case 200 :
-                dispatch({
-                    type: DELETE_PUGJJIG_COMMENT,
-                    payload: id
-                });
+            case 202 :
+                alert(res.data.AuthenticationError);
                 break;
+
+            default :
+                alert("잘못된 접근입니다.");
         }
-    } catch(error) {
+        
+    } catch (error) {
         alert(error.response.data.error);
     }
 }
 
 /****************************************
-    Pugjjig Delete 삭제
+    DELETE University DATA uniId
 ****************************************/
-export const pugjjigDelete = (id) =>  async dispatch => {
+export const deleteUniversityuniId = (id) =>  async dispatch => {
     try {
         axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
         
@@ -95,26 +118,6 @@ export const pugjjigDelete = (id) =>  async dispatch => {
 }
 
 /****************************************
-    Pugjjig Comment List 가져오기
-****************************************/
-export const pugjjigCommentGetList = (id) =>  async dispatch => {
-    try {
-        const res = await axios.get(`${SERVER_URL}/api/comment/${id}`);
-
-        switch(res.status) {
-            case 200 :
-                dispatch({
-                    type: GET_PUGJJIG_COMMENT_LIST,
-                    payload: res.data
-                });
-                break;
-        }
-    } catch(error) {
-        alert(error.response.data.error);
-    }
-}
-
-/****************************************
     GET University List DATA Search
 ****************************************/
 export const getUniListSearch = (searchDTO) =>  async dispatch => {
@@ -129,6 +132,9 @@ export const getUniListSearch = (searchDTO) =>  async dispatch => {
                     payload: res.data
                 });
                 break;
+
+            default :
+                alert("잘못된 접근입니다.");
         }
     } catch(error) {
         alert(error.response.data.error);
@@ -153,6 +159,9 @@ export const getUniListStoreId = (searchDTO) => async dispatch => {
                     payload: res.data
                 });
                 break;
+
+            default :
+                alert("잘못된 접근입니다.");
         }
     } catch(error) {
         alert(error.response.data.error);
@@ -183,6 +192,9 @@ export const getUniListUserId = (searchDTO) =>  async dispatch => {
                     payload: res.data
                 });
                 break;
+
+            default :
+                alert("잘못된 접근입니다.");
         }
     } catch(error) {
         alert(error.response.data.error);
@@ -213,6 +225,9 @@ export const getUniListUniLike = (searchDTO) => async dispatch => {
                     payload: res.data
                 });
                 break;
+
+            default :
+                alert("잘못된 접근입니다.");
         }
     } catch(error) {
         alert(error.response.data.error);
@@ -220,5 +235,154 @@ export const getUniListUniLike = (searchDTO) => async dispatch => {
             type: GET_ERRORS,
             payload: error.response.data
         });
+    }
+}
+
+/****************************************
+    GET University Count DATA StoreId
+****************************************/
+export const getUniCountStoId = (keyword) => async dispatch => {
+    try {
+        // 유저 JWT Token정보
+        USER_AUTH();
+        
+        const res = axios.get(`${SERVER_URL}/api/store/count/${keyword}`)
+
+        switch(res.status) {
+            case 200 :
+                return res.data;
+
+            default :
+                alert("잘못된 접근입니다.");
+        }
+    } catch(error) {
+        alert(error.response.data.error);
+    }
+}
+
+/****************************************
+    GET University DATA uniId
+****************************************/
+export const getUniversityUniId = (id, history) =>  async dispatch => {
+    try {
+        // 유저 JWT Token정보
+        USER_AUTH();
+
+        const res = await axios.get(`${SERVER_URL}/api/university/${id}`);
+
+        switch(res.status) {
+            case 200 :
+                dispatch({
+                    type: GET_PUGJJIG_VIEW,
+                    payload: res.data
+                });
+                break;
+
+            default :
+                alert("잘못된 접근입니다.");
+        }
+    } catch(error) {
+        alert(error.response.data.error);
+        history.push("/");
+    }
+}
+
+/****************************************
+    UPDATE UniLike DATA uniId
+****************************************/
+export const UpdateUniLikeUniId = (id, history) => async dispatch => {
+    try {
+        // 유저 JWT Token정보
+        USER_AUTH();
+
+        const res = await axios.post(`${SERVER_URL}/api/university/like/${id}`);
+
+        switch(res.status) {
+            case 200 :
+                dispatch({
+                    type: GET_PUGJJIG_LIKE,
+                    payload: res.data
+                });
+                break;
+
+            default :
+                alert("잘못된 접근입니다.");
+        }
+    } catch(error) {
+        alert(error.response.data.error);
+        history.push("/");
+    }
+}
+
+/****************************************
+    INSERT Comment DATA
+****************************************/
+export const insertComment = (comment) =>  async dispatch => {
+    try {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
+
+        const res = await axios.post(`${SERVER_URL}/api/comment`, comment);
+
+        switch(res.status) {
+            case 201 :
+                dispatch({
+                    type: GET_PUGJJIG_COMMENT,
+                    payload: res.data
+                });
+                break;
+
+            default :
+                alert("잘못된 접근입니다.");
+        }
+    } catch(error) {
+        alert(error.response.data.error);
+    }
+}
+
+/****************************************
+    DELETE Comment DATA id
+****************************************/
+export const deleteCommentId = (id) =>  async dispatch => {
+    try {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
+
+        const res = await axios.delete(`${SERVER_URL}/api/comment/${id}`);
+
+        switch(res.status) {
+            case 200 :
+                dispatch({
+                    type: DELETE_PUGJJIG_COMMENT,
+                    payload: id
+                });
+                break;
+
+            default :
+                alert("잘못된 접근입니다.");
+        }
+    } catch(error) {
+        alert(error.response.data.error);
+    }
+}
+
+/****************************************
+    GET Comment List DATA UniId
+****************************************/
+export const getCommentListUniId = (id) =>  async dispatch => {
+    try {
+        const res = await axios.get(`${SERVER_URL}/api/comment/${id}`);
+
+        switch(res.status) {
+            case 200 :
+                dispatch({
+                    type: GET_PUGJJIG_COMMENT_LIST,
+                    payload: res.data
+                });
+                break;
+                
+            default :
+                alert("잘못된 접근입니다.");
+        }
+    } catch(error) {
+        alert(error.response.data.error);
     }
 }

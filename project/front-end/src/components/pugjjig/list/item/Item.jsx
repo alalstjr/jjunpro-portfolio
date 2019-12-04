@@ -35,7 +35,7 @@ import {
 import SVG from "../../../../static/svg/SVG"
 import SVGEdit from "../../../../static/svg/SVGEdit"
 
-const Item = ({pugjjig, pugjjigLike, openModal}) => (
+const Item = ({pugjjig, UpdateUniLikeUniId, openModal}) => (
     <PugjjigItem>
         <ItemHead>
             <ItemUserPhoto>
@@ -153,7 +153,7 @@ const Item = ({pugjjig, pugjjigLike, openModal}) => (
             </ItemDetailWrap>
             <ItemBottom>
                 <ItemState>
-                    <ItemLikeBtn onClick={() => pugjjigLike(pugjjig.id)}>
+                    <ItemLikeBtn onClick={() => UpdateUniLikeUniId(pugjjig.id)}>
                         {
                             pugjjig.uniLikeState == true ?  
                             <SVG name={"heartCk"} width="14px" height="14px" color={"#d11d33"} />
