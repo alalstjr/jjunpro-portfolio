@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from 'react';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { accountLogin } from "../../../../actions/accountActions";
+import { loginAccount } from "../../../../actions/accountActions";
 
 import ReactTransitionGroup from 'react-addons-css-transition-group';
 
@@ -89,7 +89,7 @@ class LoginModal extends Component {
             return false;
         }
 
-        this.props.accountLogin(account, this.props.history);
+        this.props.loginAccount(account, this.props.history);
     }
 
     render(){
@@ -199,8 +199,8 @@ class LoginModal extends Component {
     }
 }
   
-accountLogin.propTypes = {
-    accountLogin: PropTypes.func.isRequired,
+loginAccount.propTypes = {
+    loginAccount: PropTypes.func.isRequired,
     error: PropTypes.object.isRequired,
     user_info: PropTypes.object.isRequired
 }
@@ -212,5 +212,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps, 
-    { accountLogin }
+    { loginAccount }
 )(LoginModal);

@@ -7,7 +7,7 @@ import ReactTransitionGroup from "react-addons-css-transition-group"
 import LoginModal from "./modal/LoginModal"
 import SingUpModal from "./modal/SignUpModal"
 
-import { accountLogout } from "../../../actions/accountActions"
+import { logoutAccount } from "../../../actions/accountActions"
 
 import { SuccessWrap } from "../../../style/globalStyles"
 import {
@@ -109,7 +109,7 @@ class AccountProvider extends Component {
      *  로그아웃 메소드입니다.
      */
     logoutHandler = () => {
-        this.props.accountLogout();
+        this.props.logoutAccount();
     }
 
     /*
@@ -304,5 +304,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { accountLogout }
+    { logoutAccount }
 )(AccountProvider);

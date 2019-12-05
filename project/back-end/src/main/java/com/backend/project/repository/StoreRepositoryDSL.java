@@ -6,8 +6,8 @@ import com.backend.project.projection.UniversityPublic;
 
 import java.util.List;
 
-public interface StoreRepositoryDSL {
-
+public interface StoreRepositoryDSL
+{
     public Long findByUniCount(String keyword);
 
     public List<UniversityPublic> findByStoreUniAll(SearchDTO searchDTO);

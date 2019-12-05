@@ -4,6 +4,7 @@ import { connect } from "react-redux"
 import { USER_LONG_ID } from "../../../routes"
 
 import { 
+    tempUniversityList,
     deleteUniversityuniId, 
     getUniListStoreId,
     getUniListUniLike,
@@ -27,7 +28,6 @@ class List extends Component {
         super(props);
     
         this.state = {
-            pugjjig: [],
             insertModalState: false,
             selectModalState: false,
             editPugjjig: {},
@@ -41,7 +41,8 @@ class List extends Component {
         const {
             keyword,
             classification,
-            offsetCount
+            offsetCount,
+            tempUniversityList
         } = this.props;
 
         // Search DTO 생성
@@ -50,6 +51,9 @@ class List extends Component {
             classification,
             offsetCount: 0
         };
+        
+        let result = true;
+        tempUniversityList(result);
 
         // {stoId} 게시글 정보를 가져옵니다.
         this.handleAction(searchDTO);
@@ -59,8 +63,10 @@ class List extends Component {
 
         // Props Init
         const { 
+            keyword,
             pugjjig_list,
-            pugjjig_delete
+            pugjjig_delete,
+            tempUniversityList
         } = this.props;
 
         if(nextProps.pugjjig_list !== pugjjig_list) {
@@ -70,11 +76,26 @@ class List extends Component {
         if(nextProps.pugjjig_delete !== pugjjig_delete) {
             this.handleDeleteUpdate(nextProps.pugjjig_delete);
         }
+        
+        // keyword 달라지면 새로고침
+        if(nextProps.keyword !== keyword) {
+            // Search DTO 생성
+            const searchDTO = {
+                keyword: nextProps.keyword,
+                classification:nextProps.classification,
+                offsetCount: 0
+            };
+
+            let result = true;
+            tempUniversityList(result);
+            
+            this.handleAction(searchDTO);
+        }
     }
 
     // { keyword } 게시글 정보를 가져옵니다.
     handleAction = (searchDTO) => {
-        const { 
+        const {
             getUniListStoreId,
             getUniListUniLike,
             getUniListUserId,
@@ -102,6 +123,10 @@ class List extends Component {
                 getUniListSearch(searchDTO);
                 break;
 
+            case "uniTag" :
+                getUniListSearch(searchDTO);
+                break;
+
             default:
                 break;
         }
@@ -119,17 +144,18 @@ class List extends Component {
     } 
 
     handleLoad = (offsetCount) => {
-        
         // Props Init
         const { 
             // search value
-            keyword, 
+            keyword,
+            classification,
             pugjjig_list
         } = this.props;
 
         // Search DTO 생성
         const searchDTO = {
             keyword,
+            classification,
             offsetCount
         };
         
@@ -144,14 +170,12 @@ class List extends Component {
 
     handleUpdate = (postData) => {
 
-        // Props Init
-        const {
-            pugjjig
-        } = this.state;
+        const { 
+            tempUniversityList, 
+            temp_pugjjig_list 
+        } = this.props;
         
-        this.setState({
-            pugjjig: pugjjig.concat(postData.data)
-        });
+        tempUniversityList(false, temp_pugjjig_list, postData.data);
     }
 
     /*
@@ -169,11 +193,11 @@ class List extends Component {
 
     handleDeleteUpdate = (postPugjjig) => {
         // State Init
-        const { pugjjig } = this.state;
+        const { temp_pugjjig_list } = this.props;
         
         this.closeModal("selectModalState");
         this.setState({
-            pugjjig: pugjjig.filter(pugjjig => pugjjig.id !== postPugjjig)
+            pugjjig: temp_pugjjig_list.filter(pugjjig => pugjjig.id !== postPugjjig)
         });
     }
 
@@ -210,13 +234,13 @@ class List extends Component {
     render() {
         // Props Init
         const { 
+            temp_pugjjig_list,
             UpdateUniLikeUniId,
             pugjjig_like
         } = this.props;
 
         // State Init
         const {
-            pugjjig,
             insertModalState,
             selectModalState,
             editPugjjig,
@@ -262,20 +286,25 @@ class List extends Component {
         }
 
         // pugjjig Get List View
-        pugjjigContent = pugjjigGet(pugjjig);
+        pugjjigContent = pugjjigGet(temp_pugjjig_list);
 
         return (
             <PugjjigItemWrap>
-                <InfiniteScroll
+                {
+                    temp_pugjjig_list.length > 0 ?
+                    <InfiniteScroll
                     pageStart   = {0}
                     loadMore    = {this.handleLoad}
                     hasMore     = {true}
                     initialLoad = {false}
-                    useWindow   = {false}
+                    useWindow   = {true}
                     threshold   = {500}
-                >
-                    {pugjjigContent}
-                </InfiniteScroll>
+                    >
+                        {pugjjigContent}
+                    </InfiniteScroll>
+                    :
+                    <NotPost>푹찍이 존재하지 않습니다.</NotPost>
+                }
                 {/* Item Edit Select modal */}
                 <ItemEditModal
                     modalState   = {selectModalState}
@@ -298,12 +327,14 @@ class List extends Component {
 }
 
 List.propTypes = {
+    tempUniversityList: PropTypes.func.isRequired,
     getUniListStoreId: PropTypes.func.isRequired,
     getUniListUniLike: PropTypes.func.isRequired,
     getUniListUserId: PropTypes.func.isRequired,
     getUniListSearch: PropTypes.func.isRequired,
     UpdateUniLikeUniId: PropTypes.func.isRequired,
     deleteUniversityuniId: PropTypes.func.isRequired,
+    temp_pugjjig_list: PropTypes.array.isRequired,
     pugjjig_list: PropTypes.object.isRequired,
     pugjjig_like: PropTypes.object.isRequired,
     error: PropTypes.object.isRequired,
@@ -312,6 +343,7 @@ List.propTypes = {
   
 const mapStateToProps = state => ({
     error: state.errors,
+    temp_pugjjig_list: state.pugjjig.temp_pugjjig_list,
     pugjjig_list: state.pugjjig.pugjjig_list,
     pugjjig_like: state.pugjjig.pugjjig_like,
     pugjjig_delete: state.pugjjig.pugjjig_delete
@@ -320,6 +352,7 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps, 
     { 
+        tempUniversityList,
         getUniListStoreId,
         getUniListUniLike,
         getUniListUserId,

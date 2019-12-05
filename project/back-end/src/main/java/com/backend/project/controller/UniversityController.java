@@ -3,10 +3,10 @@ package com.backend.project.controller;
 import com.backend.project.domain.Account;
 import com.backend.project.domain.File;
 import com.backend.project.domain.University;
+import com.backend.project.dto.SearchDTO;
 import com.backend.project.dto.StoreDTO;
 import com.backend.project.dto.UniLikeDTO;
 import com.backend.project.dto.UniversitySaveDTO;
-import com.backend.project.dto.SearchDTO;
 import com.backend.project.projection.UniversityPublic;
 import com.backend.project.respone.WebProcessRespone;
 import com.backend.project.service.AccountService;
@@ -14,9 +14,8 @@ import com.backend.project.service.FileStorageService;
 import com.backend.project.service.UniversityService;
 import com.backend.project.util.AccountUtill;
 import com.backend.project.util.IpUtil;
+import com.backend.project.util.ValidityCheckUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,8 +34,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/university")
 @CrossOrigin
-public class UniversityController {
-
+public class UniversityController
+{
     @Autowired
     private UniversityService universityService;
 
@@ -54,6 +53,9 @@ public class UniversityController {
 
     @Autowired
     private AccountUtill accountUtill;
+
+    @Autowired
+    private ValidityCheckUtil validityCheck;
 
     /**
      * INSERT University DATA
@@ -83,7 +85,6 @@ public class UniversityController {
         // UPDATE 경우 작성한 유저 유효성 검사
         if(dto.getId() != null)
         {
-
             // 해당 데이터의 작성자가 맞는지 검사합니다.
             if(!accountUtill.userDataCheck(dto.getId(), accountData, "university"))
             {
@@ -195,26 +196,12 @@ public class UniversityController {
         return new ResponseEntity<UniLikeDTO>(uniLikeDTO, HttpStatus.OK);
     }
 
-    // GET 공개된 유저정보
-    @GetMapping("")
-    @PreAuthorize("permitAll()")
-    public Page<UniversityPublic> getPugjjig(
-            Pageable pageable,
-            HttpServletRequest request
-    ) throws IOException
-    {
-        // Account Info
-        Account accountData = accountUtill.accountJWT(request);
-
-        return universityService.findByUniversityList(pageable, accountData);
-    }
-
     /**
      * GET University List DATA userId
      */
-    @GetMapping("/pugjjigs/{keyword}")
+    @GetMapping("/pugjjigs/{userId}")
     public ResponseEntity<?> getUniListUserId(
-            @PathVariable String keyword,
+            @PathVariable String userId,
             @RequestParam("offsetCount") Long offsetCount,
             HttpServletRequest request
     ) throws IOException
@@ -228,11 +215,11 @@ public class UniversityController {
         // offsetCount 없는경우 기본값 0 설정
         offsetCount = (offsetCount == null) ? 0L : offsetCount;
 
-        if(keyword != null || offsetCount != null)
+        if(userId != null || offsetCount != null)
         {
             // Param 값을 DTO 에 담아줍니다.
             // (관리하기 쉽게 DTO 한곳에 모아줍니다.)
-            searchDTO.setKeyword(keyword);
+            searchDTO.setKeyword(userId);
             searchDTO.setOffsetCount(offsetCount);
             searchDTO.setAccount(accountData);
         }

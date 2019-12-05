@@ -34,6 +34,10 @@ import {
 
 import SVG from "../../../../static/svg/SVG"
 import SVGEdit from "../../../../static/svg/SVGEdit"
+import SVGYoutube from "../../../../static/svg/SVGYoutube"
+import SVGFacebook from "../../../../static/svg/SVGFacebook"
+import SVGInstar from "../../../../static/svg/SVGInstar"
+import SVGLink from "../../../../static/svg/SVGLink"
 
 const Item = ({pugjjig, UpdateUniLikeUniId, openModal}) => (
     <PugjjigItem>
@@ -44,13 +48,36 @@ const Item = ({pugjjig, UpdateUniLikeUniId, openModal}) => (
                     <SVG name={"user"} width="38px" height="38px" color={"#E71D36"} />
                     : 
                     <ProfileIamge
-                        image = {require(`../../../../../../data/file/thumbnail/${pugjjig.photo.fileThumbnail}`)}
+                        image = {require(`../../../../../../data/file/account/${pugjjig.photo.fileOriginal}`)}
                     />
                 }
             </ItemUserPhoto>
             <ItemRight>
-                <ItemUsername>{pugjjig.account_nickname}</ItemUsername>
-                <ItemUserInfo>유저정보</ItemUserInfo>
+                <ItemUsername>
+                    <Link to={`/pugjjig/userSearch/${pugjjig.account_nickname}`}>
+                        {pugjjig.account_nickname}
+                    </Link>
+                </ItemUsername>
+                <ItemUserInfo>
+                    {
+                        pugjjig.account_urlList.map((url, index) => (
+                            <a key={index} href={url} target="_blank">
+                                {
+                                    url.indexOf("instagram") !== -1 ? 
+                                    <SVGInstar width="14px" height="14px"/>
+                                    :
+                                    url.indexOf("facebook") !== -1 ? 
+                                    <SVGFacebook width="14px" height="14px"/>
+                                    :
+                                    url.indexOf("youtube") !== -1 ? 
+                                    <SVGYoutube width="14px" height="14px"/>
+                                    :
+                                    <SVGLink width="14px" height="14px"/>
+                                }
+                            </a>
+                        ))
+                    }
+                </ItemUserInfo>
             </ItemRight>
             {
                 pugjjig.uniStar === 1 ?
@@ -135,9 +162,14 @@ const Item = ({pugjjig, UpdateUniLikeUniId, openModal}) => (
             </ItemLocalWrap>
             <ItemTagWrap>
                 {
-                    pugjjig.uniTag.map((tag, index) => (
-                        <ItemTag key={index}>#{tag}</ItemTag>
-                    ))
+                    pugjjig.uniTag !== "" ?
+                        pugjjig.uniTag.split(",").map((tag, index) => (
+                            <ItemTag key={index}>
+                                <Link to={`/pugjjig/tagSearch/${tag}`}>#{tag}</Link>
+                            </ItemTag>
+                        ))
+                    :
+                    null
                 }
             </ItemTagWrap>
             <ItemDetailWrap>

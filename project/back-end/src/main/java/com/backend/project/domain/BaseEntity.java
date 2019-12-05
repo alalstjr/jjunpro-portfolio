@@ -9,8 +9,8 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @MappedSuperclass
-public abstract class BaseEntity extends BaseDate {
-
+public abstract class BaseEntity extends BaseDate
+{
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     Long id;

@@ -15,7 +15,8 @@ import CommentWrite from "../form/CommentWrite"
 import {
     ProfileIamge,
     NotPost,
-    HiddenBtn
+    HiddenBtn,
+    MobilePadding
 } from "../../../style/globalStyles"
 import {
     ViewWrap,
@@ -50,6 +51,10 @@ import {
 
 import SVG from "../../../static/svg/SVG"
 import SVGEdit from "../../../static/svg/SVGEdit"
+import SVGYoutube from "../../../static/svg/SVGYoutube"
+import SVGFacebook from "../../../static/svg/SVGFacebook"
+import SVGInstar from "../../../static/svg/SVGInstar"
+import SVGLink from "../../../static/svg/SVGLink"
 
 class PugjjigView extends Component {
 
@@ -96,7 +101,7 @@ class PugjjigView extends Component {
             this.setState({
                 insertModalState: false,
                 selectModalState: false
-            });   
+            });
         }
 
         // 댓글 {DATA} 배열 생성
@@ -246,7 +251,8 @@ class PugjjigView extends Component {
                     pugjjig !== undefined ?
                     <Fragment>
                         <NormalHeader/>
-                        <ViewBox>
+                        <MobilePadding>
+                            <ViewBox>
                             <ItemHead>
                                 <ItemUserPhoto>
                                 {
@@ -259,8 +265,31 @@ class PugjjigView extends Component {
                                 }
                                 </ItemUserPhoto>
                                 <ItemRight>
-                                    <ItemUsername>{pugjjig.account_nickname}</ItemUsername>
-                                    <ItemUserInfo>유저정보</ItemUserInfo>
+                                    <ItemUsername>
+                                        <Link to={`/pugjjig/userSearch/${pugjjig.account_nickname}`}>
+                                            {pugjjig.account_nickname}
+                                        </Link>
+                                    </ItemUsername>
+                                    <ItemUserInfo>
+                                        {
+                                            pugjjig.account_urlList.map((url, index) => (
+                                                <a key={index} href={url} target="_blank">
+                                                    {
+                                                        url.indexOf("instagram") !== -1 ? 
+                                                        <SVGInstar width="14px" height="14px"/>
+                                                        :
+                                                        url.indexOf("facebook") !== -1 ? 
+                                                        <SVGFacebook width="14px" height="14px"/>
+                                                        :
+                                                        url.indexOf("youtube") !== -1 ? 
+                                                        <SVGYoutube width="14px" height="14px"/>
+                                                        :
+                                                        <SVGLink width="14px" height="14px"/>
+                                                    }
+                                                </a>
+                                            ))
+                                        }
+                                    </ItemUserInfo>
                                 </ItemRight>
                                 {
                                     pugjjig.uniStar === 1 ?
@@ -334,11 +363,16 @@ class PugjjigView extends Component {
                                 }
                             </ItemLocalWrap>
                             <ItemTagWrap>
-                                {
-                                    pugjjig.uniTag.map((tag, index) => (
-                                        <ItemTag key={index}>#{tag}</ItemTag>
+                            {
+                                pugjjig.uniTag !== "" ?
+                                    pugjjig.uniTag.split(",").map((tag, index) => (
+                                        <ItemTag key={index}>
+                                            <Link to={`/pugjjig/tagSearch/${tag}`}>#{tag}</Link>
+                                        </ItemTag>
                                     ))
-                                }
+                                :
+                                null
+                            }
                             </ItemTagWrap>
                             <ItemDetailWrap>
                                 <ItemStateWrap>
@@ -414,23 +448,24 @@ class PugjjigView extends Component {
                                 }
                             </ItemBottom>
                         </ViewBox>
-
-                        {/* Item Edit Select modal */}
-                        <ItemEditModal
-                            modalState   = {selectModalState}
-                            closeModal   = {this.closeModal}
-                            openModal    = {this.openModal}
-                            handleDelete = {this.handleDelete}
-                            edit         = {edit}
-                        />
-                        {/* Edit Modal */}
-                        <InsertModal
-                            modalState   = {insertModalState}
-                            closeModal   = {this.closeModal}
-                            stoId        = {null}
-                            stoAddress   = {null}
-                            editPugjjig  = {editPugjjig}
-                        />
+                            
+                            {/* Item Edit Select modal */}
+                            <ItemEditModal
+                                modalState   = {selectModalState}
+                                closeModal   = {this.closeModal}
+                                openModal    = {this.openModal}
+                                handleDelete = {this.handleDelete}
+                                edit         = {edit}
+                            />
+                            {/* Edit Modal */}
+                            <InsertModal
+                                modalState   = {insertModalState}
+                                closeModal   = {this.closeModal}
+                                stoId        = {null}
+                                stoAddress   = {null}
+                                editPugjjig  = {editPugjjig}
+                            />
+                        </MobilePadding>
                     </Fragment>
                     :
                     <NotPost>불러오는 중입니다...</NotPost>

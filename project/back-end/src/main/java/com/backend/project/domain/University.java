@@ -14,7 +14,8 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class University extends BaseEntity {
+public class University extends BaseEntity
+{
 
     @Column(nullable = false)
     private String uniSubject;
@@ -26,7 +27,7 @@ public class University extends BaseEntity {
     @Column(nullable = false)
     private String uniName;
 
-    private String[] uniTag;
+    private String uniTag;
 
     private Integer uniStar;
 
@@ -46,7 +47,8 @@ public class University extends BaseEntity {
     private Set<Comment> comments = new HashSet<>();
 
     @Builder
-    public University(Long id, String uniSubject, String uniContent, String uniName, String[] uniTag, Integer uniStar, Set<Account> uniLike, String uniIp, Account account, List<File> files, Set<Comment> comments) {
+    public University(Long id, String uniSubject, String uniContent, String uniName, String uniTag, Integer uniStar, Set<Account> uniLike, String uniIp, Account account, List<File> files, Set<Comment> comments)
+    {
         this.id         = id;
         this.uniSubject = uniSubject;
         this.uniContent = uniContent;

@@ -10,86 +10,89 @@ import {
     CHECK_USER_FAILURE
 } from "./types"
 
-/*
- *  새로운 유저를 등록합니다.
- */
-export const accountInsert = (account, history) => async dispatch => {
+/****************************************
+    INSERT Account DATA
+****************************************/
+export const insertAccount = (account) => async dispatch => {
     try {
         // 유저가 로그인 상태가 아니라면
         if(!localStorage.getItem("userInfo")) {
-            await axios.post(`${SERVER_URL}/api/account`, account)
-            .then(res => {
-                switch(res.status) {
-                    case 201 : 
-                        dispatch({
-                            type: ACCOUNT_CREATE,
-                            payload: true
-                        });
-                        
-                        // create 상태 init
-                        dispatch({
-                            type: ACCOUNT_CREATE,
-                            payload: false
-                        });
-                        break;
-                        
-                    case 202 : 
-                        dispatch({
-                            type: GET_ERRORS,
-                            payload: res.data
-                        });
-                        break;
+            const res = await axios.post(`${SERVER_URL}/api/account`, account);
 
-                    default :
-                        console.log(res);
-                        break;
-                }
-            });
+            switch(res.status) {
+                case 201 : 
+                    dispatch({
+                        type: ACCOUNT_CREATE,
+                        payload: true
+                    });
+                    
+                    // create 상태 init
+                    dispatch({
+                        type: ACCOUNT_CREATE,
+                        payload: false
+                    });
+                    break;
+                    
+                case 202 : 
+                    dispatch({
+                        type: GET_ERRORS,
+                        payload: res.data
+                    });
+                    break;
+
+                default :
+                    alert("잘못된 접근입니다.");
+            }
         }
-    } catch (e) {
-        console.log(e);
+    } catch (error) {
+        alert(error.response.data.error);
     }
 }
 
-/*
- *  로그인
- */
-export const accountLogin = (account, history) => async dispatch => {
+/****************************************
+    LOGIN Account DATA
+****************************************/
+export const loginAccount = (account) => async dispatch => {
     try {
-        await axios.post("http://localhost:8080/api/account/login", account)
-        .then(res => {
-            const id = res.data.id;
-            const token = res.data.token;
-            const userId = res.data.userId;
-            const nickname = res.data.nickname;
+        const res = await axios.post(`${SERVER_URL}/api/account/login`, account)
+        switch(res.status) {
+            case 200 : 
+                const id = res.data.id;
+                const token = res.data.token;
+                const userId = res.data.userId;
+                const nickname = res.data.nickname;
 
-            if(token) {
-                /*
-                 *  사용자가 서버에 서 로그인 인증을 받았을경우 localStorage에 Token을 저장합니다.
-                 */
-                const userInfo = JSON.stringify({
-                    id,
-                    token,
-                    userId,
-                    nickname
-                });
-                localStorage.setItem("userInfo", userInfo);
+                if(token) {
+                    /*
+                    *  사용자가 서버에 서 로그인 인증을 받았을경우 localStorage에 Token을 저장합니다.
+                    */
+                    const userInfo = JSON.stringify({
+                        id,
+                        token,
+                        userId,
+                        nickname
+                    });
+                    localStorage.setItem("userInfo", userInfo);
 
-                /*
-                 *  action type은 CHECK_USER_SUCCESS 으로 보냅니다.
-                 *  redux 를 통해서 유저 인증 상태를 프론트에 기록합니다. 
-                 */
-                dispatch({
-                    type: CHECK_USER_SUCCESS,
-                    payload: {
-                        id: res.data.id,
-                        token: res.data.token,
-                        userId: res.data.userId,
-                        nickname: res.data.nickname,
-                    }
-                });
-            }
-        });
+                    /*
+                    *  action type은 CHECK_USER_SUCCESS 으로 보냅니다.
+                    *  redux 를 통해서 유저 인증 상태를 프론트에 기록합니다. 
+                    */
+                    dispatch({
+                        type: CHECK_USER_SUCCESS,
+                        payload: {
+                            id: res.data.id,
+                            token: res.data.token,
+                            userId: res.data.userId,
+                            nickname: res.data.nickname,
+                        }
+                    });
+                }
+            break;
+
+            default :
+                alert("잘못된 접근입니다.");
+        }
     } catch (e) {
         const error = {
             AuthenticationError: "아이디나 비밀번호를 바르게 입력해주세요."
@@ -103,10 +106,10 @@ export const accountLogin = (account, history) => async dispatch => {
     }
 }
 
-/*
- *  로그아웃
- */
-export const accountLogout = () => dispatch => {
+/****************************************
+    LOGOUT Account DATA
+****************************************/
+export const logoutAccount = () => dispatch => {
     axios.defaults.headers.common['Authorization'] = null;
 
     if(localStorage.removeItem("userInfo") === undefined) {
@@ -117,9 +120,9 @@ export const accountLogout = () => dispatch => {
     }
 }
 
-/*
- *  로그인 상태 체크
- */
+/****************************************
+    Account DATA Check
+****************************************/
 export const accountLoginCheck = () => dispatch => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     
@@ -135,27 +138,33 @@ export const accountLoginCheck = () => dispatch => {
     }
 }
 
-/*
- *  유저의 정보를 가져옵니다.
- */
-export const accountGet = (history) => async dispatch => {
+/****************************************
+    GET Account DATA userId
+****************************************/
+export const getAccountUserId = () => async dispatch => {
     try {
-        await axios.get(`${SERVER_URL}/api/account/public/${USER_ID()}`)
-            .then(res => {
+        const res = await axios.get(`${SERVER_URL}/api/account/public/${USER_ID()}`)
+
+        switch(res.status) {
+            case 200 :
                 dispatch({
                     type: ACCOUNT_GET,
                     payload: res.data
                 });
-            });
-    } catch (e) {
-        console.log(e);
+                break;
+
+            default :
+                alert("잘못된 접근입니다.");
+        }
+    } catch (error) {
+        alert(error.response.data.error);
     }
 }
 
-/*
- *  유저의 정보를 수정합니다.
- */
-export const accountUpdate = (account, files, history) => async dispatch => {
+/****************************************
+    UPDATE Account DATA
+****************************************/
+export const updateAccount = (account, files, history) => async dispatch => {
     try {
         // 유저가 로그인 상태 라면
         if(localStorage.getItem("userInfo")) {
@@ -184,48 +193,46 @@ export const accountUpdate = (account, files, history) => async dispatch => {
                 formData.append('file', files[0]);
             }
 
-            await axios.post(`${SERVER_URL}/api/account/${account.id}`, formData, config)
-            .then(res => {
-                switch(res.status) {
-                    case 200 : 
-                        dispatch({
-                            type: ACCOUNT_CREATE,
-                            payload: true
-                        });
+            const res = await axios.post(`${SERVER_URL}/api/account/${account.id}`, formData, config)
 
-                        // create 상태 init
-                        dispatch({
-                            type: ACCOUNT_CREATE,
-                            payload: false
-                        });
-                        
-                        if(files.length > 0) {
-                            window.location.reload();
-                        }
-                        break;
-                        
-                    case 202 : 
-                        dispatch({
-                            type: GET_ERRORS,
-                            payload: res.data
-                        });
-                        break;
+            switch(res.status) {
+                case 200 : 
+                    dispatch({
+                        type: ACCOUNT_CREATE,
+                        payload: true
+                    });
 
-                    default :
-                        console.log(res);
-                        break;
-                }
-            });
+                    // create 상태 init
+                    dispatch({
+                        type: ACCOUNT_CREATE,
+                        payload: false
+                    });
+                    
+                    if(files.length > 0) {
+                        window.location.reload();
+                    }
+                    break;
+                    
+                case 202 : 
+                    dispatch({
+                        type: GET_ERRORS,
+                        payload: res.data
+                    });
+                    break;
+
+                default :
+                    alert("잘못된 접근입니다.");
+            }
         }
-    } catch (e) {
-        console.log(e);
+    } catch (error) {
+        alert(error.response.data.error);
     }
 }
 
-/*
- *  유저의 정보를 수정합니다.
- */
-export const accountPwdUpdate = (account, history) => async dispatch => {
+/****************************************
+    UPDATE Account Password DATA accountId
+****************************************/
+export const updateAccountPwdId = (account, history) => async dispatch => {
     try {
         // 유저가 로그인 상태 라면
         if(localStorage.getItem("userInfo")) {

@@ -43,11 +43,11 @@ class Profile extends Component {
 
         // Props Init
         const {
-            accountGet
+            getAccountUserId
         } = this.props;
 
         // 유저의 정보를 가져옵니다.
-        accountGet();
+        getAccountUserId();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -102,20 +102,20 @@ class Profile extends Component {
 
         // {Client} 유효성 검사 출력 코드입니다.
         if(!account.id) {
-            warningSet("nickname", true, "잘못된 접근입니다.");
+            warningSet(true, "잘못된 접근입니다.");
             console.log("UUID 값이 존재하지 않습니다.");
             return false;
         }
         if(!account.nickname) {
-            warningSet("nickname", true, "닉네임은 필수로 작성해야 합니다.");
+            warningSet(true, "닉네임은 필수로 작성해야 합니다.");
             return false;
         }
         if(!account.email) {
-            warningSet("email", true, "이메일은 필수로 작성해야 합니다.");
+            warningSet(true, "이메일은 필수로 작성해야 합니다.");
             return false;
         }
         
-        this.props.accountUpdate(account, files, this.props.history);
+        this.props.updateAccount(account, files, this.props.history);
     }
 
     /*
@@ -209,7 +209,7 @@ class Profile extends Component {
                                             <SVG name={"user"} width="38px" height="38px" color={"#E71D36"} />
                                             : 
                                             <ProfileIamge
-                                                image = {require(`../../../../../../data/file/thumbnail/${account_get.data.photo.fileThumbnail}`)}
+                                                image = {require(`../../../../../../data/file/account/${account_get.data.photo.fileOriginal}`)}
                                             />
                                         }
                                     </Fragment>

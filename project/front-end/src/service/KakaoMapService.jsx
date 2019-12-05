@@ -11,22 +11,25 @@ class KakaoMapService {
     /****************************************
         변수
     ****************************************/
-    markers = [];
-    thatThis = null;
-    latLng = null;
-    openModal = null;
+    markers          = [];
+    thatThis         = null;
+    latLng           = null;
+    openModal        = null;
     getUniCountStoId = null;
+    hendleContain    = null;
 
     constructor(
         thatThis,
         latLng,
         openModal,
-        getUniCountStoId
+        getUniCountStoId,
+        hendleContain
     ) {
-        this.thatThis = thatThis
-        this.latLng = latLng
-        this.openModal = openModal
+        this.thatThis         = thatThis
+        this.latLng           = latLng
+        this.openModal        = openModal
         this.getUniCountStoId = getUniCountStoId
+        this.hendleContain    = hendleContain
 
         // kakao 콜백함수에 전달해주는 변수
         const classThis = this;
@@ -302,6 +305,8 @@ class KakaoMapService {
     displayOverlay = async (placePosition, store) => {
         // kakao 콜백함수에 전달해주는 변수
         const classThis = this;
+
+        this.hendleContain(true);
 
         // 푹찍 리뷰 오브젝트 생성
         let pugjjig = new Object;

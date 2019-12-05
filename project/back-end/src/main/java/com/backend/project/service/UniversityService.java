@@ -12,8 +12,8 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Optional;
 
-public interface UniversityService {
-
+public interface UniversityService
+{
     public Optional<University> findById(Long id);
     public UniversityPublic findByPublicId(Long id, Account account);
     public Page<UniversityPublic> findByUniversityList(Pageable pageable, Account account);

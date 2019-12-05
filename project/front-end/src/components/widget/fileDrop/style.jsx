@@ -1,5 +1,11 @@
 import styled from 'styled-components';
 
+const PC_S = 1200;
+const TABLET = 991;
+const MOBILE_B = 768;
+const MOBILE_M = 640;
+const MOBILE_S = 480;
+
 export const DropZoneWrap = styled.div`
     padding: 10px;
     border-radius: 15px;
@@ -9,6 +15,10 @@ export const DropZone = styled.div`
     padding: 20px 0; 
     font-size: 16px;
     text-align: center;
+
+    @media only screen and (max-width: ${MOBILE_S}px) {
+        font-size: 12px;
+    }
 `;
 export const FileList = styled.li`
     color: #fff;

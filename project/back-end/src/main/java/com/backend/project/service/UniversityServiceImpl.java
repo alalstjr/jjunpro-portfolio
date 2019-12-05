@@ -20,8 +20,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class UniversityServiceImpl implements UniversityService {
-
+public class UniversityServiceImpl implements UniversityService
+{
     @Autowired
     private UniversityRepository university;
 
@@ -29,35 +29,41 @@ public class UniversityServiceImpl implements UniversityService {
     private StoreRepository store;
 
     @Override
-    public Optional<University> findById(Long id) {
+    public Optional<University> findById(Long id)
+    {
         return university.findById(id);
     }
 
     @Override
-    public UniversityPublic findByPublicId(Long id, Account account) {
+    public UniversityPublic findByPublicId(Long id, Account account)
+    {
         return university.findByPublicId(id, account);
     }
 
     @Override
-    public Page<UniversityPublic> findByUniversityList(Pageable pageable, Account account) {
+    public Page<UniversityPublic> findByUniversityList(Pageable pageable, Account account)
+    {
         return university.findByPublicAll(pageable, account);
     }
 
     @Override
-    public List<UniversityPublic> findByUniversityListWhereAccountId(SearchDTO searchDTO) {
+    public List<UniversityPublic> findByUniversityListWhereAccountId(SearchDTO searchDTO)
+    {
         return university.findByUniversityListWhereAccountId(searchDTO);
     }
 
     @Override
-    public List<UniversityPublic> findByLikeListWhereAccountId(SearchDTO searchDTO) {
+    public List<UniversityPublic> findByLikeListWhereAccountId(SearchDTO searchDTO)
+    {
         return university.findByLikeListWhereAccountId(searchDTO);
     }
 
     @Override
-    public UniversityPublic saveOrUpdate(UniversitySaveDTO dto, StoreDTO storeDTO, Account accountData) {
-
+    public UniversityPublic saveOrUpdate(UniversitySaveDTO dto, StoreDTO storeDTO, Account accountData)
+    {
         // UPDATE 경우 dto 기본값을 설정하여 UPDATE 해줍니다.
-        if(dto.getId() != null) {
+        if(dto.getId() != null)
+        {
             University updateDto = university.findById(dto.getId()).get();
             dto.setId(updateDto.getId());
             dto.setUniLike(updateDto.getUniLike());
@@ -67,16 +73,21 @@ public class UniversityServiceImpl implements UniversityService {
             List<File> updateFile = updateDto.getFiles();
 
             // UPDATE 기존 file의 제거되는게 있는경우
-            if(dto.getRemoveFiles().length > 0) {
-                for(int i = 0; i < dto.getRemoveFiles().length; i++) {
+            if(dto.getRemoveFiles().length > 0)
+            {
+                for(int i = 0; i < dto.getRemoveFiles().length; i++)
+                {
                     updateFile = updateFileFilter(updateFile, dto, i);
                 }
             }
 
             // UPDATE file 존재하는 경우와 아닌경우
-            if(dto.getFileData() == null) {
+            if(dto.getFileData() == null)
+            {
                 dto.setFileData(updateFile);
-            } else {
+            }
+            else
+            {
                 dto.getFileData().addAll(updateFile);
             }
         }
@@ -88,11 +99,14 @@ public class UniversityServiceImpl implements UniversityService {
         Optional<Store> storeData = store.findByStoId(storeDTO.getStoId());
 
         // DB 상에 음식점의 정보가 없다면 음식점의 ID 정보를 저장
-        if(storeData.isPresent()) {
+        if(storeData.isPresent())
+        {
             storeData.get().getStoUniList().add(universityData);
 
             store.save(storeData.get());
-        } else {
+        }
+        else
+        {
             storeDTO.setStoName(dto.getStoName());
             storeDTO.setStoAddress(dto.getStoAddress());
             storeDTO.setStoUrl(dto.getStoUrl());
@@ -105,29 +119,34 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public University saveOrUpdate(University universityData) {
+    public University saveOrUpdate(University universityData)
+    {
         return university.save(universityData);
     }
 
     @Override
-    public Boolean findByIdLike(Long id, Account account) {
+    public Boolean findByIdLike(Long id, Account account)
+    {
         return university.findByIdLike(id, account);
     }
 
     @Override
-    public List<UniversityPublic> findByUniversityListWhereKeyword(SearchDTO searchDTO) {
+    public List<UniversityPublic> findByUniversityListWhereKeyword(SearchDTO searchDTO)
+    {
         return university.findByUniversityListWhereKeyword(searchDTO);
     }
 
     @Override
-    public void deleteData(Long id, Account accountData) {
+    public void deleteData(Long id, Account accountData)
+    {
         university.deleteData(id, accountData);
     }
 
     /**
     * Client 에서 기존 업로드된 파일의 제거된 {id}값을 기존 file와 비교하여 제거하는 메소드
     **/
-    private List<File> updateFileFilter(List<File> result, UniversitySaveDTO dto, Integer i) {
+    private List<File> updateFileFilter(List<File> result, UniversitySaveDTO dto, Integer i)
+    {
         return result
                 .stream()
                 .filter(

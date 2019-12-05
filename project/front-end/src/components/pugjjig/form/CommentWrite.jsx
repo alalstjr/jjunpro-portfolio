@@ -25,12 +25,8 @@ class CommentWrite extends Component {
             uniId: null,
             content: "",
             // Input 경고문
-            warning: {
-                content: false
-            },
-            warningText: {
-                content: ""
-            }
+            warning: false,
+            warningText: ""
         }
     }
 
@@ -85,12 +81,12 @@ class CommentWrite extends Component {
         // {Client} 유효성 검사 출력 코드입니다.
         if(!commentData.uniId) {
             console.log("uniId 값이 존재하지 않습니다.");
-            this.warningSet("content", true, "잘못된 접근입니다.");
+            this.warningSet(true, "잘못된 접근입니다.");
             return false;
         }
-        // {Client} 유효성 검사 출력 코드입니다.
-        if(!commentData.content) {
-            this.warningSet("content", true, "댓글을 작성해 주세요.");
+    
+        if(!commentData.content || commentData.content === "") {
+            this.warningSet(true, "댓글을 작성해 주세요.");
             return false;
         }
         
@@ -102,42 +98,27 @@ class CommentWrite extends Component {
      *  target, state 는 필수 값입니다.
      *  경고문의 상태와 경고문을 설정하는 메소드입니다.
      */
-    warningSet = (target, state, message) => {
-
+    warningSet = (warning, warningText) => {
         // message undefined 값 체크
-        message = (message === undefined) ? "" : message;
-        
-        switch(target) {
-            case "content" : 
-                this.setState(prevState => ({
-                    warning: {
-                        ...prevState.warning,
-                        content: state
-                    },
-                    warningText: {
-                        ...prevState.warningText,
-                        content: message
-                    }
-                }));
-                this.initWarning();
-                break;
+        warningText = (warningText === undefined) ? "" : warningText;
 
-            default :
-                return false;
-        }
+        this.setState({
+            warning,
+            warningText
+        });
+        this.initWarning();
     }
+
 
     /*
      *  경고문 상태 초기화 메소드입니다.
      */
     initWarning = () => {
         setTimeout(() => {
-            this.setState(prevState => ({
-                warning: {
-                    ...prevState.warning,
-                    content: false
-                }
-            }));
+            this.setState({
+                warning: false,
+                warningText: ""
+            });
         }, 2000);
     }
 
@@ -169,18 +150,18 @@ class CommentWrite extends Component {
                 </InputCommentWrap>
 
                 {/* Write 안내문 */}
+                <ReactTransitionGroup
+                    transitionName={'Waring-anim'}
+                    transitionEnterTimeout={200}
+                    transitionLeaveTimeout={200}
+                >
                 {
-                    warning.content ? 
-                    <ReactTransitionGroup
-                        transitionName={'Waring-anim'}
-                        transitionEnterTimeout={200}
-                        transitionLeaveTimeout={200}
-                    >
-                    <WaringWrap>{warningText.content}</WaringWrap>
-                    </ReactTransitionGroup>
+                    warning ? 
+                    <WaringWrap>{warningText}</WaringWrap>
                     :
                     null
                 }
+                </ReactTransitionGroup>
             </Form>
         )
     }

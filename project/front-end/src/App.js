@@ -23,6 +23,8 @@ const App = () => {
           {/* Pugjjig Search */}
           <Route exact path="/pugjjig/uniSearch/:id" component={PugjjigSearch} />
           <Route exact path="/pugjjig/stoSearch/:id" component={PugjjigSearch} />
+          <Route exact path="/pugjjig/tagSearch/:id" component={PugjjigSearch} />
+          <Route exact path="/pugjjig/userSearch/:id" component={PugjjigSearch} />
           {/* User MyPage */}
           <Route exact path="/mypage" component={MyPage} />
 

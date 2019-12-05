@@ -1,6 +1,7 @@
 import axios from "axios"
 import { SERVER_URL, USER_AUTH, USER_ID } from "../routes"
-import { 
+import {
+    TEMP_UNIVERSITY_LIST,
     DELETE_PUGJJIG,
     DELETE_PUGJJIG_COMMENT,
     GET_UNIVERSITY,
@@ -16,12 +17,22 @@ import {
     현재 검색중인 대학교 저장
 ****************************************/
 export const getUniversity = (uniName) => dispatch => {
-    
     dispatch({
         type: GET_UNIVERSITY,
         payload: uniName
     });
 }
+
+/****************************************
+    현재 불러온 DATA를 담은 List
+****************************************/
+export const tempUniversityList = (reset, temp_pugjjig, postData) => dispatch => {
+    dispatch({
+        type: TEMP_UNIVERSITY_LIST,
+        payload: reset ? [] : temp_pugjjig.concat(postData)
+    });
+}
+
 
 /****************************************
     INSERT University DATA
@@ -76,7 +87,10 @@ export const insertUniversity = (pugjjig, files, history) => async dispatch => {
                 });
                 break;
             case 202 :
-                alert(res.data.AuthenticationError);
+                dispatch({
+                    type: GET_ERRORS,
+                    payload: res.data.AuthenticationError
+                });
                 break;
 
             default :
@@ -85,6 +99,10 @@ export const insertUniversity = (pugjjig, files, history) => async dispatch => {
         
     } catch (error) {
         alert(error.response.data.error);
+        dispatch({
+            type: GET_ERRORS,
+            payload: error.response.data
+        });
     }
 }
 
@@ -246,7 +264,7 @@ export const getUniCountStoId = (keyword) => async dispatch => {
         // 유저 JWT Token정보
         USER_AUTH();
         
-        const res = axios.get(`${SERVER_URL}/api/store/count/${keyword}`)
+        const res = await axios.get(`${SERVER_URL}/api/store/count/${keyword}`)
 
         switch(res.status) {
             case 200 :
@@ -336,6 +354,10 @@ export const insertComment = (comment) =>  async dispatch => {
         }
     } catch(error) {
         alert(error.response.data.error);
+        dispatch({
+            type: GET_ERRORS,
+            payload: error.response.data
+        });
     }
 }
 

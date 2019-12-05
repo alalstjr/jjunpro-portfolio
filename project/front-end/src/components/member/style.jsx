@@ -1,6 +1,12 @@
 import styled, { css } from "styled-components"
 import { ClearFix, InitTransition } from "../../style/globalStyles"
 
+const PC_S = 1200;
+const TABLET = 991;
+const MOBILE_B = 768;
+const MOBILE_M = 640;
+const MOBILE_S = 480;
+
 /*******************
     Login Style
 ********************/
@@ -9,6 +15,10 @@ export const LoginWrap = styled.div`
     margin: 0 auto;
     padding: 1.3125rem 2.3125rem;
     margin-bottom: 20px;
+
+    @media only screen and (max-width: ${MOBILE_S}px) {
+        margin-bottom: 0px;
+    }
 `;
 export const LoginLogo = styled.h1`
     ${InitTransition}

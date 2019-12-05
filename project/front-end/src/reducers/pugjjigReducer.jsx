@@ -1,4 +1,5 @@
 import {
+    TEMP_UNIVERSITY_LIST,
     GET_PUGJJIG_LIST,
     GET_PUGJJIG_LIKE,
     GET_PUGJJIG_VIEW,
@@ -11,6 +12,7 @@ import {
 } from "../actions/types"
 
 const initialState = {
+    temp_pugjjig_list : [],
     pugjjig_list : {},
     pugjjig_like : {},
     pugjjig_view : {},
@@ -24,6 +26,12 @@ const initialState = {
 
 export default function(state=initialState, action) {
     switch(action.type) {
+
+        case TEMP_UNIVERSITY_LIST:
+            return {
+                ...state,
+                temp_pugjjig_list: action.payload
+            };
 
         case GET_PUGJJIG_LIST:
             return {

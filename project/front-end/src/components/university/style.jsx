@@ -1,6 +1,12 @@
 import styled, { css } from "styled-components"
 import { ClearFix, InitTransition, FlexInit } from "../../style/globalStyles"
 
+const PC_S = 1200;
+const TABLET = 991;
+const MOBILE_B = 768;
+const MOBILE_M = 640;
+const MOBILE_S = 480;
+
 /*******************
     List Style
 ********************/
@@ -22,12 +28,37 @@ export const ListWrap = styled.div`
             padding-top: 490px;
             width: 500px;
             margin-left: -250px;
+
+            @media only screen and (max-width: ${MOBILE_S}px) {    
+                width: 100%;
+                padding-top: 360px;
+                margin-left: 0;
+            }
         `
         :
         `
             left: 0;
             padding-top: 334px;
             width: 300px;
+
+            @media only screen and (max-width: ${MOBILE_S}px) {    
+                width: 100%;
+                padding-top: 315px;
+            }
+        `
+    }
+    ${
+        props => props.mobile === true ?
+        `
+            @media only screen and (max-width: ${MOBILE_S}px) {
+                left: -100%;
+            }
+        `
+        :
+        `
+            @media only screen and (max-width: ${MOBILE_S}px) {
+                left: 0;
+            }
         `
     }
 `;
@@ -79,12 +110,22 @@ export const ItemUniName = styled.span`
     color: #4c4c4c;
     font-size: 0.875rem;
     font-weight: 400;
+
+    @media only screen and (max-width: ${MOBILE_S}px) {    
+        font-size: 14px;
+        font-weight: 300;
+    }
 `;
 export const ItemUniCount = styled.span`
     float: right;
     color: #a6a6a6;
     font-size: 0.75rem;
     font-weight: 400;
+
+    @media only screen and (max-width: ${MOBILE_S}px) {    
+        font-size: 14px;
+        font-weight: 300;
+    }
 `;
 
 /*******************
@@ -94,6 +135,10 @@ export const SearchWrap = styled.div`
     padding: 0 0.3125rem;
     position: relative;
     z-index: 1;
+
+    @media only screen and (max-width: ${MOBILE_S}px) {    
+        padding: 0;
+    }
 `;
 export const SearchTitle = styled.h2`
     position: relative;
@@ -102,6 +147,11 @@ export const SearchTitle = styled.h2`
     color: #292929;
     font-size: 1rem;
     font-weight: 600;
+
+    @media only screen and (max-width: ${MOBILE_S}px) {    
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
 `;
 export const SearchInputWrap = styled.div`
     position: relative;
@@ -180,7 +230,7 @@ export const SwitchWrap = styled.div`
         height: 42px;
         background-color: ${props => props.theme.themeColor};
         top: 0;
-        transition: 0.2s all ease;
+        transition: 0.2s all;
         border-radius: 4px;
 
         left: ${
@@ -226,7 +276,13 @@ export const SwitchBtn = styled.button.attrs({
 
     ${
         props => props.initSearch === true ?
-        "&:hover > svg {left: 30px;}"
+        `&:hover > svg {
+            left: 30px;
+            
+            @media only screen and (max-width: ${MOBILE_S}px) {    
+                opacity: 0;
+            }
+        }`
         :
         "&:hover > svg {visibility: hidden;opacity: 0;}"
     }
@@ -234,6 +290,10 @@ export const SwitchBtn = styled.button.attrs({
 export const SearchNotice = styled.div`
     text-align: center;
     padding: 20px 0;
+
+    @media only screen and (max-width: ${MOBILE_S}px) {    
+        font-size: 18px;
+    }
 `;
 export const SearchSet = styled.div`
     border-bottom: 0.0625rem solid #e3e3e3;
@@ -289,7 +349,12 @@ export const SearchSetTimeWrap = styled.div`
     > div {
         ${
             props => props.initSearch ? 
-            `flex-basis: 27%;`
+            `
+                flex-basis: 27%;
+                @media only screen and (max-width: ${MOBILE_S}px) {    
+                    flex-basis: 25%;
+                }
+            `
             :
             `flex-basis: 33.333%;`
         }
@@ -301,7 +366,12 @@ export const SearchSetFoodWrap = styled.div`
     > div {
         ${
             props => props.initSearch ? 
-            `flex-basis: 16.7%;`
+            `
+                flex-basis: 16.5%;
+                @media only screen and (max-width: ${MOBILE_S}px) {    
+                    
+                }
+            `
             :
             `flex-basis: 20%;`
         }
@@ -322,4 +392,9 @@ export const UserBox = styled.div`
     background-color: #fff;
     position: relative;
     z-index: 1;
+
+    @media only screen and (max-width: ${MOBILE_S}px) {    
+        padding-left: 10px;
+        padding-right: 10px;
+    }
 `;

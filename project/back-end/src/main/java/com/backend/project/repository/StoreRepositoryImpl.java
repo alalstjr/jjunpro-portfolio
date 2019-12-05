@@ -1,6 +1,5 @@
 package com.backend.project.repository;
 
-import com.backend.project.domain.QFile;
 import com.backend.project.domain.QStore;
 import com.backend.project.domain.QUniversity;
 import com.backend.project.domain.University;
@@ -20,7 +19,6 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
     private final JPAQueryFactory queryFactory;
     private QStore qStore = QStore.store;
     private QUniversity qUniversity = QUniversity.university;
-    private QFile qFile = QFile.file;
 
     @Override
     public Long findByUniCount(String keyword) {
@@ -64,6 +62,7 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
                         u.getModifiedDate(),
                         u.getAccount().getId(),
                         u.getAccount().getNickname(),
+                        u.getAccount().getUrlList(),
                         u.getUniLike().size(),
                         u.getUniLike().contains(searchDTO.getAccount()),
                         u.getFiles(),

@@ -4,6 +4,12 @@ import { ShakeWeakly } from "./keyFrames"
 import gyeonggiOTF from '../details/fonts/gyeonggi/Title_Medium.otf'
 import gyeonggiWOFF from '../details/fonts/gyeonggi/Title_Medium.woff'
 
+const PC_S = 1200;
+const TABLET = 991;
+const MOBILE_B = 768;
+const MOBILE_M = 640;
+const MOBILE_S = 480;
+
 /*******************
     Global Style
 ********************/
@@ -243,9 +249,14 @@ export const SubmitBtn = styled.button`
 export const NotPost = styled.div`
     width: 100%;
     text-align: center;
+    justify-content: center;
     padding: 100px 0;
     font-size: 26px;
     color: #A99798;
+
+    @media only screen and (max-width: ${MOBILE_S}px) {
+        font-size: 18px;
+    }
 `;
 export const HiddenBtn = styled.button`
     outline: none;
@@ -332,6 +343,10 @@ export const ModalWrap = styled.div`
     position: fixed;
     z-index: 99999;
     background-color: rgba(0, 0, 0, 0.65);
+
+    @media only screen and (max-width: ${MOBILE_S}px) {
+        padding: 0 40px;
+    }
 `;
 export const ModalBox = styled.div`
     ${FlexInit}
@@ -425,6 +440,23 @@ export const MainList = styled.div`
         : 
         `
             width: 300px;
+            @media only screen and (max-width: ${MOBILE_S}px) {
+                width: 100%;
+            }
+        `
+    }
+    ${
+        props => props.mobile === true ?
+        `
+            @media only screen and (max-width: ${MOBILE_S}px) {
+                left: -100%;
+            }
+        `
+        :
+        `
+            @media only screen and (max-width: ${MOBILE_S}px) {
+                left: 0;
+            }
         `
     }
 `;
@@ -435,11 +467,21 @@ export const MainListContainer = styled.div`
         `
             width: 500px;
             margin: 130px auto 0;
+
+            @media only screen and (max-width: ${MOBILE_S}px) {    
+                margin: 10px auto 0;
+                width: 100%;
+            }
         `
         : 
         `
             width: 300px;
             margin: 0 auto;
+
+            @media only screen and (max-width: ${MOBILE_S}px) {
+                width: 100%;
+                position: absolute;
+            }
         `
     }
 `;
@@ -449,6 +491,31 @@ export const MainMap = styled.div`
     margin-left: 300px;
     position: absolute;
     z-index: 0;
+
+    @media only screen and (max-width: ${MOBILE_S}px) {
+        width: 100%;
+        margin: 0;
+    }
+`;
+export const MobileSearch = styled.span`
+    @media only screen and (max-width: ${MOBILE_S}px) {
+        position: fixed;
+        bottom: 0;
+        height: auto;
+        width: 100%;
+        text-align: center;
+        padding: 10px 5px;
+        display: block;
+
+        > button {
+            background-color: ${props => props.theme.themeColor};
+            width: 100%;
+            color: #fff;
+            font-size: 16px;
+            padding: 5px;
+            border-radius: 5px;
+        }
+    }
 `;
 
 /*******************
@@ -470,9 +537,19 @@ export const Image = styled.img`
 export const ProfileIamge = styled.div`
     background-image: url(${props => props.image});
 
-    width: 38px;
-    height: 38px;
+    width: 40px;
+    height: 40px;
     background-size: cover;
     border-radius: 50%;
     float: right;
+
+    background-repeat: no-repeat;
+    background-position: center center;
+`;
+
+/****************************************
+    Mobile Style
+****************************************/
+export const MobilePadding = styled.div`
+    padding: 0 10px;
 `;

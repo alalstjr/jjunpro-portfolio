@@ -7,20 +7,25 @@ const FirstSection = ({
   searchPlacesSetting, 
   categorySearch,
   initSearch,
-  hendleInitSearch
+  hendleInitSearch,
+  hendleContain,
+  mobile
 }) => (
-    <MainList
-      initSearch={initSearch}
+    <MainList 
+      initSearch = {initSearch}
+      mobile     = {mobile}
     >
-      <MainListContainer
-        initSearch={initSearch}
+      <MainListContainer 
+        initSearch = {initSearch}
       >
         <UniversityProvider
-          searchPlaces={searchPlaces}
-          searchPlacesSetting={searchPlacesSetting}
-          categorySearch={categorySearch}
-          hendleInitSearch={hendleInitSearch}
-          initSearch={initSearch}
+          searchPlaces          = {searchPlaces}
+          searchPlacesSetting   = {searchPlacesSetting}
+          categorySearch        = {categorySearch}
+          hendleInitSearch      = {hendleInitSearch}
+          initSearch            = {initSearch}
+          hendleContain         = {hendleContain}
+          mobile                = {mobile}
         />
       </MainListContainer>
     </MainList>

@@ -20,8 +20,8 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UniversitySaveDTO {
-
+public class UniversitySaveDTO
+{
     private Long id;
 
     @Size(max=50, message = "제목이 너무 깁니다.")
@@ -36,7 +36,7 @@ public class UniversitySaveDTO {
     @NotBlank(message = "대학교 이름을 작성해 주세요.")
     private String uniName;
 
-    private String[] uniTag;
+    private String uniTag;
 
     private Integer uniStar;
 
@@ -72,7 +72,8 @@ public class UniversitySaveDTO {
     // COMMENT DATA
     private Set<Comment> comments = new HashSet<>();
 
-    public University toEntity() {
+    public University toEntity()
+    {
         return University.builder()
                 .id(id)
                 .uniSubject(uniSubject)

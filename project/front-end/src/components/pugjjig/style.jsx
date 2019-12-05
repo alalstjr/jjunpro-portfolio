@@ -176,11 +176,16 @@ export const ItemRight = styled.div`
     padding-left: 10px;
 `;
 export const ItemUsername = styled.div`
-    font-size: 16px;
-    line-height: 20px;
-    font-weight: 300;
+    > a {
+        font-size: 16px;
+        line-height: 20px;
+        font-weight: 300;
+    }
 `;
 export const ItemUserInfo = styled.div`
+    a > svg {
+        margin-right: 3px;
+    }
 `;
 export const ItemStar = styled.div`
     position: absolute;

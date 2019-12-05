@@ -221,7 +221,7 @@ class UniversityProvider extends Component {
         const { university, keyword, searchState, storeState, radius, category } = this.state;
 
         // props Init
-        const { initSearch } = this.props;
+        const { initSearch, mobile } = this.props;
 
         // Variables Init
         let universityContent;
@@ -283,7 +283,8 @@ class UniversityProvider extends Component {
                     />
                 </UserBox>
                 <ListWrap
-                    initSearch={initSearch}
+                    initSearch = {initSearch}
+                    mobile     = {mobile}
                 >
                     {
                         searchState !== false && storeState === 3 ? 

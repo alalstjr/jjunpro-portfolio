@@ -91,24 +91,24 @@ class PwdChange extends Component {
 
         // {Client} 유효성 검사 출력 코드입니다.
         if(!account.id) {
-            warningSet("oldPassword", true, "잘못된 접근입니다.");
+            warningSet(true, "잘못된 접근입니다.");
             console.log("UUID 값이 존재하지 않습니다.");
             return false;
         }
         if(!account.oldPassword) {
-            warningSet("oldPassword", true, "이전 비밀번호는 필수로 작성해야 합니다.");
+            warningSet(true, "이전 비밀번호는 필수로 작성해야 합니다.");
             return false;
         }
         if(!account.password) {
-            warningSet("password", true, "새로운 비밀번호는 필수로 작성해야 합니다.");
+            warningSet(true, "새로운 비밀번호는 필수로 작성해야 합니다.");
             return false;
         }
         if(!account.passwordRe) {
-            warningSet("passwordRe", true, "새로운 비밀번호를 다시한번 작성해 주세요.");
+            warningSet(true, "새로운 비밀번호를 다시한번 작성해 주세요.");
             return false;
         }
 
-        this.props.accountPwdUpdate(account, this.props.history);
+        this.props.updateAccountPwdId(account, this.props.history);
     }
 
     render() {

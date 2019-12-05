@@ -26,8 +26,8 @@ import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.group.GroupBy.list;
 
 @RequiredArgsConstructor
-public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
-
+public class UniversityRepositoryImpl implements UniversityRepositoryDSL
+{
     private final JPAQueryFactory queryFactory;
     private QUniversity qUniversity = QUniversity.university;
     private QAccount qAccount       = QAccount.account;
@@ -47,11 +47,12 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
 
     @Override
     @Transactional
-    public void deleteData(Long id, Account accountData) {
-
+    public void deleteData(Long id, Account accountData)
+    {
         // University File Data
         List<File> uniFiles = universityService.findById(id).get().getFiles();
-        if(!uniFiles.isEmpty()) {
+        if(!uniFiles.isEmpty())
+        {
             System.out.println(uniFiles.get(0).getId());
         }
 
@@ -70,15 +71,16 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
         // University 저장된 Comment 삭제
         commentService.deleteUniComment(id, accountData);
 
-        if(!uniFiles.isEmpty()) {
+        if(!uniFiles.isEmpty())
+        {
             // University 저장된 File 삭제
             fileStorageService.filesDelete(uniFiles, "university");
         }
     }
 
     @Override
-    public Page<UniversityPublic> findByPublicAll(Pageable pageable, Account account) {
-
+    public Page<UniversityPublic> findByPublicAll(Pageable pageable, Account account)
+    {
         Map<University, List<Account>> transform = queryFactory
                 .from(qUniversity)
                 .leftJoin(qUniversity.uniLike, qAccount)
@@ -91,7 +93,8 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
     }
 
     @Override
-    public List<UniversityPublic> findByUniversityListWhereAccountId(SearchDTO searchDTO) {
+    public List<UniversityPublic> findByUniversityListWhereAccountId(SearchDTO searchDTO)
+    {
         Map<University, List<Account>> transform = queryFactory
                 .from(qUniversity)
                 .leftJoin(qUniversity.uniLike, qAccount)
@@ -112,7 +115,8 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
     }
 
     @Override
-    public List<UniversityPublic> findByLikeListWhereAccountId(SearchDTO searchDTO) {
+    public List<UniversityPublic> findByLikeListWhereAccountId(SearchDTO searchDTO)
+    {
         Map<University, List<Account>> transform = queryFactory
                 .from(qUniversity)
                 .leftJoin(qUniversity.uniLike, qAccount)
@@ -133,8 +137,8 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
     }
 
     @Override
-    public List<UniversityPublic> findByUniversityListWhereKeyword(SearchDTO searchDTO) {
-
+    public List<UniversityPublic> findByUniversityListWhereKeyword(SearchDTO searchDTO)
+    {
         // 검색 대상 분류 동적 조건
         BooleanBuilder builder = new BooleanBuilder();
         switch (searchDTO.getClassification()) {
@@ -144,6 +148,14 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
 
             case "stoId" :
                 builder.and(qStore.stoId.contains(searchDTO.getKeyword()));
+                break;
+
+            case "uniTag" :
+                builder.and(qUniversity.uniTag.contains(searchDTO.getKeyword()));
+                break;
+
+            case "userId" :
+                builder.and(qUniversity.account.userId.contains(searchDTO.getKeyword()));
                 break;
 
             default:
@@ -170,8 +182,8 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
     }
 
     @Override
-    public UniversityPublic findByPublicId(Long id, Account account) {
-
+    public UniversityPublic findByPublicId(Long id, Account account)
+    {
         University uniData = queryFactory
                 .select(qUniversity)
                 .from(qUniversity)
@@ -182,7 +194,8 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
     }
 
     @Override
-    public Boolean findByIdLike(Long id, Account account) {
+    public Boolean findByIdLike(Long id, Account account)
+    {
         University result = queryFactory
                 .select(qUniversity)
                 .from(qUniversity)
@@ -192,8 +205,8 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
         return (result == null ? false : true);
     }
 
-    private UniversityPublic getUniversityPublic(University data, Account account) {
-
+    private UniversityPublic getUniversityPublic(University data, Account account)
+    {
         // INSERT 직후 해당 {id} 값을 조회하면 Hash 값이 null 로 표시되는 오류를 조치하는 코드
         Set<Account> uniLike = data.getUniLike() == null ? new HashSet<>() : data.getUniLike();
 
@@ -208,6 +221,7 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                 data.getModifiedDate(),
                 data.getAccount().getId(),
                 data.getAccount().getNickname(),
+                data.getAccount().getUrlList(),
                 uniLike.size(),
                 uniLike.contains(account),
                 data.getFiles(),
@@ -217,7 +231,8 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
         );
     }
 
-    private List<UniversityPublic> getUniversityPublicList(Map<University, List<Account>> transform, Account account) {
+    private List<UniversityPublic> getUniversityPublicList(Map<University, List<Account>> transform, Account account)
+    {
         return transform.entrySet().stream()
                 .map(
                         u -> new UniversityPublic(
@@ -231,6 +246,7 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                                 u.getKey().getModifiedDate(),
                                 u.getKey().getAccount().getId(),
                                 u.getKey().getAccount().getNickname(),
+                                u.getKey().getAccount().getUrlList(),
                                 u.getValue().size(),
                                 u.getKey().getUniLike().contains(account),
                                 u.getKey().getFiles(),

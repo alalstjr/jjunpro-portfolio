@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { accountInsert } from "../../../../actions/accountActions";
+import { insertAccount } from "../../../../actions/accountActions";
 import SVGLoading from "../../../../static/svg/SVGLoading"
 
 import { 
@@ -135,7 +135,7 @@ class SignUp extends Component {
             loding: true
         });
 
-        this.props.accountInsert(account, this.props.history);
+        this.props.insertAccount(account, this.props.history);
     }
 
     render() {
@@ -287,7 +287,7 @@ class SignUp extends Component {
 }
 
 SignUp.propTypes = {
-    accountInsert: PropTypes.func.isRequired,
+    insertAccount: PropTypes.func.isRequired,
     error: PropTypes.object.isRequired,
     account_create: PropTypes.object.isRequired
 }
@@ -299,5 +299,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps, 
-    { accountInsert }
+    { insertAccount }
 )(SignUp);

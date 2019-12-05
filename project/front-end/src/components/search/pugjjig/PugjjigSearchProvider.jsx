@@ -18,7 +18,6 @@ class PugjjigSearchProvider extends Component {
     }
 
     componentDidMount() {
-
         // Props Init
         const { 
             match
@@ -30,6 +29,20 @@ class PugjjigSearchProvider extends Component {
         });
     }
 
+    componentWillReceiveProps(nextProps) {
+        // Props Init
+        const { 
+            match
+        } = this.props;
+
+        if(nextProps.match !== match) {
+            this.setState({
+                keyword: nextProps.match.params.id,
+                classification: this.handleClassification(nextProps.match.path)
+            });
+        }
+    }
+
     // match path 를 조회하여 검색 대상의 분류를 구분합니다.
     handleClassification = (target) => {
         if(target.indexOf("uniSearch") != -1) {
@@ -37,6 +50,12 @@ class PugjjigSearchProvider extends Component {
         }
         if(target.indexOf("stoSearch") != -1) {
             return "stoId";
+        }
+        if(target.indexOf("tagSearch") != -1) {
+            return "uniTag";
+        }
+        if(target.indexOf("userSearch") != -1) {
+            return "userId";
         }
     }
 

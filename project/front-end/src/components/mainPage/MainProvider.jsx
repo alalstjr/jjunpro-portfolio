@@ -8,7 +8,7 @@ import PugjjigProvider from "../../components/pugjjig/PugjjigProvider"
 import KakaoMapService from "../../service/KakaoMapService"
 import { getUniCountStoId } from "../../actions/PugjjigActions"
 
-import { Main, MainMap } from "../../style/globalStyles"
+import { Main, MainMap, MobileSearch } from "../../style/globalStyles"
 
 class MainProvider extends Component {
 
@@ -33,7 +33,9 @@ class MainProvider extends Component {
       stoId: null,
       stoName: null,
       stoAddress: null,
-      stoUrl: null
+      stoUrl: null,
+      // Mobile Css
+      mobile: false
     }
 
     this.appRef = createRef();
@@ -44,7 +46,8 @@ class MainProvider extends Component {
       this,
       this.state.LatLng, 
       this.openModal,
-      this.getUniCountStoId
+      this.getUniCountStoId,
+      this.hendleContain
     );
   
     this.setState({ 
@@ -85,6 +88,12 @@ class MainProvider extends Component {
     });
   }
 
+  hendleContain = (mobile) => {
+    this.setState({
+      mobile
+    });
+  }
+
   render() {
     // state Init
     const { 
@@ -96,7 +105,8 @@ class MainProvider extends Component {
       stoId,
       stoName,
       stoAddress,
-      stoUrl
+      stoUrl,
+      mobile
     } = this.state;
     
     return (
@@ -111,6 +121,8 @@ class MainProvider extends Component {
               categorySearch        = {map.categorySearch}
               initSearch            = {initSearch}
               hendleInitSearch      = {this.hendleInitSearch}
+              hendleContain         = {this.hendleContain}
+              mobile                = {mobile}
             />
             <MainMap
               ref = {this.appRef}
@@ -130,6 +142,14 @@ class MainProvider extends Component {
               null
             }
           </Fragment>
+        }
+        {
+          mobile ? 
+          <MobileSearch>
+            <button onClick={() => this.hendleContain(false)}>다시검색하기</button>
+          </MobileSearch>
+          :
+          null
         }
       </Main>
     )

@@ -60,14 +60,8 @@ class PugjjigWrite extends Component {
             // Form State
             loding: false,
             // Input 경고문
-            warning: {
-                subejct: false,
-                content: false
-            },
-            warningText: {
-                subejct: "",
-                content: ""
-            }
+            warning: false,
+            warningText: ""
         }
     }
 
@@ -97,7 +91,7 @@ class PugjjigWrite extends Component {
                 uniSubject: editPugjjig.uniSubject,
                 uniContent: editPugjjig.uniContent,
                 uniName: editPugjjig.uniName,
-                uniTag: editPugjjig.uniTag,
+                uniTag: this.handleTagArray(editPugjjig.uniTag),
                 uniStar: editPugjjig.uniStar,
                 registerFiles: editPugjjig.files,
                 stoId: editPugjjig.storePublic.stoId
@@ -109,12 +103,20 @@ class PugjjigWrite extends Component {
 
         // Props Init
         const {
-            pugjjig_university
+            pugjjig_university,
+            error
         } = this.props;
 
         if (nextProps.pugjjig_university !== pugjjig_university) {
             this.setState({
                 uniName: nextProps.pugjjig_university,
+                loding: false
+            });
+        }
+
+        if (nextProps.error !== error) {
+            this.warningSet(true, nextProps.error.data);
+            this.setState({
                 loding: false
             });
         }
@@ -190,13 +192,16 @@ class PugjjigWrite extends Component {
 
         // {Client} 유효성 검사 출력 코드입니다.
         if(!pugjjig.uniSubject) {
-            this.warningSet("subject", true, "제목 작성은 필수입니다.");
+            this.warningSet(true, "제목 작성은 필수입니다.");
             return false;
         }
         if(!pugjjig.uniContent) {
-            this.warningSet("content", true, "내용 작성은 필수입니다.");
+            this.warningSet(true, "내용 작성은 필수입니다.");
             return false;
         }
+        
+        // Array to String
+        pugjjig.uniTag = this.handleTagArray(pugjjig.uniTag);
 
         this.setState({
             loding: true
@@ -208,11 +213,10 @@ class PugjjigWrite extends Component {
     // 태그 메소드
     handleTagEvent = (e) => {
         const { uniTag, uniTagText } = this.state;
+        let tagVal = uniTagText.replace(/\s/gi, "");
         
         if(uniTag.length < 6) {
             if( (e.keyCode === 32 || e.keyCode === 13) && uniTagText ) {
-                let tagVal = uniTagText;
-
                 if( uniTag.filter( tag => tag === uniTagText ).length >= 1 ) {
                     return false;
                 }
@@ -225,12 +229,22 @@ class PugjjigWrite extends Component {
         }
     }
 
-    handleTagRemove = (arg) => {
+    handleTagRemove = (target) => {
         const { uniTag } = this.state;
         
         this.setState({
-            uniTag: uniTag.filter( tag => tag !== arg)
+            uniTag: uniTag.filter( tag => tag !== target)
         });
+    }
+
+    handleTagArray = (target) => {
+        if(target === "") {
+            return [];
+        } else if(typeof target === "string") {
+            return target.split(",");
+        } else {
+            return target.join(",");
+        }   
     }
 
     /*
@@ -238,43 +252,15 @@ class PugjjigWrite extends Component {
      *  target, state 는 필수 값입니다.
      *  경고문의 상태와 경고문을 설정하는 메소드입니다.
      */
-    warningSet = (target, state, message) => {
-
+    warningSet = (warning, warningText) => {
         // message undefined 값 체크
-        message = (message === undefined) ? "" : message;
-        
-        switch(target) {
-            case "subject" : 
-                this.setState(prevState => ({
-                    warning: {
-                        ...prevState.warning,
-                        subject: state
-                    },
-                    warningText: {
-                        ...prevState.warningText,
-                        subject: message
-                    }
-                }));
-                this.initWarning();
-                break;
+        warningText = (warningText === undefined) ? "" : warningText;
 
-            case "content" : 
-                this.setState(prevState => ({
-                    warning: {
-                        ...prevState.warning,
-                        content: state
-                    },
-                    warningText: {
-                        ...prevState.warningText,
-                        content: message
-                    }
-                }));
-                this.initWarning();
-                break;
-
-            default :
-                return false;
-        }
+        this.setState({
+            warning,
+            warningText
+        });
+        this.initWarning();
     }
 
     /*
@@ -282,13 +268,10 @@ class PugjjigWrite extends Component {
      */
     initWarning = () => {
         setTimeout(() => {
-            this.setState(prevState => ({
-                warning: {
-                    ...prevState.warning,
-                    subject: false,
-                    content: false
-                }
-            }));
+            this.setState({
+                warning: false,
+                warningText: ""
+            });
         }, 2000);
     }
 
@@ -420,11 +403,8 @@ class PugjjigWrite extends Component {
                     transitionLeaveTimeout={200}
                 >
                 {
-                    warning.subject ? 
-                    <WaringWrap>{warningText.subject}</WaringWrap>
-                    :
-                    warning.content ?
-                    <WaringWrap>{warningText.content}</WaringWrap>
+                    warning ? 
+                    <WaringWrap>{warningText}</WaringWrap>
                     :
                     null
                 }
