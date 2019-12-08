@@ -115,6 +115,7 @@ class PugjjigWrite extends Component {
         }
 
         if (nextProps.error !== error) {
+            console.log(nextProps.error);
             this.warningSet(true, nextProps.error.data);
             this.setState({
                 loding: false

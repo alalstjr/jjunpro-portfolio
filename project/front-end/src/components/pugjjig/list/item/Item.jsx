@@ -60,6 +60,7 @@ const Item = ({pugjjig, UpdateUniLikeUniId, openModal}) => (
                 </ItemUsername>
                 <ItemUserInfo>
                     {
+                        pugjjig.account_urlList !== null ? 
                         pugjjig.account_urlList.map((url, index) => (
                             <a key={index} href={url} target="_blank">
                                 {
@@ -76,6 +77,8 @@ const Item = ({pugjjig, UpdateUniLikeUniId, openModal}) => (
                                 }
                             </a>
                         ))
+                        :
+                        "회원"
                     }
                 </ItemUserInfo>
             </ItemRight>

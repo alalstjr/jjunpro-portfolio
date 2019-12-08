@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components"
-import { ClearFix, InitTransition, FlexInit } from "../../style/globalStyles"
+import { ClearFix, InitTransition, FlexInit, WaringActive } from "../../style/globalStyles"
 import { PugjjigItemWrap, PugjjigItem, ItemContent } from "../pugjjig/style"
 
 const PC_S = 1200;
@@ -14,7 +14,7 @@ const MOBILE_S = 480;
 export const SearchWrap = styled.div`
     width: 100%;
     max-width: 1200px;
-    margin: 60px auto 0;
+    margin: 60px auto;
 
     ${PugjjigItemWrap} > div {
         display: flex;
@@ -68,4 +68,15 @@ export const CategoryWrap = styled.div`
     > button:hover {
         background-color: ${props => props.theme.themeColorHover};
     }
+`;
+
+export const ScrollUpBtn = styled.button.attrs({
+    type: "button"
+})`
+    ${WaringActive}
+    
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    
 `;

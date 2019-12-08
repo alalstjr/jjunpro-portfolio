@@ -232,6 +232,8 @@ export const ImgList = styled.div`
     width: calc(100% / 3 - 3px);
     margin-right: 4px;
     float: left;
+    height: 150px;
+    overflow: hidden;
 
     > img {
         width: 100%;

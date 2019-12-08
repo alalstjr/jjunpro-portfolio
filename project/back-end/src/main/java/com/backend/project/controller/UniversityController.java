@@ -79,6 +79,19 @@ public class UniversityController
             return webProcessRespone.webErrorRespone(bindingResult);
         }
 
+        // File 최대갯수 확인
+        // UPDATE 기존 file과 수정되는 file 갯수가 6개 이하인지 확인합니다.
+        Integer updateDto = universityService.findById(dto.getId()).get().getFiles().size();
+        if(
+                (dto.getFiles() != null && dto.getFiles().length > 7) ||
+                (dto.getFiles() != null && updateDto + dto.getFiles().length > 7)
+        )
+        {
+            errorType = "AuthenticationError";
+            errorText = "파일은 최대 6개 까지만 추가할 수 있습니다.";
+            return webProcessRespone.webErrorRespone(errorType, errorText);
+        }
+
         // Account Info
         Optional<Account> accountData = accountUtill.accountInfo(authentication);
 

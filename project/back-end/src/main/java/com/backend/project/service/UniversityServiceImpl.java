@@ -28,6 +28,9 @@ public class UniversityServiceImpl implements UniversityService
     @Autowired
     private StoreRepository store;
 
+    @Autowired
+    private FileStorageService fileStorageService;
+
     @Override
     public Optional<University> findById(Long id)
     {
@@ -115,6 +118,15 @@ public class UniversityServiceImpl implements UniversityService
             store.save(storeDTO.toEntity());
         }
 
+        // UPDATE 기존 file의 제거되는게 있는경우 파일정보 삭제
+        if(dto.getRemoveFiles() != null && dto.getRemoveFiles().length > 0)
+        {
+            for(int i = 0; i < dto.getRemoveFiles().length; i++)
+            {
+                deleteFileFilter(dto.getRemoveFiles()[i]);
+            }
+        }
+
         return findByPublicId(universityData.getId(), accountData);
     }
 
@@ -152,5 +164,15 @@ public class UniversityServiceImpl implements UniversityService
                 .filter(
                         f -> f.getId() != dto.getRemoveFiles()[i]).collect(Collectors.toList()
                 );
+    }
+
+    /**
+     * Client 에서 기존 업로드된 파일의 제거된 {id}값을 기존 제거되는 file 반환하는 메소드
+     **/
+    private void deleteFileFilter(Long files)
+    {
+        File uniFile = fileStorageService.findById(files).get();
+
+        fileStorageService.fileDelete(uniFile, "university");
     }
 }

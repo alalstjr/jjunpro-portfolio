@@ -22,12 +22,13 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-public class FileStorageServiceImpl implements FileStorageService{
-
+public class FileStorageServiceImpl implements FileStorageService
+{
     private final Path fileStorageLocation;
     private final Path fileStorageLocationAccount;
     private final Path fileStorageLocationThumbnail;
@@ -64,6 +65,11 @@ public class FileStorageServiceImpl implements FileStorageService{
         } catch (Exception e) {
             throw new StoreFileException("업로드 된 파일을 저장할 디렉토리를 만들 수 없습니다.", e);
         }
+    }
+
+    @Override
+    public Optional<File> findById(Long id) {
+        return fileRepository.findById(id);
     }
 
     @Override
@@ -184,8 +190,8 @@ public class FileStorageServiceImpl implements FileStorageService{
             String thumbnailUrlt = uuid + resizeContent + fileType;
 
             // 이미지 자르기 (uploadfile은 MultipartFile 유형의 객체 임)
-            // BufferedImage resizeImage = resize(file.getBytes(), resizeWidth, resizeHeight);
-            BufferedImage resizeImage = cropImageSquare(file.getBytes());
+            BufferedImage resizeImage = resize(file.getBytes(), resizeWidth, resizeHeight);
+            // BufferedImage resizeImage = cropImageSquare(file.getBytes());
 
             // Bufferedimage to Inputstream
             ByteArrayOutputStream os = new ByteArrayOutputStream();

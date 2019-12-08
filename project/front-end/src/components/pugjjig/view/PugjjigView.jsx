@@ -272,6 +272,7 @@ class PugjjigView extends Component {
                                     </ItemUsername>
                                     <ItemUserInfo>
                                         {
+                                            pugjjig.account_urlList !== null ? 
                                             pugjjig.account_urlList.map((url, index) => (
                                                 <a key={index} href={url} target="_blank">
                                                     {
@@ -288,6 +289,8 @@ class PugjjigView extends Component {
                                                     }
                                                 </a>
                                             ))
+                                            :
+                                            "회원"
                                         }
                                     </ItemUserInfo>
                                 </ItemRight>

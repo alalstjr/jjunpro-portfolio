@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react"
 import NormalHeader from "../../layout/header/normal/NormalHeader"
 import List from "../../pugjjig/list/List"
 import Category from "../category/Category"
+import ScrollUp from "../scrollUp/ScrollUp"
 
 import {
     SearchWrap
@@ -111,6 +112,7 @@ class PugjjigSearchProvider extends Component {
                         null
                     }
                 </SearchWrap>
+                <ScrollUp/>
             </Fragment>
         )
     }
