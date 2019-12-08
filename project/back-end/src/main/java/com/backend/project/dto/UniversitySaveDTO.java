@@ -33,7 +33,6 @@ public class UniversitySaveDTO
     private String uniContent;
 
     @Size(max=10, message = "대학교 이름이 너무 깁니다.")
-    @NotBlank(message = "대학교 이름을 작성해 주세요.")
     private String uniName;
 
     private String uniTag;

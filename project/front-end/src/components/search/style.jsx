@@ -33,9 +33,39 @@ export const SearchWrap = styled.div`
             flex-basis: 48%;
             max-width: 48%;
         }
+        @media only screen and (max-width: ${MOBILE_S}px) {
+            margin-left: 0;
+            margin-right: 0;
+            flex-basis: 100%;
+            max-width: 100%;
+        }
     }
 
     @media only screen and (max-width: ${MOBILE_M}px) {
         margin: 10px auto 0;
+        padding-left: 15px;
+    }
+`;
+
+/*******************
+    Category Style
+********************/
+export const CategoryWrap = styled.div`
+    margin: 0.5%;
+
+    > select {
+        height: 30px;
+        margin-right: 10px;
+    }
+
+    > button {
+        height: 30px;
+        background-color: ${props => props.theme.themeColor};
+        color: #fff;
+        padding: 0 20px;
+        border-radius: 3px;
+    }
+    > button:hover {
+        background-color: ${props => props.theme.themeColorHover};
     }
 `;

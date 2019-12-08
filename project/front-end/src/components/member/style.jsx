@@ -154,11 +154,31 @@ export const MyPageWrap = styled.div`
     overflow: hidden;
     width: 100%;
     display: flex;
+
+    @media only screen and (max-width: ${MOBILE_M}px) {
+        width: 100%;
+        display: block;
+        padding: 0 15px;
+        background-color: transparent;
+        margin: 10px auto 0;
+    }
 `;
 export const MyPageLeft = styled.div`
+    ${ClearFix}
     display: inherit;
     flex-direction: column;
     width: 230px;
+
+    @media only screen and (max-width: ${MOBILE_B}px) {
+        width: 160px;
+    }
+    @media only screen and (max-width: ${MOBILE_M}px) {
+        width: 100%;
+        padding: 15px;
+    }
+    @media only screen and (max-width: ${MOBILE_S}px) {
+        padding: 0px;
+    }
 `;
 export const MyPageRight = styled.div`
     display: inherit;
@@ -166,10 +186,25 @@ export const MyPageRight = styled.div`
     width: calc(100% - 230px);
 
     background-color: ${props => props.theme.backgroundColor};
+
+    @media only screen and (max-width: ${MOBILE_B}px) {
+        width: calc(100% - 160px);
+    }
+    @media only screen and (max-width: ${MOBILE_M}px) {
+        width: 100%;
+        padding: 15px;
+    }
+    @media only screen and (max-width: ${MOBILE_S}px) {
+        padding: 15px 0;
+    }
 `;
 export const MyPageWhite = styled.div`
     margin-left: 15px;
     background-color: #fff;
+
+    @media only screen and (max-width: ${MOBILE_M}px) {
+        margin: 0;
+    }
 `;
 export const MyPageList = styled.li`
     cursor: pointer;
@@ -190,7 +225,7 @@ export const MyPageList = styled.li`
         :
         `:nth-child(1)`
     } { 
-        border-left-color: ${props => props.theme.themeColor};
+        border-color: ${props => props.theme.themeColor};
         color: ${props => props.theme.themeColor};
         font-weight: 600;
     }
@@ -199,10 +234,30 @@ export const MyPageList = styled.li`
         background-color: #fafafa;
         border-left-color: #dbdbdb;
     }
+
+    @media only screen and (max-width: ${MOBILE_M}px) {
+        width: 25%;
+        float: left;
+        background-color: #fff;
+        padding: 10px;
+        text-align: center;
+        font-size: 14px;
+
+        border-left: none;
+        border-bottom: 2px solid transparent;
+    }
+    @media only screen and (max-width: ${MOBILE_S}px) {
+        font-size: 12px;
+        padding: 10px 0;
+    }
 `;
 export const GroupBox = styled.div`
-    margin-bottom: 16px;
     display: flex;
+    margin-bottom: 16px;
+
+    @media only screen and (max-width: ${MOBILE_B}px) {
+        display: block;
+    }
 `;
 export const ProfileLabel = styled.div`
     flex-basis: 28%;
@@ -214,6 +269,11 @@ export const ProfileLabel = styled.div`
     font-size: 16px;
     font-weight: 400;
     margin: auto;
+
+    @media only screen and (max-width: ${MOBILE_B}px) {
+        text-align: left;
+        padding: 10px 15px;
+    }
 `;
 export const ProfileInput = styled.div`
     flex-basis: 72%;
@@ -227,9 +287,18 @@ export const ProfileInput = styled.div`
     > #urlListInput {
         padding-right: 60px;
     }
+
+    @media only screen and (max-width: ${MOBILE_B}px) {
+        padding: 0 15px;
+        padding-right: 15px
+    }
 `;
 export const ProfileWrap = styled.div`
     margin-top: 30px;
+
+    @media only screen and (max-width: ${MOBILE_B}px) {
+        margin-top: 0px;
+    }
 `;
 export const UrlList = styled.ul`
     padding: 0 15px;
@@ -280,6 +349,10 @@ export const UrlSaveBtn = styled.button.attrs({
 
     &:hover {
         background-color: ${props => props.theme.themeColorHover};
+    }
+
+    @media only screen and (max-width: ${MOBILE_B}px) {
+        right: 15px;
     }
 `;
 export const SaveBtn = styled.button.attrs({

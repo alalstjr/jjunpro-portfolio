@@ -20,4 +20,8 @@ public class SearchDTO
     private Long offsetCount;
 
     private Account account;
+
+    private String ifCateA;
+
+    private String ifCateB;
 }

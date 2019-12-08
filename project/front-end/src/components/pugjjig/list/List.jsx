@@ -42,6 +42,8 @@ class List extends Component {
             keyword,
             classification,
             offsetCount,
+            ifCateA,
+            ifCateB,
             tempUniversityList
         } = this.props;
 
@@ -49,7 +51,9 @@ class List extends Component {
         const searchDTO = {
             keyword,
             classification,
-            offsetCount: 0
+            offsetCount: 0,
+            ifCateA,
+            ifCateB
         };
         
         let result = true;
@@ -66,7 +70,8 @@ class List extends Component {
             keyword,
             pugjjig_list,
             pugjjig_delete,
-            tempUniversityList
+            tempUniversityList,
+            reSearch
         } = this.props;
 
         if(nextProps.pugjjig_list !== pugjjig_list) {
@@ -77,13 +82,15 @@ class List extends Component {
             this.handleDeleteUpdate(nextProps.pugjjig_delete);
         }
         
-        // keyword 달라지면 새로고침
-        if(nextProps.keyword !== keyword) {
+        // keyword 달라지거나 카테고리 검색일경우 새로고침
+        if(nextProps.keyword !== keyword || nextProps.reSearch !== reSearch) {
             // Search DTO 생성
             const searchDTO = {
                 keyword: nextProps.keyword,
                 classification:nextProps.classification,
-                offsetCount: 0
+                offsetCount: 0,
+                ifCateA: nextProps.ifCateA,
+                ifCateB: nextProps.ifCateB
             };
 
             let result = true;
@@ -149,6 +156,8 @@ class List extends Component {
             // search value
             keyword,
             classification,
+            ifCateA,
+            ifCateB,
             pugjjig_list
         } = this.props;
 
@@ -156,7 +165,9 @@ class List extends Component {
         const searchDTO = {
             keyword,
             classification,
-            offsetCount
+            offsetCount,
+            ifCateA,
+            ifCateB
         };
         
         if(pugjjig_list.data !== undefined) {

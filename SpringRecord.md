@@ -266,6 +266,45 @@ public abstract class BaseTimeEntity {
 }
 ~~~
 
+# JPA 정렬해서 map stream 하는방법
+~~~
+        Map<Store, List<University>> transform = queryFactory
+                .select(qUniversity)
+                .from(qStore)
+                .leftJoin(qStore.stoUniList, qUniversity)
+                .where(
+                        qUniversity.publicStatus.eq(true)
+                                .and(qUniversity.controlStatus.eq(false))
+                                .and(qStore.stoId.eq(storeId))
+                )
+                .transform(groupBy(qStore).as(list(qUniversity)));
+
+        List<StorePublic> results = transform.entrySet().stream()
+                .map(
+                        s -> new StorePublic(
+                                s.getKey().getId(),
+                                s.getKey().getStoUniList().stream().map(
+                                    u -> new UniversityPublic(
+                                            u.getId(),
+                                            u.getUniSubject(),
+                                            u.getUniContent(),
+                                            u.getUniName(),
+                                            u.getUniTag(),
+                                            u.getUniStar(),
+                                            u.getUniIp(),
+                                            u.getModifiedDate(),
+                                            u.getAccount().getId(),
+                                            u.getAccount().getNickname(),
+                                            u.getUniLike().size(),
+                                            u.getUniLike().contains(account),
+                                            u.getFiles()
+                                    )
+                                ).sorted(Comparator.reverseOrder()).collect(Collectors.toList())
+                        )
+                )
+                .collect(Collectors.toList());
+~~~
+
 정상 출력 됩니다.
 
 - https://jsonobject.tistory.com/235 - [Spring-Boot,-JSON-변환,-LocalDateTime을-ISO8601으로-출력하기]

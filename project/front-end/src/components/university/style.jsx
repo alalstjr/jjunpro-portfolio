@@ -291,6 +291,10 @@ export const SearchNotice = styled.div`
     text-align: center;
     padding: 20px 0;
 
+    > button {
+        display: none;
+    }
+
     @media only screen and (max-width: ${MOBILE_S}px) {    
         font-size: 18px;
     }

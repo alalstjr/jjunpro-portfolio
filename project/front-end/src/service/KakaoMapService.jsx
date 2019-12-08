@@ -171,7 +171,7 @@ class KakaoMapService {
         // 인포윈도우
         kakao.maps.event.addListener(marker, 'mouseover', function() {
             thatThis.infowindow.close();
-            classThis.displayInfowindow( marker, store.place_name);
+            classThis.displayInfowindow( marker, store);
         });
         kakao.maps.event.addListener(marker, 'mouseout', function() {
             thatThis.infowindow.close();

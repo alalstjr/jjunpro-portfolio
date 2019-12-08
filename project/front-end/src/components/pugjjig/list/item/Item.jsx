@@ -146,9 +146,14 @@ const Item = ({pugjjig, UpdateUniLikeUniId, openModal}) => (
                     // SERVER 에서 불러오는 속도와 React 에서 storePublic 랜더링하는 속도와 맞춰주는 코드
                     pugjjig.storePublic !== null ?
                         <Fragment>
-                            <Link to={`/pugjjig/uniSearch/${pugjjig.uniName}`}>
-                                <span>{pugjjig.uniName}</span> 
-                            </Link>
+                            {
+                                pugjjig.uniName !== "" ?
+                                <Link to={`/pugjjig/uniSearch/${pugjjig.uniName}`}>
+                                    <span>{pugjjig.uniName}</span> 
+                                </Link>
+                                :
+                                null
+                            }
                             <Link to={`/pugjjig/stoSearch/${pugjjig.storePublic.stoId}`}>
                                 <span>{pugjjig.storePublic.stoName}</span> 
                             </Link>

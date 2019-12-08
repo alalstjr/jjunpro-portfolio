@@ -140,7 +140,10 @@ export const deleteUniversityuniId = (id) =>  async dispatch => {
 ****************************************/
 export const getUniListSearch = (searchDTO) =>  async dispatch => {
     try {
-        const params = `classification=${searchDTO.classification}&offsetCount=${searchDTO.offsetCount}`;
+        const classification = `classification=${searchDTO.classification}`;
+        const offset = `offsetCount=${searchDTO.offsetCount}`;
+        const cate   = `ifCateA=${searchDTO.ifCateA}&ifCateB=${searchDTO.ifCateB}`;
+        const params = `${classification}&${offset}&${cate}`;
         const res = await axios.get(`${SERVER_URL}/api/university/search/${searchDTO.keyword}?${params}`);
 
         switch(res.status) {
@@ -167,8 +170,10 @@ export const getUniListStoreId = (searchDTO) => async dispatch => {
         // 유저 JWT Token정보
         USER_AUTH();
 
-        const params = `offsetCount=${searchDTO.offsetCount}`;
-        const res = await axios.get(`${SERVER_URL}/api/store/${searchDTO.keyword}?${params}`);
+        const offset = `offsetCount=${searchDTO.offsetCount}`;
+        const cate   = `ifCateA=${searchDTO.ifCateA}&ifCateB=${searchDTO.ifCateB}`;
+        const params = `${offset}&${cate}`;
+        const res    = await axios.get(`${SERVER_URL}/api/store/${searchDTO.keyword}?${params}`);
         
         switch(res.status) {
             case 200 :
@@ -200,7 +205,9 @@ export const getUniListUserId = (searchDTO) =>  async dispatch => {
         // 유저 {아이디값,페이지} 의 전달이 없는 경우 기본값 설정
         searchDTO.keyword = (searchDTO.keyword === undefined || searchDTO.keyword === null) ? USER_ID() : searchDTO.keyword;
 
-        const params = `offsetCount=${searchDTO.offsetCount}`;
+        const offset = `offsetCount=${searchDTO.offsetCount}`;
+        const cate   = `ifCateA=${searchDTO.ifCateA}&ifCateB=${searchDTO.ifCateB}`;
+        const params = `${offset}&${cate}`;
         const res = await axios.get(`${SERVER_URL}/api/university/pugjjigs/${searchDTO.keyword}?${params}`);
 
         switch(res.status) {
@@ -233,7 +240,9 @@ export const getUniListUniLike = (searchDTO) => async dispatch => {
         // 유저 {아이디값,페이지} 의 전달이 없는 경우 기본값 설정
         searchDTO.keyword = (searchDTO.keyword === undefined || searchDTO.keyword === null) ? USER_ID() : searchDTO.keyword;
 
-        const params = `offsetCount=${searchDTO.offsetCount}`;
+        const offset = `offsetCount=${searchDTO.offsetCount}`;
+        const cate   = `ifCateA=${searchDTO.ifCateA}&ifCateB=${searchDTO.ifCateB}`;
+        const params = `${offset}&${cate}`;
         const res = await axios.get(`${SERVER_URL}/api/university/pugjjigLikes/${searchDTO.keyword}?${params}`);
 
         switch(res.status) {

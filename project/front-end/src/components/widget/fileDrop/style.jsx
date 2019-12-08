@@ -16,8 +16,12 @@ export const DropZone = styled.div`
     font-size: 16px;
     text-align: center;
 
+    @media only screen and (max-width: ${MOBILE_B}px) {
+        font-size: 14px;
+    }
     @media only screen and (max-width: ${MOBILE_S}px) {
         font-size: 12px;
+        padding: 0;
     }
 `;
 export const FileList = styled.li`

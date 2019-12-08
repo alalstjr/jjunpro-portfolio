@@ -17,7 +17,10 @@ import {
     NextBtn,
     PrevBtn,
     SearchSetTimeWrap,
-    SearchSetFoodWrap
+    SearchSetFoodWrap,
+    Item,
+    ItemUniName,
+    ItemUniCount
  } from "./style"
 
 class UniversityProvider extends Component {
@@ -375,7 +378,14 @@ class UniversityProvider extends Component {
                     }
                     {
                         searchState !== false && storeState === 2 ? 
-                        <SearchNotice>찾으시는 음식점을 검색해주세요.</SearchNotice>
+                        <SearchNotice>
+                            찾으시는 음식점을 검색해주세요.
+                            {/* API style class name lazy loading 문제 때문에 Item 미리 호출 */}
+                            <Item>
+                                <ItemUniName/>
+                                <ItemUniCount/>
+                            </Item>
+                        </SearchNotice>
                         :
                         null
                     }

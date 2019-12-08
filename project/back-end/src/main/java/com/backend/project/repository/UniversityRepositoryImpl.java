@@ -7,7 +7,7 @@ import com.backend.project.service.CommentServiceImpl;
 import com.backend.project.service.FileStorageServiceImpl;
 import com.backend.project.service.StoreService;
 import com.backend.project.service.UniversityServiceImpl;
-import com.querydsl.core.BooleanBuilder;
+import com.backend.project.util.RepositoryUtill;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +44,9 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL
 
     @Autowired
     private StoreService storeService;
+
+    @Autowired
+    private RepositoryUtill repositoryUtill;
 
     @Override
     @Transactional
@@ -102,6 +105,10 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL
                         qUniversity.publicStatus.eq(true)
                         .and(qUniversity.controlStatus.eq(false))
                         .and(qUniversity.account.userId.eq(searchDTO.getKeyword()))
+                        .and(repositoryUtill.getSearchCate(searchDTO))
+                )
+                .orderBy(
+                        repositoryUtill.getSearchOrderBy(searchDTO)
                 )
                 .offset(8 * searchDTO.getOffsetCount())
                 .limit(8)
@@ -124,6 +131,10 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL
                         qUniversity.publicStatus.eq(true)
                         .and(qUniversity.controlStatus.eq(false))
                         .and(qUniversity.uniLike.any().userId.eq(searchDTO.getKeyword()))
+                        .and(repositoryUtill.getSearchCate(searchDTO))
+                )
+                .orderBy(
+                        repositoryUtill.getSearchOrderBy(searchDTO)
                 )
                 .offset(8 * searchDTO.getOffsetCount())
                 .limit(8)
@@ -139,36 +150,17 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL
     @Override
     public List<UniversityPublic> findByUniversityListWhereKeyword(SearchDTO searchDTO)
     {
-        // 검색 대상 분류 동적 조건
-        BooleanBuilder builder = new BooleanBuilder();
-        switch (searchDTO.getClassification()) {
-            case "uniName" :
-                builder.and(qUniversity.uniName.contains(searchDTO.getKeyword()));
-                break;
-
-            case "stoId" :
-                builder.and(qStore.stoId.contains(searchDTO.getKeyword()));
-                break;
-
-            case "uniTag" :
-                builder.and(qUniversity.uniTag.contains(searchDTO.getKeyword()));
-                break;
-
-            case "userId" :
-                builder.and(qUniversity.account.userId.contains(searchDTO.getKeyword()));
-                break;
-
-            default:
-                break;
-        }
-
         Map<University, List<Account>> transform = queryFactory
                 .from(qUniversity)
                 .leftJoin(qUniversity.uniLike, qAccount)
                 .where(
                         qUniversity.publicStatus.eq(true)
                         .and(qUniversity.controlStatus.eq(false))
-                        .and(builder)
+                        .and(repositoryUtill.getSearchClassification(searchDTO))
+                        .and(repositoryUtill.getSearchCate(searchDTO))
+                )
+                .orderBy(
+                        repositoryUtill.getSearchOrderBy(searchDTO)
                 )
                 .offset(8 * searchDTO.getOffsetCount())
                 .limit(8)

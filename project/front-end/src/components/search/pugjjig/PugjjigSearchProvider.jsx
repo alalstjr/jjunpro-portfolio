@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react"
 import NormalHeader from "../../layout/header/normal/NormalHeader"
 import List from "../../pugjjig/list/List"
+import Category from "../category/Category"
 
 import {
     SearchWrap
@@ -11,9 +12,12 @@ class PugjjigSearchProvider extends Component {
         super(props);
 
         this.state = {
+            reSearch: false,
             keyword: null,
             classification: null,
-            offsetCount: 0
+            offsetCount: 0,
+            ifCateA: "all",  // like or comment 
+            ifCateB: "all"   // photo or posts
         }
     }
 
@@ -59,25 +63,49 @@ class PugjjigSearchProvider extends Component {
         }
     }
 
+    handleSearchCate = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value 
+        });
+    }
+
+    handleReSearch = () => {
+        const { reSearch } = this.state;
+        this.setState({
+            reSearch: !reSearch
+        });
+    }
+
     render() {
 
         // State Init
         const { 
             keyword,
             classification,
-            offsetCount
+            offsetCount,
+            ifCateA,
+            ifCateB,
+            reSearch
         } = this.state;
 
         return (
             <Fragment>
                 <NormalHeader/>
                 <SearchWrap>
+                    <Category
+                        handleSearchCate   = {this.handleSearchCate}
+                        handleReSearch     = {this.handleReSearch}
+                    />
                     {
                         (keyword !== null && classification !== null) ?
                         <List
                             keyword        = {keyword}
                             classification = {classification}
                             offsetCount    = {offsetCount}
+                            ifCateA        = {ifCateA}
+                            ifCateB        = {ifCateB}
+                            reSearch       = {reSearch}
+                            handleReSearch = {this.handleReSearch}
                         />
                         :
                         null

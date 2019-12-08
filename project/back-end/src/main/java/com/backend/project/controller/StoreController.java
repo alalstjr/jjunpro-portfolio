@@ -37,6 +37,8 @@ public class StoreController
     public ResponseEntity<?> getStoreIdUniList(
             @PathVariable String keyword,
             @RequestParam("offsetCount") Long offsetCount,
+            @RequestParam("ifCateA") String ifCateA,
+            @RequestParam("ifCateB") String ifCateB,
             HttpServletRequest request
     ) throws IOException
     {
@@ -54,6 +56,8 @@ public class StoreController
             searchDTO.setKeyword(keyword);
             searchDTO.setOffsetCount(offsetCount);
             searchDTO.setAccount(accountData);
+            searchDTO.setIfCateA(ifCateA);
+            searchDTO.setIfCateB(ifCateB);
         }
         else
         {

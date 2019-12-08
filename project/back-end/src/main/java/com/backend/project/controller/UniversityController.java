@@ -203,6 +203,8 @@ public class UniversityController
     public ResponseEntity<?> getUniListUserId(
             @PathVariable String userId,
             @RequestParam("offsetCount") Long offsetCount,
+            @RequestParam("ifCateA") String ifCateA,
+            @RequestParam("ifCateB") String ifCateB,
             HttpServletRequest request
     ) throws IOException
     {
@@ -222,6 +224,8 @@ public class UniversityController
             searchDTO.setKeyword(userId);
             searchDTO.setOffsetCount(offsetCount);
             searchDTO.setAccount(accountData);
+            searchDTO.setIfCateA(ifCateA);
+            searchDTO.setIfCateB(ifCateB);
         }
         else
         {
@@ -256,6 +260,8 @@ public class UniversityController
     public ResponseEntity<?> getUniListUniLike(
             @PathVariable String keyword,
             @RequestParam("offsetCount") Long offsetCount,
+            @RequestParam("ifCateA") String ifCateA,
+            @RequestParam("ifCateB") String ifCateB,
             HttpServletRequest request
     ) throws IOException
     {
@@ -275,6 +281,8 @@ public class UniversityController
             searchDTO.setKeyword(keyword);
             searchDTO.setOffsetCount(offsetCount);
             searchDTO.setAccount(accountData);
+            searchDTO.setIfCateA(ifCateA);
+            searchDTO.setIfCateB(ifCateB);
         }
         else
         {
@@ -293,6 +301,8 @@ public class UniversityController
             @PathVariable String keyword,
             @RequestParam("classification") String classification,
             @RequestParam("offsetCount") Long offsetCount,
+            @RequestParam("ifCateA") String ifCateA,
+            @RequestParam("ifCateB") String ifCateB,
             HttpServletRequest request
     ) throws IOException
     {
@@ -313,6 +323,8 @@ public class UniversityController
             searchDTO.setClassification(classification);
             searchDTO.setOffsetCount(offsetCount);
             searchDTO.setAccount(accountData);
+            searchDTO.setIfCateA(ifCateA);
+            searchDTO.setIfCateB(ifCateB);
         }
         else
         {

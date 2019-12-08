@@ -6,9 +6,11 @@ import com.backend.project.domain.University;
 import com.backend.project.dto.SearchDTO;
 import com.backend.project.projection.StorePublic;
 import com.backend.project.projection.UniversityPublic;
+import com.backend.project.util.RepositoryUtill;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,6 +21,9 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
     private final JPAQueryFactory queryFactory;
     private QStore qStore = QStore.store;
     private QUniversity qUniversity = QUniversity.university;
+
+    @Autowired
+    private RepositoryUtill repositoryUtill;
 
     @Override
     public Long findByUniCount(String keyword) {
@@ -41,11 +46,14 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
                 .from(qStore)
                 .leftJoin(qStore.stoUniList, qUniversity)
                 .where(
-                    qUniversity.publicStatus.eq(true)
-                    .and(qUniversity.controlStatus.eq(false))
-                    .and(qStore.stoId.eq(searchDTO.getKeyword()))
+                        qUniversity.publicStatus.eq(true)
+                        .and(qUniversity.controlStatus.eq(false))
+                        .and(qStore.stoId.eq(searchDTO.getKeyword()))
+                        .and(repositoryUtill.getSearchCate(searchDTO))
                 )
-                .orderBy(qUniversity.uniLike.size().desc())
+                .orderBy(
+                        repositoryUtill.getSearchOrderBy(searchDTO)
+                )
                 .offset(8 * searchDTO.getOffsetCount())
                 .limit(8)
                 .fetch();
@@ -71,42 +79,6 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
                         u.getComments().size()
                 )
         ).collect(Collectors.toList());
-
-//        Map<Store, List<University>> transform = queryFactory
-//                .select(qUniversity)
-//                .from(qStore)
-//                .leftJoin(qStore.stoUniList, qUniversity)
-//                .where(
-//                        qUniversity.publicStatus.eq(true)
-//                                .and(qUniversity.controlStatus.eq(false))
-//                                .and(qStore.stoId.eq(storeId))
-//                )
-//                .transform(groupBy(qStore).as(list(qUniversity)));
-//
-//        List<StorePublic> results = transform.entrySet().stream()
-//                .map(
-//                        s -> new StorePublic(
-//                                s.getKey().getId(),
-//                                s.getKey().getStoUniList().stream().map(
-//                                    u -> new UniversityPublic(
-//                                            u.getId(),
-//                                            u.getUniSubject(),
-//                                            u.getUniContent(),
-//                                            u.getUniName(),
-//                                            u.getUniTag(),
-//                                            u.getUniStar(),
-//                                            u.getUniIp(),
-//                                            u.getModifiedDate(),
-//                                            u.getAccount().getId(),
-//                                            u.getAccount().getNickname(),
-//                                            u.getUniLike().size(),
-//                                            u.getUniLike().contains(account),
-//                                            u.getFiles()
-//                                    )
-//                                ).sorted(Comparator.reverseOrder()).collect(Collectors.toList())
-//                        )
-//                )
-//                .collect(Collectors.toList());
 
         return results;
     }

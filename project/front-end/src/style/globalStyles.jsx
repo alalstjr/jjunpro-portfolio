@@ -345,7 +345,7 @@ export const ModalWrap = styled.div`
     background-color: rgba(0, 0, 0, 0.65);
 
     @media only screen and (max-width: ${MOBILE_S}px) {
-        padding: 0 40px;
+        padding: 0 10px;
     }
 `;
 export const ModalBox = styled.div`
@@ -382,6 +382,12 @@ export const ModalCloseBtn = styled.button`
     }
     &:after {
         transform: rotate(-45deg);
+    }
+
+    @media only screen and (max-width: ${MOBILE_S}px) {
+        right: 0;
+        top: -32px;
+        border-radius: 5px 5px 0 0;
     }
 `;
 export const Title = styled.h3`
