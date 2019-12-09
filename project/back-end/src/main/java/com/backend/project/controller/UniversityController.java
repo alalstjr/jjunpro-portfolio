@@ -81,7 +81,7 @@ public class UniversityController
 
         // File 최대갯수 확인
         // UPDATE 기존 file과 수정되는 file 갯수가 6개 이하인지 확인합니다.
-        Integer updateDto = universityService.findById(dto.getId()).get().getFiles().size();
+        Integer updateDto = (dto.getId() != null) ? universityService.findById(dto.getId()).get().getFiles().size() : 0;
         if(
                 (dto.getFiles() != null && dto.getFiles().length > 7) ||
                 (dto.getFiles() != null && updateDto + dto.getFiles().length > 7)

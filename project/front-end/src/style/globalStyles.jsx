@@ -27,6 +27,13 @@ export const GlobalStyle = createGlobalStyle`
         font-style: normal;
     }
 
+    @font-face { 
+        font-family: 'CookieRunOTF-Bold'; 
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/CookieRunOTF-Bold00.woff') format('woff'); 
+        font-weight: normal; 
+        font-style: normal; 
+    }
+
     html {
         background-color: ${props => props.theme.backgroundColor};
         color: ${props => props.theme.fontColor};
@@ -39,6 +46,9 @@ export const GlobalStyle = createGlobalStyle`
     :before, :after, * {
         box-sizing: border-box;
     }
+`;
+export const CookieFont = css`
+    font-family: 'CookieRunOTF-Bold';
 `;
 export const ClearFix = css`
     &:after {
@@ -201,6 +211,8 @@ export const FormGroup = styled.div`
     margin-bottom: 20px;
 `;
 export const Formlabel = styled.label`
+    ${CookieFont}
+    
     display: inline-block;
     font-size: 1rem;
 `;

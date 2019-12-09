@@ -31,7 +31,6 @@ const SingUpModal = ({
             <ModalOverlay onClick = {closeModal} />
             <Modal>
                 <TitleWrap>
-                    <TitleLogo>푹찍</TitleLogo>
                     <Title>푹찍 회원가입</Title>
                 </TitleWrap>
                 <SignUp

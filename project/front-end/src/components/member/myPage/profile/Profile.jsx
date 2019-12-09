@@ -135,19 +135,25 @@ class Profile extends Component {
      */
     handleurlLinkAdd = (target) => {
         const { urlList } = this.state;
+        const { warningSet } = this.props;
 
         if(target.replace(/^\s+|\s+$/g,"") === "") {
-            alert("URL 주소를 입력해 주세요.");
+            warningSet(true, "URL 주소를 입력해 주세요.");
+            return false;
+        }
+        var urlCheck = /(http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w-.\/?%&amp;=]*)?)/gi;
+        if(target.match(urlCheck) === null) {
+            warningSet(true, "주소에는 (http://) 또는 (https://) 포함되어야 합니다.");
             return false;
         }
 
         if(urlList.filter(url => url === target).length > 0) {
-            alert("이미 등록된 URL 주소입니다.");
+            warningSet(true, "이미 등록된 URL 주소입니다.");
             return false;
         }
 
         if(urlList.length > 2) {
-            alert("URL 주소는 3개만 입력 가능합니다.");
+            warningSet(true, "URL 주소는 3개만 입력 가능합니다.");
             return false;
         }
 

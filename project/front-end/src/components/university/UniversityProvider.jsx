@@ -209,7 +209,7 @@ class UniversityProvider extends Component {
         let keywordSetting = (category === "") ? "음식점" : `${university} ${this.state.category}`;
 
         this.setState({
-            keyword: "",
+            // keyword: "",
             searchState: false
         });
         

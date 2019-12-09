@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components"
-import { ClearFix, InitTransition, FlexInit } from "../../style/globalStyles"
+import { ClearFix, InitTransition, FlexInit, CookieFont } from "../../style/globalStyles"
 
 const PC_S = 1200;
 const TABLET = 991;
@@ -141,6 +141,7 @@ export const SearchWrap = styled.div`
     }
 `;
 export const SearchTitle = styled.h2`
+    ${CookieFont}
     position: relative;
     padding: 8px 0;
     line-height: 1.25rem;

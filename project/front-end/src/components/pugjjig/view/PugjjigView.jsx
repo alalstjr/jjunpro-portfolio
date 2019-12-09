@@ -272,7 +272,7 @@ class PugjjigView extends Component {
                                     </ItemUsername>
                                     <ItemUserInfo>
                                         {
-                                            pugjjig.account_urlList !== null ? 
+                                            (pugjjig.account_urlList !== null && pugjjig.account_urlList.length > 0) ? 
                                             pugjjig.account_urlList.map((url, index) => (
                                                 <a key={index} href={url} target="_blank">
                                                     {
@@ -332,7 +332,11 @@ class PugjjigView extends Component {
                             </ItemHead>
                             <ItemSubject>{pugjjig.uniSubject}</ItemSubject>
                             <ViewContent>
-                                {pugjjig.uniContent}
+                                {
+                                    pugjjig.uniContent.split('\n').map( line => {
+                                        return (<div>{line}</div>)
+                                    })
+                                }
                             </ViewContent>
                             {
                                 pugjjig.files ? 

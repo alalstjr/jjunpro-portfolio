@@ -320,6 +320,14 @@ class KakaoMapService {
         overlayTitle.appendChild(overlayTitleText);
         overlayTitle.setAttribute("style", "font-weight: 500;font-size: 16px;margin-bottom: 3px;");
 
+        let overlayClose = document.createElement("button"); 
+        let overlayCloseText = document.createTextNode(`X`); 
+        overlayClose.appendChild(overlayCloseText);
+        overlayClose.setAttribute("style", "color: #000;position: absolute;right: 16px;top: 6px;font-size: 16px;font-weight: 400;");
+        overlayClose.addEventListener('click', function(){
+            this.parentNode.setAttribute("style", "display: none");
+        });
+
         let overlayReview = document.createElement("button"); 
         overlayReview.type = "button";
         let overlayReviewText = document.createTextNode(`평점 0점 | 리뷰 ${pugjjig.count}개 리뷰보기`); 
@@ -355,6 +363,7 @@ class KakaoMapService {
         overlayWrite.setAttribute("style", "width: 100%;display: block;background-color: #d11d33;color: #fff;padding: 3px 0;border-radius: 3px;margin-top: 10px;");
 
         overlayWarp.appendChild(overlayTitle);
+        overlayWarp.appendChild(overlayClose);
         overlayWarp.appendChild(overlayReview);
         overlayWarp.appendChild(overlayAddr);
         overlayWarp.appendChild(overlayPhone);
