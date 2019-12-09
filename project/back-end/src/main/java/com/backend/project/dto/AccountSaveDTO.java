@@ -33,7 +33,6 @@ public class AccountSaveDTO {
 
     private Set<University> university;
 
-    @Size(min=1, message = "올바른 이메일을 작성해 주세요.")
     private String email;
 
     private String[] urlList;

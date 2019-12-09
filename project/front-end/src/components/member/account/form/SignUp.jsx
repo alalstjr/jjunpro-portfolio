@@ -27,7 +27,6 @@ class SignUp extends Component {
             nickname: "",
             password: "",
             passwordRe: "",
-            email: "",
             // Form State
             loding: false
         }
@@ -54,9 +53,6 @@ class SignUp extends Component {
             }
             if(nextProps.error.data.password) {
                 warningSet("password", true, nextProps.error.data.password);
-            }
-            if(nextProps.error.data.email) {
-                warningSet("email", true, nextProps.error.data.email);
             }
 
             this.setState({ loding: false });
@@ -94,8 +90,7 @@ class SignUp extends Component {
             password,
             passwordRe,
             myUniversity,
-            urlList,
-            email
+            urlList
         } = this.state;
 
         // Value Init
@@ -105,8 +100,7 @@ class SignUp extends Component {
             password,
             passwordRe,
             myUniversity,
-            urlList,
-            email
+            urlList
         };
 
         // {Client} 유효성 검사 출력 코드입니다.
@@ -124,10 +118,6 @@ class SignUp extends Component {
         }
         if(password !== passwordRe) {
             warningSet("passwordRe", true, "비밀번호가 동일하지 않습니다.");
-            return false;
-        }
-        if(!account.email) {
-            warningSet("email", true, "이메일은 필수로 작성해야 합니다.");
             return false;
         }
 
@@ -153,7 +143,6 @@ class SignUp extends Component {
             nickname,
             password,
             passwordRe,
-            email,
             loding
         } = this.state;
 
@@ -241,27 +230,6 @@ class SignUp extends Component {
                                 active={warningText.passwordRe}
                             >
                                 {warningText.passwordRe}
-                            </InputWarning>
-                            : 
-                            null
-                        }
-                    </FormGroup>
-                    <FormGroup>
-                        <Formlabel>이메일</Formlabel>
-                        <InputClean
-                            id="email"
-                            name="email"
-                            type="text"
-                            value={email}
-                            onChange={this.onChange}
-                            onKeyDown={initWarning}
-                        />
-                        {
-                            warning.email ? 
-                            <InputWarning
-                                active={warningText.email}
-                            >
-                                {warningText.email}
                             </InputWarning>
                             : 
                             null

@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components"
-import { ClearFix, InitTransition, CookieFont } from "../../style/globalStyles"
+import { ClearFix, InitTransition, CookieFontB } from "../../style/globalStyles"
 
 const PC_S = 1200;
 const TABLET = 991;
@@ -22,7 +22,7 @@ export const LoginWrap = styled.div`
 `;
 export const LoginLogo = styled.h1`
     ${InitTransition}
-    ${CookieFont}
+    ${CookieFontB}
     text-align: center;
     font-weight: 600;
     padding: 10px 0 20px;
@@ -128,7 +128,7 @@ export const TitleWrap = styled.div`
     ${ClearFix}
     position: absolute;
     right: 15px;
-    top: 15px;
+    top: 12px;
 `;
 export const TitleLogo = styled.h1`
     color: ${props => props.theme.themeColorHover};

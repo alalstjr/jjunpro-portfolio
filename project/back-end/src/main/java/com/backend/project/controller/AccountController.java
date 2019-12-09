@@ -113,20 +113,6 @@ public class AccountController
             errorMap.put(errorType, errorText);
         }
 
-        // Account Email Validity Check
-        if (dto.getEmail() != null && !validityCheck.emailCheck(dto.getEmail()))
-        {
-            errorType = "email";
-            errorText = "올바르지 않은 이메일입니다.";
-            errorMap.put(errorType, errorText);
-        }
-        if (accountService.findByEmail(dto.getEmail()).isPresent())
-        {
-            errorType = "email";
-            errorText = "이미 존재하는 이메일입니다.";
-            errorMap.put(errorType, errorText);
-        }
-
         // 유효성 검사 최종 반환
         if(errorMap.size() > 0)
         {
@@ -193,14 +179,25 @@ public class AccountController
         }
 
         // Account Email Validity Check
-        if (dto.getEmail() != null && !validityCheck.emailCheck(dto.getEmail()))
+        if (!dto.getEmail().equals("null") && dto.getEmail().length() > 0)
         {
-            errorType = "email";
-            errorText = "올바르지 않은 이메일입니다.";
-            errorMap.put(errorType, errorText);
+            if(!validityCheck.emailCheck(dto.getEmail())) {
+                errorType = "email";
+                errorText = "올바르지 않은 이메일입니다.";
+                errorMap.put(errorType, errorText);
+            }
         }
-        if (
-            !accountData.get().getEmail().equals(dto.getEmail()) &&
+        else
+        {
+            // 입력된 이메일 정보가 없을경우 Null 저장
+            dto.setEmail(null);
+        }
+
+        String accountEmailCheck = accountData.get().getEmail() == null ? "" : accountData.get().getEmail();
+
+        if(
+            dto.getEmail() != null &&
+            !accountEmailCheck.equals(dto.getEmail()) &&
             accountService.findByEmail(dto.getEmail()).isPresent()
         )
         {

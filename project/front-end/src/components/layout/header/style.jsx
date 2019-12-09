@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ClearFix, CookieFont } from "../../../style/globalStyles";
+import { ClearFix, CookieFontB } from "../../../style/globalStyles";
 
 export const NormalHeaderWrap = styled.div`
     padding: 11px 0px;
@@ -8,7 +8,7 @@ export const NormalHeaderWrap = styled.div`
     border-bottom: 1px solid #e2e2e2;
 
     > a {
-        ${CookieFont}
+        ${CookieFontB}
         font-weight: 600;
         color: ${props => props.theme.themeColor};
         font-size: 25px;

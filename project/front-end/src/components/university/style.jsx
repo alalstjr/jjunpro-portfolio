@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components"
-import { ClearFix, InitTransition, FlexInit, CookieFont } from "../../style/globalStyles"
+import { ClearFix, InitTransition, FlexInit, CookieFontB, CookieFontR } from "../../style/globalStyles"
 
 const PC_S = 1200;
 const TABLET = 991;
@@ -141,13 +141,12 @@ export const SearchWrap = styled.div`
     }
 `;
 export const SearchTitle = styled.h2`
-    ${CookieFont}
+    ${CookieFontR}
     position: relative;
     padding: 8px 0;
     line-height: 1.25rem;
     color: #292929;
     font-size: 1rem;
-    font-weight: 600;
 
     @media only screen and (max-width: ${MOBILE_S}px) {    
         font-size: 18px;
@@ -384,10 +383,11 @@ export const SearchSetFoodWrap = styled.div`
 `;
 
 export const NoticeText = styled.div`
+    ${CookieFontR}
+
     transition: all 0.2s ease-in-out;
     visibility: hidden;
     opacity: 0;
-    font-weight: 600;
 `;
 
 /*******************

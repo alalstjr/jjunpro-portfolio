@@ -110,10 +110,6 @@ class Profile extends Component {
             warningSet(true, "닉네임은 필수로 작성해야 합니다.");
             return false;
         }
-        if(!account.email) {
-            warningSet(true, "이메일은 필수로 작성해야 합니다.");
-            return false;
-        }
         
         this.props.updateAccount(account, files, this.props.history);
     }

@@ -3,6 +3,11 @@ import reset from './reset'
 import { ShakeWeakly } from "./keyFrames"
 import gyeonggiOTF from '../details/fonts/gyeonggi/Title_Medium.otf'
 import gyeonggiWOFF from '../details/fonts/gyeonggi/Title_Medium.woff'
+import CookieRunBold from '../details/fonts/cookieRun/CookieRunOTF-Bold.woff'
+import CookieRunRegular from '../details/fonts/cookieRun/CookieRunOTF-Regular.woff'
+import NanumSquareL from '../details/fonts/nanum/NanumSquareL.woff'
+import NanumSquareR from '../details/fonts/nanum/NanumSquareR.woff'
+import NanumSquareB from '../details/fonts/nanum/NanumSquareB.woff'
 
 const PC_S = 1200;
 const TABLET = 991;
@@ -15,7 +20,8 @@ const MOBILE_S = 480;
 ********************/
 export const GlobalStyle = createGlobalStyle`
     ${reset};
-    @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,300,400,500,700,900&display=swap&subset=korean');
+
+    @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,400&display=swap&subset=korean');
 
     @font-face {
         font-family: 'gyeonggi-ligth';
@@ -29,8 +35,33 @@ export const GlobalStyle = createGlobalStyle`
 
     @font-face { 
         font-family: 'CookieRunOTF-Bold'; 
-        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/CookieRunOTF-Bold00.woff') format('woff'); 
-        font-weight: normal; 
+        src: url('${CookieRunBold}') format('woff'); 
+        font-weight: bold; 
+        font-style: normal; 
+    }
+    @font-face { 
+        font-family: 'CookieRunOTF-Regular'; 
+        src: url('${CookieRunRegular}') format('woff'); 
+        font-weight: 400; 
+        font-style: normal; 
+    }
+
+    @font-face { 
+        font-family: 'NanumSquare'; 
+        src: url('${NanumSquareL}') format('woff'); 
+        font-weight: 300; 
+        font-style: normal;
+    }
+    @font-face { 
+        font-family: 'NanumSquare'; 
+        src: url('${NanumSquareR}') format('woff'); 
+        font-weight: 400; 
+        font-style: normal; 
+    }
+    @font-face { 
+        font-family: 'NanumSquare'; 
+        src: url('${NanumSquareB}') format('woff'); 
+        font-weight: bold; 
         font-style: normal; 
     }
 
@@ -47,8 +78,11 @@ export const GlobalStyle = createGlobalStyle`
         box-sizing: border-box;
     }
 `;
-export const CookieFont = css`
+export const CookieFontB = css`
     font-family: 'CookieRunOTF-Bold';
+`;
+export const CookieFontR = css`
+    font-family: 'CookieRunOTF-Regular';
 `;
 export const ClearFix = css`
     &:after {
@@ -211,16 +245,19 @@ export const FormGroup = styled.div`
     margin-bottom: 20px;
 `;
 export const Formlabel = styled.label`
-    ${CookieFont}
+    ${CookieFontR}
     
     display: inline-block;
     font-size: 1rem;
+    margin-bottom: 5px;
 `;
 export const Input = styled.input.attrs({
     // required: true
 })`
     ${FormCss};
     ${FormCssBasic};
+
+    font-family: none;
 `;
 export const InputClean = styled.input.attrs({
     // required: true
@@ -228,6 +265,8 @@ export const InputClean = styled.input.attrs({
     ${FormCss};
     border: none;
     border-bottom: 1px solid #e4e7ea;
+
+    font-family: none;
 `;
 export const InputWarning = styled.div`
     color: #e60023;
@@ -259,6 +298,8 @@ export const SubmitBtn = styled.button`
     margin-top: 15px;
 `;
 export const NotPost = styled.div`
+    ${CookieFontR}
+
     width: 100%;
     text-align: center;
     justify-content: center;
