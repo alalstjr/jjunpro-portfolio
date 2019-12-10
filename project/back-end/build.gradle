@@ -87,3 +87,10 @@ compileQuerydsl{
 configurations {
 	querydsl.extendsFrom compileClasspath
 }
+
+// JAR 설정
+bootJar {
+	archiveBaseName = 'jjunpro'
+	archiveFileName = 'project.jar'
+	archiveVersion = "0.0.1"
+}
