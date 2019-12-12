@@ -31,7 +31,7 @@ class LoginBox extends Component {
                         />
                         <AccountBtn
                             text = "푹찍 회원가입"
-                            req = "singUp"
+                            req = "signUp"
                         />
                     </Fragment>
                     :

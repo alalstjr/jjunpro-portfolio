@@ -2,8 +2,12 @@ package com.backend.project.service;
 
 import com.backend.project.domain.File;
 import com.backend.project.exception.StoreFileException;
-import com.backend.project.property.FileStorageProperties;
 import com.backend.project.repository.FileRepository;
+import com.backend.project.util.CloudStorageHelper;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -16,56 +20,21 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 public class FileStorageServiceImpl implements FileStorageService
 {
-    private final Path fileStorageLocation;
-    private final Path fileStorageLocationAccount;
-    private final Path fileStorageLocationThumbnail;
+    private final String GCSID = "spring-project-261615_cloudbuild";
 
     @Autowired
     private FileRepository fileRepository;
 
     @Autowired
-    public FileStorageServiceImpl(FileStorageProperties fileStorageProperties) {
-        // { Class Paths }
-        // toAbsolutePath() 이 패스의 절대 패스를 나타내는 Path 오브젝트를 돌려줍니다.
-        // normalize() 중복 된 이름의 경로가 제거 된 후 경로를 반환합니다.
-
-        // 원본 경로
-        this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir())
-                .toAbsolutePath().normalize();
-
-        // 유저정보 경로
-        this.fileStorageLocationAccount = Paths.get(fileStorageProperties.getUploadDirAccount())
-                .toAbsolutePath().normalize();
-
-        // 썸네일 경로
-        this.fileStorageLocationThumbnail = Paths.get(fileStorageProperties.getUploadDirThumbnail())
-                .toAbsolutePath().normalize();
-
-        try {
-             // { Class File }
-             // createDirectories(Path dir)
-             // 존재하지 않는 모든 부모 디렉토리를 먼저 작성하여 디렉토리를 작성합니다.
-
-            Files.createDirectories(this.fileStorageLocation);
-            Files.createDirectories(this.fileStorageLocationAccount);
-            Files.createDirectories(this.fileStorageLocationThumbnail);
-        } catch (Exception e) {
-            throw new StoreFileException("업로드 된 파일을 저장할 디렉토리를 만들 수 없습니다.", e);
-        }
-    }
+    private CloudStorageHelper cloudStorageHelper;
 
     @Override
     public Optional<File> findById(Long id) {
@@ -73,50 +42,23 @@ public class FileStorageServiceImpl implements FileStorageService
     }
 
     @Override
-    public void fileDelete(File file, String domain) {
-
+    public void fileDelete(File file)
+    {
         String fileUrl = file.getFileOriginal();
         String thumbnailUrl = file.getFileThumbnail();
 
-        String targetOriginal = handleLocation(domain, fileUrl).toString();
-        String targetThumbnail = handleLocation("thumbnail", thumbnailUrl).toString();
+        // GCS File Delete
+        cloudStorageHelper.deleteFile(fileUrl, GCSID);
+        cloudStorageHelper.deleteFile(thumbnailUrl, GCSID);
 
-        // 경로 추적
-        System.out.println(targetOriginal);
-        System.out.println(targetThumbnail);
-
+        // DB File Delete
         fileRepository.delete(file);
-
-        boolean originalResult = false;
-        boolean thumbnailResult = false;
-
-        java.io.File originalFile = new java.io.File(targetOriginal);
-        java.io.File thumbnailFile = new java.io.File(targetThumbnail);
-
-        if(originalFile.exists()) {
-            originalResult = originalFile.delete();
-            thumbnailResult = thumbnailFile.delete();
-
-            if(originalResult) {
-                System.out.println("true");
-            } else {
-                System.out.println("false");
-            }
-
-            if(thumbnailResult) {
-                System.out.println("true");
-            } else {
-                System.out.println("false");
-            }
-        } else {
-            System.out.println("Does not exist");
-        }
     }
 
     @Override
-    public void filesDelete(List<File> file, String domain) {
+    public void filesDelete(List<File> file) {
         for(var i = 0; file.size() > i; i++) {
-            fileDelete(file.get(i), domain);
+            fileDelete(file.get(i));
         }
     }
 
@@ -133,7 +75,8 @@ public class FileStorageServiceImpl implements FileStorageService
     }
 
     @Override
-    public File uploadFile(MultipartFile file, String domain) {
+    public File uploadFile(MultipartFile file, String domain)
+    {
         /*
          * 파일 이름 표준화
          * { Class StringUtils }
@@ -142,17 +85,17 @@ public class FileStorageServiceImpl implements FileStorageService
          * 결과는 경로 비교에 편리합니다.
          * 예제로 Windows 구분 기호 ("\")가 간단한 슬래시로 바뀌 었음을 알 수 있습니다.
          */
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        String fileType = fileName.substring(fileName.lastIndexOf("."));
+        final String fileOriName = StringUtils.cleanPath(file.getOriginalFilename());
+        final String fileType = fileOriName.substring(fileOriName.lastIndexOf("."));
+        final String fileRoute = domain + "/";
 
-        try {
+        try
+        {
             // 파일의 이름에 유효하지 않은 문자가 포함되어 있는지 확인합니다.
-            if(fileName.contains("..")) {
-                throw new StoreFileException("\r\n" + "오류! 파일 이름에 잘못된 경로 시퀀스가 ​​있습니다. " + fileName);
+            if(fileOriName.contains(".."))
+            {
+                throw new StoreFileException("\r\n" + "오류! 파일 이름에 잘못된 경로 시퀀스가 ​​있습니다. " + fileOriName);
             }
-
-            // 이미지 파일 제목중복을 방지하기 위해서 UUID 값을 활용합니다.
-            UUID uuid = UUID.randomUUID();
 
             /*
              * 파일타입을 구분합니다.
@@ -163,21 +106,18 @@ public class FileStorageServiceImpl implements FileStorageService
             int fileDivision = 0;
             fileDivision = thisfileType.split("/")[0].equals("image") ? 1 : 0;
 
-            // 대상 위치로 파일 복사 (기존 파일을 같은 이름으로 바꾸기)
-            // 파일이름을 DB에 저장하는 ID 값으로 저장합니다.
             /*
-             * { Class java.nio.file.Path }
-             * Path.resolve 는 하나의 경로를 다른것과 합치는데 사용
-             * targetLocation 값에는 경로 + 파일 이름이 저장됩니다.
-             * */
-            String fileUrl = uuid + fileType;
-
-            /*
-             *  원본 이미지파일 저장 & File 저장 경로 설정
+             *  GCS Upload 원본 이미지파일 저장
              */
-            Path targetLocation = handleLocation(domain, fileUrl);
-
-            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            String gcsFileName = handleFileName(fileOriName, fileRoute);
+            try
+            {
+                cloudStorageHelper.uploadFile(file.getInputStream(), gcsFileName, GCSID);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
 
             // 썸네일 이미지파일 저장
             // resizeWidth, resizeHeight 줄이는 이미지 크기
@@ -186,20 +126,24 @@ public class FileStorageServiceImpl implements FileStorageService
             Integer resizeHeight = 300;
             String resizeContent = "-" + resizeWidth + "x" + resizeHeight;
 
-            String fileOriginal  = uuid + fileType;
-            String thumbnailUrlt = uuid + resizeContent + fileType;
+            String gcsThumbFileName = handleThumbFileName(gcsFileName, resizeContent);
 
             // 이미지 자르기 (uploadfile은 MultipartFile 유형의 객체 임)
             BufferedImage resizeImage = resize(file.getBytes(), resizeWidth, resizeHeight);
-            // BufferedImage resizeImage = cropImageSquare(file.getBytes());
 
             // Bufferedimage to Inputstream
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             ImageIO.write(resizeImage, "jpg", os);
             InputStream thumbnail = new ByteArrayInputStream(os.toByteArray());
 
-            Path targetLocationThumbnail = this.fileStorageLocationThumbnail.resolve(thumbnailUrlt);
-            Files.copy(thumbnail, targetLocationThumbnail, StandardCopyOption.REPLACE_EXISTING);
+            /*
+             *  GCS Upload 썸네일 이미지파일 저장
+             */
+            try {
+                cloudStorageHelper.uploadFile(thumbnail, gcsThumbFileName, GCSID);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             // DB Save Code
             File dbFile = File.builder()
@@ -207,15 +151,15 @@ public class FileStorageServiceImpl implements FileStorageService
                     .fileType(fileType)
                     .fileSize(file.getSize())
                     .fileDivision(fileDivision)
-                    .fileOriginal(fileOriginal)
-                    .fileThumbnail(thumbnailUrlt)
+                    .fileOriginal(gcsFileName)
+                    .fileThumbnail(gcsThumbFileName)
                     .build();
 
             File fileData = fileRepository.save(dbFile);
 
             return fileRepository.save(fileData);
         } catch (IOException e) {
-            throw new StoreFileException("파일 " + fileName + " 를 저장할 수 없습니다.", e);
+            throw new StoreFileException("파일 " + fileOriName + " 를 저장할 수 없습니다.", e);
         }
     }
 
@@ -312,24 +256,27 @@ public class FileStorageServiceImpl implements FileStorageService
         return new Dimension(new_width, new_height);
     }
 
-    /**
-     *  원본 이미지파일 저장 & File 저장 경로 설정하는 메소드
-     */
-    private Path handleLocation(String domain, String fileUrl) {
+    private String handleFileName(String fileOriName, String fileRoute)
+    {
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("-YYYY-MM-dd-HHmmssSSS");
+        DateTime dt = DateTime.now(DateTimeZone.UTC);
+        String dtString = dt.toString(dtf);
 
-        Path targetLocation = null;
+        final String fileName = fileOriName.substring(0, fileOriName.lastIndexOf("."));
+        final String fileType = fileOriName.substring(fileOriName.lastIndexOf("."));
 
-        switch (domain) {
-            case "university" : targetLocation = this.fileStorageLocation.resolve(fileUrl);
-                break;
+        String result = fileRoute + fileName + dtString + fileType;
 
-            case "account" : targetLocation = this.fileStorageLocationAccount.resolve(fileUrl);
-                break;
+        return result;
+    }
 
-            default: targetLocation = this.fileStorageLocationThumbnail.resolve(fileUrl);
-                break;
-        }
+    private String handleThumbFileName(String gcsFileName, String size)
+    {
+        final String fileName = gcsFileName.substring(0, gcsFileName.lastIndexOf("."));
+        final String fileType = gcsFileName.substring(gcsFileName.lastIndexOf("."));
 
-        return targetLocation;
+        String result = fileName + size + fileType;
+
+        return result;
     }
 }

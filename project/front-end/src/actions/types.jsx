@@ -21,16 +21,9 @@ export const GET_UNIVERSITY = "GET_UNIVERSITY";
 export const DELETE_PUGJJIG = "DELETE_PUGJJIG";
 
 /*
- * BOARD_TASK TYPES
- */
-export const GET_BOARD_TASKS = "GET_BOARD_TASKS";
-export const GET_BOARD_TASK = "GET_BOARD_TASK";
-export const DELETE_BOARD_TASK = "DELETE_BOARD_TASK";
-export const GET_BOARD_PAGING = "GET_BOARD_PAGING";
-
-/*
  * ACCOUNT TYPES
  */
+export const MODAL_ACCOUNT = "MODAL_ACCOUNT";
 export const ACCOUNT_CREATE = "ACCOUNT_CREATE";
 export const ACCOUNT_GET = "ACCOUNT_GET";
 

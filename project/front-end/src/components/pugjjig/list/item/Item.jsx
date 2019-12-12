@@ -1,11 +1,12 @@
-import React, { Fragment } from "react"
-import { Link } from "react-router-dom"
-import ImageSlide from "../../../widget/mainTitleSlide"
+import React, { Fragment } from "react";
+import { Link } from "react-router-dom";
+import ImageSlide from "../../../widget/mainTitleSlide";
+import { SERVER_FILE_URL } from "../../../../routes";
 
 import {
     ProfileIamge,
     FlexBottom
-} from "../../../../style/globalStyles"
+} from "../../../../style/globalStyles";
 import { 
     PugjjigItem,
     ItemHead,
@@ -30,14 +31,14 @@ import {
     ItemLikeText,
     ItemEditBtn,
     ItemLocalWrap
-} from "../../style"
+} from "../../style";
 
-import SVG from "../../../../static/svg/SVG"
-import SVGEdit from "../../../../static/svg/SVGEdit"
-import SVGYoutube from "../../../../static/svg/SVGYoutube"
-import SVGFacebook from "../../../../static/svg/SVGFacebook"
-import SVGInstar from "../../../../static/svg/SVGInstar"
-import SVGLink from "../../../../static/svg/SVGLink"
+import SVG from "../../../../static/svg/SVG";
+import SVGEdit from "../../../../static/svg/SVGEdit";
+import SVGYoutube from "../../../../static/svg/SVGYoutube";
+import SVGFacebook from "../../../../static/svg/SVGFacebook";
+import SVGInstar from "../../../../static/svg/SVGInstar";
+import SVGLink from "../../../../static/svg/SVGLink";
 
 const Item = ({pugjjig, UpdateUniLikeUniId, openModal}) => (
     <PugjjigItem>
@@ -48,7 +49,7 @@ const Item = ({pugjjig, UpdateUniLikeUniId, openModal}) => (
                     <SVG name={"user"} width="38px" height="38px" color={"#E71D36"} />
                     : 
                     <ProfileIamge
-                        image = {require(`../../../../../../data/file/account/${pugjjig.photo.fileOriginal}`)}
+                        image = {`${SERVER_FILE_URL}${pugjjig.photo.fileOriginal}`}
                     />
                 }
             </ItemUserPhoto>
@@ -130,7 +131,7 @@ const Item = ({pugjjig, UpdateUniLikeUniId, openModal}) => (
                 pugjjig.files.map((file) => (
                     <ImgList key={file.id}>
                         <img 
-                            src={require(`../../../../../../data/file/thumbnail/${file.fileThumbnail}`)}
+                            src={`${SERVER_FILE_URL}${file.fileThumbnail}`}
                             alt="음식점 사진"
                         />
                     </ImgList>

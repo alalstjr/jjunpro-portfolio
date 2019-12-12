@@ -4,9 +4,9 @@ import com.backend.project.domain.Account;
 import com.backend.project.domain.File;
 import com.backend.project.domain.Store;
 import com.backend.project.domain.University;
+import com.backend.project.dto.SearchDTO;
 import com.backend.project.dto.StoreDTO;
 import com.backend.project.dto.UniversitySaveDTO;
-import com.backend.project.dto.SearchDTO;
 import com.backend.project.projection.UniversityPublic;
 import com.backend.project.repository.StoreRepository;
 import com.backend.project.repository.UniversityRepository;
@@ -173,6 +173,6 @@ public class UniversityServiceImpl implements UniversityService
     {
         File uniFile = fileStorageService.findById(files).get();
 
-        fileStorageService.fileDelete(uniFile, "university");
+        fileStorageService.fileDelete(uniFile);
     }
 }

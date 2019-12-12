@@ -51,7 +51,7 @@ export const LoginBtn = styled.button`
     border: 1px solid #e3e3e3;
     color: #737373;
 `;
-export const SingUpBtn = styled.button`
+export const SignUpBtn = styled.button`
     ${LoginBtnCss}
     background-color: ${props => props.theme.themeColorHover};
     color: #fff;

@@ -476,7 +476,7 @@ class KakaoMapService {
         }
 
         // 사용자 설정이 카페인지 음식적인지 구분하는 조건문
-        keyword.indexOf("카페") != -1 ? cate = "CE7" : cate = "FD6";
+        keyword.indexOf("카페") !== -1 ? cate = "CE7" : cate = "FD6";
 
         // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
         // defaultAddr 값은 필수입니다. 검색 거리에 기준점이 됩니다.

@@ -11,7 +11,7 @@ import {
     Modal
 } from "../../style";
 
-const SingUpModal = ({
+const SignUpModal = ({
     signUpModal, 
     closeModal, 
     warning, 
@@ -49,4 +49,4 @@ const SingUpModal = ({
     </Fragment>
 );
 
-export default SingUpModal;
+export default SignUpModal;

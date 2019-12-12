@@ -50,16 +50,16 @@ class PugjjigSearchProvider extends Component {
 
     // match path 를 조회하여 검색 대상의 분류를 구분합니다.
     handleClassification = (target) => {
-        if(target.indexOf("uniSearch") != -1) {
+        if(target.indexOf("uniSearch") !== -1) {
             return "uniName";
         }
-        if(target.indexOf("stoSearch") != -1) {
+        if(target.indexOf("stoSearch") !== -1) {
             return "stoId";
         }
-        if(target.indexOf("tagSearch") != -1) {
+        if(target.indexOf("tagSearch") !== -1) {
             return "uniTag";
         }
-        if(target.indexOf("userSearch") != -1) {
+        if(target.indexOf("userSearch") !== -1) {
             return "userId";
         }
     }

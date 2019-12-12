@@ -5,10 +5,6 @@ import Main from "./components/mainPage/MainProvider"
 
 import PugjjigView from "./components/pugjjig/view/PugjjigView"
 
-import Board from "./components/board"
-import BoardWriteInsert from "./components/board/write/writeInsert"
-import BoardWriteUpdate from "./components/board/write/writeUpdate"
-import BoardView from "./components/board/view"
 import MyPage from "./components/member/myPage/MyPageProvider"
 import PugjjigSearch from "./components/search/pugjjig/PugjjigSearchProvider"
 
@@ -27,13 +23,6 @@ const App = () => {
           <Route exact path="/pugjjig/userSearch/:id" component={PugjjigSearch} />
           {/* User MyPage */}
           <Route exact path="/mypage" component={MyPage} />
-
-          {/* 게시판 */}
-          <Route exact path="/board" component={Board} />
-          <Route exact path="/board/write" component={BoardWriteInsert} />
-          <Route exact path="/board/:page_num" component={Board} />
-          <Route exact path="/board/write/:bo_num" component={BoardWriteUpdate} />
-          <Route exact path="/board/view/:bo_num" component={BoardView} />
 
           <Redirect from="*" to="/" />
         </Switch>

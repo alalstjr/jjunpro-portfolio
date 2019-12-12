@@ -1,12 +1,13 @@
-import React, { Component, Fragment } from "react"
-import FileDrop from "../../../widget/fileDrop/FileDrop"
-import SVG from "../../../../static/svg/SVG"
+import React, { Component, Fragment } from "react";
+import FileDrop from "../../../widget/fileDrop/FileDrop";
+import SVG from "../../../../static/svg/SVG";
+import { SERVER_FILE_URL } from "../../../../routes";
 
 import {
     Form,
     InputClean,
     ProfileIamge
-} from "../../../../style/globalStyles"
+} from "../../../../style/globalStyles";
 import {
     ProfileWrap,
     GroupBox,
@@ -18,7 +19,7 @@ import {
     UrlSaveBtn,
     SaveBtn,
     ProfileId
-} from "../../style"
+} from "../../style";
 
 class Profile extends Component {
 
@@ -211,7 +212,7 @@ class Profile extends Component {
                                             <SVG name={"user"} width="38px" height="38px" color={"#E71D36"} />
                                             : 
                                             <ProfileIamge
-                                                image = {require(`../../../../../../data/file/account/${account_get.data.photo.fileOriginal}`)}
+                                                image = {`${SERVER_FILE_URL}${account_get.data.photo.fileOriginal}`}
                                             />
                                         }
                                     </Fragment>

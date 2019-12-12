@@ -56,6 +56,12 @@ dependencies {
 	// querydsl
 	compile("com.querydsl:querydsl-jpa")
 	compile("com.querydsl:querydsl-apt")
+
+	// 구글 클라우드 store api
+	compile group: 'com.google.cloud', name: 'google-cloud-storage', version: '1.100.0'
+
+	// https://mvnrepository.com/artifact/joda-time/joda-time
+	compile group: 'joda-time', name: 'joda-time', version: '2.9.9'
 }
 
 test {

@@ -43,7 +43,7 @@ public class AccountRepositoryImpl implements AccountRepositoryDSL {
             // 기존에 업로드된 파일이 존재할 경우
             if(accountFile != null) {
                 // Account 저장된 File 삭제
-                fileStorageService.fileDelete(accountFile, "account");
+                fileStorageService.fileDelete(accountFile);
             }
 
             return queryFactory.update(qAccount)

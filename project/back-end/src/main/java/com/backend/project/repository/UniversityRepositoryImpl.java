@@ -77,7 +77,7 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL
         if(!uniFiles.isEmpty())
         {
             // University 저장된 File 삭제
-            fileStorageService.filesDelete(uniFiles, "university");
+            fileStorageService.filesDelete(uniFiles);
         }
     }
 
@@ -209,7 +209,6 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL
                 data.getUniName(),
                 data.getUniTag(),
                 data.getUniStar(),
-                data.getUniIp(),
                 data.getModifiedDate(),
                 data.getAccount().getId(),
                 data.getAccount().getNickname(),
@@ -234,7 +233,6 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL
                                 u.getKey().getUniName(),
                                 u.getKey().getUniTag(),
                                 u.getKey().getUniStar(),
-                                u.getKey().getUniIp(),
                                 u.getKey().getModifiedDate(),
                                 u.getKey().getAccount().getId(),
                                 u.getKey().getAccount().getNickname(),

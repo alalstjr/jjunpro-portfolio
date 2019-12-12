@@ -3,7 +3,7 @@
   "HOME.FIRST.subtitle": "test",
   "HEADER.UTILNAV.login": "Login",
   "HEADER.UTILNAV.logout": "Logout",
-  "HEADER.UTILNAV.singUp": "SingUp",
+  "HEADER.UTILNAV.signUp": "SignUp",
   "HEADER.UTILNAV.reservation": "My Trips",
   "HEADER.UTILNAV.wishList": "WishList",
   "HEADER.UTILNAV.search": "Search"

@@ -10,8 +10,8 @@ public interface FileStorageService
 {
     public Optional<File> findById(Long id);
 
-    public void fileDelete(File file, String domain);
-    public void filesDelete(List<File> file, String domain);
+    public void fileDelete(File file);
+    public void filesDelete(List<File> file);
     public List<File> uploadMultipleFiles(MultipartFile[] files, String domain);
     public File uploadFile(MultipartFile file, String fileRouter);
 }

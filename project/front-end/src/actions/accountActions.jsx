@@ -1,14 +1,42 @@
-import axios from "axios"
-import { SERVER_URL, USER_ID } from "../routes"
+import axios from "axios";
+import { SERVER_URL, USER_ID } from "../routes";
 import { 
+    MODAL_ACCOUNT,
     GET_ERRORS,
     ACCOUNT_CREATE,
     ACCOUNT_GET,
-
     CHECK_USER,
     CHECK_USER_SUCCESS,
     CHECK_USER_FAILURE
-} from "./types"
+} from "./types";
+
+/****************************************
+    로그인 모달 상태
+    String login, String sign_up
+****************************************/
+export const modalAccount = (modal, state) => async dispatch => {
+    let login = false;
+    let sign_up = false;
+
+    switch(modal) {
+        case "login": login = state;
+            break;
+        case "sign_up": sign_up = state;
+            break;
+        default:
+            break;
+    }
+
+    const action = {
+        login,
+        sign_up
+    };
+
+    dispatch({
+        type: MODAL_ACCOUNT,
+        payload: action
+    });
+}
 
 /****************************************
     INSERT Account DATA

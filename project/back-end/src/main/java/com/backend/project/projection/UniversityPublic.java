@@ -18,7 +18,6 @@ public class UniversityPublic implements Comparable<UniversityPublic>
     private String uniName;
     private String uniTag;
     private Integer uniStar;
-    private String uniIp;
     private LocalDateTime modifiedDate;
     private Long account_id;
     private String account_nickname;

@@ -1,27 +1,25 @@
-import React, { Component, Fragment } from "react"
-import { connect } from "react-redux"
-import PropTypes from "prop-types"
-import { Link } from "react-router-dom"
-import ReactTransitionGroup from "react-addons-css-transition-group"
+import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import ReactTransitionGroup from "react-addons-css-transition-group";
 
-import LoginModal from "./modal/LoginModal"
-import SingUpModal from "./modal/SignUpModal"
+import LoginModal from "./modal/LoginModal";
+import SignUpModal from "./modal/SignUpModal";
 
-import { logoutAccount } from "../../../actions/accountActions"
+import { modalAccount, logoutAccount } from "../../../actions/accountActions";
 
-import { SuccessWrap } from "../../../style/globalStyles"
+import { SuccessWrap } from "../../../style/globalStyles";
 import {
     LoginBtn,
-    SingUpBtn
-} from "../style"
+    SignUpBtn
+} from "../style";
 
 class AccountProvider extends Component {
-    constructor(props) {
+    constructor(props) { 
         super(props);
 
         this.state = {
-            loginModal: false,
-            signUpModal: false,
             warning: {
                 userId: false,
                 nickname: false,
@@ -52,18 +50,17 @@ class AccountProvider extends Component {
     }
 
     openModal = (target) => {
+        const { modalAccount } = this.props;
+
         this.initWarning();
-        this.setState({
-            [target]: true
-        });
+        modalAccount(target, true);
     }
     
     closeModal = () => {
+        const { modalAccount } = this.props;
+
         this.initWarning();
-        this.setState({
-            loginModal: false,
-            signUpModal: false
-        });
+        modalAccount(false);
     }
 
     /*
@@ -209,17 +206,16 @@ class AccountProvider extends Component {
     render() {
 
         // Props Init
-        const { 
+        const {
             text, 
-            req 
+            req,
+            modal_account
         } = this.props;
 
         // State Init
         const { 
             warning, 
-            warningText,
-            loginModal,
-            signUpModal
+            warningText
         } = this.state; 
 
         let modalContainer;
@@ -229,20 +225,20 @@ class AccountProvider extends Component {
                 case "login" :
                     return(
                         <Fragment>
-                            <LoginBtn onClick = {() => this.openModal("loginModal")}>{text}</LoginBtn>
+                            <LoginBtn onClick = {() => this.openModal("login")}>{text}</LoginBtn>
                         </Fragment>
                     );
-                case "singUp" : 
+                case "signUp" : 
                     return(
                         <Fragment>
-                            <SingUpBtn onClick = {() => this.openModal("signUpModal")}>{text}</SingUpBtn>
+                            <SignUpBtn onClick = {() => this.openModal("sign_up")}>{text}</SignUpBtn>
                         </Fragment>
                     );
                 case "myPage" : 
                     return(
-                        <SingUpBtn>
+                        <SignUpBtn>
                             <Link to="/mypage">마이페이지</Link>
-                        </SingUpBtn>
+                        </SignUpBtn>
                     );
                 case "logout" : 
                     return(
@@ -259,15 +255,15 @@ class AccountProvider extends Component {
 
                 {/* Form Modal */}
                 <LoginModal 
-                    loginModal = {loginModal}
+                    loginModal = {modal_account.login}
                     closeModal = {this.closeModal}
                     warning = {warning}
                     warningText = {warningText}
                     warningSet = {this.warningSet}
                     initWarning = {this.initWarning}
                 />
-                <SingUpModal 
-                    signUpModal = {signUpModal}
+                <SignUpModal 
+                    signUpModal = {modal_account.sign_up}
                     closeModal = {this.closeModal}
                     warning = {warning}
                     warningText = {warningText}
@@ -295,14 +291,17 @@ class AccountProvider extends Component {
 }
 
 AccountProvider.propTypes = {
+    modalAccount: PropTypes.func.isRequired,
+    modal_account: PropTypes.object.isRequired,
     user_info: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = state => ({
+    modal_account: state.account.modal_account,
     user_info: state.account.user_info
 });
 
 export default connect(
     mapStateToProps,
-    { logoutAccount }
+    { modalAccount, logoutAccount }
 )(AccountProvider);

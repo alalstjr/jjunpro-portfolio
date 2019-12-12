@@ -1,4 +1,5 @@
 import {
+    MODAL_ACCOUNT,
     ACCOUNT_CREATE,
     ACCOUNT_GET,
 
@@ -8,7 +9,8 @@ import {
 } from "../actions/types"
 
 const initialState = {
-    user_info : {},
+    modal_account: {},
+    user_info: {},
     account_create: {},
     account_get: {}
 };
@@ -16,6 +18,15 @@ const initialState = {
 export default function(state=initialState, action) {
     
     switch(action.type) {
+
+        case MODAL_ACCOUNT:
+            return {
+                ...state,
+                modal_account: {
+                    login: action.payload.login,
+                    sign_up: action.payload.sign_up
+                }
+            };
 
         case ACCOUNT_CREATE:
             return {

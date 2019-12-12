@@ -66,7 +66,6 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
                         u.getUniName(),
                         u.getUniTag(),
                         u.getUniStar(),
-                        u.getUniIp(),
                         u.getModifiedDate(),
                         u.getAccount().getId(),
                         u.getAccount().getNickname(),

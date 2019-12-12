@@ -1,14 +1,16 @@
-import React, { Component, Fragment, createRef } from "react"
-import PropTypes from "prop-types"
-import { connect } from "react-redux"
+import React, { Component, Fragment, createRef } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { USER_AUTH } from "../../routes";
 
-import FirstSection from "./firstSection"
-import PugjjigProvider from "../../components/pugjjig/PugjjigProvider"
+import FirstSection from "./firstSection";
+import PugjjigProvider from "../../components/pugjjig/PugjjigProvider";
 
-import KakaoMapService from "../../service/KakaoMapService"
-import { getUniCountStoId } from "../../actions/PugjjigActions"
+import KakaoMapService from "../../service/KakaoMapService";
+import { getUniCountStoId } from "../../actions/PugjjigActions";
+import { modalAccount } from "../../actions/accountActions";
 
-import { Main, MainMap, MobileSearch } from "../../style/globalStyles"
+import { Main, MainMap, MobileSearch } from "../../style/globalStyles";
 
 class MainProvider extends Component {
 
@@ -58,13 +60,20 @@ class MainProvider extends Component {
 
   // Modal State
   openModal = (target, stoId, stoName, stoAddress, stoUrl) => {
-    this.setState({
-      [target]: true,
-      stoId,
-      stoName,
-      stoAddress,
-      stoUrl
-    });
+    const { modalAccount } = this.props;
+
+    if(USER_AUTH()) {
+      this.setState({
+        [target]: true,
+        stoId,
+        stoName,
+        stoAddress,
+        stoUrl
+      });
+    } else {
+      // 로그인 사용자가 아닐경우
+      modalAccount("login", true);
+    }
   }
   closeModal = (target) => {
     this.setState({
@@ -158,17 +167,20 @@ class MainProvider extends Component {
 
 MainProvider.propTypes = {
   getUniCountStoId: PropTypes.func.isRequired,
+  modalAccount: PropTypes.func.isRequired,
   pugjjig_count: PropTypes.object.isRequired,
+  modal_account: PropTypes.object.isRequired,
   error: PropTypes.object.isRequired
 }
 
 
 const mapStateToProps = state => ({
   error: state.errors,
-  pugjjig_count: state.pugjjig.pugjjig_count
+  pugjjig_count: state.pugjjig.pugjjig_count,
+  modal_account: state.account.modal_account,
 });
 
 export default connect(
   mapStateToProps, 
-  { getUniCountStoId }
+  { getUniCountStoId, modalAccount }
 )(MainProvider);

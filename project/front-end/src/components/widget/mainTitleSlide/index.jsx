@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-
 import Slider from "react-slick";
+import { SERVER_FILE_URL } from "../../../routes";
 
 import "../../../details/css/slickSlider/slick.css";
 import "../../../details/css/slickSlider/slick-theme.css";
@@ -42,9 +42,9 @@ class MainTitleSlide extends Component {
                             bgSize = {"66%"}
                             bgImg = {
                                 thumbnail ?
-                                require(`../../../../../data/file/thumbnail/${image.fileThumbnail}`)
+                                `${SERVER_FILE_URL}${image.fileThumbnail}`
                                 :
-                                require(`../../../../../data/file/university/${image.fileOriginal}`)
+                                `${SERVER_FILE_URL}${image.fileOriginal}`
                             }
                             bgState = { thumbnail ? "cover" : "contain" }
                         />

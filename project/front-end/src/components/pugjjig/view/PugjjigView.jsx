@@ -1,23 +1,23 @@
-import React, { Component, Fragment } from "react"
-import { Link } from "react-router-dom"
-import PropTypes from "prop-types"
-import { connect } from "react-redux"
-import { USER_LONG_ID } from "../../../routes"
+import React, { Component, Fragment } from "react";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { USER_LONG_ID, SERVER_FILE_URL } from "../../../routes";
 
-import ImageSlide from "../../widget/mainTitleSlide"
-import NormalHeader from "../../layout/header/normal/NormalHeader"
-import { getCommentListUniId, deleteUniversityuniId, deleteCommentId, getUniversityUniId, UpdateUniLikeUniId } from "../../../actions/PugjjigActions"
+import ImageSlide from "../../widget/mainTitleSlide";
+import NormalHeader from "../../layout/header/normal/NormalHeader";
+import { getCommentListUniId, deleteUniversityuniId, deleteCommentId, getUniversityUniId, UpdateUniLikeUniId } from "../../../actions/PugjjigActions";
 
-import ItemEditModal from "../list/item/ItemEditModal"
-import InsertModal from "../modal/InsertModal"
-import CommentWrite from "../form/CommentWrite"
+import ItemEditModal from "../list/item/ItemEditModal";
+import InsertModal from "../modal/InsertModal";
+import CommentWrite from "../form/CommentWrite";
 
 import {
     ProfileIamge,
     NotPost,
     HiddenBtn,
     MobilePadding
-} from "../../../style/globalStyles"
+} from "../../../style/globalStyles";
 import {
     ViewWrap,
     ViewBox,
@@ -47,14 +47,14 @@ import {
     CommentDate,
     CommentWrap,
     Comment
-} from "../style"
+} from "../style";
 
-import SVG from "../../../static/svg/SVG"
-import SVGEdit from "../../../static/svg/SVGEdit"
-import SVGYoutube from "../../../static/svg/SVGYoutube"
-import SVGFacebook from "../../../static/svg/SVGFacebook"
-import SVGInstar from "../../../static/svg/SVGInstar"
-import SVGLink from "../../../static/svg/SVGLink"
+import SVG from "../../../static/svg/SVG";
+import SVGEdit from "../../../static/svg/SVGEdit";
+import SVGYoutube from "../../../static/svg/SVGYoutube";
+import SVGFacebook from "../../../static/svg/SVGFacebook";
+import SVGInstar from "../../../static/svg/SVGInstar";
+import SVGLink from "../../../static/svg/SVGLink";
 
 class PugjjigView extends Component {
 
@@ -260,7 +260,7 @@ class PugjjigView extends Component {
                                     <SVG name={"user"} width="38px" height="38px" color={"#E71D36"} />
                                     : 
                                     <ProfileIamge
-                                        image = {require(`../../../../../data/file/thumbnail/${pugjjig.photo.fileThumbnail}`)}
+                                        image = {`${SERVER_FILE_URL}${pugjjig.photo.fileThumbnail}`}
                                     />
                                 }
                                 </ItemUserPhoto>
@@ -401,7 +401,7 @@ class PugjjigView extends Component {
                                 <ItemState>
                                     <ItemLikeBtn onClick={() => UpdateUniLikeUniId(pugjjig.id)}>
                                         {
-                                            pugjjig.uniLikeState == true ?  
+                                            pugjjig.uniLikeState === true ?  
                                             <SVG name={"heartCk"} width="14px" height="14px" color={"#d11d33"} />
                                             :
                                             <SVG name={"heart"} width="14px" height="14px" color={"#dddddd"} />

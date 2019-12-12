@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 public class CommentPublic {
     private Long id;
     private String content;
-    private String ip;
     private LocalDateTime modifiedDate;
     private Long account_id;
     private String account_nickname;

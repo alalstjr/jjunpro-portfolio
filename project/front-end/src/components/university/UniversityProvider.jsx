@@ -14,8 +14,6 @@ import {
     SearchSet,
     PagingBox,
     Pagination,
-    NextBtn,
-    PrevBtn,
     SearchSetTimeWrap,
     SearchSetFoodWrap,
     Item,
@@ -299,7 +297,7 @@ class UniversityProvider extends Component {
                                 <div>
                                     <input type="radio" name="radius" id="radius-1"
                                         value={300}
-                                        checked={radius == "300"}
+                                        checked={radius === "300"}
                                         onChange={this.onChange}
                                     />
                                     <label htmlFor="radius-1">5~10분</label>
