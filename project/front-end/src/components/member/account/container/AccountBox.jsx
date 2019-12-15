@@ -1,12 +1,14 @@
-import React, { Component, Fragment } from "react"
-import PropTypes from "prop-types"
-import { connect } from "react-redux"
-import { accountLoginCheck } from "../../../../actions/accountActions"
-import AccountBtn from "../AccountProvider"
+import React, { Component, Fragment } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { accountLoginCheck } from "../../../../actions/accountActions";
+import AccountBtn from "../AccountProvider";
 
 import { 
     LoginWrap,
-    LoginLogo
+    LoginLogo,
+    SignUpBtn
 } from "../../style"
 
 class LoginBox extends Component {
@@ -46,6 +48,9 @@ class LoginBox extends Component {
                         />
                     </Fragment>
                 }
+                <SignUpBtn>
+                    <Link to="/square">리뷰검색</Link>
+                </SignUpBtn>
             </LoginWrap>
         )
     }
@@ -55,7 +60,6 @@ LoginBox.propTypes = {
     error: PropTypes.object.isRequired,
     user_info: PropTypes.object.isRequired
 }
-  
   
 const mapStateToProps = state => ({
     error: state.errors,

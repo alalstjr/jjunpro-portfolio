@@ -9,7 +9,7 @@ import {
 const UniversityItem = ({uniName, uniPujjig, categorySearch}) => (
     <Item onClick={categorySearch}>
         <ItemUniName>{uniName}</ItemUniName>
-        <ItemUniCount>{uniPujjig}명 푹찍</ItemUniCount>
+        <ItemUniCount>리뷰 {uniPujjig}개</ItemUniCount>
     </Item> 
 );
 

@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components"
-import { ClearFix, InitTransition, CookieFontB } from "../../style/globalStyles"
+import { ClearFix, InitTransition, CookieFontB, CommonSpace } from "../../style/globalStyles"
 
 const PC_S = 1200;
 const TABLET = 991;
@@ -14,7 +14,7 @@ export const LoginWrap = styled.div`
     max-width: 300px;
     margin: 0 auto;
     padding: 1.3125rem 2.3125rem;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 
     @media only screen and (max-width: ${MOBILE_S}px) {
         margin-bottom: 0px;
@@ -55,7 +55,7 @@ export const SignUpBtn = styled.button`
     ${LoginBtnCss}
     background-color: ${props => props.theme.themeColorHover};
     color: #fff;
-    margin-bottom: 0;
+    margin-bottom: 5px;
 
     > a {
         display: block;
@@ -150,9 +150,10 @@ export const Content = styled.div`
     MyPage Style
 ********************/
 export const MyPageWrap = styled.div`
+    ${CommonSpace}
+
     background-color: #fff;
     border-radius: 3px;
-    margin: 60px auto 0;
     max-width: 935px;
     overflow: hidden;
     width: 100%;

@@ -93,25 +93,25 @@ class KakaoMapService {
     ****************************************/
     searchPlacesCB = (data, status, pagination) => {
         if (status === kakao.maps.services.Status.OK) {
-            console.log(data)
+            // console.log(data)
 
             // 정상적으로 검색이 완료됐으면
             // 커스텀 오버레이를 초기화 동시에 
             // 검색 목록과 (마커, 오버레이)를 표출합니다
             this.thatThis.customOverlay.setMap(null);
             this.displayPlaces(data);
-            console.log(pagination);
+            
             // 페이지 번호를 표출합니다
             this.displayPagination(pagination);
 
         } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
 
-            alert('검색 결과가 존재하지 않습니다.');
+            this.searchLoading('검색 결과가 존재하지 않습니다.');
             return;
 
         } else if (status === kakao.maps.services.Status.ERROR) {
 
-            alert('검색 결과 중 오류가 발생했습니다.');
+            this.searchLoading('검색 결과 중 오류가 발생했습니다.');
             return;
 
         }
@@ -126,7 +126,6 @@ class KakaoMapService {
         let listEl = document.getElementById('universityList');
         let fragment = document.createDocumentFragment();
         let bounds = new kakao.maps.LatLngBounds();
-        let listStr = '';
         
         // 검색 결과 목록에 추가된 항목들을 제거합니다
         this.removeAllChildNods(listEl);
@@ -207,7 +206,7 @@ class KakaoMapService {
         let el = document.createElement('button');
         let item = `
             <span class="${ItemUniName.componentStyle.componentId} ${ItemUniName.componentStyle.lastClassName}">${places.place_name}</span>
-            <span class="${ItemUniCount.componentStyle.componentId} ${ItemUniCount.componentStyle.lastClassName}">${pugjjig.count}명 푹찍</span>
+            <span class="${ItemUniCount.componentStyle.componentId} ${ItemUniCount.componentStyle.lastClassName}">리뷰 ${pugjjig.count}개</span>
         `;       
 
         el.innerHTML = item;
@@ -402,7 +401,9 @@ class KakaoMapService {
     /****************************************
         카테고리 검색
     ****************************************/
-    categorySearch = (x, y) => {
+    categorySearch = (x, y) => {       
+        this.searchLoading("음식점을 찾고있습니다.");
+
         // defaultAddr 변수로 대학교 위치를 입력받아 근처 맛집을 탐색
         let defaultAddr = this.thatThis.defaultAddr(x, y);
 
@@ -454,15 +455,34 @@ class KakaoMapService {
             // 검색결과 항목들을 검색결과 목록 Elemnet에 추가합니다
             listEl.appendChild(fragment);
 
-            // // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+            // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
             this.thatThis.map.setBounds(bounds);
+
+            // 페이지 번호를 표출합니다
+            this.displayPagination(pagination);
         }
     }
+
+    /****************************************
+        검색 호출동안 로딩 표시
+    ****************************************/
+   searchLoading = (text) => {
+        // 검색 loading 표시
+        let listEl = document.getElementById('universityList');
+        this.removeAllChildNods(listEl);
+        let loading = document.createElement("div");
+        let loadingText = document.createTextNode(text); 
+        loading.appendChild(loadingText);
+        loading.setAttribute("style", "text-align: center;padding: 20px 0;background: #fff;z-index: 3;position: relative;");
+        listEl.appendChild(loading);
+   }
 
     /****************************************
         사용자 설정 검색을 요청하는 함수입니다.
     ****************************************/
     searchPlacesSetting = (x, y, radius, keyword) => {
+        this.searchLoading("음식점을 찾고있습니다.");
+
         let cate;
         let places = new kakao.maps.services.Places();
 

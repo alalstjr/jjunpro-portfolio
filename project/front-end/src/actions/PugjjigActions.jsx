@@ -140,6 +140,7 @@ export const deleteUniversityuniId = (id) =>  async dispatch => {
 ****************************************/
 export const getUniListSearch = (searchDTO) =>  async dispatch => {
     try {
+        searchDTO.keyword = (searchDTO.keyword === "") ? "all" : searchDTO.keyword; 
         const classification = `classification=${searchDTO.classification}`;
         const offset = `offsetCount=${searchDTO.offsetCount}`;
         const cate   = `ifCateA=${searchDTO.ifCateA}&ifCateB=${searchDTO.ifCateB}`;
@@ -170,6 +171,7 @@ export const getUniListStoreId = (searchDTO) => async dispatch => {
         // 유저 JWT Token정보
         USER_AUTH();
 
+        searchDTO.keyword = (searchDTO.keyword === "") ? "all" : searchDTO.keyword;
         const offset = `offsetCount=${searchDTO.offsetCount}`;
         const cate   = `ifCateA=${searchDTO.ifCateA}&ifCateB=${searchDTO.ifCateB}`;
         const params = `${offset}&${cate}`;
@@ -205,6 +207,7 @@ export const getUniListUserId = (searchDTO) =>  async dispatch => {
         // 유저 {아이디값,페이지} 의 전달이 없는 경우 기본값 설정
         searchDTO.keyword = (searchDTO.keyword === undefined || searchDTO.keyword === null) ? USER_ID() : searchDTO.keyword;
 
+        searchDTO.keyword = (searchDTO.keyword === "") ? "all" : searchDTO.keyword; 
         const offset = `offsetCount=${searchDTO.offsetCount}`;
         const cate   = `ifCateA=${searchDTO.ifCateA}&ifCateB=${searchDTO.ifCateB}`;
         const params = `${offset}&${cate}`;
@@ -240,6 +243,7 @@ export const getUniListUniLike = (searchDTO) => async dispatch => {
         // 유저 {아이디값,페이지} 의 전달이 없는 경우 기본값 설정
         searchDTO.keyword = (searchDTO.keyword === undefined || searchDTO.keyword === null) ? USER_ID() : searchDTO.keyword;
 
+        searchDTO.keyword = (searchDTO.keyword === "") ? "all" : searchDTO.keyword;
         const offset = `offsetCount=${searchDTO.offsetCount}`;
         const cate   = `ifCateA=${searchDTO.ifCateA}&ifCateB=${searchDTO.ifCateB}`;
         const params = `${offset}&${cate}`;
@@ -311,6 +315,58 @@ export const getUniversityUniId = (id, history) =>  async dispatch => {
     } catch(error) {
         alert(error.response.data.error);
         history.push("/");
+    }
+}
+
+/****************************************
+    GET University List DATA Most Like DESC
+****************************************/
+export const getUniversityMostLike = () =>  async dispatch => {
+    try {
+        // 유저 JWT Token정보
+        USER_AUTH();
+
+        const res = await axios.get(`${SERVER_URL}/api/university/best`);
+
+        switch(res.status) {
+            case 200 :
+                dispatch({
+                    type: GET_PUGJJIG_LIST,
+                    payload: res.data
+                });
+                break;
+
+            default :
+                alert("잘못된 접근입니다.");
+        }
+    } catch(error) {
+        alert(error.response.data.error);
+    }
+}
+
+/****************************************
+    GET University List DATA CreatedDate DESC
+****************************************/
+export const getUniversityCreatedDate = () =>  async dispatch => {
+    try {
+        // 유저 JWT Token정보
+        USER_AUTH();
+
+        const res = await axios.get(`${SERVER_URL}/api/university`);
+
+        switch(res.status) {
+            case 200 :
+                dispatch({
+                    type: GET_PUGJJIG_LIST,
+                    payload: res.data
+                });
+                break;
+
+            default :
+                alert("잘못된 접근입니다.");
+        }
+    } catch(error) {
+        alert(error.response.data.error);
     }
 }
 

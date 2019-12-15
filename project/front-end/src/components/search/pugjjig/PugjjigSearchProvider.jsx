@@ -18,7 +18,8 @@ class PugjjigSearchProvider extends Component {
             classification: null,
             offsetCount: 0,
             ifCateA: "all",  // like or comment 
-            ifCateB: "all"   // photo or posts
+            ifCateB: "all",   // photo or posts
+            inputKeyword: "all"
         }
     }
 
@@ -30,6 +31,7 @@ class PugjjigSearchProvider extends Component {
 
         this.setState({
             keyword: match.params.id,
+            inputKeyword: match.params.id,
             classification: this.handleClassification(match.path)
         });
     }
@@ -43,6 +45,7 @@ class PugjjigSearchProvider extends Component {
         if(nextProps.match !== match) {
             this.setState({
                 keyword: nextProps.match.params.id,
+                inputKeyword: nextProps.match.params.id,
                 classification: this.handleClassification(nextProps.match.path)
             });
         }
@@ -64,10 +67,16 @@ class PugjjigSearchProvider extends Component {
         }
     }
 
-    handleSearchCate = (e) => {
+    onChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value 
         });
+    }
+
+    onSearch = (e) => {
+        if(e.key === "Enter") {
+            this.handleReSearch();
+        }
     }
 
     handleReSearch = () => {
@@ -86,6 +95,7 @@ class PugjjigSearchProvider extends Component {
             offsetCount,
             ifCateA,
             ifCateB,
+            inputKeyword,
             reSearch
         } = this.state;
 
@@ -94,13 +104,16 @@ class PugjjigSearchProvider extends Component {
                 <NormalHeader/>
                 <SearchWrap>
                     <Category
-                        handleSearchCate   = {this.handleSearchCate}
+                        onChange           = {this.onChange}
+                        onSearch           = {this.onSearch}
                         handleReSearch     = {this.handleReSearch}
+                        keyword            = {keyword}
                     />
                     {
                         (keyword !== null && classification !== null) ?
                         <List
                             keyword        = {keyword}
+                            inputKeyword   = {inputKeyword}
                             classification = {classification}
                             offsetCount    = {offsetCount}
                             ifCateA        = {ifCateA}

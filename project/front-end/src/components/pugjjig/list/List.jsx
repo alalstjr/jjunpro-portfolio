@@ -1,7 +1,7 @@
-import React, { Component, Fragment } from "react"
-import PropTypes from "prop-types"
-import { connect } from "react-redux"
-import { USER_LONG_ID } from "../../../routes"
+import React, { Component, Fragment } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { USER_LONG_ID } from "../../../routes";
 
 import { 
     tempUniversityList,
@@ -10,17 +10,18 @@ import {
     getUniListUniLike,
     getUniListUserId,
     getUniListSearch,
-    UpdateUniLikeUniId
-} from "../../../actions/PugjjigActions"
+    UpdateUniLikeUniId,
+    getUniversityCreatedDate
+} from "../../../actions/PugjjigActions";
 
-import Item from "./item/Item"
-import InfiniteScroll from "react-infinite-scroller"
+import Item from "./item/Item";
+import InfiniteScroll from "react-infinite-scroller";
 
-import ItemEditModal from "./item/ItemEditModal"
-import InsertModal from "../modal/InsertModal"
+import ItemEditModal from "./item/ItemEditModal";
+import InsertModal from "../modal/InsertModal";
 
-import { NotPost } from "../../../style/globalStyles"
-import { PugjjigItemWrap } from "../style"
+import { NotPost } from "../../../style/globalStyles";
+import { PugjjigItemWrap } from "../style";
 
 class List extends Component {
 
@@ -86,15 +87,14 @@ class List extends Component {
         if(nextProps.keyword !== keyword || nextProps.reSearch !== reSearch) {
             // Search DTO 생성
             const searchDTO = {
-                keyword: nextProps.keyword,
+                keyword: nextProps.inputKeyword,
                 classification:nextProps.classification,
                 offsetCount: 0,
                 ifCateA: nextProps.ifCateA,
                 ifCateB: nextProps.ifCateB
             };
 
-            let result = true;
-            tempUniversityList(result);
+            tempUniversityList(true);
             
             this.handleAction(searchDTO);
         }
@@ -106,9 +106,10 @@ class List extends Component {
             getUniListStoreId,
             getUniListUniLike,
             getUniListUserId,
-            getUniListSearch
+            getUniListSearch,
+            getUniversityCreatedDate
         } = this.props;
-
+        
         switch(searchDTO.classification) {
             case "storeId" :
                 getUniListStoreId(searchDTO);
@@ -132,6 +133,10 @@ class List extends Component {
 
             case "uniTag" :
                 getUniListSearch(searchDTO);
+                break;
+
+            case "createdDate" :
+                getUniversityCreatedDate();
                 break;
 
             default:
@@ -170,6 +175,11 @@ class List extends Component {
             ifCateB
         };
         
+        // best or 최근글 불러오기는 제외
+        if(classification === "best" || classification === "createdDate") {
+            return false;
+        }
+
         if(pugjjig_list.data !== undefined) {
             if(pugjjig_list.data.length <= 0) {
                 return false;
@@ -291,7 +301,7 @@ class List extends Component {
                 );
             } else {
                 return (
-                    <NotPost>푹찍이 존재하지 않습니다.</NotPost>
+                    <NotPost>리뷰가 존재하지 않습니다.</NotPost>
                 );
             }
         }
@@ -314,7 +324,7 @@ class List extends Component {
                         {pugjjigContent}
                     </InfiniteScroll>
                     :
-                    <NotPost>푹찍이 존재하지 않습니다.</NotPost>
+                    <NotPost>리뷰가 존재하지 않습니다.</NotPost>
                 }
                 {/* Item Edit Select modal */}
                 <ItemEditModal
@@ -345,6 +355,7 @@ List.propTypes = {
     getUniListSearch: PropTypes.func.isRequired,
     UpdateUniLikeUniId: PropTypes.func.isRequired,
     deleteUniversityuniId: PropTypes.func.isRequired,
+    getUniversityCreatedDate: PropTypes.func.isRequired,
     temp_pugjjig_list: PropTypes.array.isRequired,
     pugjjig_list: PropTypes.object.isRequired,
     pugjjig_like: PropTypes.object.isRequired,
@@ -369,6 +380,7 @@ export default connect(
         getUniListUserId,
         getUniListSearch,
         UpdateUniLikeUniId,
-        deleteUniversityuniId
+        deleteUniversityuniId,
+        getUniversityCreatedDate
     }
   )(List);

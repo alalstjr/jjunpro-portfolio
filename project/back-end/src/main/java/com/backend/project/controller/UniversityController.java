@@ -250,6 +250,32 @@ public class UniversityController
     }
 
     /**
+     * GET University List DATA CreatedDate DESC
+     */
+    @GetMapping("")
+    public ResponseEntity<List<UniversityPublic>> getUniversityCreatedDate(HttpServletRequest request) throws IOException
+    {
+        // Account Info
+        Account accountData = accountUtill.accountJWT(request);
+
+        List<UniversityPublic> result = universityService.findByOrderByCreatedDateDesc(accountData);
+        return new ResponseEntity<List<UniversityPublic>>(result, HttpStatus.OK);
+    }
+
+    /**
+     * GET University List DATA Most Like DESC
+     */
+    @GetMapping("/best")
+    public ResponseEntity<List<UniversityPublic>> getUniversityMostLike(HttpServletRequest request) throws IOException
+    {
+        // Account Info
+        Account accountData = accountUtill.accountJWT(request);
+
+        List<UniversityPublic> result = universityService.findByOrderByMostLike(accountData);
+        return new ResponseEntity<List<UniversityPublic>>(result, HttpStatus.OK);
+    }
+
+    /**
      * GET University DATA uniId
      */
     @GetMapping("/{id}")

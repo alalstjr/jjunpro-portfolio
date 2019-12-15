@@ -149,6 +149,18 @@ public class UniversityServiceImpl implements UniversityService
     }
 
     @Override
+    public List<UniversityPublic> findByOrderByCreatedDateDesc(Account account)
+    {
+        return university.findByOrderByCreatedDateDesc(account);
+    }
+
+    @Override
+    public List<UniversityPublic> findByOrderByMostLike(Account account)
+    {
+        return university.findByOrderByMostLike(account);
+    }
+
+    @Override
     public void deleteData(Long id, Account accountData)
     {
         university.deleteData(id, accountData);

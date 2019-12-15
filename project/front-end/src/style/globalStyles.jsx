@@ -1,13 +1,13 @@
-import styled, { createGlobalStyle, css } from 'styled-components'
-import reset from './reset'
-import { ShakeWeakly } from "./keyFrames"
-import gyeonggiOTF from '../details/fonts/gyeonggi/Title_Medium.otf'
-import gyeonggiWOFF from '../details/fonts/gyeonggi/Title_Medium.woff'
-import CookieRunBold from '../details/fonts/cookieRun/CookieRunOTF-Bold.woff'
-import CookieRunRegular from '../details/fonts/cookieRun/CookieRunOTF-Regular.woff'
-import NanumSquareL from '../details/fonts/nanum/NanumSquareL.woff'
-import NanumSquareR from '../details/fonts/nanum/NanumSquareR.woff'
-import NanumSquareB from '../details/fonts/nanum/NanumSquareB.woff'
+import styled, { createGlobalStyle, css } from 'styled-components';
+import reset from './reset';
+import { ShakeWeakly } from "./keyFrames";
+import gyeonggiOTF from '../details/fonts/gyeonggi/Title_Medium.otf';
+import gyeonggiWOFF from '../details/fonts/gyeonggi/Title_Medium.woff';
+import CookieRunBold from '../details/fonts/cookieRun/CookieRunOTF-Bold.woff';
+import CookieRunRegular from '../details/fonts/cookieRun/CookieRunOTF-Regular.woff';
+import NanumSquareL from '../details/fonts/nanum/NanumSquareL.woff';
+import NanumSquareR from '../details/fonts/nanum/NanumSquareR.woff';
+import NanumSquareB from '../details/fonts/nanum/NanumSquareB.woff';
 
 const PC_S = 1200;
 const TABLET = 991;
@@ -155,11 +155,25 @@ export const FlexInit  = css`
 export const FlexCenter = css`
     margin: auto 0;
 `;
+export const FlexCol3  = css`
+    display: flex;
+    flex-direction: column;
+    flex-basis: 33.333%;
+    max-width: 33.333%;
+    margin: 0.5%;
+
+    @media only screen and (max-width: ${MOBILE_M}px) {
+        display: block;
+        margin: 0;
+        flex-basis: 100%;
+        max-width: 100%;
+    }
+`;
 export const FlexCol4  = css`
     display: flex;
     flex-direction: column;
     flex-basis: 25%;
-    width: 25%;
+    max-width: 25%;
 `;
 export const Container = styled.div`
     width: 100%;
@@ -170,6 +184,13 @@ export const FlexBottom = styled.div`
     display: flex;
     flex-direction: column;
     margin: auto 0 0;
+`;
+
+/*******************
+    일반 페이지 상단 넓이 공통
+********************/
+export const CommonSpace = css`
+    margin: 60px auto 60px;
 `;
 
 /*******************
@@ -294,7 +315,7 @@ export const SubmitBtn = styled.button`
     color: #fff;
     border-radius: 3px;
     font-size: 16px;
-    padding: 12px 0;
+    padding: 8px 0;
     margin-top: 15px;
 `;
 export const NotPost = styled.div`
@@ -488,7 +509,7 @@ export const InitTransition = css`
 `;
 export const MainList = styled.div`
     ${InitTransition}
-    z-index: 1;
+    z-index: 3;
     position: relative;
     background: #fff;
     ${
@@ -525,7 +546,7 @@ export const MainListContainer = styled.div`
         props => props.initSearch === true ?
         `
             width: 500px;
-            margin: 130px auto 0;
+            margin: 90px auto 0;
 
             @media only screen and (max-width: ${MOBILE_S}px) {    
                 margin: 10px auto 0;

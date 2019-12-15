@@ -20,7 +20,7 @@ const ItemEditModal = ({ modalState, closeModal, openModal, handleDelete, edit }
             >
             <ModalWrap>
                 <ItemEditModalBox>
-                    <ItemEditModalBtn warring = {true} >게시물 신고</ItemEditModalBtn>
+                    {/* <ItemEditModalBtn warring = {true} >게시물 신고</ItemEditModalBtn> */}
                     {
                         edit ?
                         <Fragment>

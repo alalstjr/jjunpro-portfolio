@@ -98,7 +98,10 @@ public class AccountController
         }
 
         // Account Nickname Check
-        if(dto.getNickname() != null && !validityCheck.enNumkrCheck(dto.getNickname()))
+        if(
+                (dto.getNickname() != null && !validityCheck.enNumkrCheck(dto.getNickname())) ||
+                validityCheck.usernickCheck(dto.getNickname())
+        )
         {
             errorType = "nickname";
             errorText = "닉네임은 한글 영문 숫자만 입력 가능합니다.";

@@ -363,7 +363,7 @@ class PugjjigView extends Component {
                                             :
                                             null
                                         }
-                                        <Link to={`/pugjjig/stoSearch/${pugjjig.storePublic.stoId}`}>
+                                        <Link to={`/pugjjig/stoSearch/${pugjjig.storePublic.stoName}`}>
                                             <span>{pugjjig.storePublic.stoName}</span> 
                                         </Link>
                                         <a href = {`${pugjjig.storePublic.stoUrl}`} target="_blank">

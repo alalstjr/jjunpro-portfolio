@@ -21,6 +21,8 @@ public interface UniversityService
     public List<UniversityPublic> findByLikeListWhereAccountId(SearchDTO searchDTO);
     public Boolean findByIdLike(Long id, Account account);
     public List<UniversityPublic> findByUniversityListWhereKeyword(SearchDTO searchDTO);
+    public List<UniversityPublic> findByOrderByCreatedDateDesc(Account account);
+    public List<UniversityPublic> findByOrderByMostLike(Account account);
 
     public UniversityPublic saveOrUpdate(UniversitySaveDTO dto, StoreDTO storeDTO, Account accountData);
     public University saveOrUpdate(University universityData);

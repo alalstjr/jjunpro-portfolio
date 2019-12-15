@@ -17,8 +17,8 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Component
-public class AccountUtill {
-
+public class AccountUtill
+{
     @Autowired
     private AccountServiceImpl accountService;
 
@@ -39,7 +39,8 @@ public class AccountUtill {
     *   Controller 에서 사용가능합니다.
     *   매개변수로 Authentication 필수 입니다.
     */
-    public Optional<Account> accountInfo(Authentication authentication) {
+    public Optional<Account> accountInfo(Authentication authentication)
+    {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         return accountService.findByUserId(userDetails.getUsername());
     }
@@ -53,13 +54,17 @@ public class AccountUtill {
      *
      *   만약 JWToken 값의 유저가 DB에 존재하지 않으면 에러가 발생합니다.
      */
-    public Account accountJWT(HttpServletRequest request) throws IOException {
-        if(request.getHeader("Authorization") != null) {
+    public Account accountJWT(HttpServletRequest request) throws IOException
+    {
+        if(request.getHeader("Authorization") != null)
+        {
             String tokenExtractor = headerTokenExtractor.extract(request.getHeader("Authorization"));
             AccountContext accountContext = jwtDecoder.decodeJwt(tokenExtractor);
             UserDetails userDetails = (UserDetails) accountContext;
             return accountService.findByUserId(userDetails.getUsername()).get();
-        } else {
+        }
+        else
+        {
             return null;
         }
     }
@@ -69,11 +74,13 @@ public class AccountUtill {
      *  String checkDomain 값은 검색하는 Domain 의 이름값입니다.
      *  DATA 가 존재하지 않을경우 NULL 을 반환합니다.
      */
-    public boolean userDataCheck(Long id, Optional<Account> accountData, String checkDomain) {
+    public boolean userDataCheck(Long id, Optional<Account> accountData, String checkDomain)
+    {
         Long data = null;
 
         // 해당 데이터의 작성자 {id} 값을 가져옵니다.
-        switch (checkDomain) {
+        switch (checkDomain)
+        {
             case "university" :
                 data = universityService.findById(id).get().getAccount().getId();
                 break;
@@ -90,7 +97,8 @@ public class AccountUtill {
         }
 
         // 해당 데이터의 작성자가 맞는지 검사합니다.
-        if(!data.equals(accountData.get().getId()) || data == null) {
+        if(!data.equals(accountData.get().getId()) || data == null)
+        {
             return false;
         }
         return true;

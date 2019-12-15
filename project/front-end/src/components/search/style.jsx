@@ -1,6 +1,6 @@
-import styled, { css } from "styled-components"
-import { ClearFix, InitTransition, FlexInit, WaringActive } from "../../style/globalStyles"
-import { PugjjigItemWrap, PugjjigItem, ItemContent } from "../pugjjig/style"
+import styled from "styled-components"
+import { FlexInit, WaringActive, CommonSpace, FormCssBasic } from "../../style/globalStyles"
+import { PugjjigItemWrap, PugjjigItem } from "../pugjjig/style"
 
 const PC_S = 1200;
 const TABLET = 991;
@@ -12,9 +12,10 @@ const MOBILE_S = 480;
     Search Style
 ********************/
 export const SearchWrap = styled.div`
+    ${CommonSpace}
+
     width: 100%;
     max-width: 1200px;
-    margin: 60px auto;
 
     ${PugjjigItemWrap} > div {
         display: flex;
@@ -54,7 +55,14 @@ export const CategoryWrap = styled.div`
     margin: 0.5%;
 
     > select {
+        ${FormCssBasic}
+
         height: 30px;
+        margin-right: 10px;
+    }
+    > input {
+        display: inline-block;
+        width: 200px;    
         margin-right: 10px;
     }
 

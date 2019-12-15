@@ -32,7 +32,7 @@ public class UniversitySaveDTO
     @Type(type = "text")
     private String uniContent;
 
-    @Size(max=10, message = "대학교 이름이 너무 깁니다.")
+    @Size(max=15, message = "대학교 이름이 너무 깁니다.")
     private String uniName;
 
     private String uniTag;

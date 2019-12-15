@@ -38,8 +38,22 @@ export const ListWrap = styled.div`
         :
         `
             left: 0;
-            padding-top: 334px;
+            padding-top: 370px;
             width: 300px;
+
+            &:after {
+                display: block;
+                position: absolute;
+                text-align: center;
+                width: 100%;
+                content: "음식점을 찾고있습니다.";
+                position: absolute;
+                top: 50%;
+                margin-top: 20px;
+                background: #fff;
+                padding: 13px 0;
+                z-index: 2;
+            }
 
             @media only screen and (max-width: ${MOBILE_S}px) {    
                 width: 100%;
@@ -68,6 +82,9 @@ export const PagingBox = styled.div`
 export const Pagination = styled.div`
     text-align: center;
     padding: 20px 0;
+    background: #fff;
+    position: relative;
+    z-index: 3;
 
     > button {
         width: 20px;
@@ -101,6 +118,9 @@ export const Item = styled.button.attrs({
     border-bottom: 0.0625rem solid #e3e3e3;
     cursor: pointer;
     display: block;
+    z-index: 3;
+    position: relative;
+    background: #fff;
     &:hover {
         background-color: #fafafa;
     }
@@ -290,6 +310,9 @@ export const SwitchBtn = styled.button.attrs({
 export const SearchNotice = styled.div`
     text-align: center;
     padding: 20px 0;
+    background: #fff;
+    z-index: 3;
+    position: relative;
 
     > button {
         display: none;
@@ -302,12 +325,15 @@ export const SearchNotice = styled.div`
 export const SearchSet = styled.div`
     border-bottom: 0.0625rem solid #e3e3e3;
     padding: 0 0.3125rem;
+    background-color: #fff;
+    position: relative;
+    z-index: 3;
 `;
 
 export const SearchSetWrapCSS = css`
     display: flex;
     flex-wrap: wrap;
-    padding: 10px 0;
+    padding: 5px 0;
 
     > div:first-child {
         ${

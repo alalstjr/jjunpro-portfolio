@@ -24,4 +24,26 @@ public class ValidityCheckUtil
         String stringRegex = "^[a-zA-Z0-9가-힣]*$";
         return Pattern.matches(stringRegex, target);
     }
+
+    /*
+     *  부적절한 nickname을 체크하는 메소드입니다.
+     */
+    public Boolean usernickCheck(String nickname)
+    {
+        String[] checkChar = {
+                "ADMIN", "Admin", "admin", "관리자", "최고관리자", "어드민", "운영자", "pugjjig", "푹찍",
+                "씨발", "씨1발", "섹스", "섹1스", "보지", "보1지", "야한", "야1한", "19금", "병신", "병1신", "니애미",
+                "자지", "자1지", "망가", "망1가", "FUCK", "fuck", "Fuck"
+        };
+
+        for(String keyword : checkChar)
+        {
+            if(nickname.contains(keyword))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

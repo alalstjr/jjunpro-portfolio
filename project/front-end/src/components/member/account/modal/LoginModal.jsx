@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from 'react';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { loginAccount } from "../../../../actions/accountActions";
+import { loginAccount, modalAccount } from "../../../../actions/accountActions";
 
 import ReactTransitionGroup from 'react-addons-css-transition-group';
 
@@ -99,7 +99,8 @@ class LoginModal extends Component {
             closeModal, 
             warning, 
             warningText, 
-            initWarning 
+            initWarning,
+            modalAccount 
         } = this.props;
 
         // State Init
@@ -186,7 +187,13 @@ class LoginModal extends Component {
                             <SubmitBtn
                                 type="submit"
                             >
-                                    로그인
+                                로그인
+                            </SubmitBtn>
+                            <SubmitBtn
+                                type="button"
+                                onClick={() => modalAccount("sign_up", true)}
+                            >
+                                회원가입
                             </SubmitBtn>
                         </Form>
                     </Modal>
@@ -201,6 +208,7 @@ class LoginModal extends Component {
   
 loginAccount.propTypes = {
     loginAccount: PropTypes.func.isRequired,
+    modalAccount: PropTypes.func.isRequired,
     error: PropTypes.object.isRequired,
     user_info: PropTypes.object.isRequired
 }
@@ -212,5 +220,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps, 
-    { loginAccount }
+    { loginAccount, modalAccount }
 )(LoginModal);

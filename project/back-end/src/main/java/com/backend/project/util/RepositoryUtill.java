@@ -42,6 +42,12 @@ public class RepositoryUtill
     {
         // 검색 대상 분류 동적 조건
         BooleanBuilder builder = new BooleanBuilder();
+
+        // keyword가 없는경우 모두검색
+        if(searchDTO.getKeyword().equals("all")) {
+            return builder.and(null);
+        }
+
         switch (searchDTO.getClassification())
         {
             case "uniName" :

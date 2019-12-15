@@ -174,6 +174,52 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL
     }
 
     @Override
+    public List<UniversityPublic> findByOrderByCreatedDateDesc(Account account)
+    {
+        Map<University, List<Account>> transform = queryFactory
+                .from(qUniversity)
+                .leftJoin(qUniversity.uniLike, qAccount)
+                .where(
+                        qUniversity.publicStatus.eq(true)
+                        .and(qUniversity.controlStatus.eq(false))
+                )
+                .orderBy(
+                        qUniversity.createdDate.desc()
+                )
+                .limit(10)
+                .transform(
+                        groupBy(qUniversity).as(list(qAccount))
+                );
+
+        List<UniversityPublic> results = getUniversityPublicList(transform, account);
+
+        return results;
+    }
+
+    @Override
+    public List<UniversityPublic> findByOrderByMostLike(Account account)
+    {
+        Map<University, List<Account>> transform = queryFactory
+                .from(qUniversity)
+                .leftJoin(qUniversity.uniLike, qAccount)
+                .where(
+                        qUniversity.publicStatus.eq(true)
+                        .and(qUniversity.controlStatus.eq(false))
+                )
+                .orderBy(
+                        qUniversity.uniLike.size().desc()
+                )
+                .limit(5)
+                .transform(
+                        groupBy(qUniversity).as(list(qAccount))
+                );
+
+        List<UniversityPublic> results = getUniversityPublicList(transform, account);
+
+        return results;
+    }
+
+    @Override
     public UniversityPublic findByPublicId(Long id, Account account)
     {
         University uniData = queryFactory

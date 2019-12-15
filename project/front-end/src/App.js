@@ -1,12 +1,14 @@
-import React from "react"
-import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom"
+import React from "react";
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 
-import Main from "./components/mainPage/MainProvider"
+import Main from "./components/mainPage/MainProvider";
 
-import PugjjigView from "./components/pugjjig/view/PugjjigView"
+import PugjjigView from "./components/pugjjig/view/PugjjigView";
 
-import MyPage from "./components/member/myPage/MyPageProvider"
-import PugjjigSearch from "./components/search/pugjjig/PugjjigSearchProvider"
+import MyPage from "./components/member/myPage/MyPageProvider";
+import PugjjigSearch from "./components/search/pugjjig/PugjjigSearchProvider";
+
+import Square from "./components/square/SquareProvider";
 
 const App = () => {
     return (
@@ -21,6 +23,8 @@ const App = () => {
           <Route exact path="/pugjjig/stoSearch/:id" component={PugjjigSearch} />
           <Route exact path="/pugjjig/tagSearch/:id" component={PugjjigSearch} />
           <Route exact path="/pugjjig/userSearch/:id" component={PugjjigSearch} />
+          {/* Pugjjig Best */}
+          <Route exact path="/square" component={Square} />
           {/* User MyPage */}
           <Route exact path="/mypage" component={MyPage} />
 
