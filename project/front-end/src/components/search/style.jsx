@@ -15,7 +15,7 @@ export const SearchWrap = styled.div`
     ${CommonSpace}
 
     width: 100%;
-    max-width: 1200px;
+    max-width: 75rem;
 
     ${PugjjigItemWrap} > div {
         display: flex;
@@ -43,8 +43,8 @@ export const SearchWrap = styled.div`
     }
 
     @media only screen and (max-width: ${MOBILE_M}px) {
-        margin: 10px auto 0;
-        padding-left: 15px;
+        margin: 0.625rem auto 0;
+        padding-left: 0.9375rem;
     }
 `;
 
@@ -54,37 +54,32 @@ export const SearchWrap = styled.div`
 export const CategoryWrap = styled.div`
     margin: 0.5%;
 
-    > select {
-        ${FormCssBasic}
-
-        height: 30px;
-        margin-right: 10px;
-    }
     > input {
         display: inline-block;
-        width: 200px;    
-        margin-right: 10px;
-    }
-
-    > button {
-        height: 30px;
-        background-color: ${props => props.theme.themeColor};
-        color: #fff;
-        padding: 0 20px;
-        border-radius: 3px;
-    }
-    > button:hover {
-        background-color: ${props => props.theme.themeColorHover};
+        width: 12.5rem;    
+        margin-right: 0.625rem;
     }
 `;
-
 export const ScrollUpBtn = styled.button.attrs({
     type: "button"
 })`
     ${WaringActive}
     
     position: fixed;
-    right: 30px;
-    bottom: 30px;
+    right: 1.875rem;
+    bottom: 1.875rem;
     
+`;
+export const SelectBox = styled.span`
+    > select {
+        ${FormCssBasic}
+
+        height: 1.875rem;
+        margin-right: 0.625rem;
+    }
+
+    @media only screen and (max-width: ${MOBILE_M}px) {
+        display: block;
+        margin-bottom: 0.3125rem;
+    }
 `;

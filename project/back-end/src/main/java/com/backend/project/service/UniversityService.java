@@ -23,6 +23,7 @@ public interface UniversityService
     public List<UniversityPublic> findByUniversityListWhereKeyword(SearchDTO searchDTO);
     public List<UniversityPublic> findByOrderByCreatedDateDesc(Account account);
     public List<UniversityPublic> findByOrderByMostLike(Account account);
+    public Long findByIdUniCount(Long id);
 
     public UniversityPublic saveOrUpdate(UniversitySaveDTO dto, StoreDTO storeDTO, Account accountData);
     public University saveOrUpdate(University universityData);

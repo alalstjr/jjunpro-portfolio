@@ -1,4 +1,5 @@
 FROM openjdk:11
+EXPOSE 8080
 VOLUME /tmp
 RUN mkdir /work
 COPY . /work

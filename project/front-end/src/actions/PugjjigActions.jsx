@@ -1,6 +1,7 @@
 import axios from "axios"
 import { SERVER_URL, USER_AUTH, USER_ID } from "../routes"
 import {
+    GET_UNIVERSITY_COUNT,
     TEMP_UNIVERSITY_LIST,
     DELETE_PUGJJIG,
     DELETE_PUGJJIG_COMMENT,
@@ -30,6 +31,12 @@ export const tempUniversityList = (reset, temp_pugjjig, postData) => dispatch =>
     dispatch({
         type: TEMP_UNIVERSITY_LIST,
         payload: reset ? [] : temp_pugjjig.concat(postData)
+    });
+}
+export const tempUniversityListUpdate = (postData) => dispatch => {
+    dispatch({
+        type: TEMP_UNIVERSITY_LIST,
+        payload: postData
     });
 }
 
@@ -282,6 +289,29 @@ export const getUniCountStoId = (keyword) => async dispatch => {
         switch(res.status) {
             case 200 :
                 return res.data;
+
+            default :
+                alert("잘못된 접근입니다.");
+        }
+    } catch(error) {
+        alert(error.response.data.error);
+    }
+}
+
+/****************************************
+    GET University Count DATA UniId
+****************************************/
+export const getUniCountUniId = (keyword) => async dispatch => {
+    try {
+        const res = await axios.get(`${SERVER_URL}/api/university/count/${keyword}`)
+
+        switch(res.status) {
+            case 200 :
+                dispatch({
+                    type: GET_UNIVERSITY_COUNT,
+                    payload: res.data
+                });
+                break;
 
             default :
                 alert("잘못된 접근입니다.");

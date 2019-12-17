@@ -161,6 +161,12 @@ public class UniversityServiceImpl implements UniversityService
     }
 
     @Override
+    public Long findByIdUniCount(Long id)
+    {
+        return university.findByIdUniCount(id);
+    }
+
+    @Override
     public void deleteData(Long id, Account accountData)
     {
         university.deleteData(id, accountData);

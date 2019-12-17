@@ -5,7 +5,7 @@ import { connect } from "react-redux"
 import UniversityItem from "./list/item/UniversityItem"
 import UniversitySearch from "./list/search/UniversitySearch"
 import AccountBox from "../member/account/container/AccountBox"
-import { getUniversity } from "../../actions/PugjjigActions"
+import { getUniversity, getUniCountUniId } from "../../actions/PugjjigActions"
 
 import { 
     ListWrap,
@@ -553,7 +553,6 @@ class UniversityProvider extends Component {
      *  대학교 검색 상세설정 메소드입니다.
      */
     onSearchSetting = (x, y, university) => {
-        
         const { radius, category } = this.state;
         
         // 사용자 검색설정 키워드 변수
@@ -569,6 +568,25 @@ class UniversityProvider extends Component {
         this.props.searchPlacesSetting(x, y, radius, keywordSetting);
 
         this.props.hendleInitSearch();
+    }
+
+    /*
+     *  검색한 대학교의 리뷰 갯수를 탐색합니다.
+     */
+    hendleUniCount = (id) => {
+        const { university } = this.state;
+        const { getUniCountUniId } = this.props;
+        getUniCountUniId(id);
+
+        university.filter(uni => {
+            if(uni.id === id) {
+
+                this.setState({
+                    university: university
+                });
+            }
+        })
+
     }
 
     render() {
@@ -589,22 +607,27 @@ class UniversityProvider extends Component {
 
         // universityList
         const universityGet = (university) => {
-            const data = university.map(university => (
-                <UniversityItem
-                    key = {university.id}
-                    uniName = {university.uniName}
-                    uniPujjig = {university.uniPujjig}
-                    categorySearch = {
-                        storeState === 1 ?
-                        () => this.onSearch(university.x, university.y, university.uniName)
-                        :
-                        storeState === 3 ?
-                        () => this.onSearchSetting(university.x, university.y, university.uniName)
-                        :
-                        null
-                    }
-                />
-            ));
+            const data = university.map(university => {
+                // 대학교 리뷰 검색
+                this.hendleUniCount(university.id);
+
+                return (
+                    <UniversityItem
+                        key = {university.id}
+                        uniName = {university.uniName}
+                        uniPujjig = {university.uniPujjig}
+                        categorySearch = {
+                            storeState === 1 ?
+                            () => this.onSearch(university.x, university.y, university.uniName)
+                            :
+                            storeState === 3 ?
+                            () => this.onSearchSetting(university.x, university.y, university.uniName)
+                            :
+                            null
+                        }
+                    />
+                );
+            });
 
             for(let i = 0; i < data.length; i++) {
                 universityList.push(data[i]);
@@ -753,6 +776,7 @@ class UniversityProvider extends Component {
 
 UniversityProvider.propTypes = {
     getUniversity: PropTypes.func.isRequired,
+    getUniCountUniId: PropTypes.func.isRequired,
     error: PropTypes.object.isRequired
 }
 
@@ -762,5 +786,5 @@ const mapStateToProps = state => ({
   
 export default connect(
     mapStateToProps, 
-    { getUniversity }
+    { getUniversity, getUniCountUniId }
 )(UniversityProvider);

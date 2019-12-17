@@ -5,7 +5,6 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-d
 import App from './App'
 
 import { Provider } from "react-redux"
-import ConnectedIntlProvider from "./connectedIntlProvider"
 import store from "./store"
 
 // GlobalStyle
@@ -17,19 +16,17 @@ import { AdminComponent } from './admin';
 
 ReactDOM.render(
     <Provider store={store}>
-        <ConnectedIntlProvider>
-            <ThemeProvider theme={theme}>
-                <React.Fragment>
-                    <GlobalStyle />
-                    <Router>
-                        {/* 일반페이지 */}
-                        <Route path="/" component={App} />
-                        {/* 관리자페이지 */}
-                        <Route exact path="/admin" component={AdminComponent} />
-                    </Router>
-                </React.Fragment> 
-            </ThemeProvider>
-        </ConnectedIntlProvider>
+        <ThemeProvider theme={theme}>
+            <React.Fragment>
+                <GlobalStyle />
+                <Router>
+                    {/* 일반페이지 */}
+                    <Route path="/" component={App} />
+                    {/* 관리자페이지 */}
+                    <Route exact path="/admin" component={AdminComponent} />
+                </Router>
+            </React.Fragment> 
+        </ThemeProvider>
     </Provider>,
     document.getElementById('root')
 );

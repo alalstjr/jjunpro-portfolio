@@ -1,4 +1,5 @@
 import {
+    GET_UNIVERSITY_COUNT,
     TEMP_UNIVERSITY_LIST,
     GET_PUGJJIG_LIST,
     GET_PUGJJIG_LIKE,
@@ -12,6 +13,7 @@ import {
 } from "../actions/types"
 
 const initialState = {
+    uni_count: {},
     temp_pugjjig_list : [],
     pugjjig_list : {},
     pugjjig_like : {},
@@ -26,6 +28,12 @@ const initialState = {
 
 export default function(state=initialState, action) {
     switch(action.type) {
+
+        case GET_UNIVERSITY_COUNT:
+            return {
+                ...state,
+                uni_count: action.payload.count
+            };
 
         case TEMP_UNIVERSITY_LIST:
             return {

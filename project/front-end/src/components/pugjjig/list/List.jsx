@@ -11,7 +11,8 @@ import {
     getUniListUserId,
     getUniListSearch,
     UpdateUniLikeUniId,
-    getUniversityCreatedDate
+    getUniversityCreatedDate,
+    tempUniversityListUpdate
 } from "../../../actions/PugjjigActions";
 
 import Item from "./item/Item";
@@ -214,12 +215,11 @@ class List extends Component {
 
     handleDeleteUpdate = (postPugjjig) => {
         // State Init
-        const { temp_pugjjig_list } = this.props;
+        const { temp_pugjjig_list, tempUniversityListUpdate } = this.props;
+        let tempList = temp_pugjjig_list.filter(pugjjig => pugjjig.id !== postPugjjig);
         
+        tempUniversityListUpdate(tempList);
         this.closeModal("selectModalState");
-        this.setState({
-            pugjjig: temp_pugjjig_list.filter(pugjjig => pugjjig.id !== postPugjjig)
-        });
     }
 
     /*
@@ -356,6 +356,7 @@ List.propTypes = {
     UpdateUniLikeUniId: PropTypes.func.isRequired,
     deleteUniversityuniId: PropTypes.func.isRequired,
     getUniversityCreatedDate: PropTypes.func.isRequired,
+    tempUniversityListUpdate: PropTypes.func.isRequired,
     temp_pugjjig_list: PropTypes.array.isRequired,
     pugjjig_list: PropTypes.object.isRequired,
     pugjjig_like: PropTypes.object.isRequired,
@@ -381,6 +382,7 @@ export default connect(
         getUniListSearch,
         UpdateUniLikeUniId,
         deleteUniversityuniId,
-        getUniversityCreatedDate
+        getUniversityCreatedDate,
+        tempUniversityListUpdate
     }
   )(List);

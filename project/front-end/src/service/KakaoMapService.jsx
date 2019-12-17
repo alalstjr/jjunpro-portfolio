@@ -329,7 +329,7 @@ class KakaoMapService {
 
         let overlayReview = document.createElement("button"); 
         overlayReview.type = "button";
-        let overlayReviewText = document.createTextNode(`평점 0점 | 리뷰 ${pugjjig.count}개 리뷰보기`); 
+        let overlayReviewText = document.createTextNode(`리뷰 ${pugjjig.count}개 리뷰보기`); 
         overlayReview.appendChild(overlayReviewText);
         overlayReview.setAttribute("style", "color: #d11d33;font-weight: 400; margin-bottom: 4px;");
 

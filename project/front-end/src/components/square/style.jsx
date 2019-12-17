@@ -13,12 +13,12 @@ export const BestWrap = styled.div`
     ${CommonSpace}
 `;
 export const Title = styled.h2`
-    font-size: 24px;
+    font-size: 1.5rem;
     font-weight: 600;
-    margin-bottom: 10px;  
+    margin-bottom: 0.625rem;  
 
     @media only screen and (max-width: ${MOBILE_M}px) {
-        padding: 0 10px;
+        padding: 0 0.625rem;
     }
 `;
 export const Content = styled.div`
@@ -33,7 +33,7 @@ export const Content = styled.div`
         overflow-y: visible;
 
         @media only screen and (max-width: ${MOBILE_S}px) {
-            padding: 0 10px;
+            padding: 0 0.625rem;
         }
     }
 
@@ -67,13 +67,13 @@ export const Content = styled.div`
 
         color: #fff;
         text-align: center;
-        padding: 90px 0;
+        padding: 5.625rem 0;
         position: relative;
         background-size: cover;
         background-position: center center;
 
         @media only screen and (max-width: ${MOBILE_M}px) {
-            padding: 40px 0;
+            padding: 2.5rem 0;
         }
     }
     > a::after {
@@ -87,27 +87,27 @@ export const Content = styled.div`
         background-color: rgba(0,0,0,0.3);
     }
     > a:nth-child(1) {
-        background-image:url("${SERVER_FILE_URL}front-images/search/food-01.jpg?folder=true&hl=ko&organizationId=true");
+        background-image:url("/search/food-01.jpg");
     }
     > a:nth-child(2) {
-        background-image:url("${SERVER_FILE_URL}front-images/search/food-02.jpg?folder=true&hl=ko&organizationId=true");
+        background-image:url("/search/food-02.jpg");
     }
     > a:nth-child(3) {
-        background-image:url("${SERVER_FILE_URL}front-images/search/food-03.jpg?folder=true&hl=ko&organizationId=true");
+        background-image:url("/search/food-03.jpg");
     }
 `;
 export const Group = styled.div`
-    margin-bottom: 30px;
+    margin-bottom: 1.875rem;
 `;
 export const ContentTitle = styled.div`
-    font-size: 18px;
+    font-size: 1.125rem;
     font-weight: bold;
-    margin-bottom: 5px;
+    margin-bottom: 0.3125rem;
     position: relative;
     z-index: 1;
 `;
 export const ContentP = styled.div`
-    font-size: 16px;
+    font-size: 1rem;
     position: relative;
     z-index: 1;
 `;

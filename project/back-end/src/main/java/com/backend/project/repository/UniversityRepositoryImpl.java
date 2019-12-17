@@ -104,7 +104,7 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL
                 .where(
                         qUniversity.publicStatus.eq(true)
                         .and(qUniversity.controlStatus.eq(false))
-                        .and(qUniversity.account.userId.eq(searchDTO.getKeyword()))
+                        .and(qUniversity.account.nickname.eq(searchDTO.getKeyword()))
                         .and(repositoryUtill.getSearchCate(searchDTO))
                 )
                 .orderBy(
@@ -217,6 +217,17 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL
         List<UniversityPublic> results = getUniversityPublicList(transform, account);
 
         return results;
+    }
+
+    @Override
+    public Long findByIdUniCount(Long id)
+    {
+        Long result = queryFactory
+                .selectFrom(qUniversity)
+                .where(qUniversity.id.eq(id))
+                .fetchCount();
+
+        return result;
     }
 
     @Override

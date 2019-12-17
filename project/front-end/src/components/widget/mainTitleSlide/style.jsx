@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { ClearFix } from "../../../style/globalStyles";
 
 export const SliderWrap = styled.div`
     position: relative;
@@ -18,7 +17,7 @@ export const SliderContent = styled.div`
     top: 11%;
     transform: translate(-50%, -5%);
     width: 100%;
-    max-width: 1200px;
+    max-width: 75rem;
 `;
 export const SlideTitle = styled.div`
     font-size: ${props => props.titleFontSize};
@@ -28,10 +27,10 @@ export const SlideContent = styled.div`
 `;
 export const SlideLink = styled.div`
     a {
-        padding: 10px 20px;
-        border: 2px solid #333;
-        border-radius: 5px;
-        font-size: 16px;
+        padding: 0.625rem 1.25rem;
+        border: 0.125rem solid #333;
+        border-radius: 0.3125rem;
+        font-size: 1rem;
         font-weight: 500;
     }   
 `;

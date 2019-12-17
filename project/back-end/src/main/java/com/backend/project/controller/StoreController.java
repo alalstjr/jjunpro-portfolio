@@ -78,11 +78,11 @@ public class StoreController
             @PathVariable String keyword
     )
     {
-        Long uniCountData = storeService.findByUniCount(keyword);
+        Long result = storeService.findByUniCount(keyword);
 
-        Map<String, Long> resMap = new HashMap<String, Long>();
-        resMap.put("count", uniCountData);
+        Map<String, Long> resultMap = new HashMap<String, Long>();
+        resultMap.put("count", result);
 
-        return new ResponseEntity<Map<String, Long>>(resMap, HttpStatus.OK);
+        return new ResponseEntity<Map<String, Long>>(resultMap, HttpStatus.OK);
     }
 }

@@ -11,13 +11,13 @@ import {
     Common CSS
 ********************/
 export const WrapPadding = css`
-    padding: 15px;
+    padding: 0.9375rem;
 `;
 export const ModalWrapCSS = css`
     width: 100%; 
-    max-width: 600px;
-    border-radius: 5px 0 5px 5px;
-    padding: 10px;
+    max-width: 37.5rem;
+    border-radius: 0.3125rem 0 0.3125rem 0.3125rem;
+    padding: 0.625rem;
     height: 80vh;
 `;
 
@@ -25,12 +25,12 @@ export const ModalWrapCSS = css`
     Form Style
 ********************/
 export const TitleWrap = styled.div`
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #e3e3e3;
+    padding-bottom: 0.625rem;
+    margin-bottom: 0.625rem;
+    border-bottom: 0.0625rem solid #e3e3e3;
 `;
 export const Title = styled.h2`
-    font-size: 18px;
+    font-size: 1.125rem;
     font-weight: 500;
 `;
 export const Form = styled.form`
@@ -39,11 +39,11 @@ export const Form = styled.form`
 export const Content = styled.div`
     height: 70vh;
     overflow-y: scroll;
-    padding-right: 3px;
+    padding-right: 0.1875rem;
 
     &::-webkit-scrollbar {
         background-color:#fff;
-        width:16px
+        width:1rem
     }
 
     &::-webkit-scrollbar-track {
@@ -52,8 +52,8 @@ export const Content = styled.div`
 
     &::-webkit-scrollbar-thumb {
         background-color:#babac0;
-        border-radius:16px;
-        border:4px solid #fff
+        border-radius:1rem;
+        border:0.25rem solid #fff
     }
 
     &::-webkit-scrollbar-button {
@@ -65,14 +65,14 @@ export const RatingWrap = styled.div`
 `;
 export const Rating = styled.div`
     ${ClearFix}
-    width: 150px;
+    width: 9.375rem;
     margin: 0 auto;
     border: none;   
 `;
 export const RatingMessage = styled.div`
     font-weight: 300;
     text-align: center;
-    font-size: 14px;
+    font-size: 0.875rem;
 `;
 export const RatingPointInput = styled.input.attrs({
     type: "radio"
@@ -96,30 +96,30 @@ export const RatingPointLabel = styled.label`
         transform: scale(1.1);
     }
     &:before {
-        margin: 5px;
+        margin: 0.3125rem;
         display: inline-block;
         content: "";
-        width: 20px;
-        height: 19px;
+        width: 1.25rem;
+        height: 1.188rem;
         background: url(${require("../../static/images/icon/star.png")}) no-repeat center center;
     }
 `;
 export const TagWrap = styled.div`
-    padding: 5px 0;
+    padding: 0.3125rem 0;
 `;
 export const TagPart = styled.span`
-    padding: 2px 0px 2px 10px;
+    padding: 0.125rem 0 0.125rem 0.625rem;
     background-color: ${props => props.theme.themeColor};
     color: #fff;
     font-weight: 400;
-    margin-right: 5px;
-    margin-bottom: 5px;
+    margin-right: 0.3125rem;
+    margin-bottom: 0.3125rem;
     display: inline-block;
-    border-radius: 2px;
+    border-radius: 0.125rem;
 `;
 export const CloseBtn = styled.div`
     float: right;
-    padding: 0 10px;
+    padding: 0 0.625rem;
     cursor: pointer;
 `;
 
@@ -129,11 +129,11 @@ export const CloseBtn = styled.div`
 export const PugjjigItemWrap = styled.ul`
     overflow-y: scroll;
     height: 100%;
-    padding-right: 3px;
+    padding-right: 0.1875rem;
 
     &::-webkit-scrollbar {
         background-color: ${props => props.theme.backgroundColor};
-        width:16px
+        width:1rem
     }
 
     &::-webkit-scrollbar-track {
@@ -142,8 +142,8 @@ export const PugjjigItemWrap = styled.ul`
 
     &::-webkit-scrollbar-thumb {
         background-color:#babac0;
-        border-radius:16px;
-        border:4px solid ${props => props.theme.backgroundColor};
+        border-radius:1rem;
+        border:0.25rem solid ${props => props.theme.backgroundColor};
     }
 
     &::-webkit-scrollbar-button {
@@ -151,10 +151,10 @@ export const PugjjigItemWrap = styled.ul`
     }
 `;
 export const PugjjigItem = styled.li`
-    padding: 10px;
+    padding: 0.625rem;
     background-color: #fff;
-    border-radius: 3px;
-    margin-bottom: 10px;
+    border-radius: 0.1875rem;
+    margin-bottom: 0.625rem;
 
     &:last-child {
         margin-bottom: 0;
@@ -163,60 +163,60 @@ export const PugjjigItem = styled.li`
 export const ItemHead = styled.div`
     ${ClearFix}
     position: relative;
-    margin-bottom: 10px;
+    margin-bottom: 0.625rem;
 `;
 export const ItemUserPhoto = styled.div`
-    width: 38px;
-    height: 38px;
+    width: 2.375rem;
+    height: 2.375rem;
     float: left;
 `;
 export const ItemRight = styled.div`
     float: left;
-    width: calc(100% - 38px);
-    padding-left: 10px;
+    width: calc(100% - 2.375rem);
+    padding-left: 0.625rem;
 `;
 export const ItemUsername = styled.div`
     > a {
-        font-size: 16px;
-        line-height: 20px;
+        font-size: 1rem;
+        line-height: 1.25rem;
         font-weight: 300;
     }
 `;
 export const ItemUserInfo = styled.div`
     a > svg {
-        margin-right: 3px;
+        margin-right: 0.1875rem;
     }
 `;
 export const ItemStar = styled.div`
     position: absolute;
-    right: 0px;
-    top: 0px;
+    right: 0;
+    top: 0;
 
     > svg {
-        margin-left: 2px;
+        margin-left: 0.125rem;
     }
 `;
 export const ItemSubject = styled.div`
-    font-size: 18px;
+    font-size: 1.125rem;
     font-weight: 400;
-    line-height: 26px;
+    line-height: 1.625rem;
 `;
 export const ItemContent = styled.div`
-    max-height: 90px;
+    max-height: 5.625rem;
     overflow: hidden;
-    margin-bottom: 10px;
+    margin-bottom: 0.625rem;
 `;
 export const ItemImgBox = styled.div`
     ${ClearFix}
-    margin: 10px 0;
+    margin: 0.625rem 0;
 `;
 export const ItemTagWrap = styled.div`
 `;
 export const ItemLocalWrap = styled.div`
     a {
         display: inline-block;
-        margin-right: 5px;
-        margin-bottom: 3px;
+        margin-right: 0.3125rem;
+        margin-bottom: 0.1875rem;
     }
     span {
         color: ${props => props.theme.themeColor};
@@ -226,13 +226,13 @@ export const ItemLocalWrap = styled.div`
 export const ItemStateWrap = styled.div`
 `;
 export const ItemState = styled.div`
-    line-height: 10px;
+    line-height: 0.625rem;
 `;
 export const ImgList = styled.div`
-    width: calc(100% / 3 - 3px);
-    margin-right: 4px;
+    width: calc(100% / 3 - 0.1875rem);
+    margin-right: 0.25rem;
     float: left;
-    height: 150px;
+    height: 9.375rem;
     overflow: hidden;
 
     > img {
@@ -246,11 +246,11 @@ export const ImgList = styled.div`
 export const ItemTag = styled.div`
     color: #003569;
     display: inline-block;
-    margin-right: 3px;
+    margin-right: 0.1875rem;
 `;
 export const ItemDetailWrap = styled.div`
     ${ClearFix}
-    padding-top: 5px;
+    padding-top: 0.3125rem;
     color: #999;
 `;
 export const ItemDetail = styled.div`
@@ -260,19 +260,19 @@ export const ItemDate = styled.div`
     float: right;
 `;
 export const ItemBottom = styled.div`
-    border-top: 1px solid #eee;
-    padding-top: 5px;
-    margin-top: 5px;
+    border-top: 0.0625rem solid #eee;
+    padding-top: 0.3125rem;
+    margin-top: 0.3125rem;
 `;
 export const ItemLikeBtn = styled.button.attrs({
     type: "button"
 })`
-    margin-right: 10px;
+    margin-right: 0.625rem;
     color: #999;
     > svg {
         float: left;
-        margin-top: 2px;
-        margin-right: 5px;
+        margin-top: 0.125rem;
+        margin-right: 0.3125rem;
     }
 
     a {
@@ -286,23 +286,23 @@ export const ItemEditBtn = styled.button.attrs({
     type: "button"
 })`
     float: right;
-    margin-top: 3px;
+    margin-top: 0.1875rem;
 `;
 export const ItemEditModalBox = styled.div`
     ${FlexInit}
     ${FlexCenter}
     background-color: #fff;
-    width: 400px;
+    width: 25rem;
     max-width: 100%;
-    border-radius: 15px;
+    border-radius: 0.9375rem;
 `;
 export const ItemEditModalBtn = styled.button.attrs({
     type: "button"
 })`
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 500;
-    height: 40px;
-    border-bottom: 1px solid #eee;
+    height: 2.5rem;
+    border-bottom: 0.0625rem solid #eee;
 
     ${
         props => props.warring ?
@@ -336,7 +336,7 @@ export const InsertModalWrap = styled.div`
     ${FlexCenter}
     ${ModalWrapCSS}
     
-    padding-bottom: 47px;
+    padding-bottom: 2.938rem;
     background-color: #ffffff;
 `;
 export const InsertSubmitBtn = styled.button`
@@ -344,10 +344,10 @@ export const InsertSubmitBtn = styled.button`
     width: 100%;
     text-align: center;
     color: #fff;
-    border-radius: 3px;
-    font-size: 16px;
-    padding: 12px 0;
-    margin-top: 15px;
+    border-radius: 0.1875rem;
+    font-size: 1rem;
+    padding: 0.75rem 0;
+    margin-top: 0.9375rem;
 
     position: absolute;
     left: 0;
@@ -363,13 +363,13 @@ export const ViewWrap = styled.div`
 export const ViewBox = styled.div`
     background-color: #ffffff;
     width: 100%;
-    max-width: 600px;
-    margin: 0 auto 50px;
-    margin-top: 10px;
-    padding: 15px;
+    max-width: 37.5rem;
+    margin: 0 auto 3.125rem;
+    margin-top: 0.625rem;
+    padding: 0.9375rem;
 `;
 export const ViewContent = styled.div`
-    margin-bottom: 10px;
+    margin-bottom: 0.625rem;
 `;
 
 /*******************
@@ -377,49 +377,49 @@ export const ViewContent = styled.div`
 ********************/
 export const CommentNickname = styled.span`
     font-weight: 600;
-    margin-right: 5px;
+    margin-right: 0.3125rem;
 `;
 export const CommentContent = styled.span`
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 300;
 `;
 export const CommentDate = styled.div`
-    font-size: 12px;
+    font-size: 0.75rem;
     color: #999;
 
     > button {
-        margin-left: 8px;
+        margin-left: 0.5rem;
     }
 `;
 export const CommentWrap = styled.ul`
-    margin-top: 3px;
+    margin-top: 0.1875rem;
 `;
 export const Comment = styled.li`
-    padding: 3px 0;
+    padding: 0.1875rem 0;
 `;
 export const InputCommentWrap = styled.div`
     ${ClearFix}
 
-    margin-top: 7px;
-    height: 42px;
-    border: 1px solid #eee;
+    margin-top: 0.4375rem;
+    height: 2.625rem;
+    border: 0.0625rem solid #eee;
 `;
 export const InputComment = styled.textarea.attrs({
 })`
     border: none;
     width: 100%;
-    padding: 10px;
-    height: 40px;
-    width: calc(100% - 60px);
+    padding: 0.625rem;
+    height: 2.5rem;
+    width: calc(100% - 3.75rem);
     float: left;
     resize : none;
 `;
 export const CommentBtn = styled.button`
-    width: 60px;
-    height: 40px;
+    width: 3.75rem;
+    height: 2.5rem;
     float: left;
 
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 500;
     color: #3897f0;
 `;

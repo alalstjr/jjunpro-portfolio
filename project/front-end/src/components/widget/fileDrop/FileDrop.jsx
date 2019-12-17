@@ -5,7 +5,7 @@ import { DropZoneWrap, DropZone, FileList, FileRemove } from "./style";
 
 const FileDrop = ({ fileState, registerFileState, registerFiles, multiple }) => {
     const [myFiles, setMyFiles] = useState([]);
-    const maxSize = 10000000;
+    const maxSize = 20000000;
     const onDrop = useCallback(acceptedFiles => {
         setMyFiles([...myFiles, ...acceptedFiles]);
         fileState(acceptedFiles);        

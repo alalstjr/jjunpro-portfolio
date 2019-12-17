@@ -25,39 +25,39 @@ export const ListWrap = styled.div`
         props => props.initSearch === true ?
         `
             left: 50%;
-            padding-top: 490px;
-            width: 500px;
-            margin-left: -250px;
+            margin-top: 31rem;
+            width: 31.25rem;
+            margin-left: -15.63rem;
 
             @media only screen and (max-width: ${MOBILE_S}px) {    
                 width: 100%;
-                padding-top: 360px;
+                margin-top: 25.5rem;
                 margin-left: 0;
             }
         `
         :
         `
             left: 0;
-            padding-top: 370px;
-            width: 300px;
+            margin-top: 23.13rem;
+            width: 18.75rem;
 
             &:after {
                 display: block;
                 position: absolute;
                 text-align: center;
                 width: 100%;
-                content: "음식점을 찾고있습니다.";
+                content: "잠시만 기다려주세요.";
                 position: absolute;
-                top: 50%;
-                margin-top: 20px;
+                top: 2rem;
+                margin-top: 1.25rem;
                 background: #fff;
-                padding: 13px 0;
+                padding: 1rem 0;
                 z-index: 2;
             }
 
             @media only screen and (max-width: ${MOBILE_S}px) {    
                 width: 100%;
-                padding-top: 315px;
+                margin-top: 23rem;
             }
         `
     }
@@ -81,15 +81,15 @@ export const PagingBox = styled.div`
 `;
 export const Pagination = styled.div`
     text-align: center;
-    padding: 20px 0;
+    padding: 1.25rem 0;
     background: #fff;
     position: relative;
     z-index: 3;
 
     > button {
-        width: 20px;
-        height: 20px;
-        margin: 0 3px;
+        width: 1.25rem;
+        height: 1.25rem;
+        margin: 0 0.1875rem;
     }
 
     > button#on {
@@ -132,7 +132,7 @@ export const ItemUniName = styled.span`
     font-weight: 400;
 
     @media only screen and (max-width: ${MOBILE_S}px) {    
-        font-size: 14px;
+        font-size: 1rem;
         font-weight: 300;
     }
 `;
@@ -143,7 +143,7 @@ export const ItemUniCount = styled.span`
     font-weight: 400;
 
     @media only screen and (max-width: ${MOBILE_S}px) {    
-        font-size: 14px;
+        font-size: 0.875rem;
         font-weight: 300;
     }
 `;
@@ -163,14 +163,14 @@ export const SearchWrap = styled.div`
 export const SearchTitle = styled.h2`
     ${CookieFontR}
     position: relative;
-    padding: 8px 0;
+    padding: 0.5rem 0;
     line-height: 1.25rem;
     color: #292929;
     font-size: 1rem;
 
     @media only screen and (max-width: ${MOBILE_S}px) {    
-        font-size: 18px;
-        margin-bottom: 5px;
+        font-size: 1.125rem;
+        margin-bottom: 0.3125rem;
     }
 `;
 export const SearchInputWrap = styled.div`
@@ -221,10 +221,10 @@ export const RefreshBtn = styled.button.attrs({
 
 export const SwitchWrap = styled.div`
     position: relative;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    border: 0.0625rem solid #ddd;
+    border-radius: 0.25rem;
     overflow: hidden;
-    margin-bottom: 10px;
+    margin-bottom: 0.625rem;
 
     ${
         props => props.storeState === 3 ?
@@ -247,17 +247,17 @@ export const SwitchWrap = styled.div`
         content: "";
         position: absolute;
         width: 33.333%;
-        height: 42px;
+        height: 2.625rem;
         background-color: ${props => props.theme.themeColor};
         top: 0;
         transition: 0.2s all;
-        border-radius: 4px;
+        border-radius: 0.25rem;
 
         left: ${
             props => props.storeState !== false ?
             "33.333%"
             :
-            "0px"
+            "0"
         };
 
         left: ${
@@ -274,19 +274,19 @@ export const SwitchWrap = styled.div`
 export const SwitchBtn = styled.button.attrs({
     type: "button"
 })`
-    padding: 4px 0px;
+    padding: 0.25rem 0;
     position: relative;
     z-index: 1;
     width: 33.333%;
-    height: 42px;
+    height: 2.625rem;
 
     > svg {
         transition: all 0.2s ease-in-out;
         position: absolute;
         left: 50%;
         top: 50%;
-        margin-top: -14px;
-        margin-left: -11px;
+        margin-top: -1rem;
+        margin-left: -0.6875rem;
     }
     
     &:hover > div {
@@ -297,7 +297,7 @@ export const SwitchBtn = styled.button.attrs({
     ${
         props => props.initSearch === true ?
         `&:hover > svg {
-            left: 30px;
+            left: 1.4rem;
             
             @media only screen and (max-width: ${MOBILE_S}px) {    
                 opacity: 0;
@@ -309,7 +309,7 @@ export const SwitchBtn = styled.button.attrs({
 `;
 export const SearchNotice = styled.div`
     text-align: center;
-    padding: 20px 0;
+    padding: 1.25rem 0;
     background: #fff;
     z-index: 3;
     position: relative;
@@ -319,7 +319,7 @@ export const SearchNotice = styled.div`
     }
 
     @media only screen and (max-width: ${MOBILE_S}px) {    
-        font-size: 18px;
+        font-size: 1.125rem;
     }
 `;
 export const SearchSet = styled.div`
@@ -333,7 +333,7 @@ export const SearchSet = styled.div`
 export const SearchSetWrapCSS = css`
     display: flex;
     flex-wrap: wrap;
-    padding: 5px 0;
+    padding: 0.3125rem 0;
 
     > div:first-child {
         ${
@@ -343,7 +343,7 @@ export const SearchSetWrapCSS = css`
             `display: none`
         }
 
-        max-width: 80px;
+        max-width: 5rem;
         text-align: left;
     }
 
@@ -351,7 +351,7 @@ export const SearchSetWrapCSS = css`
         display: flex;
         flex-direction: column;
 
-        font-size: 14px;
+        font-size: 0.875rem;
         font-weight: 500;
         text-align: center;
         margin: auto 0;
@@ -362,11 +362,11 @@ export const SearchSetWrapCSS = css`
     }
     > div input + label {
         text-align: center;
-        padding: 7px 0px;
+        padding: 0.4375rem 0;
         cursor: pointer;
-        font-size: 14px;
+        font-size: 0.875rem;
         font-weight: 500;
-        border-radius: 3px;
+        border-radius: 0.1875rem;
     }
     > div input:checked + label {
         background-color: ${props => props.theme.themeColor};
@@ -425,7 +425,7 @@ export const UserBox = styled.div`
     z-index: 1;
 
     @media only screen and (max-width: ${MOBILE_S}px) {    
-        padding-left: 10px;
-        padding-right: 10px;
+        padding-left: 0.625rem;
+        padding-right: 0.625rem;
     }
 `;

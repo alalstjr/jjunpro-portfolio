@@ -376,6 +376,22 @@ public class UniversityController
     }
 
     /**
+     * GET University Count DATA UniId
+     */
+    @GetMapping("/count/{id}")
+    public ResponseEntity<Map<String, Long>> getUniCountUniId(
+            @PathVariable Long id
+    )
+    {
+        Long result =  universityService.findByIdUniCount(id);
+
+        Map<String, Long> resultMap = new HashMap<String, Long>();
+        resultMap.put("count", result);
+
+        return new ResponseEntity<Map<String, Long>>(resultMap, HttpStatus.OK);
+    }
+
+    /**
      * DELETE University DATA uniId
      */
     @DeleteMapping("/{id}")

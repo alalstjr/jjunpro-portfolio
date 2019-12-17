@@ -14,7 +14,8 @@ import {
     Formlabel, 
     FormGroup, 
     Textarea,
-    WaringWrap
+    WaringWrap,
+    SmallBtn
 } from "../../../style/globalStyles"
 
 import {
@@ -129,6 +130,14 @@ class PugjjigWrite extends Component {
             [e.target.name]: e.target.value
         });
     }
+    // Tag Input Setup
+    onTagChange = (e) => {
+        if(e.target.value !== " ") {
+            this.setState({
+                [e.target.name]: e.target.value
+            });
+        }
+    }
     // Input Value값의 경우 String 형으로 받기 때문에
     // 점수와 같은 값은 *1 을 해주어서 값을 Integer 로 변경하여 저장합니다.
     onChangeInt = (e) => {
@@ -213,20 +222,26 @@ class PugjjigWrite extends Component {
 
     // 태그 메소드
     handleTagEvent = (e) => {
+        const { uniTagText } = this.state;
+        
+        if( (e.keyCode === 32 || e.keyCode === 13) && uniTagText ) {
+            this.handleTagUpdate();
+        }
+    }
+    
+    handleTagUpdate = () => {
         const { uniTag, uniTagText } = this.state;
         let tagVal = uniTagText.replace(/\s/gi, "");
-        
-        if(uniTag.length < 6) {
-            if( (e.keyCode === 32 || e.keyCode === 13) && uniTagText ) {
-                if( uniTag.filter( tag => tag === uniTagText ).length >= 1 ) {
-                    return false;
-                }
 
-                this.setState({
-                    uniTag: uniTag.concat(tagVal),
-                    uniTagText: ""
-                });
+        if(uniTag.length < 6 && uniTagText.length < 10) {
+            if( uniTag.filter( tag => tag === uniTagText ).length >= 1 ) {
+                return false;
             }
+
+            this.setState({
+                uniTag: uniTag.concat(tagVal),
+                uniTagText: ""
+            });
         }
     }
 
@@ -368,10 +383,15 @@ class PugjjigWrite extends Component {
                                 name = "uniTagText"
                                 type = "text"
                                 value = {uniTagText}
-                                onChange = {this.onChange}
+                                onChange = {this.onTagChange}
                                 onKeyDown = {this.handleTagEvent}
+                                placeholder = "Space 키를 눌러주세요. (10자 제한)"
                             />
                         </TagWrap>
+                        <SmallBtn 
+                            onClick = {this.handleTagUpdate}
+                            type = "button"
+                        >태그추가</SmallBtn>
                     </FormGroup>
                     <FormGroup>
                         <Formlabel>사진</Formlabel>

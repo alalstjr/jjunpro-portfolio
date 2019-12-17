@@ -114,20 +114,20 @@ export const ModalActive = css`
 export const WaringActive = css`
     &.Waring-anim-enter {
         opacity: 0.00;
-        transform: translateY(15px);
+        transform: translateY(0.9375rem);
         transition: all 0.2s;
     }
     &.Waring-anim-enter.Waring-anim-enter-active {
-        transform: translateY(0px);
+        transform: translateY(0);
         opacity: 1;
     }
     &.Waring-anim-leave {
-        transform: translateY(0px);
+        transform: translateY(0);
         opacity: 1;
         transition: all 0.2s;
     }
     &.Waring-anim-leave.Waring-anim-leave-active {
-        transform: translateY(15px);
+        transform: translateY(0.9375rem);
         opacity: 0.00;
     }
 `;
@@ -190,7 +190,7 @@ export const FlexBottom = styled.div`
     일반 페이지 상단 넓이 공통
 ********************/
 export const CommonSpace = css`
-    margin: 60px auto 60px;
+    margin: 3.75rem auto 3.75rem;
 `;
 
 /*******************
@@ -236,9 +236,20 @@ export const WriteBtn = styled.button`
 export const DataNone  = styled.div`
     text-align: center;
     padding: 2.5rem 0;
-    border: 1px solid #ddd;
+    border: 0.0625rem solid #ddd;
     border-radius: 0.4rem;
     width: 100%;
+`;
+export const SmallBtn  = styled.button`
+    height: 1.875rem;
+    background-color: ${props => props.theme.themeColor};
+    color: #fff;
+    padding: 0 1.25rem;
+    border-radius: 0.1875rem;
+
+    &:hover {
+        background-color: ${props => props.theme.themeColorHover};
+    }
 `;
 
 /*******************
@@ -253,9 +264,10 @@ export const FormCss = css`
     color: #5c6873;
     background-color: #fff;
     background-clip: padding-box;
+    box-shadow: none;
 `;
 export const FormCssBasic = css`
-    border: 1px solid #e4e7ea;
+    border: 0.0625rem solid #e4e7ea;
     border-radius: .25rem;
 `;
 export const Form = styled.form`
@@ -263,14 +275,14 @@ export const Form = styled.form`
 `;
 export const FormGroup = styled.div`
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 1.25rem;
 `;
 export const Formlabel = styled.label`
     ${CookieFontR}
     
     display: inline-block;
     font-size: 1rem;
-    margin-bottom: 5px;
+    margin-bottom: 0.3125rem;
 `;
 export const Input = styled.input.attrs({
     // required: true
@@ -285,15 +297,15 @@ export const InputClean = styled.input.attrs({
 })`
     ${FormCss};
     border: none;
-    border-bottom: 1px solid #e4e7ea;
+    border-bottom: 0.0625rem solid #e4e7ea;
 
     font-family: none;
 `;
 export const InputWarning = styled.div`
     color: #e60023;
-    font-size: 12px;
+    font-size: 0.75rem;
     position: absolute;
-    bottom: -18px;
+    bottom: -1.125rem;
 
     ${props => props.active && css`
         animation: ${ShakeWeakly} 0.3s linear;
@@ -302,7 +314,7 @@ export const InputWarning = styled.div`
 export const Textarea = styled.textarea`
     ${FormCss};
     ${FormCssBasic};
-    height: calc(9rem + 2px);
+    height: calc(9rem + 0.125rem);
 `;
 export const SelectBox = styled.select`
     ${FormCss};
@@ -313,10 +325,10 @@ export const SubmitBtn = styled.button`
     width: 100%;
     text-align: center;
     color: #fff;
-    border-radius: 3px;
-    font-size: 16px;
-    padding: 8px 0;
-    margin-top: 15px;
+    border-radius: 0.1875rem;
+    font-size: 1rem;
+    padding: 0.5rem 0;
+    margin-top: 0.9375rem;
 `;
 export const NotPost = styled.div`
     ${CookieFontR}
@@ -324,12 +336,12 @@ export const NotPost = styled.div`
     width: 100%;
     text-align: center;
     justify-content: center;
-    padding: 100px 0;
-    font-size: 26px;
+    padding: 6.25rem 0;
+    font-size: 1.625rem;
     color: #A99798;
 
     @media only screen and (max-width: ${MOBILE_S}px) {
-        font-size: 18px;
+        font-size: 1.125rem;
     }
 `;
 export const HiddenBtn = styled.button`
@@ -347,10 +359,10 @@ export const WaringCss = css`
     left: 0;
     width: 100%;
     text-align: center;
-    padding: 10px;
+    padding: 0.625rem;
     color: #fff;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 1rem;
     z-index: 10;
 `;
 export const WaringWrap = styled.div`
@@ -371,8 +383,8 @@ export const ActiveList = css`
     a.active,
     .active,
     &:hover {
-        box-shadow: 0 0 0 5px rgba(0,0,0,0.03);
-        border-radius: 5px;
+        box-shadow: 0 0 0 0.3125rem rgba(0,0,0,0.03);
+        border-radius: 0.3125rem;
     }
 `;
 export const WrapActive = styled.div`
@@ -419,36 +431,36 @@ export const ModalWrap = styled.div`
     background-color: rgba(0, 0, 0, 0.65);
 
     @media only screen and (max-width: ${MOBILE_S}px) {
-        padding: 0 10px;
+        padding: 0 0.625rem;
     }
 `;
 export const ModalBox = styled.div`
     ${FlexInit}
     ${FlexCenter}
 
-    max-width: 600px;
-    border-radius: 5px;
+    max-width: 37.5rem;
+    border-radius: 0.3125rem;
     height: 80vh; 
-    padding: 10px;
+    padding: 0.625rem;
 `;
 export const ModalCloseBtn = styled.button`
     position: absolute;
-    right: -32px;
+    right: -2rem;
     top: 0;
-    width: 32px;
-    height: 32px;
+    width: 2rem;
+    height: 2rem;
     background-color: #f2f2f2;
     opacity: 1;
-    border-radius: 0px 5px 5px 0;
+    border-radius: 0 0.3125rem 0.3125rem 0;
     
     &:before,
     &:after {
         position: absolute;
-        left: 15px;
-        top: 6px;
+        left: 0.9375rem;
+        top: 0.375rem;
         content: ' ';
-        height: 20px;
-        width: 2px;
+        height: 1.25rem;
+        width: 0.125rem;
         background-color: #333;
     }
     &:before {
@@ -460,13 +472,13 @@ export const ModalCloseBtn = styled.button`
 
     @media only screen and (max-width: ${MOBILE_S}px) {
         right: 0;
-        top: -32px;
-        border-radius: 5px 5px 0 0;
+        top: -2rem;
+        border-radius: 0.3125rem 0.3125rem 0 0;
     }
 `;
 export const Title = styled.h3`
-    font-size: 28px;
-    margin-bottom: 25px;
+    font-size: 1.75rem;
+    margin-bottom: 1.563rem;
     font-weight: bold;
     color: #333;
     text-align: center
@@ -484,14 +496,14 @@ export const Loding = styled.div`
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.5);
-    border-radius: 4px;
+    border-radius: 0.25rem;
 
     > svg {
         ${FlexInit}
         ${FlexCenter}
 
-        width: 30px;
-        height: 30px;
+        width: 1.875rem;
+        height: 1.875rem;
     }
 `;
 
@@ -519,7 +531,7 @@ export const MainList = styled.div`
         `
         : 
         `
-            width: 300px;
+            width: 18.75rem;
             @media only screen and (max-width: ${MOBILE_S}px) {
                 width: 100%;
             }
@@ -545,17 +557,17 @@ export const MainListContainer = styled.div`
     ${
         props => props.initSearch === true ?
         `
-            width: 500px;
-            margin: 90px auto 0;
+            width: 31.25rem;
+            margin: 5.625rem auto 0;
 
             @media only screen and (max-width: ${MOBILE_S}px) {    
-                margin: 10px auto 0;
+                margin: 0.625rem auto 0;
                 width: 100%;
             }
         `
         : 
         `
-            width: 300px;
+            width: 18.75rem;
             margin: 0 auto;
 
             @media only screen and (max-width: ${MOBILE_S}px) {
@@ -566,9 +578,9 @@ export const MainListContainer = styled.div`
     }
 `;
 export const MainMap = styled.div`
-    width: calc(100% - 300px);
-    border-left: 1px solid #e3e3e3;
-    margin-left: 300px;
+    width: calc(100% - 18.75rem);
+    border-left: 0.0625rem solid #e3e3e3;
+    margin-left: 18.75rem;
     position: absolute;
     z-index: 0;
 
@@ -584,16 +596,16 @@ export const MobileSearch = styled.span`
         height: auto;
         width: 100%;
         text-align: center;
-        padding: 10px 5px;
+        padding: 0.625rem 0.3125rem;
         display: block;
 
         > button {
             background-color: ${props => props.theme.themeColor};
             width: 100%;
             color: #fff;
-            font-size: 16px;
-            padding: 5px;
-            border-radius: 5px;
+            font-size: 1rem;
+            padding: 0.3125rem;
+            border-radius: 0.3125rem;
         }
     }
 `;
@@ -615,10 +627,10 @@ export const Image = styled.img`
 `;
 
 export const ProfileIamge = styled.div`
-    background-image: url(${props => props.image});
+    background-image: url("${props => props.image}");
 
-    width: 40px;
-    height: 40px;
+    width: 2.5rem;
+    height: 2.5rem;
     background-size: cover;
     border-radius: 50%;
     float: right;
@@ -631,5 +643,5 @@ export const ProfileIamge = styled.div`
     Mobile Style
 ****************************************/
 export const MobilePadding = styled.div`
-    padding: 0 10px;
+    padding: 0 0.625rem;
 `;

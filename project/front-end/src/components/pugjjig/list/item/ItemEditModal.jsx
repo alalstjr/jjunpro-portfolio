@@ -33,7 +33,7 @@ const ItemEditModal = ({ modalState, closeModal, openModal, handleDelete, edit }
                         :
                         null
                     }
-                    <ItemEditModalBtn>공유하기</ItemEditModalBtn>
+                    <ItemEditModalBtn>공유하기(현재지원안함)</ItemEditModalBtn>
                     <ItemEditModalBtn onClick={() => closeModal("selectModalState")}>취소</ItemEditModalBtn>
                 </ItemEditModalBox>
             </ModalWrap>

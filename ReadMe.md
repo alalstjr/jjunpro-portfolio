@@ -903,3 +903,6 @@ public class FileStorageServiceImpl implements FileStorageService
     }
 }
 ~~~
+
+# java 이미지 크롭 썸네일만들기
+https://offbyone.tistory.com/131

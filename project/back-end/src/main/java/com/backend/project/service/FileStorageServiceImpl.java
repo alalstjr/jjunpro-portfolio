@@ -4,6 +4,7 @@ import com.backend.project.domain.File;
 import com.backend.project.exception.StoreFileException;
 import com.backend.project.repository.FileRepository;
 import com.backend.project.util.CloudStorageHelper;
+import org.imgscalr.Scalr;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
@@ -86,7 +87,7 @@ public class FileStorageServiceImpl implements FileStorageService
          * 예제로 Windows 구분 기호 ("\")가 간단한 슬래시로 바뀌 었음을 알 수 있습니다.
          */
         final String fileOriName = StringUtils.cleanPath(file.getOriginalFilename());
-        final String fileType = fileOriName.substring(fileOriName.lastIndexOf("."));
+        final String fileType = fileOriName.substring(fileOriName.lastIndexOf(".")).replace(".", "");
         final String fileRoute = domain + "/";
 
         try
@@ -94,7 +95,7 @@ public class FileStorageServiceImpl implements FileStorageService
             // 파일의 이름에 유효하지 않은 문자가 포함되어 있는지 확인합니다.
             if(fileOriName.contains(".."))
             {
-                throw new StoreFileException("\r\n" + "오류! 파일 이름에 잘못된 경로 시퀀스가 ​​있습니다. " + fileOriName);
+                throw new StoreFileException("\r\n" + "file name error!. " + fileOriName);
             }
 
             /*
@@ -106,44 +107,24 @@ public class FileStorageServiceImpl implements FileStorageService
             int fileDivision = 0;
             fileDivision = thisfileType.split("/")[0].equals("image") ? 1 : 0;
 
-            /*
-             *  GCS Upload 원본 이미지파일 저장
-             */
             String gcsFileName = handleFileName(fileOriName, fileRoute);
-            try
-            {
-                cloudStorageHelper.uploadFile(file.getInputStream(), gcsFileName, GCSID);
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
 
             // 썸네일 이미지파일 저장
             // resizeWidth, resizeHeight 줄이는 이미지 크기
             // resizeContent 이미지 이름에 들어가는 사이즈 크기 문자열
             Integer resizeWidth = 300;
             Integer resizeHeight = 300;
-            String resizeContent = "-" + resizeWidth + "x" + resizeHeight;
+            String resizeContent = imageSizeCheck(file.getBytes()) ? "-" + resizeWidth + "x" + resizeHeight : "-thumb";
 
             String gcsThumbFileName = handleThumbFileName(gcsFileName, resizeContent);
 
             // 이미지 자르기 (uploadfile은 MultipartFile 유형의 객체 임)
-            BufferedImage resizeImage = resize(file.getBytes(), resizeWidth, resizeHeight);
+            BufferedImage resizeImage = imageSizeCheck(file.getBytes()) ? handleThumbnail(file.getBytes(), resizeWidth, resizeHeight) : cropImageSquare(file.getBytes());
 
             // Bufferedimage to Inputstream
             ByteArrayOutputStream os = new ByteArrayOutputStream();
-            ImageIO.write(resizeImage, "jpg", os);
+            ImageIO.write(resizeImage, fileType, os);
             InputStream thumbnail = new ByteArrayInputStream(os.toByteArray());
-
-            /*
-             *  GCS Upload 썸네일 이미지파일 저장
-             */
-            try {
-                cloudStorageHelper.uploadFile(thumbnail, gcsThumbFileName, GCSID);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
             // DB Save Code
             File dbFile = File.builder()
@@ -157,9 +138,20 @@ public class FileStorageServiceImpl implements FileStorageService
 
             File fileData = fileRepository.save(dbFile);
 
+            // GCS Upload 원본 이미지파일 저장
+            try
+            {
+                cloudStorageHelper.uploadFile(file.getInputStream(), gcsFileName, GCSID);
+                cloudStorageHelper.uploadFile(thumbnail, gcsThumbFileName, GCSID);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+
             return fileRepository.save(fileData);
         } catch (IOException e) {
-            throw new StoreFileException("파일 " + fileOriName + " 를 저장할 수 없습니다.", e);
+            throw new StoreFileException("file " + fileOriName + " not save!!.", e);
         }
     }
 
@@ -191,8 +183,8 @@ public class FileStorageServiceImpl implements FileStorageService
         BufferedImage croppedImage = originalImage.getSubimage(
                 xc - (squareSize / 2), // x coordinate of the upper-left corner
                 yc - (squareSize / 2), // y coordinate of the upper-left corner
-                300,            // widht
-                300             // height
+                squareSize,            // widht
+                squareSize             // height
         );
 
         return croppedImage;
@@ -202,58 +194,44 @@ public class FileStorageServiceImpl implements FileStorageService
      *  이미지 파일을 설정에 맞춰서 크기를 맞춰주는 메소드입니다.
      *  썸네일 이미지 생성에 사용됩니다.
      */
-    private BufferedImage resize(byte[] image, int width, int height) throws IOException {
+    private BufferedImage handleThumbnail(byte[] image, int width, int height) throws IOException {
         // 바이트 배열에서 BufferedImage 객체를 가져옵니다.
         InputStream in = new ByteArrayInputStream(image);
         BufferedImage originalImage = ImageIO.read(in);
 
         // 이미지 치수 얻기
-        int originHeight = originalImage.getHeight();
         int originWidth = originalImage.getWidth();
+        int originHeight = originalImage.getHeight();
 
-        Dimension imgSize = new Dimension(originWidth, originHeight);
-        Dimension boundary = new Dimension(width, height);
-        Dimension resultDimension = getScaledDimension(imgSize, boundary);
+        // 늘어날 길이를 계산하여 패딩합니다.
+        int padding = 0;
+        if(originWidth > originHeight) {
+            padding = (int)(Math.abs((height * originWidth / (double)width) - originHeight) / 2d);
+        } else {
+            padding = (int)(Math.abs((width * originHeight / (double)width) - originWidth) / 2d);
+        }
+        originalImage = Scalr.pad(originalImage, padding, Color.WHITE, Scalr.OP_ANTIALIAS);
 
-        Image tmp = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-        BufferedImage resized = originalImage.getSubimage(width, height, resultDimension.width, resultDimension.height);
-        Graphics2D g2d = resized.createGraphics();
-        g2d.drawImage(tmp, 0, 0, null);
-        g2d.dispose();
+        // 이미지 크기가 변경되었으므로 다시 구합니다.
+        originWidth = originalImage.getWidth();
+        originHeight = originalImage.getHeight();
 
-        return resized;
-    }
+        // 썸네일 비율로 크롭할 크기를 구합니다.
+        int newWidth = originWidth;
+        int newHeight = (originWidth * height) / width;
 
-    /**
-     *  Java image resize, maintain aspect ratio
-     *  이미지 가로 세로 비율치수 조정하는 메소드입니다.
-     */
-    private Dimension getScaledDimension(Dimension imgSize, Dimension boundary) {
-
-        int original_width = imgSize.width;
-        int original_height = imgSize.height;
-        int bound_width = boundary.width;
-        int bound_height = boundary.height;
-        int new_width = original_width;
-        int new_height = original_height;
-
-        // first check if we need to scale width
-        if (original_width > bound_width) {
-            //scale width to fit
-            new_width = bound_width;
-            //scale height to maintain aspect ratio
-            new_height = (new_width * original_height) / original_width;
+        if(newHeight > originHeight)
+        {
+            newWidth = (originHeight * width) / height;
+            newHeight = originHeight;
         }
 
-        // then check if we need to scale even with the new height
-        if (new_height > bound_height) {
-            //scale height to fit instead
-            new_height = bound_height;
-            //scale width to maintain aspect ratio
-            new_width = (new_height * original_width) / original_height;
-        }
+        // 늘려진 이미지의 중앙을 썸네일 비율로 크롭 합니다.
+        BufferedImage cropImg = Scalr.crop(originalImage, (originWidth-newWidth)/2, (originHeight-newHeight)/2, newWidth, newHeight);
+        // 리사이즈(썸네일 생성)
+        BufferedImage result = Scalr.resize(cropImg, width, height);
 
-        return new Dimension(new_width, new_height);
+        return result;
     }
 
     private String handleFileName(String fileOriName, String fileRoute)
@@ -278,5 +256,24 @@ public class FileStorageServiceImpl implements FileStorageService
         String result = fileName + size + fileType;
 
         return result;
+    }
+
+    /**
+     *  서버로 업로드되는 이미지의 크기가 300x300 기준을 체크하는 메소드입니다.
+     *  thumb file 제작중에 사이즈가 작은 file을 잡아내는 역할을 합니다.
+     */
+    private Boolean imageSizeCheck(byte[] image) throws IOException
+    {
+        InputStream in = new ByteArrayInputStream(image);
+        BufferedImage originalImage = ImageIO.read(in);
+
+        int width = originalImage.getWidth();
+        int height = originalImage.getHeight();
+
+        if(width < 300 || height < 300)
+        {
+            return false;
+        }
+        return true;
     }
 }

@@ -62,18 +62,19 @@ class MainProvider extends Component {
   openModal = (target, stoId, stoName, stoAddress, stoUrl) => {
     const { modalAccount } = this.props;
 
-    if(USER_AUTH()) {
-      this.setState({
-        [target]: true,
-        stoId,
-        stoName,
-        stoAddress,
-        stoUrl
-      });
-    } else {
-      // 로그인 사용자가 아닐경우
-      modalAccount("login", true);
+    // 로그인 사용자가 아닐경우
+    if(target === "insertModalState" && !USER_AUTH()) {
+      modalAccount("login", true); 
+      return false;
     }
+
+    this.setState({
+      [target]: true,
+      stoId,
+      stoName,
+      stoAddress,
+      stoUrl
+    });
   }
   closeModal = (target) => {
     this.setState({
