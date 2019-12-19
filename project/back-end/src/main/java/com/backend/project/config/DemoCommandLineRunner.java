@@ -10,6 +10,6 @@ public class DemoCommandLineRunner implements CommandLineRunner
     @Override
     public void run(String... args) throws Exception
     {
-        System.out.println("======v.1=======" + Arrays.toString(args));
+        System.out.println("======v.0.0.1=======" + Arrays.toString(args));
     }
 }

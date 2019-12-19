@@ -258,7 +258,7 @@ export const SmallBtn  = styled.button`
 export const FormCss = css`
     display: block;
     width: 100%;
-    padding: .375rem .75rem;
+    padding: .375rem .1rem;
     font-size: .875rem;
     line-height: 1.5;
     color: #5c6873;

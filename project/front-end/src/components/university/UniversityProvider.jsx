@@ -447,7 +447,7 @@ class UniversityProvider extends Component {
                 },
                 {
                     id: 58,
-                    uniName:"명지전문대학",
+                    uniName:"명지전문대학(정)",
                     uniPujjig: 0,
                     x: 126.925693019531,
                     y: 37.5846910900534
@@ -467,6 +467,40 @@ class UniversityProvider extends Component {
                     y: 37.63082785304347
                 }
             ]
+        }
+    }
+
+    componentDidMount() {
+        const { university } = this.state;
+        const { getUniCountUniId } = this.props;
+
+        university.map(uni => {
+            getUniCountUniId(uni.uniName);
+        });
+    }
+
+    
+    componentWillReceiveProps(nextProps) {
+        const { university } = this.state;
+        const { uni_count } = this.props;
+
+        if(nextProps.uni_count !== uni_count) {
+            if(uni_count.data !== undefined) {
+                let preData = university.filter(
+                    info => info.uniName === uni_count.data.uniName
+                );
+
+                // 서버에서 받은 해당 대학교의 리뷰 갯수 업데이트
+                preData.uniPujjig = uni_count.data.count*1;
+
+                this.setState({
+                    university: university.map(
+                    uni =>  (uni.uniName === uni_count.data.uniName)
+                        ? { ...uni, ...preData } // 새 객체를 만들어서 기존의 값과 전달받은 data 을 덮어씀
+                        : uni // 기존의 값을 그대로 유지
+                    )
+                });           
+            }
         }
     }
 
@@ -570,31 +604,12 @@ class UniversityProvider extends Component {
         this.props.hendleInitSearch();
     }
 
-    /*
-     *  검색한 대학교의 리뷰 갯수를 탐색합니다.
-     */
-    hendleUniCount = (id) => {
-        const { university } = this.state;
-        const { getUniCountUniId } = this.props;
-        getUniCountUniId(id);
-
-        university.filter(uni => {
-            if(uni.id === id) {
-
-                this.setState({
-                    university: university
-                });
-            }
-        })
-
-    }
-
     render() {
         // state Init
         const { university, keyword, searchState, storeState, radius, category } = this.state;
 
         // props Init
-        const { initSearch, mobile } = this.props;
+        const { initSearch, mobile, uni_count } = this.props;
 
         // Variables Init
         let universityContent;
@@ -608,12 +623,10 @@ class UniversityProvider extends Component {
         // universityList
         const universityGet = (university) => {
             const data = university.map(university => {
-                // 대학교 리뷰 검색
-                this.hendleUniCount(university.id);
-
                 return (
                     <UniversityItem
                         key = {university.id}
+                        university = {university}
                         uniName = {university.uniName}
                         uniPujjig = {university.uniPujjig}
                         categorySearch = {
@@ -777,11 +790,13 @@ class UniversityProvider extends Component {
 UniversityProvider.propTypes = {
     getUniversity: PropTypes.func.isRequired,
     getUniCountUniId: PropTypes.func.isRequired,
+    uni_count: PropTypes.object.isRequired,
     error: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
-    error: state.errors
+    error: state.errors,
+    uni_count: state.pugjjig.uni_count
 });
   
 export default connect(

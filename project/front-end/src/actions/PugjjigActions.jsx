@@ -209,8 +209,6 @@ export const getUniListStoreId = (searchDTO) => async dispatch => {
 ****************************************/
 export const getUniListUserId = (searchDTO) =>  async dispatch => {
     try {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
-        
         // 유저 {아이디값,페이지} 의 전달이 없는 경우 기본값 설정
         searchDTO.keyword = (searchDTO.keyword === undefined || searchDTO.keyword === null) ? USER_ID() : searchDTO.keyword;
 
@@ -301,9 +299,9 @@ export const getUniCountStoId = (keyword) => async dispatch => {
 /****************************************
     GET University Count DATA UniId
 ****************************************/
-export const getUniCountUniId = (keyword) => async dispatch => {
+export const getUniCountUniId = (uniName) => async dispatch => {
     try {
-        const res = await axios.get(`${SERVER_URL}/api/university/count/${keyword}`)
+        const res = await axios.get(`${SERVER_URL}/api/university/count/${uniName}`)
 
         switch(res.status) {
             case 200 :
@@ -422,8 +420,11 @@ export const UpdateUniLikeUniId = (id, history) => async dispatch => {
                 alert("잘못된 접근입니다.");
         }
     } catch(error) {
-        alert(error.response.data.error);
-        history.push("/");
+        alert("회원만 이용 가능합니다.");
+        dispatch({
+            type: GET_ERRORS,
+            payload: "회원만 이용 가능합니다."
+        });
     }
 }
 
@@ -448,7 +449,7 @@ export const insertComment = (comment) =>  async dispatch => {
                 alert("잘못된 접근입니다.");
         }
     } catch(error) {
-        alert(error.response.data.error);
+        alert("잘못된 접근입니다.\n다시한번 시도해 주세요.");
         dispatch({
             type: GET_ERRORS,
             payload: error.response.data

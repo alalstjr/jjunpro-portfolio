@@ -161,9 +161,9 @@ public class UniversityServiceImpl implements UniversityService
     }
 
     @Override
-    public Long findByIdUniCount(Long id)
+    public Long findByIdUniCount(String uniName)
     {
-        return university.findByIdUniCount(id);
+        return university.findByIdUniCount(uniName);
     }
 
     @Override

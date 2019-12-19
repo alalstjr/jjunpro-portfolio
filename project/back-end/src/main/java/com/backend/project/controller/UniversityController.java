@@ -378,17 +378,18 @@ public class UniversityController
     /**
      * GET University Count DATA UniId
      */
-    @GetMapping("/count/{id}")
-    public ResponseEntity<Map<String, Long>> getUniCountUniId(
-            @PathVariable Long id
+    @GetMapping("/count/{uniName}")
+    public ResponseEntity<Map<String, String>> getUniCountUniId(
+            @PathVariable String uniName
     )
     {
-        Long result =  universityService.findByIdUniCount(id);
+        String result =  universityService.findByIdUniCount(uniName).toString();
 
-        Map<String, Long> resultMap = new HashMap<String, Long>();
+        Map<String, String> resultMap = new HashMap<String, String>();
         resultMap.put("count", result);
+        resultMap.put("uniName", uniName);
 
-        return new ResponseEntity<Map<String, Long>>(resultMap, HttpStatus.OK);
+        return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.OK);
     }
 
     /**

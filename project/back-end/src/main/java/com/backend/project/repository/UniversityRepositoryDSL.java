@@ -18,7 +18,7 @@ public interface UniversityRepositoryDSL {
     List<UniversityPublic> findByUniversityListWhereKeyword(SearchDTO searchDTO);
     List<UniversityPublic> findByOrderByCreatedDateDesc(Account account);
     List<UniversityPublic> findByOrderByMostLike(Account account);
-    Long findByIdUniCount(Long id);
+    Long findByIdUniCount(String uniName);
 
     UniversityPublic findByPublicId(Long id, Account account);
 

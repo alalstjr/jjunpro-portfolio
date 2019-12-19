@@ -423,3 +423,9 @@ export const CommentBtn = styled.button`
     font-weight: 500;
     color: #3897f0;
 `;
+export const NoneComment = styled.div`
+    text-align: center;
+    line-height: 2.625rem;
+    font-size: 1rem;
+    color: #999;
+`;

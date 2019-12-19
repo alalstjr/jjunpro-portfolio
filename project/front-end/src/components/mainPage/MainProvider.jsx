@@ -76,6 +76,7 @@ class MainProvider extends Component {
       stoUrl
     });
   }
+  
   closeModal = (target) => {
     this.setState({
       [target]: false,

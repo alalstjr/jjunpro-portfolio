@@ -220,11 +220,11 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL
     }
 
     @Override
-    public Long findByIdUniCount(Long id)
+    public Long findByIdUniCount(String uniName)
     {
         Long result = queryFactory
                 .selectFrom(qUniversity)
-                .where(qUniversity.id.eq(id))
+                .where(qUniversity.uniName.eq(uniName))
                 .fetchCount();
 
         return result;

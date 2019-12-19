@@ -25,7 +25,7 @@ public class AccountSaveDTO {
     @NotBlank(message = "비밀번호 확인을 작성해 주세요.")
     private String passwordRe;
 
-    @Size(min=3, max=10, message = "올바른 닉네임을 작성해 주세요.")
+    @Size(min=3, max=10, message = "최소 3글자 이상 작성해야 합니다.")
     @NotBlank(message = "닉네임을 작성해 주세요.")
     private String nickname;
 

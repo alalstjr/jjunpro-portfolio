@@ -158,6 +158,7 @@ class SignUp extends Component {
                             value={userId}
                             onChange={this.onChange}
                             onKeyDown={initWarning}
+                            placeholder="영문 4글자이상 입력가능합니다."
                         />
                         {
                             warning.userId ? 

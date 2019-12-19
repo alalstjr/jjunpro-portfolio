@@ -124,3 +124,5 @@ gcloud builds submit --tag=gcr.io/spring-project-261615/spring:v2 .
 
 # 구글클라우드 DNS 도메인설정
 https://cloud.google.com/endpoints/docs/openapi/dev-portal-setup-custom-domain?hl=ko
+
+gcloud builds submit --tag=gcr.io/spring-project-261615/spring:v2.1 .

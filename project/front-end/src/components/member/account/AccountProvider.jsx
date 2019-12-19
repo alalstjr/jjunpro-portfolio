@@ -1,13 +1,12 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 import ReactTransitionGroup from "react-addons-css-transition-group";
 
 import LoginModal from "./modal/LoginModal";
 import SignUpModal from "./modal/SignUpModal";
 
-import { modalAccount, logoutAccount } from "../../../actions/accountActions";
+import { modalAccount } from "../../../actions/accountActions";
 
 import { SuccessWrap } from "../../../style/globalStyles";
 import {
@@ -100,13 +99,6 @@ class AccountProvider extends Component {
         if(event.keyCode === 27) {
             this.closeModal();
         }
-    }
-
-    /*
-     *  로그아웃 메소드입니다.
-     */
-    logoutHandler = () => {
-        this.props.logoutAccount();
     }
 
     /*
@@ -207,8 +199,6 @@ class AccountProvider extends Component {
 
         // Props Init
         const {
-            text, 
-            req,
             modal_account
         } = this.props;
 
@@ -218,41 +208,8 @@ class AccountProvider extends Component {
             warningText
         } = this.state; 
 
-        let modalContainer;
-
-        const modalComponent = () => {
-            switch(req) {
-                case "login" :
-                    return(
-                        <Fragment>
-                            <LoginBtn onClick = {() => this.openModal("login")}>{text}</LoginBtn>
-                        </Fragment>
-                    );
-                case "signUp" : 
-                    return(
-                        <Fragment>
-                            <SignUpBtn onClick = {() => this.openModal("sign_up")}>{text}</SignUpBtn>
-                        </Fragment>
-                    );
-                case "myPage" : 
-                    return(
-                        <SignUpBtn>
-                            <Link to="/mypage">마이페이지</Link>
-                        </SignUpBtn>
-                    );
-                case "logout" : 
-                    return(
-                        <LoginBtn onClick={this.logoutHandler}>로그아웃</LoginBtn>
-                    );
-            }
-        }
-        
-        modalContainer = modalComponent();
-
         return (
             <Fragment>
-                {modalContainer}
-
                 {/* Form Modal */}
                 <LoginModal 
                     loginModal = {modal_account.login}
@@ -303,5 +260,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { modalAccount, logoutAccount }
+    { modalAccount }
 )(AccountProvider);

@@ -385,7 +385,7 @@ class PugjjigWrite extends Component {
                                 value = {uniTagText}
                                 onChange = {this.onTagChange}
                                 onKeyDown = {this.handleTagEvent}
-                                placeholder = "Space 키를 눌러주세요. (10자 제한)"
+                                placeholder = "태그 작성 후 Space 키를 눌러주세요. (10자 제한)"
                             />
                         </TagWrap>
                         <SmallBtn 

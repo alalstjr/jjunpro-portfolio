@@ -1,19 +1,22 @@
-import React, { Component } from "react"
-import PropTypes from "prop-types"
-import { connect } from "react-redux"
-import ReactTransitionGroup from "react-addons-css-transition-group"
+import React, { Component, Fragment } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import ReactTransitionGroup from "react-addons-css-transition-group";
 
-import { insertComment } from "../../../actions/PugjjigActions"
+import { modalAccount } from "../../../actions/accountActions";
+import { insertComment } from "../../../actions/PugjjigActions";
+import { USER_AUTH } from "../../../routes";
 
 import { 
     WaringWrap
-} from "../../../style/globalStyles"
+} from "../../../style/globalStyles";
 import {
     Form,
     InputComment,
     CommentBtn,
-    InputCommentWrap
-} from "../style"
+    InputCommentWrap,
+    NoneComment
+} from "../style";
 
 class CommentWrite extends Component {
 
@@ -122,6 +125,17 @@ class CommentWrite extends Component {
         }, 2000);
     }
 
+    // Modal State
+    openModal = () => {
+        const { modalAccount } = this.props;
+        
+        // 로그인 사용자가 아닐경우
+        if(!USER_AUTH()) {
+            modalAccount("login", true); 
+            return false;
+        }
+    }
+
     render() {
 
         // State Init
@@ -132,43 +146,55 @@ class CommentWrite extends Component {
         } = this.state;
 
         return (
-            <Form
-                onSubmit={this.onSubmit}
-            >
-                <InputCommentWrap>
-                    <InputComment
-                        id = "content"
-                        name = "content"
-                        type = "text"
-                        value = {content}
-                        onChange = {this.onChange}
-                        placeholder = "댓글 쓰기..."
-                    />
-                    <CommentBtn>
-                        완료
-                    </CommentBtn>
-                </InputCommentWrap>
-
-                {/* Write 안내문 */}
-                <ReactTransitionGroup
-                    transitionName={'Waring-anim'}
-                    transitionEnterTimeout={200}
-                    transitionLeaveTimeout={200}
+            <Fragment>
+            {
+                USER_AUTH() ?
+                <Form
+                    onSubmit={this.onSubmit}
                 >
-                {
-                    warning ? 
-                    <WaringWrap>{warningText}</WaringWrap>
-                    :
-                    null
-                }
-                </ReactTransitionGroup>
-            </Form>
+                    <InputCommentWrap>
+                        <InputComment
+                            id = "content"
+                            name = "content"
+                            type = "text"
+                            value = {content}
+                            onChange = {this.onChange}
+                            placeholder = "댓글 쓰기..."
+                        />
+                        <CommentBtn>
+                            완료
+                        </CommentBtn>
+                    </InputCommentWrap>
+
+                    {/* Write 안내문 */}
+                    <ReactTransitionGroup
+                        transitionName={'Waring-anim'}
+                        transitionEnterTimeout={200}
+                        transitionLeaveTimeout={200}
+                    >
+                    {
+                        warning ? 
+                        <WaringWrap>{warningText}</WaringWrap>
+                        :
+                        null
+                    }
+                    </ReactTransitionGroup>
+                </Form>
+                :
+                <InputCommentWrap>
+                    <NoneComment onClick={this.openModal}>
+                        푹찍 유저만 댓글을 작성할 수 있습니다.
+                    </NoneComment>
+                </InputCommentWrap>
+            }
+            </Fragment>
         )
     }
 }
 
 CommentWrite.propTypes = {
     insertComment: PropTypes.func.isRequired,
+    modalAccount: PropTypes.func.isRequired,
     pugjjig_comment: PropTypes.object.isRequired,
     error: PropTypes.object.isRequired
   }
@@ -182,6 +208,7 @@ CommentWrite.propTypes = {
   export default connect(
     mapStateToProps, 
     { 
-        insertComment
+        insertComment,
+        modalAccount
     }
   )(CommentWrite);

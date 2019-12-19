@@ -32,7 +32,9 @@ export default function(state=initialState, action) {
         case GET_UNIVERSITY_COUNT:
             return {
                 ...state,
-                uni_count: action.payload.count
+                uni_count: {
+                    data: action.payload
+                }
             };
 
         case TEMP_UNIVERSITY_LIST:

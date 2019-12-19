@@ -98,9 +98,16 @@ public class AccountController
         }
 
         // Account Nickname Check
+        if(validityCheck.usernickCheck(dto.getNickname()))
+        {
+            errorType = "nickname";
+            errorText = "금지된 닉네임이 포함되어 있습니다.";
+            errorMap.put(errorType, errorText);
+        }
+
+        // Account Nickname Check
         if(
-                (dto.getNickname() != null && !validityCheck.enNumkrCheck(dto.getNickname())) ||
-                validityCheck.usernickCheck(dto.getNickname())
+                dto.getNickname() != null && !validityCheck.enNumkrCheck(dto.getNickname())
         )
         {
             errorType = "nickname";

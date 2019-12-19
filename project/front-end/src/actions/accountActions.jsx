@@ -138,7 +138,7 @@ export const loginAccount = (account) => async dispatch => {
     LOGOUT Account DATA
 ****************************************/
 export const logoutAccount = () => dispatch => {
-    axios.defaults.headers.common['Authorization'] = null;
+    delete axios.defaults.headers.common['Authorization'];
 
     if(localStorage.removeItem("userInfo") === undefined) {
         dispatch({

@@ -97,7 +97,6 @@ public class CommentController
      * GET Comment List DATA UniId
      */
     @GetMapping("/{uniId}")
-    @PreAuthorize("hasRole('ROLE_USER')")
     public List<CommentPublic> getCommentListUniId(
             @PathVariable Long uniId
     )
