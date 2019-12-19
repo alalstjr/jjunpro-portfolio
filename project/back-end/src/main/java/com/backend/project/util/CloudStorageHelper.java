@@ -25,7 +25,7 @@ public class CloudStorageHelper
     static {
 //        storage = StorageOptions.getDefaultInstance().getService();
         try {
-            credentials = GoogleCredentials.fromStream(new FileInputStream("./src/main/resources/static/spring-project-869b85004058.json"));
+            credentials = GoogleCredentials.fromStream(new FileInputStream("./src/main/java/com/backend/project/gcp/spring-project-869b85004058.json"));
         } catch (IOException e) {
             e.printStackTrace();
         }

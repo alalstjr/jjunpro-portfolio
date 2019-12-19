@@ -58,13 +58,15 @@ class Profile extends Component {
         ){
 
             let account = nextProps.account_get.data;
+            let accountEmail = account.email ? account.email : ""; // 유저 이메일 확인 setstate 빈값 저장 오류를 위해서
+
             // url 값이 존재하지 않으면 빈 배열 기본값 
             account.urlList = (account.urlList === null || account.urlList.length <= 0) ? [] : account.urlList;
             
             this.setState({
                 id: account.id,
                 nickname: account.nickname,
-                email: account.email,
+                email: accountEmail,
                 urlList: account.urlList
             });
         }

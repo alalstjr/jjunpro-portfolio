@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { insertAccount } from "../../../../actions/accountActions";
+import { insertAccount, modalAccount } from "../../../../actions/accountActions";
 import SVGLoading from "../../../../static/svg/SVGLoading"
 
 import { 
@@ -40,7 +40,8 @@ class SignUp extends Component {
             error,
             warningSet,
             closeModal,
-            account_create 
+            account_create,
+            modalAccount
         } = this.props;
 
         // {Server} 유효성 검사 출력 코드입니다.
@@ -64,7 +65,7 @@ class SignUp extends Component {
                 this.setState({ loding: false });
                 closeModal();
                 warningSet("success", true, "회원가입이 완료되었습니다.");
-                this.props.openModal("loginModal");
+                modalAccount("login", true);
             }
         }
     }
@@ -257,6 +258,7 @@ class SignUp extends Component {
 
 SignUp.propTypes = {
     insertAccount: PropTypes.func.isRequired,
+    modalAccount: PropTypes.func.isRequired,
     error: PropTypes.object.isRequired,
     account_create: PropTypes.object.isRequired
 }
@@ -268,5 +270,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps, 
-    { insertAccount }
+    { insertAccount, modalAccount }
 )(SignUp);

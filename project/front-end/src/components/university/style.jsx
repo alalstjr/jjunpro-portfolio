@@ -51,7 +51,7 @@ export const ListWrap = styled.div`
                 top: 2rem;
                 margin-top: 1.25rem;
                 background: #fff;
-                padding: 1rem 0;
+                padding: 1.25rem 0;
                 z-index: 2;
             }
 
@@ -312,7 +312,10 @@ export const SearchNotice = styled.div`
     padding: 1.25rem 0;
     background: #fff;
     z-index: 3;
-    position: relative;
+    position: absolute;
+    top: 35px;
+    text-align: center;
+    width: 100%;
 
     > button {
         display: none;

@@ -142,9 +142,11 @@ class PugjjigView extends Component {
 
 
     handleLikeUpdate = (preData, postData) => {
-        if(preData.uniLikeState !== postData.uniLikeState) {
-            preData.uniLike = postData.uniLike;
-            preData.uniLikeState = postData.uniLikeState;
+        if(preData.uniLikeState !== undefined && postData.uniLikeState !== undefined) {
+            if(preData.uniLikeState !== postData.uniLikeState) {
+                preData.uniLike = postData.uniLike;
+                preData.uniLikeState = postData.uniLikeState;
+            }
         }
     } 
 
@@ -333,8 +335,8 @@ class PugjjigView extends Component {
                             <ItemSubject>{pugjjig.uniSubject}</ItemSubject>
                             <ViewContent>
                                 {
-                                    pugjjig.uniContent.split('\n').map( line => {
-                                        return (<div>{line}</div>)
+                                    pugjjig.uniContent.split('\n').map((line, index) => {
+                                        return (<div key={index}>{line}</div>)
                                     })
                                 }
                             </ViewContent>

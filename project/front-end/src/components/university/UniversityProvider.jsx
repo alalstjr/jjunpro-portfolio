@@ -760,7 +760,12 @@ class UniversityProvider extends Component {
                     }
                     {
                         searchState !== false && (storeState === 1 || storeState === 3) ?
-                        universityContent
+                        <div>
+                            <SearchNotice>
+                                대학교 이름을 검색해주세요.
+                            </SearchNotice>
+                            {universityContent}
+                        </div>
                         :
                         null
                     }
