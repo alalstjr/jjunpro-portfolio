@@ -1,5 +1,10 @@
-import React, { Fragment } from "react"
-import ReactTransitionGroup from "react-addons-css-transition-group"
+import React, { Fragment } from "react";
+import ReactTransitionGroup from "react-addons-css-transition-group";
+import {
+    FacebookShareButton,
+    TwitterShareButton,
+    TelegramShareButton 
+  } from 'react-share';
 
 import { 
     ModalWrap
@@ -7,7 +12,7 @@ import {
 import {
     ItemEditModalBox,
     ItemEditModalBtn
-} from "../../style"
+} from "../../style";
 
 const ItemEditModal = ({ modalState, closeModal, openModal, handleDelete, edit }) => (
     <Fragment>
@@ -33,7 +38,21 @@ const ItemEditModal = ({ modalState, closeModal, openModal, handleDelete, edit }
                         :
                         null
                     }
-                    <ItemEditModalBtn>공유하기(현재지원안함)</ItemEditModalBtn>
+                    <ItemEditModalBtn>
+                        <FacebookShareButton url={window.location.href}>
+                            FaceBook 공유
+                        </FacebookShareButton>
+                    </ItemEditModalBtn>
+                    <ItemEditModalBtn>
+                        <TwitterShareButton url={window.location.href}>
+                            Twitter 공유
+                        </TwitterShareButton>
+                    </ItemEditModalBtn>
+                    <ItemEditModalBtn>
+                        <TelegramShareButton url={window.location.href}>
+                            Telegram 공유
+                        </TelegramShareButton>
+                    </ItemEditModalBtn>
                     <ItemEditModalBtn onClick={() => closeModal("selectModalState")}>취소</ItemEditModalBtn>
                 </ItemEditModalBox>
             </ModalWrap>

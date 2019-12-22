@@ -28,7 +28,7 @@ class PugjjigProvider extends Component {
                     stoUrl     = {stoUrl}
                 />
                 <ListModal
-                    keyword     = {stoId}
+                    keyword     = {stoName}
                     modalState  = {listModalState}
                     closeModal  = {closeModal}
                 />

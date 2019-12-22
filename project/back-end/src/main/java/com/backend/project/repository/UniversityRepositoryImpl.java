@@ -186,7 +186,7 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL
                 .orderBy(
                         qUniversity.createdDate.desc()
                 )
-                .limit(10)
+                .limit(9)
                 .transform(
                         groupBy(qUniversity).as(list(qAccount))
                 );

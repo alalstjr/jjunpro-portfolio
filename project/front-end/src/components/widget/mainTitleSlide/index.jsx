@@ -42,9 +42,9 @@ class MainTitleSlide extends Component {
                             bgSize = {"66%"}
                             bgImg = {
                                 thumbnail ?
-                                `${SERVER_FILE_URL}${image.fileThumbnail}`
+                                `"${SERVER_FILE_URL}${image.fileThumbnail}"`
                                 :
-                                `${SERVER_FILE_URL}${image.fileOriginal}`
+                                `"${SERVER_FILE_URL}${image.fileOriginal}"`
                             }
                             bgState = { thumbnail ? "cover" : "contain" }
                         />

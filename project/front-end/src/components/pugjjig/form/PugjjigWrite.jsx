@@ -1,13 +1,14 @@
-import React, { Component } from "react"
-import PropTypes from "prop-types"
-import { connect } from "react-redux"
-import { withRouter } from "react-router-dom"
-import ReactTransitionGroup from "react-addons-css-transition-group"
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import ReactTransitionGroup from "react-addons-css-transition-group";
 
-import { insertUniversity } from "../../../actions/PugjjigActions"
-import FileDrop from "../../widget/fileDrop/FileDrop"
-import SVG from "../../../static/svg/SVG"
-import SVGLoading from "../../../static/svg/SVGLoading"
+import { insertUniversity } from "../../../actions/PugjjigActions";
+import FileDrop from "../../widget/fileDrop/FileDrop";
+import SVG from "../../../static/svg/SVG";
+import SVGLoading from "../../../static/svg/SVGLoading";
+import UniversityList from "../list/universityList/UniversityList";
 
 import { 
     InputClean, 
@@ -16,7 +17,7 @@ import {
     Textarea,
     WaringWrap,
     SmallBtn
-} from "../../../style/globalStyles"
+} from "../../../style/globalStyles";
 
 import {
     TitleWrap,
@@ -32,7 +33,7 @@ import {
     TagPart,
     CloseBtn,
     InsertSubmitBtn
-} from "../style"
+} from "../style";
 
 class PugjjigWrite extends Component {
 
@@ -116,7 +117,6 @@ class PugjjigWrite extends Component {
         }
 
         if (nextProps.error !== error) {
-            console.log(nextProps.error);
             this.warningSet(true, nextProps.error.data);
             this.setState({
                 loding: false
@@ -201,6 +201,10 @@ class PugjjigWrite extends Component {
         };
 
         // {Client} 유효성 검사 출력 코드입니다.
+        if(!pugjjig.uniName) {
+            this.warningSet(true, "대학교 선택은 필수입니다.");
+            return false;
+        }
         if(!pugjjig.uniSubject) {
             this.warningSet(true, "제목 작성은 필수입니다.");
             return false;
@@ -263,6 +267,12 @@ class PugjjigWrite extends Component {
         }   
     }
 
+    handleUniName = (target) => {
+        this.setState({
+            uniName: target
+        });
+    }
+
     /*
      *  target {String name}, state {boolean}, message {String}
      *  target, state 는 필수 값입니다.
@@ -295,6 +305,7 @@ class PugjjigWrite extends Component {
 
         // State Init
         const { 
+            uniName,
             uniSubject, 
             uniContent,
             uniTag,
@@ -305,6 +316,8 @@ class PugjjigWrite extends Component {
             warning, 
             warningText
         } = this.state;
+
+        const { pugjjig_university } = this.props;
 
         const tags = uniTag.map((tag, index) => (
             <TagPart key={index}>
@@ -355,6 +368,15 @@ class PugjjigWrite extends Component {
                         </Rating>
                         <RatingMessage>5점 만점에 몇 점인가요?</RatingMessage>
                     </RatingWrap>
+                    {
+                        (pugjjig_university === "" || pugjjig_university === undefined || pugjjig_university === null) ?
+                        <UniversityList
+                            uniName = {uniName}
+                            handleUniName = {this.handleUniName}
+                        />
+                        :
+                        null
+                    }
                     <FormGroup>
                         <Formlabel>제목</Formlabel>
                         <InputClean                                    

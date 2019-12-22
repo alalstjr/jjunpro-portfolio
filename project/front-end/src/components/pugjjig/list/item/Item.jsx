@@ -61,7 +61,7 @@ const Item = ({pugjjig, UpdateUniLikeUniId, openModal}) => (
                 </ItemUsername>
                 <ItemUserInfo>
                     {
-                        pugjjig.account_urlList !== null ? 
+                        (pugjjig.account_urlList !== null && pugjjig.account_urlList.length > 0) ?
                         pugjjig.account_urlList.map((url, index) => (
                             <a key={index} href={url} target="_blank">
                                 {

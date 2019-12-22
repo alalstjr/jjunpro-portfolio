@@ -25,20 +25,20 @@ export const ListWrap = styled.div`
         props => props.initSearch === true ?
         `
             left: 50%;
-            margin-top: 31rem;
+            padding-top: 31rem;
             width: 31.25rem;
             margin-left: -15.63rem;
 
             @media only screen and (max-width: ${MOBILE_S}px) {    
                 width: 100%;
-                margin-top: 25.5rem;
+                padding-top: 25.5rem;
                 margin-left: 0;
             }
         `
         :
         `
             left: 0;
-            margin-top: 23.13rem;
+            padding-top: 23.13rem;
             width: 18.75rem;
 
             &:after {
@@ -57,7 +57,7 @@ export const ListWrap = styled.div`
 
             @media only screen and (max-width: ${MOBILE_S}px) {    
                 width: 100%;
-                margin-top: 23rem;
+                padding-top: 23rem;
             }
         `
     }
@@ -423,9 +423,21 @@ export const NoticeText = styled.div`
     UserBox Style
 ********************/
 export const UserBox = styled.div`
+    ${InitTransition}
     background-color: #fff;
     position: relative;
     z-index: 1;
+    ${
+        props => props.initSearch ? 
+        `
+            padding-top: 5.625rem;
+            @media only screen and (max-width: ${MOBILE_S}px) {    
+                padding-top: 0;
+            }
+        `
+        :
+        `padding-top: 0;`
+    }
 
     @media only screen and (max-width: ${MOBILE_S}px) {    
         padding-left: 0.625rem;

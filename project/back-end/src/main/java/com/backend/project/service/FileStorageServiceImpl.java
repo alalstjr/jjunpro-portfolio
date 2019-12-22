@@ -15,7 +15,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -114,12 +113,14 @@ public class FileStorageServiceImpl implements FileStorageService
             // resizeContent 이미지 이름에 들어가는 사이즈 크기 문자열
             Integer resizeWidth = 300;
             Integer resizeHeight = 300;
-            String resizeContent = imageSizeCheck(file.getBytes()) ? "-" + resizeWidth + "x" + resizeHeight : "-thumb";
+            // String resizeContent = imageSizeCheck(file.getBytes()) ? "-" + resizeWidth + "x" + resizeHeight : "-thumb";
+            String resizeContent = "-" + resizeWidth + "x" + resizeHeight;
 
             String gcsThumbFileName = handleThumbFileName(gcsFileName, resizeContent);
 
             // 이미지 자르기 (uploadfile은 MultipartFile 유형의 객체 임)
-            BufferedImage resizeImage = imageSizeCheck(file.getBytes()) ? handleThumbnail(file.getBytes(), resizeWidth, resizeHeight) : cropImageSquare(file.getBytes());
+            // BufferedImage resizeImage = imageSizeCheck(file.getBytes()) ? handleThumbnail(file.getBytes(), resizeWidth, resizeHeight) : cropImageSquare(file.getBytes());
+            BufferedImage resizeImage = handleThumbnail(file.getBytes(), resizeWidth, resizeHeight);
 
             // Bufferedimage to Inputstream
             ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -204,21 +205,8 @@ public class FileStorageServiceImpl implements FileStorageService
         int originHeight = originalImage.getHeight();
 
         // 늘어날 길이를 계산하여 패딩합니다.
-        int padding = 0;
-        if(originWidth > originHeight) {
-            padding = (int)(Math.abs((height * originWidth / (double)width) - originHeight) / 2d);
-        } else {
-            padding = (int)(Math.abs((width * originHeight / (double)width) - originWidth) / 2d);
-        }
-        originalImage = Scalr.pad(originalImage, padding, Color.WHITE, Scalr.OP_ANTIALIAS);
-
-        // 이미지 크기가 변경되었으므로 다시 구합니다.
-        originWidth = originalImage.getWidth();
-        originHeight = originalImage.getHeight();
-
-        // 썸네일 비율로 크롭할 크기를 구합니다.
         int newWidth = originWidth;
-        int newHeight = (originWidth * height) / width;
+        int newHeight = originHeight;
 
         if(newHeight > originHeight)
         {

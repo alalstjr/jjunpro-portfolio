@@ -263,7 +263,7 @@ public class UniversityController
     }
 
     /**
-     * GET University List DATA Most Like DESC
+     * GET University List DATA Most Like DESC`
      */
     @GetMapping("/best")
     public ResponseEntity<List<UniversityPublic>> getUniversityMostLike(HttpServletRequest request) throws IOException

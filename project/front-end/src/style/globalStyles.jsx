@@ -298,6 +298,7 @@ export const InputClean = styled.input.attrs({
     ${FormCss};
     border: none;
     border-bottom: 0.0625rem solid #e4e7ea;
+    background-color: transparent;
 
     font-family: none;
 `;
@@ -558,7 +559,7 @@ export const MainListContainer = styled.div`
         props => props.initSearch === true ?
         `
             width: 31.25rem;
-            margin: 5.625rem auto 0;
+            margin: auto auto 0;
 
             @media only screen and (max-width: ${MOBILE_S}px) {    
                 margin: 0.625rem auto 0;

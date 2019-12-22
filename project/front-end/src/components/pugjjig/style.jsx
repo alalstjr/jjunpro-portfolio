@@ -1,11 +1,12 @@
 import styled, { css } from "styled-components"
 import { 
     ClearFix,
-    ModalActive,
-    ModalInit,
     FlexInit,
-    FlexCenter
+    FlexCenter,
+    ModalCloseBtn
 } from "../../style/globalStyles"
+
+const MOBILE_S = 480;
 
 /*******************
     Common CSS
@@ -18,7 +19,11 @@ export const ModalWrapCSS = css`
     max-width: 37.5rem;
     border-radius: 0.3125rem 0 0.3125rem 0.3125rem;
     padding: 0.625rem;
-    height: 80vh;
+
+    @media only screen and (max-width: ${MOBILE_S}px) {    
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
 `;
 
 /*******************
@@ -37,7 +42,6 @@ export const Form = styled.form`
     
 `;
 export const Content = styled.div`
-    height: 70vh;
     overflow-y: scroll;
     padding-right: 0.1875rem;
 
@@ -300,7 +304,7 @@ export const ItemEditModalBtn = styled.button.attrs({
     type: "button"
 })`
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: 500; 
     height: 2.5rem;
     border-bottom: 0.0625rem solid #eee;
 
@@ -314,6 +318,12 @@ export const ItemEditModalBtn = styled.button.attrs({
     &:last-child {
         border-bottom: none;
     }
+
+    > div {
+        height: 100%;
+        line-height: 2.5rem;
+        font-weight: bold; 
+    }
 `;
 
 /*******************
@@ -324,8 +334,12 @@ export const ListModalWrap = styled.div`
     ${FlexCenter}
     ${ModalWrapCSS}
 
-    height: 80vh;
     background-color: ${props => props.theme.backgroundColor};
+    height: 600px;
+
+    @media only screen and (max-width: ${MOBILE_S}px) {    
+        height: 80vh;
+    }
 `;
 
 /*******************
@@ -428,4 +442,39 @@ export const NoneComment = styled.div`
     line-height: 2.625rem;
     font-size: 1rem;
     color: #999;
+`;
+
+/*******************
+    UniList Style
+********************/
+export const UniBtn = styled.button.attrs({
+    type: "button"
+})`
+    width: 100%;
+    text-align: center;
+    font-size: 15px;
+    background-color: #edf0f4;
+    border-radius: 5px;
+    margin-top: 10px;
+
+    ${ModalCloseBtn} {
+        right: 5px;
+        top: 20px;
+        background-color: transparent;
+    }
+
+    span {
+        display: block;
+        padding: 10px;     
+    }
+`;
+export const UniList = styled.div`
+    position: absolute;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    height: 240px;
+    z-index: 10;
+    border: 1px solid #333;
+    overflow-y: scroll;
 `;

@@ -68,6 +68,7 @@ const UniversitySearch = ({keyword, onChange, onState, onSearchState, onSearchSt
                     value={keyword}
                     onChange={onChange}
                     autoComplete="off"
+                    placeholder = {(storeState === 1 || storeState === 3) ? "대학교이름 검색하기" : "음식점이름 검색하기"}
                 />
                 <SearchInputBtn
                     onClick={(storeState === 2) ? onSearchStore : null}

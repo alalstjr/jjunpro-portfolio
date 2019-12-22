@@ -262,5 +262,7 @@ preData.map(preData => preData.key*1 === postData.uniId
 - https://velopert.com/3638 - [배열-다루기-제거와-수정]
 
 # 리누스 docker 간단 설치
-
 https://www.leafcats.com/153
+
+# 공유하기 npm 
+https://www.npmjs.com/package/react-share
