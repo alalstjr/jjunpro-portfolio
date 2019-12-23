@@ -126,3 +126,6 @@ gcloud builds submit --tag=gcr.io/spring-project-261615/spring:v2 .
 https://cloud.google.com/endpoints/docs/openapi/dev-portal-setup-custom-domain?hl=ko
 
 gcloud builds submit --tag=gcr.io/spring-project-261615/spring:v2.1 .
+
+# compoents update
+> gcloud components update

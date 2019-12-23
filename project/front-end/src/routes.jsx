@@ -4,8 +4,8 @@ import axios from "axios"
 /**********************************************
 ■ SERVER API URL
 **********************************************/
-export const SERVER_URL = "http://localhost:8080";
-// export const SERVER_URL = "http://34.83.123.111";
+// export const SERVER_URL = "http://localhost:8080";
+export const SERVER_URL = "http://34.83.123.111:8080";
 export const SERVER_FILE_URL = "https://storage.cloud.google.com/spring-project-261615_cloudbuild/"
 
 /**********************************************
