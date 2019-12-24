@@ -9,7 +9,8 @@ import {
     DELETE_PUGJJIG,
     GET_PUGJJIG_COMMENT,
     GET_PUGJJIG_COMMENT_LIST,
-    DELETE_PUGJJIG_COMMENT
+    DELETE_PUGJJIG_COMMENT,
+    GET_FILE_PROGRESS
 } from "../actions/types"
 
 const initialState = {
@@ -23,7 +24,8 @@ const initialState = {
     pugjjig_delete : 0,
     pugjjig_comment: {},
     pugjjig_comment_list: {},
-    pugjjig_comment_delete : 0
+    pugjjig_comment_delete : 0,
+    file_progress: ""
 };
 
 export default function(state=initialState, action) {
@@ -108,6 +110,12 @@ export default function(state=initialState, action) {
                 ...state,
                 pugjjig_comment_delete: action.payload
             };
+
+        case GET_FILE_PROGRESS:
+            return {
+                ...state,
+                file_progress: action.payload
+            }
 
         default:
             return state;

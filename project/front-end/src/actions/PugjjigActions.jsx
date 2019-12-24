@@ -11,6 +11,7 @@ import {
     GET_PUGJJIG_COMMENT_LIST,
     GET_PUGJJIG_LIKE,
     GET_PUGJJIG_VIEW,
+    GET_FILE_PROGRESS,
     GET_ERRORS
 } from "./types" 
 
@@ -55,7 +56,10 @@ export const insertUniversity = (pugjjig, files, history) => async dispatch => {
             },
             // File Upload 진행상황
             onUploadProgress: progressEvent => {
-                console.log("업로드 진행률.." + Math.round(progressEvent.loaded / progressEvent.total*100) + "%");
+                dispatch({
+                    type: GET_FILE_PROGRESS,
+                    payload: "업로드 진행률.." + Math.round(progressEvent.loaded / progressEvent.total*100) + "%"
+                });
             }
         };
 
@@ -103,6 +107,11 @@ export const insertUniversity = (pugjjig, files, history) => async dispatch => {
             default :
                 alert("잘못된 접근입니다.");
         }
+
+        dispatch({
+            type: GET_FILE_PROGRESS,
+            payload: ""
+        });
         
     } catch (error) {
         alert(error.response.data.error);

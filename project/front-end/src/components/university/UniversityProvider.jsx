@@ -169,6 +169,7 @@ class UniversityProvider extends Component {
                 </UserBox>
                 <ListWrap
                     initSearch = {initSearch}
+                    searchState= {searchState}
                     mobile     = {mobile}
                 >
                     {

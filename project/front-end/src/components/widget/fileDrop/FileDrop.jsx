@@ -48,8 +48,8 @@ const FileDrop = ({ fileState, registerFileState, registerFiles, multiple }) => 
                 )}
             </DropZone>
             <ul>
-                {myFiles.length > 0 && myFiles.map(acceptedFile => (
-                    <FileList key={acceptedFile.lastModified}>
+                {myFiles.length > 0 && myFiles.map((acceptedFile, index) => (
+                    <FileList key={index}>
                         {acceptedFile.path} - {acceptedFile.size} bytes{" "}
                         <FileRemove 
                             type="button" 
@@ -59,8 +59,8 @@ const FileDrop = ({ fileState, registerFileState, registerFiles, multiple }) => 
                 ))}
 
                 {/* 게시글 수정시 등록된 파일 목록 */}
-                {registerFiles.length > 0 && registerFiles.map(acceptedFile => (
-                    <FileList key={acceptedFile.fileNo}>
+                {registerFiles.length > 0 && registerFiles.map((acceptedFile, index) => (
+                    <FileList key={index}>
                         {acceptedFile.filename} - {acceptedFile.fileSize} bytes{" "}
                         <FileRemove 
                             type="button" 

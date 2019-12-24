@@ -20,7 +20,7 @@ plugins {
 }
 
 group = 'com.backend'
-version = '0.0.4'
+version = '0.0.6'
 sourceCompatibility = '11'
 
 configurations {

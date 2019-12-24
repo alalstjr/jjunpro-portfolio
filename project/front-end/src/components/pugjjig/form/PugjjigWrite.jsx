@@ -317,7 +317,7 @@ class PugjjigWrite extends Component {
             warningText
         } = this.state;
 
-        const { pugjjig_university } = this.props;
+        const { pugjjig_university, file_progress } = this.props;
 
         const tags = uniTag.map((tag, index) => (
             <TagPart key={index}>
@@ -433,8 +433,12 @@ class PugjjigWrite extends Component {
 
                 {/* 작성 완료 클릭시 Loding 대기화면 */}
                 {
-                    loding ? 
-                    <SVGLoading/>
+                    loding ?
+                    <div>
+                        <SVGLoading
+                            loadText = {file_progress}
+                        />   
+                    </div>
                     :
                     null
                 }
@@ -460,12 +464,14 @@ class PugjjigWrite extends Component {
 PugjjigWrite.propTypes = {
     insertUniversity: PropTypes.func.isRequired,
     pugjjig_university: PropTypes.string.isRequired,
+    file_progress: PropTypes.string.isRequired,
     error: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
     error: state.errors,
-    pugjjig_university: state.pugjjig.pugjjig_university
+    pugjjig_university: state.pugjjig.pugjjig_university,
+    file_progress: state.pugjjig.file_progress
 });
   
 export default withRouter(connect(

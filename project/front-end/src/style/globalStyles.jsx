@@ -498,14 +498,24 @@ export const Loding = styled.div`
     height: 100%;
     background-color: rgba(0,0,0,0.5);
     border-radius: 0.25rem;
+`;
+export const LodingBox = styled.div`
+    ${FlexInit}
+    ${FlexCenter}
+
+    height: 5rem;
+    width: 15rem;
+    text-align: center;
 
     > svg {
-        ${FlexInit}
-        ${FlexCenter}
-
-        width: 1.875rem;
-        height: 1.875rem;
+        margin: 0 auto;
     }
+`;
+export const FileLoadText = styled.div`
+    color: #fff;
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 10px;
 `;
 
 /* Main Style */

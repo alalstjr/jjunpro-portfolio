@@ -22,6 +22,26 @@ export const ListWrap = styled.div`
     }
 
     ${
+        props => props.searchState !== true ?
+        `
+            &:after {
+                display: block;
+                position: absolute;
+                text-align: center;
+                width: 100%;
+                content: "잠시만 기다려주세요.";
+                position: absolute;
+                top: 23.5rem;
+                background: #fff;
+                padding: 1.25rem 0;
+                z-index: 2;
+            }
+        `
+        :
+        null
+    }
+
+    ${
         props => props.initSearch === true ?
         `
             left: 50%;
@@ -40,20 +60,6 @@ export const ListWrap = styled.div`
             left: 0;
             padding-top: 23.13rem;
             width: 18.75rem;
-
-            &:after {
-                display: block;
-                position: absolute;
-                text-align: center;
-                width: 100%;
-                content: "잠시만 기다려주세요.";
-                position: absolute;
-                top: 2rem;
-                margin-top: 1.25rem;
-                background: #fff;
-                padding: 1.25rem 0;
-                z-index: 2;
-            }
 
             @media only screen and (max-width: ${MOBILE_S}px) {    
                 width: 100%;
@@ -75,6 +81,10 @@ export const ListWrap = styled.div`
             }
         `
     }
+
+    @media only screen and (max-width: ${MOBILE_S}px) {    
+        transition: none;
+    }
 `;
 export const PagingBox = styled.div`
     position: relative;
@@ -84,7 +94,7 @@ export const Pagination = styled.div`
     padding: 1.25rem 0;
     background: #fff;
     position: relative;
-    z-index: 3;
+    z-index: 1;
 
     > button {
         width: 1.25rem;

@@ -209,6 +209,10 @@ export const ItemContent = styled.div`
     max-height: 5.625rem;
     overflow: hidden;
     margin-bottom: 0.625rem;
+
+    @media only screen and (max-width: ${MOBILE_S}px) {    
+        max-height: 5rem;
+    }
 `;
 export const ItemImgBox = styled.div`
     ${ClearFix}

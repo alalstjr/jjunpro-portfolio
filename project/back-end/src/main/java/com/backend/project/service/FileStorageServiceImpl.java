@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @Service
 public class FileStorageServiceImpl implements FileStorageService
 {
-    private final String GCSID = "spring-project-261615_cloudbuild";
+    private final String GCSID = "pugjjig-storage";
 
     @Autowired
     private FileRepository fileRepository;

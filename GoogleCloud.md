@@ -111,6 +111,7 @@ kubectl delete service spring
 kubectl delete pod spring-c5b459757-mxcjb
 
 kubectl set image deployment/spring spring=gcr.io/spring-project-261615/spring:v1
+kubectl set image deployment/react react=gcr.io/spring-project-261615/react:v0.1.2
 
 # 복제수 감소
 kubectl scale --replicas=0 deployment/spring
@@ -129,3 +130,8 @@ gcloud builds submit --tag=gcr.io/spring-project-261615/spring:v2.1 .
 
 # compoents update
 > gcloud components update
+
+# 구글클라우드 저장소 이미지 url 안불러와 질때
+https://stackoverflow.com/questions/39820128/google-cloud-storage-image-public-link-to-img-src
+
+> https://storage.cloud.google.com/BUCKET/path/to/image.jpg하지만 올바른 링크는 https://storage.googleapis.com/BUCKET/path/to/image.jpg

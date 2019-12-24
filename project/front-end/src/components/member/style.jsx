@@ -124,6 +124,10 @@ export const Modal = styled.div`
         opacity: 0.00;
         transform: translate(-50%, -50%) scale(0.7);
     }
+
+    @media only screen and (max-width: ${MOBILE_S}px) {
+        max-width: 95%;
+    }
 `;
 export const TitleWrap = styled.div`
     ${ClearFix}
