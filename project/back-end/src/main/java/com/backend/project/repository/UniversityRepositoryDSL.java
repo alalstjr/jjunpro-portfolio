@@ -14,6 +14,7 @@ public interface UniversityRepositoryDSL {
 
     Page<UniversityPublic> findByPublicAll(Pageable pageable, Account account);
     List<UniversityPublic> findByUniversityListWhereAccountId(SearchDTO searchDTO);
+    List<UniversityPublic> findByUniversityListWhereAccountNickname(SearchDTO searchDTO);
     List<UniversityPublic> findByLikeListWhereAccountId(SearchDTO searchDTO);
     List<UniversityPublic> findByUniversityListWhereKeyword(SearchDTO searchDTO);
     List<UniversityPublic> findByOrderByCreatedDateDesc(Account account);

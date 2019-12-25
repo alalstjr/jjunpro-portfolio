@@ -63,7 +63,7 @@ class PugjjigSearchProvider extends Component {
             return "uniTag";
         }
         if(target.indexOf("userSearch") !== -1) {
-            return "userId";
+            return "nickname";
         }
     }
 

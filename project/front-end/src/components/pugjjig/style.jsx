@@ -3,6 +3,7 @@ import {
     ClearFix,
     FlexInit,
     FlexCenter,
+    FlexCol2,
     ModalCloseBtn
 } from "../../style/globalStyles"
 
@@ -206,7 +207,7 @@ export const ItemSubject = styled.div`
     line-height: 1.625rem;
 `;
 export const ItemContent = styled.div`
-    max-height: 5.625rem;
+    max-height: 90px;
     overflow: hidden;
     margin-bottom: 0.625rem;
 
@@ -371,6 +372,16 @@ export const InsertSubmitBtn = styled.button`
     left: 0;
     bottom: 0;
 `;
+export const OptionBox = styled.div`
+    display: flex;
+
+    > select {
+        ${FlexCol2}
+    }
+    > select:first-child {
+        margin-right: 0.5rem;
+    }
+`;
 
 /*******************
     View Style
@@ -388,6 +399,11 @@ export const ViewBox = styled.div`
 `;
 export const ViewContent = styled.div`
     margin-bottom: 0.625rem;
+`;
+export const ItemOption = styled.div`
+    text-align: right;
+    font-size: 0.8rem;
+    font-weight: 500;
 `;
 
 /*******************

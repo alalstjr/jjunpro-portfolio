@@ -28,6 +28,10 @@ public class UniversitySaveDTO
     @NotBlank(message = "제목을 작성해 주세요.")
     private String uniSubject;
 
+    private String uniAtmosphere;
+
+    private String uniPrice;
+
     @NotBlank(message = "내용을 작성해 주세요.")
     @Type(type = "text")
     private String uniContent;
@@ -77,6 +81,8 @@ public class UniversitySaveDTO
         return University.builder()
                 .id(id)
                 .uniSubject(uniSubject)
+                .uniAtmosphere(uniAtmosphere)
+                .uniPrice(uniPrice)
                 .uniContent(uniContent)
                 .uniName(uniName)
                 .uniTag(uniTag)

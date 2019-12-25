@@ -65,6 +65,8 @@ export const insertUniversity = (pugjjig, files, history) => async dispatch => {
 
         // pugjjig form 데이터
         formData.append("uniSubject", pugjjig.uniSubject);
+        formData.append("uniAtmosphere", pugjjig.uniAtmosphere);
+        formData.append("uniPrice",   pugjjig.uniPrice);
         formData.append("uniContent", pugjjig.uniContent);
         formData.append("uniName",    pugjjig.uniName);
         formData.append("uniTag",     pugjjig.uniTag);
@@ -225,7 +227,47 @@ export const getUniListUserId = (searchDTO) =>  async dispatch => {
         const offset = `offsetCount=${searchDTO.offsetCount}`;
         const cate   = `ifCateA=${searchDTO.ifCateA}&ifCateB=${searchDTO.ifCateB}`;
         const params = `${offset}&${cate}`;
-        const res = await axios.get(`${SERVER_URL}/api/university/pugjjigs/${searchDTO.keyword}?${params}`);
+        const res = await axios.get(`${SERVER_URL}/api/university/pugjjigs/userId/${searchDTO.keyword}?${params}`);
+
+        switch(res.status) {
+            case 200 :
+                dispatch({
+                    type: GET_PUGJJIG_LIST,
+                    payload: res.data
+                });
+                break;
+
+            default :
+                alert("잘못된 접근입니다.");
+        }
+    } catch(error) {
+        alert(error.response.data.error);
+        dispatch({
+            type: GET_ERRORS,
+            payload: error.response.data
+        });
+    }
+}
+
+/****************************************
+    GET University List DATA nickname
+****************************************/
+export const getUniListNickname = (searchDTO) =>  async dispatch => {
+    try {
+        // 유저의 닉네임이 존재하는지 체크합니다.
+        if(searchDTO.keyword === undefined || searchDTO.keyword === null) {
+            dispatch({
+                type: GET_ERRORS,
+                payload: "유저 닉네임이 존재하지 않습니다. 새로고침을 시도해 주세요."
+            });
+            return false;
+        }
+
+        searchDTO.keyword = (searchDTO.keyword === "") ? "all" : searchDTO.keyword; 
+        const offset = `offsetCount=${searchDTO.offsetCount}`;
+        const cate   = `ifCateA=${searchDTO.ifCateA}&ifCateB=${searchDTO.ifCateB}`;
+        const params = `${offset}&${cate}`;
+        const res = await axios.get(`${SERVER_URL}/api/university/pugjjigs/nickname/${searchDTO.keyword}?${params}`);
 
         switch(res.status) {
             case 200 :

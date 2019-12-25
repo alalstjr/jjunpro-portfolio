@@ -56,6 +56,11 @@ public class UniversityServiceImpl implements UniversityService
     }
 
     @Override
+    public List<UniversityPublic> findByUniversityListWhereAccountNickname(SearchDTO searchDTO) {
+        return university.findByUniversityListWhereAccountNickname(searchDTO);
+    }
+
+    @Override
     public List<UniversityPublic> findByLikeListWhereAccountId(SearchDTO searchDTO)
     {
         return university.findByLikeListWhereAccountId(searchDTO);

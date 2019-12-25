@@ -104,6 +104,32 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL
                 .where(
                         qUniversity.publicStatus.eq(true)
                         .and(qUniversity.controlStatus.eq(false))
+                        .and(qUniversity.account.userId.eq(searchDTO.getKeyword()))
+                        .and(repositoryUtill.getSearchCate(searchDTO))
+                )
+                .orderBy(
+                        repositoryUtill.getSearchOrderBy(searchDTO)
+                )
+                .offset(8 * searchDTO.getOffsetCount())
+                .limit(8)
+                .transform(
+                    groupBy(qUniversity).as(list(qAccount))
+                );
+
+        List<UniversityPublic> results = getUniversityPublicList(transform, searchDTO.getAccount());
+
+        return results;
+    }
+
+    @Override
+    public List<UniversityPublic> findByUniversityListWhereAccountNickname(SearchDTO searchDTO)
+    {
+        Map<University, List<Account>> transform = queryFactory
+                .from(qUniversity)
+                .leftJoin(qUniversity.uniLike, qAccount)
+                .where(
+                        qUniversity.publicStatus.eq(true)
+                        .and(qUniversity.controlStatus.eq(false))
                         .and(qUniversity.account.nickname.eq(searchDTO.getKeyword()))
                         .and(repositoryUtill.getSearchCate(searchDTO))
                 )
@@ -262,6 +288,8 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL
         return new UniversityPublic(
                 data.getId(),
                 data.getUniSubject(),
+                data.getUniAtmosphere(),
+                data.getUniPrice(),
                 data.getUniContent(),
                 data.getUniName(),
                 data.getUniTag(),
@@ -286,6 +314,8 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL
                         u -> new UniversityPublic(
                                 u.getKey().getId(),
                                 u.getKey().getUniSubject(),
+                                u.getKey().getUniAtmosphere(),
+                                u.getKey().getUniPrice(),
                                 u.getKey().getUniContent(),
                                 u.getKey().getUniName(),
                                 u.getKey().getUniTag(),

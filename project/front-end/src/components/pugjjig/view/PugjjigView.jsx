@@ -46,7 +46,8 @@ import {
     CommentContent,
     CommentDate,
     CommentWrap,
-    Comment
+    Comment,
+    ItemOption
 } from "../style";
 
 import SVG from "../../../static/svg/SVG";
@@ -296,41 +297,43 @@ class PugjjigView extends Component {
                                         }
                                     </ItemUserInfo>
                                 </ItemRight>
+                                <ItemStar>
                                 {
                                     pugjjig.uniStar === 1 ?
-                                    <ItemStar>
-                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                                    </ItemStar>
+                                        <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
                                     :
                                     pugjjig.uniStar === 2 ?
-                                    <ItemStar>
-                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                                    </ItemStar>
+                                    <Fragment>
+                                        <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                                        <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                                    </Fragment>
                                     :
                                     pugjjig.uniStar === 3 ?
-                                    <ItemStar>
-                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                                    </ItemStar>
+                                    <Fragment>
+                                        <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                                        <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                                        <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                                    </Fragment>
                                     :
                                     pugjjig.uniStar === 4 ?
-                                    <ItemStar>
-                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                                    </ItemStar>
+                                    <Fragment>
+                                        <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                                        <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                                        <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                                        <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                                    </Fragment>
                                     :
-                                    <ItemStar>
-                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                                    </ItemStar>
+                                    <Fragment>
+                                        <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                                        <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                                        <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                                        <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                                        <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
+                                    </Fragment>
                                 }
+                                    <ItemOption>{pugjjig.uniAtmosphere}</ItemOption>
+                                    <ItemOption>{pugjjig.uniPrice}</ItemOption>
+                                </ItemStar>
                             </ItemHead>
                             <ItemSubject>{pugjjig.uniSubject}</ItemSubject>
                             <ViewContent>

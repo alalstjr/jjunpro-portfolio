@@ -62,6 +62,8 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
                 u -> new UniversityPublic(
                         u.getId(),
                         u.getUniSubject(),
+                        u.getUniAtmosphere(),
+                        u.getUniPrice(),
                         u.getUniContent(),
                         u.getUniName(),
                         u.getUniTag(),

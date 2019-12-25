@@ -16,7 +16,8 @@ import {
     FormGroup, 
     Textarea,
     WaringWrap,
-    SmallBtn
+    SmallBtn,
+    SelectBox
 } from "../../../style/globalStyles";
 
 import {
@@ -32,7 +33,8 @@ import {
     TagWrap,
     TagPart,
     CloseBtn,
-    InsertSubmitBtn
+    InsertSubmitBtn,
+    OptionBox
 } from "../style";
 
 class PugjjigWrite extends Component {
@@ -49,6 +51,8 @@ class PugjjigWrite extends Component {
             stoUrl: null,
             // input value
             uniSubject: "",
+            uniAtmosphere: null,
+            uniPrice: null,
             uniContent: "",
             uniName: "",
             uniTag: [],
@@ -91,6 +95,8 @@ class PugjjigWrite extends Component {
             this.setState({
                 uniId: editPugjjig.id,
                 uniSubject: editPugjjig.uniSubject,
+                uniAtmosphere: editPugjjig.uniAtmosphere,
+                uniPrice: editPugjjig.uniPrice, 
                 uniContent: editPugjjig.uniContent,
                 uniName: editPugjjig.uniName,
                 uniTag: this.handleTagArray(editPugjjig.uniTag),
@@ -178,6 +184,8 @@ class PugjjigWrite extends Component {
             stoUrl,
             uniId,
             uniSubject, 
+            uniAtmosphere,
+            uniPrice,
             uniContent,
             uniName,
             uniTag,
@@ -189,6 +197,8 @@ class PugjjigWrite extends Component {
         const pugjjig = {
             uniId,
             uniSubject, 
+            uniAtmosphere,
+            uniPrice,
             uniContent,
             uniName,
             uniTag,
@@ -306,7 +316,9 @@ class PugjjigWrite extends Component {
         // State Init
         const { 
             uniName,
-            uniSubject, 
+            uniSubject,
+            uniAtmosphere,
+            uniPrice, 
             uniContent,
             uniTag,
             uniTagText,
@@ -386,6 +398,35 @@ class PugjjigWrite extends Component {
                             value={uniSubject}
                             onChange={this.onChange}
                         />
+                    </FormGroup>
+                    <FormGroup>
+                        <Formlabel>분위기&amp;가격대</Formlabel>
+                        <OptionBox>
+                            <SelectBox                                   
+                                id="uniAtmosphere"
+                                name="uniAtmosphere"
+                                value={uniAtmosphere}
+                                onChange={this.onChange}
+                            >
+                                <option value="null">분위기 선택하기</option>
+                                <option value="조용한 분위기">조용한 분위기</option>
+                                <option value="고급스런 분위기">고급스런 분위기</option>
+                                <option value="활발한 분위기">활발한 분위기</option>
+                            </SelectBox>
+                            <SelectBox                                   
+                                id="uniPrice"
+                                name="uniPrice"
+                                value={uniPrice}
+                                onChange={this.onChange}
+                            >
+                                <option value="null">가격대 선택하기</option>
+                                <option value="많이 비싸다">많이 비싸다</option>
+                                <option value="조금 비싸다">조금 비싸다</option>
+                                <option value="보통 가격대">보통 가격대</option>
+                                <option value="저렴하다">저렴하다</option>
+                                <option value="많이 저렴하다">많이 저렴하다</option>
+                            </SelectBox>
+                        </OptionBox>
                     </FormGroup>
                     <FormGroup>
                         <Formlabel>내용</Formlabel>

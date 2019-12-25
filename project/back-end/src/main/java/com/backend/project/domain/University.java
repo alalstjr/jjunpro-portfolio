@@ -24,6 +24,10 @@ public class University extends BaseEntity
     @Type(type = "text")
     private String uniContent;
 
+    private String uniAtmosphere;
+
+    private String uniPrice;
+
     @Column(nullable = false)
     private String uniName;
 
@@ -47,7 +51,7 @@ public class University extends BaseEntity
     private Set<Comment> comments = new HashSet<>();
 
     @Builder
-    public University(Long id, String uniSubject, String uniContent, String uniName, String uniTag, Integer uniStar, Set<Account> uniLike, String uniIp, Account account, List<File> files, Set<Comment> comments)
+    public University(Long id, String uniSubject, String uniContent, String uniName, String uniTag, Integer uniStar, Set<Account> uniLike, String uniIp, Account account, List<File> files, Set<Comment> comments, String uniAtmosphere, String uniPrice)
     {
         this.id         = id;
         this.uniSubject = uniSubject;
@@ -60,5 +64,7 @@ public class University extends BaseEntity
         this.account    = account;
         this.files      = files;
         this.comments   = comments;
+        this.uniAtmosphere = uniAtmosphere;
+        this.uniPrice   = uniPrice;
     }
 }

@@ -73,11 +73,16 @@ public class UniversityController
         String errorType = null;
         String errorText = null;
 
+        // 선택지 비어있을경우 null 처리
+        if(dto.getUniAtmosphere().equals("null"))
+            dto.setUniAtmosphere(null);
+
+        if(dto.getUniPrice().equals("null"))
+            dto.setUniPrice(null);
+
         // Field Check
         if(bindingResult.hasErrors())
-        {
             return webProcessRespone.webErrorRespone(bindingResult);
-        }
 
         // File 최대갯수 확인
         // UPDATE 기존 file과 수정되는 file 갯수가 6개 이하인지 확인합니다.
@@ -212,7 +217,7 @@ public class UniversityController
     /**
      * GET University List DATA userId
      */
-    @GetMapping("/pugjjigs/{userId}")
+    @GetMapping("/pugjjigs/userId/{userId}")
     public ResponseEntity<?> getUniListUserId(
             @PathVariable String userId,
             @RequestParam("offsetCount") Long offsetCount,
@@ -246,6 +251,46 @@ public class UniversityController
         }
 
         List<UniversityPublic> result = universityService.findByUniversityListWhereAccountId(searchDTO);
+        return new ResponseEntity<List<UniversityPublic>>(result, HttpStatus.OK);
+    }
+
+    /**
+     * GET University List DATA nickname
+     */
+    @GetMapping("/pugjjigs/nickname/{nickname}")
+    public ResponseEntity<?> getUniListNickname(
+            @PathVariable String nickname,
+            @RequestParam("offsetCount") Long offsetCount,
+            @RequestParam("ifCateA") String ifCateA,
+            @RequestParam("ifCateB") String ifCateB,
+            HttpServletRequest request
+    ) throws IOException
+    {
+        // Search DTO 생성
+        SearchDTO searchDTO = new SearchDTO();
+
+        // Account Info
+        Account accountData = accountUtill.accountJWT(request);
+
+        // offsetCount 없는경우 기본값 0 설정
+        offsetCount = (offsetCount == null) ? 0L : offsetCount;
+
+        if(nickname != null || offsetCount != null)
+        {
+            // Param 값을 DTO 에 담아줍니다.
+            // (관리하기 쉽게 DTO 한곳에 모아줍니다.)
+            searchDTO.setKeyword(nickname);
+            searchDTO.setOffsetCount(offsetCount);
+            searchDTO.setAccount(accountData);
+            searchDTO.setIfCateA(ifCateA);
+            searchDTO.setIfCateB(ifCateB);
+        }
+        else
+        {
+            throw new IOException("검색에 필요한 정보를 전부 받지 못했습니다.");
+        }
+
+        List<UniversityPublic> result = universityService.findByUniversityListWhereAccountNickname(searchDTO);
         return new ResponseEntity<List<UniversityPublic>>(result, HttpStatus.OK);
     }
 

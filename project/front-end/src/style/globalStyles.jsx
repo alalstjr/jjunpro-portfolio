@@ -155,6 +155,12 @@ export const FlexInit  = css`
 export const FlexCenter = css`
     margin: auto 0;
 `;
+export const FlexCol2  = css`
+    display: flex;
+    flex-direction: column;
+    flex-basis: 50%;
+    max-width: 50%;
+`;
 export const FlexCol3  = css`
     display: flex;
     flex-direction: column;

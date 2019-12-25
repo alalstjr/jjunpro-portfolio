@@ -9,6 +9,7 @@ import {
     getUniListStoreId,
     getUniListUniLike,
     getUniListUserId,
+    getUniListNickname,
     getUniListSearch,
     UpdateUniLikeUniId,
     getUniversityCreatedDate,
@@ -107,10 +108,12 @@ class List extends Component {
             getUniListStoreId,
             getUniListUniLike,
             getUniListUserId,
+            getUniListNickname,
             getUniListSearch,
             getUniversityCreatedDate
         } = this.props;
         
+        // PugjjigSearchProvider 혹은 검색되는 대상에서 받아온 분류로 검색후 DB 검색
         switch(searchDTO.classification) {
             case "storeId" :
                 getUniListStoreId(searchDTO);
@@ -122,6 +125,10 @@ class List extends Component {
 
             case "userId" :
                 getUniListUserId(searchDTO);
+                break;
+
+            case "nickname" :
+                getUniListNickname(searchDTO);
                 break;
 
             case "stoId" :
@@ -352,6 +359,7 @@ List.propTypes = {
     getUniListStoreId: PropTypes.func.isRequired,
     getUniListUniLike: PropTypes.func.isRequired,
     getUniListUserId: PropTypes.func.isRequired,
+    getUniListNickname: PropTypes.func.isRequired,
     getUniListSearch: PropTypes.func.isRequired,
     UpdateUniLikeUniId: PropTypes.func.isRequired,
     deleteUniversityuniId: PropTypes.func.isRequired,
@@ -379,6 +387,7 @@ export default connect(
         getUniListStoreId,
         getUniListUniLike,
         getUniListUserId,
+        getUniListNickname,
         getUniListSearch,
         UpdateUniLikeUniId,
         deleteUniversityuniId,

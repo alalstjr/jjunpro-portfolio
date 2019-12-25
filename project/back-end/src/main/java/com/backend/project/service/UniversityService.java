@@ -18,6 +18,7 @@ public interface UniversityService
     public UniversityPublic findByPublicId(Long id, Account account);
     public Page<UniversityPublic> findByUniversityList(Pageable pageable, Account account);
     public List<UniversityPublic> findByUniversityListWhereAccountId(SearchDTO searchDTO);
+    public List<UniversityPublic> findByUniversityListWhereAccountNickname(SearchDTO searchDTO);
     public List<UniversityPublic> findByLikeListWhereAccountId(SearchDTO searchDTO);
     public Boolean findByIdLike(Long id, Account account);
     public List<UniversityPublic> findByUniversityListWhereKeyword(SearchDTO searchDTO);

@@ -1,6 +1,6 @@
 {
   "name": "front-end",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
     "axios": "^0.19.0",
@@ -20,7 +20,8 @@
     "scriptjs": "^2.5.9"
   },
   "scripts": {
-    "start": "PORT=80 react-scripts start",
+    "starts": "PORT=80 react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

@@ -214,7 +214,7 @@ class Profile extends Component {
                                             <SVG name={"user"} width="38px" height="38px" color={"#E71D36"} />
                                             : 
                                             <ProfileIamge
-                                                image = {`${SERVER_FILE_URL}${account_get.data.photo.fileOriginal}`}
+                                                image = {`${SERVER_FILE_URL}${account_get.data.photo.fileThumbnail}`}
                                             />
                                         }
                                     </Fragment>
