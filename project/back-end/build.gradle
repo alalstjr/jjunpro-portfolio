@@ -77,6 +77,9 @@ test {
 // querydsl 적용
 apply plugin: "com.ewerk.gradle.plugins.querydsl" // Plugin 적용
 def querydslSrcDir = 'src/main/generated' // QClass 생성 위치
+// def querydslSrcDir = 'src/main/java/com/backend/project/generated' // QClass 생성 위치
+// 인텔리제이가 만약 Q Class를 경로를 못찾아 import 못하는경우 한번 생성되는 위치를 다른곳으로 변경후 다시 되돌려서 저장하면
+// 버그가 사라지고 java폴더 외부의 클래스를 정상적으로 불러옵니다.
 
 querydsl {
 	library = "com.querydsl:querydsl-apt"

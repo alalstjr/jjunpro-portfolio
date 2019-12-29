@@ -14,5 +14,5 @@ public interface CommentService {
     public void deleteData(Long id, Account account);
     public void deleteUniComment(Long id, Account account);
     public Optional<Comment> findById(Long id);
-    public List<CommentPublic> findByCommentList(Long uniId);
+    public List<CommentPublic> findByCommentList(Long uniId,  Account account);
 }

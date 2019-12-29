@@ -13,8 +13,8 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CommentSaveDTO {
-
+public class CommentSaveDTO
+{
     private Long id;
 
     private Long uniId;
@@ -29,7 +29,8 @@ public class CommentSaveDTO {
 
     private University university;
 
-    public Comment toEntity() {
+    public Comment toEntity()
+    {
         return Comment.builder()
                 .id(id)
                 .content(content)

@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class CommentRepositoryImpl implements CommentRepositoryDSL {
-
+public class CommentRepositoryImpl implements CommentRepositoryDSL
+{
     private final JPAQueryFactory queryFactory;
     private QComment qComment       = QComment.comment;
     private QUniversity qUniversity = QUniversity.university;

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -98,10 +99,14 @@ public class CommentController
      */
     @GetMapping("/{uniId}")
     public List<CommentPublic> getCommentListUniId(
-            @PathVariable Long uniId
-    )
+            @PathVariable Long uniId,
+            HttpServletRequest request
+    ) throws IOException
     {
-        return commentService.findByCommentList(uniId);
+        // Account Info
+        Account accountData = accountUtill.accountJWT(request);
+
+        return commentService.findByCommentList(uniId, accountData);
     }
 
     /**
