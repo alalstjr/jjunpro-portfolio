@@ -34,6 +34,13 @@ export const CHECK_USER_SUCCESS = "CHECK_USER_SUCCESS";
 export const CHECK_USER_FAILURE = "CHECK_USER_FAILURE";
 
 /*
+ * ALARM TYPES
+ */
+export const GET_ALARM_LIST = "GET_ALARM_LIST";
+export const TEMP_ALARM_LIST = "TEMP_ALARM_LIST";
+export const DELETE_ALARM = "DELETE_ALARM";
+
+/*
  * ERRORS TYPES
  */
 export const GET_ERRORS = "GET_ERRORS";

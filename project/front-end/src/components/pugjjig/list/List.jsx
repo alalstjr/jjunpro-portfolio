@@ -44,7 +44,6 @@ class List extends Component {
         const {
             keyword,
             classification,
-            offsetCount,
             ifCateA,
             ifCateB,
             tempUniversityList

@@ -4,8 +4,8 @@ import axios from "axios"
 /**********************************************
 ■ SERVER API URL
 **********************************************/
-export const SERVER_URL = "http://localhost:8080";
-// export const SERVER_URL = "http://34.82.45.195:8080";
+// export const SERVER_URL = "http://localhost:8080";
+export const SERVER_URL = "http://34.82.45.195:8080";
 export const SERVER_FILE_URL = "https://storage.googleapis.com/pugjjig-storage/"
 
 /**********************************************

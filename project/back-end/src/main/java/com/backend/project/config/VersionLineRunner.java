@@ -10,6 +10,6 @@ public class VersionLineRunner implements CommandLineRunner
     @Override
     public void run(String... args) throws Exception
     {
-        System.out.println("======v0.1.0=======" + Arrays.toString(args));
+        System.out.println("======v0.2.0=======" + Arrays.toString(args));
     }
 }

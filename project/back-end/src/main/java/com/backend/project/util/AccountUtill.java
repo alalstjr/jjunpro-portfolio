@@ -4,9 +4,10 @@ import com.backend.project.domain.Account;
 import com.backend.project.security.context.AccountContext;
 import com.backend.project.security.jwt.HeaderTokenExtractor;
 import com.backend.project.security.jwt.JwtDecoder;
-import com.backend.project.service.AccountServiceImpl;
-import com.backend.project.service.CommentServiceImpl;
-import com.backend.project.service.UniversityServiceImpl;
+import com.backend.project.service.AccountService;
+import com.backend.project.service.AlarmService;
+import com.backend.project.service.CommentService;
+import com.backend.project.service.UniversityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,13 +21,16 @@ import java.util.Optional;
 public class AccountUtill
 {
     @Autowired
-    private AccountServiceImpl accountService;
+    private AccountService accountService;
 
     @Autowired
-    private UniversityServiceImpl universityService;
+    private UniversityService universityService;
 
     @Autowired
-    private CommentServiceImpl commentService;
+    private CommentService commentService;
+
+    @Autowired
+    private AlarmService alarmService;
 
     @Autowired
     private JwtDecoder jwtDecoder;
@@ -91,6 +95,11 @@ public class AccountUtill
 
             case "account" :
                 data = accountService.findById(id).get().getId();
+                break;
+
+            case "alarm" :
+                data = alarmService.findById(id).get().getUserId();
+                break;
 
             default:
                 break;

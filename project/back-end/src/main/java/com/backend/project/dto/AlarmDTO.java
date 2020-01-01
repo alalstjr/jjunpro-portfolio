@@ -21,12 +21,20 @@ public class AlarmDTO
     @NotBlank(message = "dataType 값은 필수 입니다.")
     private String dataType;
 
+    @NotBlank(message = "dataContent 값은 필수 입니다.")
+    private String dataContent;
+
+    @NotBlank(message = "writeId 값은 필수 입니다.")
+    private String writeId;
+
     public Alarm toEntity()
     {
         return Alarm.builder()
                 .userId(userId)
                 .dataId(dataId)
                 .dataType(dataType)
+                .dataContent(dataContent)
+                .writeId(writeId)
                 .build();
     }
 }

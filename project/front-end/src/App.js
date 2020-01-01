@@ -6,7 +6,8 @@ import PugjjigView from "./components/pugjjig/view/PugjjigView";
 import MyPage from "./components/member/myPage/MyPageProvider";
 import PugjjigSearch from "./components/search/pugjjig/PugjjigSearchProvider";
 import Square from "./components/square/SquareProvider";
-import AccountProvider from "./components/member/account/AccountProvider"
+import AccountProvider from "./components/member/account/AccountProvider";
+import AlarmProvider from "./components/Alarm/AlarmProvider";
 
 const App = () => {
     return (
@@ -30,7 +31,9 @@ const App = () => {
           </Switch> 
         </Router>
         {/* 유저 로그인 회원가입 Component */}
-        <AccountProvider/>  
+        <AccountProvider/>
+        {/* 알림 Component */}
+        <AlarmProvider/>
       </Fragment>
       );
 }

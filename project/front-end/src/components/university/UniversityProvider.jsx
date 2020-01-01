@@ -1,11 +1,11 @@
-import React, { Component, Fragment } from "react"
-import PropTypes from "prop-types"
-import { connect } from "react-redux"
+import React, { Component, Fragment } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
-import UniversityList from "./list/universityList/UniversityList"
-import UniversitySearch from "./list/search/UniversitySearch"
-import AccountBox from "../member/account/container/AccountBox"
-import { getUniversity } from "../../actions/PugjjigActions"
+import UniversityList from "./list/universityList/UniversityList";
+import UniversitySearch from "./list/search/UniversitySearch";
+import AccountBox from "../member/account/container/AccountBox";
+import { getUniversity } from "../../actions/PugjjigActions";
 
 import { 
     ListWrap,
@@ -19,7 +19,7 @@ import {
     Item,
     ItemUniName,
     ItemUniCount
- } from "./style"
+ } from "./style";
 
 class UniversityProvider extends Component {
 

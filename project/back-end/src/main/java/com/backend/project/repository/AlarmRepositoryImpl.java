@@ -1,11 +1,14 @@
 package com.backend.project.repository;
 
 import com.backend.project.domain.Account;
+import com.backend.project.domain.Alarm;
 import com.backend.project.domain.QAlarm;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 public class AlarmRepositoryImpl implements AlarmRepositoryDSL
@@ -17,10 +20,24 @@ public class AlarmRepositoryImpl implements AlarmRepositoryDSL
     @Transactional
     public void deleteDataId(Long id)
     {
+        // University Id 값을 조회하는 삭제 메소드
         queryFactory
                 .delete(qAlarm)
                 .where(
                         qAlarm.dataId.eq(id)
+                )
+                .execute();
+    }
+
+    @Override
+    @Transactional
+    public void deleteData(Long id)
+    {
+        // Alarm Id 값을 조회하는 삭제 메소드
+        queryFactory
+                .delete(qAlarm)
+                .where(
+                        qAlarm.id.eq(id)
                 )
                 .execute();
     }
@@ -37,5 +54,14 @@ public class AlarmRepositoryImpl implements AlarmRepositoryDSL
                 ).exists();
 
         return result == null ? false : true;
+    }
+
+    @Override
+    public List<Alarm> findByAlarmWhereUserId(Account account)
+    {
+        return queryFactory
+                .selectFrom(qAlarm)
+                .where(qAlarm.userId.eq(account.getId()))
+                .fetch();
     }
 }

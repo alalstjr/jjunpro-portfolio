@@ -54,6 +54,8 @@ public class CommentServiceImpl implements CommentService
                 AlarmDTO alearmDTO = new AlarmDTO();
                 alearmDTO.setUserId(uniData.getAccount().getId());
                 alearmDTO.setDataId(uniData.getId());
+                alearmDTO.setDataContent(dto.getContent());
+                alearmDTO.setWriteId(dto.getAccount().getUserId());
                 alearmDTO.setDataType("Comment");
                 alarm.save(alearmDTO.toEntity());
             }
