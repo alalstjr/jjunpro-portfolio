@@ -17,7 +17,7 @@ import {
 const UniversitySearch = ({keyword, onChange, onState, onSearchState, onSearchStore, searchState, storeState, initSearch}) => (
     <SearchWrap>
         <SearchTitle>
-            학교 주변 푹찍 둘러보기
+            학교 근처 맛집 탐색을 한 번에!
         </SearchTitle>
         <SwitchWrap
             storeState={storeState}

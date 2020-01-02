@@ -19,6 +19,9 @@ class UniversityList extends Component {
             // 대학교 목록
             university: [
                 {
+                    uniName:"주변대학없음"
+                },
+                {
                     uniName:"덕성여자대학교"
                 },
                 {

@@ -199,6 +199,32 @@ export const CommonSpace = css`
     margin: 3.75rem auto 3.75rem;
 `;
 
+/****************************************
+    Scroll Style
+****************************************/
+export const ScrollBar = css`
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+        background-color: ${props => props.theme.backgroundColor};
+        width:1rem
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: ${props => props.theme.backgroundColor};
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color:#babac0;
+        border-radius:1rem;
+        border:0.25rem solid ${props => props.theme.backgroundColor};
+    }
+
+    &::-webkit-scrollbar-button {
+        display:none
+    }
+`;
+
 /*******************
     Botton Style
 ********************/
@@ -625,6 +651,27 @@ export const MobileSearch = styled.span`
             border-radius: 0.3125rem;
         }
     }
+`;
+export const GitIcon = styled.span`
+    position: fixed;
+    right: 50px;
+    bottom: 50px;
+    height: auto;
+    width: auto;
+    float: none;
+    z-index: 3;
+
+    a {
+        font-size: 24px;
+        font-weight: 300;
+    }
+
+    svg {
+        margin-left: 8px;
+    }
+`;
+export const GitV = styled.span`
+
 `;
 
 /*******************

@@ -2,15 +2,17 @@ import React, { Component, Fragment, createRef } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { USER_AUTH } from "../../routes";
+import { FVersion } from "../../routes";
 
 import FirstSection from "./firstSection";
 import PugjjigProvider from "../../components/pugjjig/PugjjigProvider";
+import SVGgit from "../../static/svg/SVGgit";
 
 import KakaoMapService from "../../service/KakaoMapService";
 import { getUniCountStoId } from "../../actions/PugjjigActions";
 import { modalAccount } from "../../actions/accountActions";
 
-import { Main, MainMap, MobileSearch } from "../../style/globalStyles";
+import { Main, MainMap, MobileSearch, GitIcon, GitV } from "../../style/globalStyles";
 
 class MainProvider extends Component {
 
@@ -162,6 +164,13 @@ class MainProvider extends Component {
           :
           null
         }
+        {/* git icon link 연결 */}
+        <GitIcon>
+          <a href={`https://github.com/alalstjr`} target="_blank">
+            JJunpro GitHub <GitV>{FVersion}</GitV>
+            <SVGgit width="30px" height="30px"/>
+          </a>
+        </GitIcon>
       </Main>
     )
   }

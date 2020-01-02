@@ -4,7 +4,8 @@ import {
     FlexInit,
     FlexCenter,
     FlexCol2,
-    ModalCloseBtn
+    ModalCloseBtn,
+    ScrollBar
 } from "../../style/globalStyles"
 
 const MOBILE_S = 480;
@@ -43,27 +44,8 @@ export const Form = styled.form`
     
 `;
 export const Content = styled.div`
-    overflow-y: scroll;
+    ${ScrollBar}
     padding-right: 0.1875rem;
-
-    &::-webkit-scrollbar {
-        background-color:#fff;
-        width:1rem
-    }
-
-    &::-webkit-scrollbar-track {
-        background-color:#fff
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background-color:#babac0;
-        border-radius:1rem;
-        border:0.25rem solid #fff
-    }
-
-    &::-webkit-scrollbar-button {
-        display:none
-    }
 `;
 export const RatingWrap = styled.div`
     
@@ -132,28 +114,9 @@ export const CloseBtn = styled.div`
     Item Style
 ********************/
 export const PugjjigItemWrap = styled.ul`
-    overflow-y: scroll;
+    ${ScrollBar}
     height: 100%;
     padding-right: 0.1875rem;
-
-    &::-webkit-scrollbar {
-        background-color: ${props => props.theme.backgroundColor};
-        width:1rem
-    }
-
-    &::-webkit-scrollbar-track {
-        background-color: ${props => props.theme.backgroundColor};
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background-color:#babac0;
-        border-radius:1rem;
-        border:0.25rem solid ${props => props.theme.backgroundColor};
-    }
-
-    &::-webkit-scrollbar-button {
-        display:none
-    }
 `;
 export const PugjjigItem = styled.li`
     padding: 0.625rem;

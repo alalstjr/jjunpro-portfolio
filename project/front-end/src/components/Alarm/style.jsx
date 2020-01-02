@@ -1,7 +1,5 @@
 import styled from "styled-components";
-import { FlexCol2, InitTransition } from "../../style/globalStyles";
-
-const MOBILE_S = 480;
+import { FlexCol2, ScrollBar } from "../../style/globalStyles";
 
 /*******************
     Common CSS
@@ -17,9 +15,9 @@ export const AlarmItemWrap = styled.div`
 
     position: fixed;
     top: 0;
-    width: 300px;
+    width: 18.75rem;
     height: 100%;
-    background-color: #e3e3e3;
+    background-color: #f3f3f3;
     padding: 15px;
 
     ${
@@ -31,7 +29,7 @@ export const AlarmItemWrap = styled.div`
 `;
 export const AlarmHead = styled.div`
     display: flex;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 
     > div {
         ${FlexCol2}
@@ -91,7 +89,8 @@ export const ItemDate = styled.div`
     }
 `;
 export const ItemWrap = styled.div`
+    ${ScrollBar}
     height: 100%;
     padding-bottom: 40px;
-    overflow-y: scroll;
+    margin-right: -10px;
 `;

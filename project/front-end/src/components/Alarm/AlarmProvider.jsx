@@ -20,24 +20,34 @@ class AlarmProvider extends Component {
       }
 
     componentDidMount() {
-        if(USER_AUTH()) {                        
-            this.props.getAlarmList();
-        }
+        const { getAlarmList } = this.props;
+
+        // 유저일경우 알람 업데이트 실행
+        if(USER_AUTH()) 
+            getAlarmList();
     }
 
     componentWillReceiveProps(nextProps) {
         const {
             alarm,
-            alarm_delete
+            alarm_delete,
+            user_info,
+            getAlarmList,
+            logged
         } = this.props;
 
-        if(nextProps.alarm !== alarm) {
+        // alarm 데이터값을 불러올경우 업데이트
+        if(nextProps.alarm !== alarm) 
             this.handleUpdate(nextProps.alarm);
-        }
 
         // 알람 아이템 삭제 메소드
-        if(nextProps.alarm_delete !== alarm_delete) {
+        if(nextProps.alarm_delete !== alarm_delete) 
             this.handleDeleteUpdate(nextProps.alarm_delete.data);
+
+        // 유저가 로그인 했을경우 알람 업데이트 실행
+        if(nextProps.user_info !== user_info) {
+            if(nextProps.logged)
+                getAlarmList();
         }
     }
 
@@ -77,9 +87,9 @@ class AlarmProvider extends Component {
                             <div onClick={this.handleModalState}>
                                 {
                                     (temp_alarm_list.length > 0) ?
-                                    <SVGAlarmOn width="60px" height="60px" color={"#d11d33"} />
+                                    <SVGAlarmOn width="50px" height="50px" color={"#d11d33"} />
                                     :
-                                    <SVGAlarm width="60px" height="60px" color={"#ddd"} />
+                                    <SVGAlarm width="50px" height="50px" color={"#ddd"} />
                                 }
                             </div>
                             <AlarmItem
@@ -106,6 +116,7 @@ AlarmProvider.propTypes = {
     alarm: PropTypes.object.isRequired,
     user_info: PropTypes.object.isRequired,
     temp_alarm_list: PropTypes.array.isRequired,
+    logged: PropTypes.bool.isRequired,
     error: PropTypes.object.isRequired
 }
 
@@ -114,6 +125,7 @@ const mapStateToProps = state => ({
     temp_alarm_list: state.alarm.temp_alarm_list,
     alarm_delete: state.alarm.alarm_delete,
     user_info: state.account.user_info,
+    logged: state.account.logged,
     error: state.errors
 });
   

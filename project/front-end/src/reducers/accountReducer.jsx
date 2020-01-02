@@ -12,7 +12,8 @@ const initialState = {
     modal_account: {},
     user_info: {},
     account_create: {},
-    account_get: {}
+    account_get: {},
+    logged: false
 };
 
 export default function(state=initialState, action) {
@@ -73,6 +74,7 @@ export default function(state=initialState, action) {
         case CHECK_USER_FAILURE:
             return {
                 ...state,
+                logged: false,
                 user_info: action.payload
             };
 
