@@ -9,9 +9,6 @@ import NanumSquareL from '../details/fonts/nanum/NanumSquareL.woff';
 import NanumSquareR from '../details/fonts/nanum/NanumSquareR.woff';
 import NanumSquareB from '../details/fonts/nanum/NanumSquareB.woff';
 
-const PC_S = 1200;
-const TABLET = 991;
-const MOBILE_B = 768;
 const MOBILE_M = 640;
 const MOBILE_S = 480;
 
@@ -310,11 +307,10 @@ export const FormGroup = styled.div`
     margin-bottom: 1.25rem;
 `;
 export const Formlabel = styled.label`
-    ${CookieFontR}
-    
     display: inline-block;
     font-size: 1rem;
     margin-bottom: 0.3125rem;
+    font-weight: 500;
 `;
 export const Input = styled.input.attrs({
     // required: true
@@ -604,7 +600,7 @@ export const MainListContainer = styled.div`
             margin: auto auto 0;
 
             @media only screen and (max-width: ${MOBILE_S}px) {    
-                margin: 0.625rem auto 0;
+                margin: 0 auto 0;
                 width: 100%;
             }
         `
@@ -653,7 +649,7 @@ export const MobileSearch = styled.span`
     }
 `;
 export const GitIcon = styled.span`
-    position: fixed;
+    position: absolute;
     right: 50px;
     bottom: 50px;
     height: auto;
@@ -664,14 +660,22 @@ export const GitIcon = styled.span`
     a {
         font-size: 24px;
         font-weight: 300;
+
+        @media only screen and (max-width: ${MOBILE_M}px) {
+            font-size: 18px;
+        }
     }
 
     svg {
         margin-left: 8px;
     }
+
+    @media only screen and (max-width: ${MOBILE_M}px) {
+        display: none;
+    }
 `;
 export const GitV = styled.span`
-
+    font-size: 12px;
 `;
 
 /*******************

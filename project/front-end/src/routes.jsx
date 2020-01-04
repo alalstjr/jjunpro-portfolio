@@ -11,7 +11,7 @@ export const SERVER_FILE_URL = "https://storage.googleapis.com/pugjjig-storage/"
 /**********************************************
 ■ Version
 **********************************************/
-export const FVersion = "Fv.0.3.1";
+export const FVersion = "Fv.0.3.2";
 
 /**********************************************
 ■ USER Authentication

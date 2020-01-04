@@ -111,8 +111,8 @@ public class FileStorageServiceImpl implements FileStorageService
             // 썸네일 이미지파일 저장
             // resizeWidth, resizeHeight 줄이는 이미지 크기
             // resizeContent 이미지 이름에 들어가는 사이즈 크기 문자열
-            Integer resizeWidth = 300;
-            Integer resizeHeight = 300;
+            Integer resizeWidth = 600;
+            Integer resizeHeight = 600;
             // String resizeContent = imageSizeCheck(file.getBytes()) ? "-" + resizeWidth + "x" + resizeHeight : "-thumb";
             String resizeContent = "-" + resizeWidth + "x" + resizeHeight;
 
@@ -247,7 +247,7 @@ public class FileStorageServiceImpl implements FileStorageService
     }
 
     /**
-     *  서버로 업로드되는 이미지의 크기가 300x300 기준을 체크하는 메소드입니다.
+     *  서버로 업로드되는 이미지의 크기가 600x600 기준을 체크하는 메소드입니다.
      *  thumb file 제작중에 사이즈가 작은 file을 잡아내는 역할을 합니다.
      */
     private Boolean imageSizeCheck(byte[] image) throws IOException
@@ -258,7 +258,7 @@ public class FileStorageServiceImpl implements FileStorageService
         int width = originalImage.getWidth();
         int height = originalImage.getHeight();
 
-        if(width < 300 || height < 300)
+        if(width < 600 || height < 600)
         {
             return false;
         }

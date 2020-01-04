@@ -130,7 +130,8 @@ const Item = ({pugjjig, UpdateUniLikeUniId, openModal}) => (
             </Link>
         <ItemImgBox>
             {
-                pugjjig.files.length < 4 ?
+                // pugjjig.files.length < 4 ?
+                false ?
                 pugjjig.files.map((file) => (
                     <ImgList key={file.id}>
                         <img 
@@ -141,7 +142,7 @@ const Item = ({pugjjig, UpdateUniLikeUniId, openModal}) => (
                 ))
                 :
                 <ImageSlide
-                    slideShow = {3}
+                    slideShow = {1}
                     images = {pugjjig.files}
                     thumbnail = {true}
                 />

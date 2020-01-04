@@ -51,7 +51,7 @@ export const ListWrap = styled.div`
 
             @media only screen and (max-width: ${MOBILE_S}px) {    
                 width: 100%;
-                padding-top: 25.5rem;
+                padding-top: 25rem;
                 margin-left: 0;
             }
         `

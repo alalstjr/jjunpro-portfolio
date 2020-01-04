@@ -23,7 +23,7 @@ class AlarmProvider extends Component {
         const { getAlarmList } = this.props;
 
         // 유저일경우 알람 업데이트 실행
-        if(USER_AUTH()) 
+        if(USER_AUTH())
             getAlarmList();
     }
 
@@ -76,13 +76,13 @@ class AlarmProvider extends Component {
     }
 
     render() {
-        const { alarm, temp_alarm_list, user_info, deleteAlarmId, alarm_delete } = this.props;
+        const { alarm, temp_alarm_list, deleteAlarmId, alarm_delete } = this.props;
         const { modalState } = this.state;
 
         return (
             <AlarmWrap>
                 {
-                    (alarm.data !== undefined && user_info.data !== undefined) ? 
+                    (alarm.data !== undefined) ? 
                         <Fragment>
                             <div onClick={this.handleModalState}>
                                 {

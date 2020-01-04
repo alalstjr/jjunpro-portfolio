@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { FlexCol2, ScrollBar } from "../../style/globalStyles";
 
+const MOBILE_M = 640;
+
 /*******************
     Common CSS
 ********************/
@@ -9,6 +11,12 @@ export const AlarmWrap = styled.div`
     bottom: 50px;
     left: 50px;
     z-index: 10;
+
+    @media only screen and (max-width: ${MOBILE_M}px) {
+        left: 10px;
+        bottom: auto;
+        top: 10px;
+    }
 `;
 export const AlarmItemWrap = styled.div`
     transition: all .5s cubic-bezier(0.11, 0.26, 0.2, 1.02);

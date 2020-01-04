@@ -122,7 +122,7 @@ export const PugjjigItem = styled.li`
     padding: 0.625rem;
     background-color: #fff;
     border-radius: 0.1875rem;
-    margin-bottom: 0.625rem;
+    margin-bottom: 4rem;
 
     &:last-child {
         margin-bottom: 0;
