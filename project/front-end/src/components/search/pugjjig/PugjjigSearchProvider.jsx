@@ -5,7 +5,8 @@ import Category from "../category/Category"
 import ScrollUp from "../scrollUp/ScrollUp"
 
 import {
-    SearchWrap
+    SearchWrap,
+    SearchTitle
 } from "../style"
 
 class PugjjigSearchProvider extends Component {
@@ -99,10 +100,32 @@ class PugjjigSearchProvider extends Component {
             reSearch
         } = this.state;
 
+        const handleTitle = () => {
+            switch(classification) {
+                case "uniName" :
+                    return "대학교 검색";
+
+                case "stoId" :
+                    return "음식점 검색";
+
+                case "uniTag" :
+                    return "태그 검색";
+
+                case "nickname" :
+                    return "사용자이름 검색";
+
+                default :
+                    break;
+            }
+        }
+
         return (
             <Fragment>
                 <NormalHeader/>
                 <SearchWrap>
+                    <SearchTitle>
+                        {handleTitle()}
+                    </SearchTitle>
                     <Category
                         onChange           = {this.onChange}
                         onSearch           = {this.onSearch}

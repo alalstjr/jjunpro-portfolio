@@ -80,6 +80,9 @@ https://cloud.google.com/java/getting-started/using-cloud-storage?hl=ko
 
 https://stackoverflow.com/questions/52926765/spring-boot-image-upload-to-the-google-cloud-storage-bucket-is-not-working
 
+구글 클라우드 API JSON 생성 방법 
+https://cloud.google.com/iam/docs/creating-managing-service-account-keys?hl=ko
+
 # React 구글클라우드 업로드 방법
 https://codechacha.com/ko/dockerizing-react-with-nginx/
 
@@ -94,10 +97,10 @@ https://antilibrary.org/1885
 https://console.cloud.google.com/net-services/dns/zones/spring-project?project=spring-project-261615&cloudshell=true
 
 # docker image 프로젝트 올리기 순서!
-> gcloud builds submit --tag=gcr.io/spring-project-261615/spring:v1 .
+> gcloud builds submit --tag=gcr.io/my-project-1518049226434/spring:v1 .
 > gcloud container clusters create spring-cluster --num-nodes=2 --zone=us-west1-b
-> kubectl run spring --image=gcr.io/spring-project-261615/spring:v1 --port 8080
-> kubectl expose deployment spring --type=LoadBalancer --port 80 --target-port 8080
+> kubectl run spring --image=gcr.io/my-project-1518049226434/spring:v0.2.3 --port 8080
+> kubectl expose deployment spring --type=LoadBalancer --port 8080 --target-port 8080
 
 # loopback 오류
 > kubectl describe pod spring-c5b459757-mxcjb

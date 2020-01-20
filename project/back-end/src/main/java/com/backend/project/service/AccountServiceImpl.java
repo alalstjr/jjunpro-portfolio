@@ -4,8 +4,10 @@ import com.backend.project.domain.Account;
 import com.backend.project.dto.AccountPwdUpdateDTO;
 import com.backend.project.dto.AccountSaveDTO;
 import com.backend.project.dto.AccountUpdateDTO;
+import com.backend.project.dto.AlarmDTO;
 import com.backend.project.projection.AccountPublic;
 import com.backend.project.repository.AccountRepository;
+import com.backend.project.repository.AlarmRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,16 +22,33 @@ public class AccountServiceImpl implements AccountService {
     private AccountRepository account;
 
     @Autowired
+    private AlarmRepository alarm;
+
+    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public Account save(AccountSaveDTO dto) {
 
-        String rawPassword = dto.getPassword();
+        String rawPassword     = dto.getPassword();
         String encodedPassword = passwordEncoder.encode(rawPassword);
         dto.setPassword(encodedPassword);
 
-        return account.save(dto.toEntity());
+        Account result = account.save(dto.toEntity());
+
+        // 유저가 등록되면 안내문 알람 추가
+        // 알람 테이블에 추가
+        if (result.getId() != null) {
+            AlarmDTO alearmDTO = new AlarmDTO();
+            alearmDTO.setUserId(result.getId());
+            alearmDTO.setDataId(result.getId());
+            alearmDTO.setDataContent("회원가입을 축하합니다~!");
+            alearmDTO.setWriteId("푹찍");
+            alearmDTO.setDataType("Notice");
+            alarm.save(alearmDTO.toEntity());
+        }
+
+        return result;
     }
 
     @Override
@@ -40,7 +59,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Long pwdUpdate(AccountPwdUpdateDTO dto) {
 
-        String rawPassword = dto.getPassword();
+        String rawPassword     = dto.getPassword();
         String encodedPassword = passwordEncoder.encode(rawPassword);
         dto.setPassword(encodedPassword);
 

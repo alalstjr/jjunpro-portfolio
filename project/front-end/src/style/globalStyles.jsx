@@ -298,6 +298,8 @@ export const FormCss = css`
 export const FormCssBasic = css`
     border: 0.0625rem solid #e4e7ea;
     border-radius: .25rem;
+    height: 30px;
+    background-color: #fff;
 `;
 export const Form = styled.form`
     padding 1.25rem 0;
@@ -705,6 +707,9 @@ export const ProfileIamge = styled.div`
 
     background-repeat: no-repeat;
     background-position: center center;
+`;
+export const NoneImg = styled.img`
+    max-width: 100%
 `;
 
 /****************************************

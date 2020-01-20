@@ -54,7 +54,7 @@ public class RepositoryUtill
                 return builder.and(qUniversity.uniName.contains(searchDTO.getKeyword()));
 
             case "stoId" :
-                return builder.and(qStore.stoId.contains(searchDTO.getKeyword()));
+                return builder.and(qStore.stoName.contains(searchDTO.getKeyword()));
 
             case "uniTag" :
                 return builder.and(qUniversity.uniTag.contains(searchDTO.getKeyword()));

@@ -156,6 +156,7 @@ export const ItemUserInfo = styled.div`
     }
 `;
 export const ItemStar = styled.div`
+    text-align: right;
     position: absolute;
     right: 0;
     top: 0;

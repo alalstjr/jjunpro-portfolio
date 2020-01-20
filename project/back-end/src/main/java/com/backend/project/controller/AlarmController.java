@@ -18,8 +18,7 @@ import java.util.Optional;
 @RestController
 @CrossOrigin
 @RequestMapping("/api/alarm")
-public class AlarmController
-{
+public class AlarmController {
     @Autowired
     private AlarmService alarmService;
 
@@ -30,20 +29,22 @@ public class AlarmController
     private WebProcessRespone webProcessRespone;
 
     /**
-     GET Alarm List DATA
+     * GET Alarm List DATA
      */
     @GetMapping("")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<List<Alarm>> getAlarmList (
+    public ResponseEntity<List<Alarm>> getAlarmList(
             Authentication authentication
-    )
-    {
+    ) {
         // Account Info
         Optional<Account> accountData = accountUtill.accountInfo(authentication);
 
-        List<Alarm> result =  alarmService.findByAlarmListWhereUserId(accountData.get());
+        List<Alarm> result = alarmService.findByAlarmListWhereUserId(accountData.get());
 
-        return new ResponseEntity<List<Alarm>>(result, HttpStatus.OK);
+        return new ResponseEntity<List<Alarm>>(
+                result,
+                HttpStatus.OK
+        );
     }
 
     /**
@@ -51,35 +52,45 @@ public class AlarmController
      */
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<String> deleteAlarmId(
-            @PathVariable Long id,
-            Authentication authentication
-    )
-    {
+    public ResponseEntity<List<Alarm>> deleteAlarmId(
+            @PathVariable
+                    Long id, Authentication authentication
+    ) {
         String errorType = null;
         String errorText = null;
 
         Optional<Account> accountData = accountUtill.accountInfo(authentication);
 
-        if(accountData.isPresent())
-        {
+        if (accountData.isPresent()) {
 
-            if(!accountUtill.userDataCheck(id, accountData, "alarm"))
-            {
+            if (!accountUtill.userDataCheck(
+                    id,
+                    accountData,
+                    "alarm"
+            )) {
                 errorType = "AuthenticationError";
                 errorText = "잘못된 계정 접근입니다.";
-                return webProcessRespone.webErrorRespone(errorType, errorText);
+                return webProcessRespone.webErrorRespone(
+                        errorType,
+                        errorText
+                );
             }
 
             alarmService.deleteData(id);
-        }
-        else
-        {
+        } else {
             errorType = "AuthenticationError";
             errorText = "올바른 접근이 아닙니다.";
-            return webProcessRespone.webErrorRespone(errorType, errorText);
+            return webProcessRespone.webErrorRespone(
+                    errorType,
+                    errorText
+            );
         }
 
-        return new ResponseEntity<String>("처리가 완료되었습니다.", HttpStatus.OK);
+        List<Alarm> result = alarmService.findByAlarmListWhereUserId(accountData.get());
+
+        return new ResponseEntity<List<Alarm>>(
+                result,
+                HttpStatus.OK
+        );
     }
 }

@@ -1,12 +1,10 @@
 import {
     GET_ALARM_LIST,
-    TEMP_ALARM_LIST,
     DELETE_ALARM
 } from "../actions/types";
 
 const initialState = {
-    alarm: {},
-    temp_alarm_list: []
+    alarm: {}
 };
 
 export default function(state=initialState, action) {
@@ -21,16 +19,10 @@ export default function(state=initialState, action) {
                 }
             };
 
-        case TEMP_ALARM_LIST:
-            return {
-                ...state,
-                temp_alarm_list: action.payload
-            };
-
         case DELETE_ALARM:
             return {
                 ...state,
-                alarm_delete: {
+                alarm: {
                     data: action.payload
                 }
             };

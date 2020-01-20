@@ -31,8 +31,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/account")
 @CrossOrigin
-public class AccountController
-{
+public class AccountController {
     @Autowired
     private AccountService accountService;
 
@@ -56,83 +55,100 @@ public class AccountController
      */
     @PostMapping("")
     public ResponseEntity<Boolean> insertAccount(
-            @Valid @RequestBody AccountSaveDTO dto,
-            BindingResult bindingResult
-    )
-    {
-        Map<String, String> errorMap = new HashMap<String, String>();
-        String errorType = null;
-        String errorText = null;
+            @Valid
+            @RequestBody
+                    AccountSaveDTO dto, BindingResult bindingResult
+    ) {
+        Map<String, String> errorMap  = new HashMap<String, String>();
+        String              errorType = null;
+        String              errorText = null;
 
         // Field Check
-        if(bindingResult.hasErrors())
-        {
-            for(FieldError error : bindingResult.getFieldErrors())
-            {
-                errorMap.put(error.getField(), error.getDefaultMessage());
+        if (bindingResult.hasErrors()) {
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errorMap.put(
+                        error.getField(),
+                        error.getDefaultMessage()
+                );
             }
         }
 
         // Password equals PasswordRe Check
-        if(!dto.toEntity().getPassword().equals(dto.getPasswordRe()))
-        {
+        if (!dto.toEntity()
+                .getPassword()
+                .equals(dto.getPasswordRe())) {
             errorType = "password";
             errorText = "비밀번호가 일치하지 않습니다.";
-            errorMap.put(errorType, errorText);
+            errorMap.put(
+                    errorType,
+                    errorText
+            );
         }
 
         // Account Id Check
-        if(dto.getUserId() != null && !validityCheck.enNumCheck(dto.getUserId()))
-        {
+        if (dto.getUserId() != null && ( !validityCheck.enNumCheck(dto.getUserId()) || !validityCheck.stringCheck(dto.getUserId()) )) {
             errorType = "userId";
             errorText = "아이디는 영문 숫자만 입력 가능합니다.";
-            errorMap.put(errorType, errorText);
+            errorMap.put(
+                    errorType,
+                    errorText
+            );
         }
 
         // Account Id DB Check
-        if(accountService.findByUserId(dto.getUserId()).isPresent())
-        {
+        if (accountService.findByUserId(dto.getUserId())
+                .isPresent()) {
             errorType = "userId";
             errorText = "이미 존재하는 아이디입니다.";
-            errorMap.put(errorType, errorText);
+            errorMap.put(
+                    errorType,
+                    errorText
+            );
         }
 
         // Account Nickname Check
-        if(validityCheck.usernickCheck(dto.getNickname()))
-        {
+        if (validityCheck.usernickCheck(dto.getNickname())) {
             errorType = "nickname";
             errorText = "금지된 닉네임이 포함되어 있습니다.";
-            errorMap.put(errorType, errorText);
+            errorMap.put(
+                    errorType,
+                    errorText
+            );
         }
 
         // Account Nickname Check
-        if(
-                dto.getNickname() != null && !validityCheck.enNumkrCheck(dto.getNickname())
-        )
-        {
+        if (dto.getNickname() != null && !validityCheck.enNumkrCheck(dto.getNickname())) {
             errorType = "nickname";
             errorText = "닉네임은 한글 영문 숫자만 입력 가능합니다.";
-            errorMap.put(errorType, errorText);
+            errorMap.put(
+                    errorType,
+                    errorText
+            );
         }
 
         // Account Nickname DB Check
-        if(accountService.findByNickname(dto.getNickname()).isPresent())
-        {
+        if (accountService.findByNickname(dto.getNickname())
+                .isPresent()) {
             errorType = "nickname";
             errorText = "이미 존재하는 닉네임입니다.";
-            errorMap.put(errorType, errorText);
+            errorMap.put(
+                    errorType,
+                    errorText
+            );
         }
 
         // 유효성 검사 최종 반환
-        if(errorMap.size() > 0)
-        {
+        if (errorMap.size() > 0) {
             return webProcessRespone.webErrorRespone(errorMap);
         }
 
         Account newAccount = accountService.save(dto);
-        Boolean result = (newAccount.getId() != null) ? true : false;
+        Boolean result     = ( newAccount.getId() != null ) ? true : false;
 
-        return new ResponseEntity<Boolean>(result, HttpStatus.CREATED);
+        return new ResponseEntity<Boolean>(
+                result,
+                HttpStatus.CREATED
+        );
     }
 
     /**
@@ -140,104 +156,118 @@ public class AccountController
      */
     @PostMapping("/{id}")
     public ResponseEntity<Long> updateAccount(
-            @Valid @ModelAttribute AccountUpdateDTO dto,
-            BindingResult bindingResult,
-            Authentication authentication
-    )
-    {
-        Map<String, String> errorMap = new HashMap<String, String>();
-        String errorType = null;
-        String errorText = null;
+            @Valid
+            @ModelAttribute
+                    AccountUpdateDTO dto, BindingResult bindingResult, Authentication authentication
+    ) {
+        Map<String, String> errorMap  = new HashMap<String, String>();
+        String              errorType = null;
+        String              errorText = null;
 
         // Account Info
         Optional<Account> accountData = accountUtill.accountInfo(authentication);
 
         // Field Check
-        if(bindingResult.hasErrors())
-        {
-            for(FieldError error : bindingResult.getFieldErrors())
-            {
-                errorMap.put(error.getField(), error.getDefaultMessage());
+        if (bindingResult.hasErrors()) {
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errorMap.put(
+                        error.getField(),
+                        error.getDefaultMessage()
+                );
             }
         }
 
         // Dto and token Check
-        if(dto.getId() != accountData.get().getId())
-        {
+        if (dto.getId() != accountData.get()
+                .getId()) {
             errorType = "id";
             errorText = "접근하는 id 가 맞지 않습니다.";
-            errorMap.put(errorType, errorText);
+            errorMap.put(
+                    errorType,
+                    errorText
+            );
         }
 
         // Account Nickname Check
-        if(dto.getNickname() != null && !validityCheck.enNumkrCheck(dto.getNickname()))
-        {
+        if (dto.getNickname() != null && !validityCheck.enNumkrCheck(dto.getNickname())) {
             errorType = "nickname";
             errorText = "닉네임은 한글 영문 숫자만 입력 가능합니다.";
-            errorMap.put(errorType, errorText);
+            errorMap.put(
+                    errorType,
+                    errorText
+            );
         }
 
         // Account Nickname DB Check
-        if(
-            !accountData.get().getNickname().equals(dto.getNickname()) &&
-            accountService.findByNickname(dto.getNickname()).isPresent()
-        )
-        {
+        if (!accountData.get()
+                .getNickname()
+                .equals(dto.getNickname()) && accountService.findByNickname(dto.getNickname())
+                .isPresent()) {
             errorType = "nickname";
             errorText = "이미 존재하는 닉네임입니다.";
-            errorMap.put(errorType, errorText);
+            errorMap.put(
+                    errorType,
+                    errorText
+            );
         }
 
         // Account Email Validity Check
-        if (!dto.getEmail().equals("null") && dto.getEmail().length() > 0)
-        {
-            if(!validityCheck.emailCheck(dto.getEmail())) {
+        if (!dto.getEmail()
+                .equals("null") && dto.getEmail()
+                .length() > 0) {
+            if (!validityCheck.emailCheck(dto.getEmail())) {
                 errorType = "email";
                 errorText = "올바르지 않은 이메일입니다.";
-                errorMap.put(errorType, errorText);
+                errorMap.put(
+                        errorType,
+                        errorText
+                );
             }
-        }
-        else
-        {
+        } else {
             // 입력된 이메일 정보가 없을경우 Null 저장
             dto.setEmail(null);
         }
 
-        String accountEmailCheck = accountData.get().getEmail() == null ? "" : accountData.get().getEmail();
+        String accountEmailCheck = accountData.get()
+                .getEmail() == null ? "" : accountData.get()
+                .getEmail();
 
-        if(
-            dto.getEmail() != null &&
-            !accountEmailCheck.equals(dto.getEmail()) &&
-            accountService.findByEmail(dto.getEmail()).isPresent()
-        )
-        {
+        if (dto.getEmail() != null && !accountEmailCheck.equals(dto.getEmail()) && accountService.findByEmail(dto.getEmail())
+                .isPresent()) {
             errorType = "email";
             errorText = "이미 존재하는 이메일입니다.";
-            errorMap.put(errorType, errorText);
+            errorMap.put(
+                    errorType,
+                    errorText
+            );
         }
 
         // 유효성 검사 최종 반환
-        if(errorMap.size() > 0)
-        {
+        if (errorMap.size() > 0) {
             return webProcessRespone.webErrorRespone(errorMap);
         }
 
         // 첨부파일이 존재하는 경우 파일 업로드 메소드
-        if(dto.getFile() != null)
-        {
-            File fileData = fileStorageService.uploadFile(dto.getFile(), "account");
+        if (dto.getFile() != null) {
+            File fileData = fileStorageService.uploadFile(
+                    dto.getFile(),
+                    "account"
+            );
             dto.setFileData(fileData);
         }
 
         Long newAccount = accountService.update(dto);
 
-        if(newAccount == 1)
-        {
-            return new ResponseEntity<Long>(newAccount, HttpStatus.OK);
-        }
-        else
-        {
-            return new ResponseEntity<Long>(newAccount, HttpStatus.ACCEPTED);
+        if (newAccount == 1) {
+            return new ResponseEntity<Long>(
+                    newAccount,
+                    HttpStatus.OK
+            );
+        } else {
+            return new ResponseEntity<Long>(
+                    newAccount,
+                    HttpStatus.ACCEPTED
+            );
         }
     }
 
@@ -246,71 +276,82 @@ public class AccountController
      */
     @PostMapping("/password/{id}")
     public ResponseEntity<Long> accountPwdUpdate(
-            @Valid @RequestBody AccountPwdUpdateDTO dto,
-            BindingResult bindingResult,
-            Authentication authentication
-    )
-    {
-        Map<String, String> errorMap = new HashMap<String, String>();
-        String errorType = null;
-        String errorText = null;
+            @Valid
+            @RequestBody
+                    AccountPwdUpdateDTO dto, BindingResult bindingResult, Authentication authentication
+    ) {
+        Map<String, String> errorMap  = new HashMap<String, String>();
+        String              errorType = null;
+        String              errorText = null;
 
         // Account Info
         Optional<Account> accountData = accountUtill.accountInfo(authentication);
 
         // Account Password Encode
         String rawPassword = dto.getOldPassword();
-        String oldPassword = accountData.get().getPassword();
-        Boolean passwordMatches = passwordEncoder.matches(rawPassword, oldPassword);
+        String oldPassword = accountData.get()
+                .getPassword();
+        Boolean passwordMatches = passwordEncoder.matches(
+                rawPassword,
+                oldPassword
+        );
 
         // Field Check
-        if(bindingResult.hasErrors())
-        {
-            for(FieldError error : bindingResult.getFieldErrors())
-            {
-                errorMap.put(error.getField(), error.getDefaultMessage());
+        if (bindingResult.hasErrors()) {
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errorMap.put(
+                        error.getField(),
+                        error.getDefaultMessage()
+                );
             }
         }
 
         // Account OldPassword DB Check
-        if(!passwordMatches)
-        {
+        if (!passwordMatches) {
             errorType = "oldPassword";
             errorText = "이전 비밀번호가 같지 않습니다.";
-            errorMap.put(errorType, errorText);
+            errorMap.put(
+                    errorType,
+                    errorText
+            );
         }
 
-        if(!dto.getPassword().equals(dto.getPasswordRe()))
-        {
+        if (!dto.getPassword()
+                .equals(dto.getPasswordRe())) {
             errorType = "passwordRe";
             errorText = "새로운 비밀번호가 같지 않습니다.";
-            errorMap.put(errorType, errorText);
+            errorMap.put(
+                    errorType,
+                    errorText
+            );
         }
 
         // 유효성 검사 최종 반환
-        if(errorMap.size() > 0)
-        {
+        if (errorMap.size() > 0) {
             return webProcessRespone.webErrorRespone(errorMap);
         }
 
         // 조회하는 유저의 본인 ID값을 설정
-        dto.setId(accountData.get().getId());
+        dto.setId(accountData.get()
+                .getId());
 
         Long newAccount = accountService.pwdUpdate(dto);
 
-        if(newAccount == 1)
-        {
-            return new ResponseEntity<Long>(newAccount, HttpStatus.OK);
-        }
-        else
-        {
-            return new ResponseEntity<Long>(newAccount, HttpStatus.ACCEPTED);
+        if (newAccount == 1) {
+            return new ResponseEntity<Long>(
+                    newAccount,
+                    HttpStatus.OK
+            );
+        } else {
+            return new ResponseEntity<Long>(
+                    newAccount,
+                    HttpStatus.ACCEPTED
+            );
         }
     }
 
     @GetMapping("/public")
-    public List<AccountPublic> getPublicAccountList()
-    {
+    public List<AccountPublic> getPublicAccountList() {
         return accountService.findByPublicAccountList();
     }
 
@@ -319,31 +360,32 @@ public class AccountController
      */
     @GetMapping("/public/{userId}")
     public ResponseEntity<AccountPublic> getPublicAccount(
-            @PathVariable String userId
-    )
-    {
+            @PathVariable
+                    String userId
+    ) {
         AccountPublic accountPublic = accountService.findOnePublicAccount(userId);
 
-        return new ResponseEntity<AccountPublic>(accountPublic, HttpStatus.OK);
+        return new ResponseEntity<AccountPublic>(
+                accountPublic,
+                HttpStatus.OK
+        );
     }
 
     @PostMapping("/admin")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<?> adminAuthCheck(
-            Authentication authentication
-    )
-    {
-        PostAuthorizationToken token = (PostAuthorizationToken)authentication;
-        return new ResponseEntity<String>(token.getPrincipal().toString(), HttpStatus.OK);
+    public ResponseEntity<?> adminAuthCheck(Authentication authentication) {
+        PostAuthorizationToken token = (PostAuthorizationToken) authentication;
+        return new ResponseEntity<String>(
+                token.getPrincipal()
+                        .toString(),
+                HttpStatus.OK
+        );
     }
 
     @GetMapping("/go")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public String getUsername(
-            Authentication authentication
-    )
-    {
-        PostAuthorizationToken token = (PostAuthorizationToken)authentication;
+    public String getUsername(Authentication authentication) {
+        PostAuthorizationToken token = (PostAuthorizationToken) authentication;
         System.out.println(authentication);
         return null;
     }

@@ -92,7 +92,8 @@ public class CommentServiceImpl implements CommentService
         {
             // 사용자가 댓글을 조회하면 게시글이 사용자가 작성한것인지 확인 후
             // 알람 DATA 를 삭제합니다.
-            alarmService.deleteDataId(uniId, account);
+            if(account != null)
+                alarmService.deleteDataId(uniId, account);
 
             result = comment.findByCommentList(uniId);
         }

@@ -48,7 +48,7 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
                 .where(
                         qUniversity.publicStatus.eq(true)
                         .and(qUniversity.controlStatus.eq(false))
-                        .and(qStore.stoName.contains(searchDTO.getKeyword()))
+                        .and(repositoryUtill.getSearchClassification(searchDTO))
                         .and(repositoryUtill.getSearchCate(searchDTO))
                 )
                 .orderBy(

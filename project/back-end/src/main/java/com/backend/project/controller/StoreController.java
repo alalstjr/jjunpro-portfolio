@@ -36,6 +36,7 @@ public class StoreController
     @PreAuthorize("permitAll()")
     public ResponseEntity<?> getStoreIdUniList(
             @PathVariable String keyword,
+            @RequestParam("classification") String classification,
             @RequestParam("offsetCount") Long offsetCount,
             @RequestParam("ifCateA") String ifCateA,
             @RequestParam("ifCateB") String ifCateB,
@@ -54,6 +55,7 @@ public class StoreController
             // Param 값을 DTO 에 담아줍니다.
             // (관리하기 쉽게 DTO 한곳에 모아줍니다.)
             searchDTO.setKeyword(keyword);
+            searchDTO.setClassification(classification);
             searchDTO.setOffsetCount(offsetCount);
             searchDTO.setAccount(accountData);
             searchDTO.setIfCateA(ifCateA);

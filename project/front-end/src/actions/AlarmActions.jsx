@@ -1,22 +1,6 @@
 import axios from "axios";
 import { SERVER_URL } from "../routes";
-import { GET_ALARM_LIST, TEMP_ALARM_LIST, DELETE_ALARM } from "./types";
-
-/****************************************
-    현재 불러온 DATA를 담은 List
-****************************************/
-export const tempAlarmList = (reset, temp_data, postData) => dispatch => {
-    dispatch({
-        type: TEMP_ALARM_LIST,
-        payload: reset ? [] : temp_data.concat(postData)
-    });
-}
-export const tempAlarmListUpdate = (postData) => dispatch => {
-    dispatch({
-        type: TEMP_ALARM_LIST,
-        payload: postData
-    });
-}
+import { GET_ALARM_LIST, DELETE_ALARM } from "./types";
 
 /****************************************
     GET Alarm List DATA
@@ -54,7 +38,7 @@ export const deleteAlarmId = (id) => async dispatch => {
             case 200 :
                 dispatch({
                     type: DELETE_ALARM,
-                    payload: id
+                    payload: res.data
                 });
                 break;
 

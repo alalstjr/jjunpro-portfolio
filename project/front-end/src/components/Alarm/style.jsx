@@ -16,6 +16,11 @@ export const AlarmWrap = styled.div`
         left: 10px;
         bottom: auto;
         top: 10px;
+
+        > svg {
+            width: 50px;
+            height: 35px;
+        }
     }
 `;
 export const AlarmItemWrap = styled.div`
@@ -27,6 +32,7 @@ export const AlarmItemWrap = styled.div`
     height: 100%;
     background-color: #f3f3f3;
     padding: 15px;
+    border-right: 1px solid #ddd;
 
     ${
         props => props.modalState ?

@@ -5,7 +5,7 @@ import { SERVER_FILE_URL } from "../../../../routes";
 
 import {
     ProfileIamge,
-    FlexBottom
+    FlexBottom, NoneImg
 } from "../../../../style/globalStyles";
 import { 
     PugjjigItem,
@@ -21,7 +21,6 @@ import {
     ItemTagWrap,
     ItemStateWrap,
     ItemState,
-    ImgList,
     ItemDetailWrap,
     ItemDetail,
     ItemDate,
@@ -130,16 +129,11 @@ const Item = ({pugjjig, UpdateUniLikeUniId, openModal}) => (
             </Link>
         <ItemImgBox>
             {
-                // pugjjig.files.length < 4 ?
-                false ?
-                pugjjig.files.map((file) => (
-                    <ImgList key={file.id}>
-                        <img 
-                            src={`${SERVER_FILE_URL}${file.fileThumbnail}`}
-                            alt="음식점 사진"
-                        />
-                    </ImgList>
-                ))
+                pugjjig.files.length === 0 ?
+                <NoneImg 
+                    src={`/search/food-03.jpg`}
+                    alt="음식점 사진"
+                />
                 :
                 <ImageSlide
                     slideShow = {1}

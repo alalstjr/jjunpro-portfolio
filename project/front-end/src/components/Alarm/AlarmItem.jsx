@@ -17,7 +17,7 @@ class AlarmItem extends Component {
                     return "댓글";
 
                 default:
-                    return "알림";
+                    return "";
             }
         }
 

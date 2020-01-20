@@ -190,9 +190,10 @@ export const getUniListStoreId = (searchDTO) => async dispatch => {
         USER_AUTH();
 
         searchDTO.keyword = (searchDTO.keyword === "") ? "all" : searchDTO.keyword;
+        const classification = `classification=${searchDTO.classification}`;
         const offset = `offsetCount=${searchDTO.offsetCount}`;
         const cate   = `ifCateA=${searchDTO.ifCateA}&ifCateB=${searchDTO.ifCateB}`;
-        const params = `${offset}&${cate}`;
+        const params = `${classification}&${offset}&${cate}`;
         const res    = await axios.get(`${SERVER_URL}/api/store/${searchDTO.keyword}?${params}`);
         
         switch(res.status) {

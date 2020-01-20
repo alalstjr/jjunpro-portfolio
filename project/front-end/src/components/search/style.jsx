@@ -74,7 +74,6 @@ export const SelectBox = styled.span`
     > select {
         ${FormCssBasic}
 
-        height: 1.875rem;
         margin-right: 0.625rem;
     }
 
@@ -82,4 +81,11 @@ export const SelectBox = styled.span`
         display: block;
         margin-bottom: 0.3125rem;
     }
+`;
+export const SearchTitle = styled.h2`
+    text-align: left;
+    font-size: 20px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    margin-left: 0.5rem;
 `;
