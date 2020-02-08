@@ -11,8 +11,7 @@ import com.backend.project.security.token.PostAuthorizationToken;
 import com.backend.project.service.AccountService;
 import com.backend.project.service.FileStorageService;
 import com.backend.project.util.AccountUtill;
-import com.backend.project.util.ValidityCheckUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,24 +30,13 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/account")
 @CrossOrigin
+@RequiredArgsConstructor
 public class AccountController {
-    @Autowired
-    private AccountService accountService;
-
-    @Autowired
-    private FileStorageService fileStorageService;
-
-    @Autowired
-    private WebProcessRespone webProcessRespone;
-
-    @Autowired
-    private ValidityCheckUtil validityCheck;
-
-    @Autowired
-    private AccountUtill accountUtill;
-
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private final AccountService        accountService;
+    private final FileStorageService    fileStorageService;
+    private final WebProcessRespone     webProcessRespone;
+    private final AccountUtill          accountUtill;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     /**
      * INSERT Account DATA
@@ -71,70 +59,6 @@ public class AccountController {
                         error.getDefaultMessage()
                 );
             }
-        }
-
-        // Password equals PasswordRe Check
-        if (!dto.toEntity()
-                .getPassword()
-                .equals(dto.getPasswordRe())) {
-            errorType = "password";
-            errorText = "비밀번호가 일치하지 않습니다.";
-            errorMap.put(
-                    errorType,
-                    errorText
-            );
-        }
-
-        // Account Id Check
-        if (dto.getUserId() != null && ( !validityCheck.enNumCheck(dto.getUserId()) || !validityCheck.stringCheck(dto.getUserId()) )) {
-            errorType = "userId";
-            errorText = "아이디는 영문 숫자만 입력 가능합니다.";
-            errorMap.put(
-                    errorType,
-                    errorText
-            );
-        }
-
-        // Account Id DB Check
-        if (accountService.findByUserId(dto.getUserId())
-                .isPresent()) {
-            errorType = "userId";
-            errorText = "이미 존재하는 아이디입니다.";
-            errorMap.put(
-                    errorType,
-                    errorText
-            );
-        }
-
-        // Account Nickname Check
-        if (validityCheck.usernickCheck(dto.getNickname())) {
-            errorType = "nickname";
-            errorText = "금지된 닉네임이 포함되어 있습니다.";
-            errorMap.put(
-                    errorType,
-                    errorText
-            );
-        }
-
-        // Account Nickname Check
-        if (dto.getNickname() != null && !validityCheck.enNumkrCheck(dto.getNickname())) {
-            errorType = "nickname";
-            errorText = "닉네임은 한글 영문 숫자만 입력 가능합니다.";
-            errorMap.put(
-                    errorType,
-                    errorText
-            );
-        }
-
-        // Account Nickname DB Check
-        if (accountService.findByNickname(dto.getNickname())
-                .isPresent()) {
-            errorType = "nickname";
-            errorText = "이미 존재하는 닉네임입니다.";
-            errorMap.put(
-                    errorType,
-                    errorText
-            );
         }
 
         // 유효성 검사 최종 반환
@@ -178,7 +102,8 @@ public class AccountController {
         }
 
         // Dto and token Check
-        if (dto.getId() != accountData.get()
+        if (dto.getId() != accountData
+                .get()
                 .getId()) {
             errorType = "id";
             errorText = "접근하는 id 가 맞지 않습니다.";
@@ -188,59 +113,11 @@ public class AccountController {
             );
         }
 
-        // Account Nickname Check
-        if (dto.getNickname() != null && !validityCheck.enNumkrCheck(dto.getNickname())) {
-            errorType = "nickname";
-            errorText = "닉네임은 한글 영문 숫자만 입력 가능합니다.";
-            errorMap.put(
-                    errorType,
-                    errorText
-            );
-        }
-
-        // Account Nickname DB Check
-        if (!accountData.get()
-                .getNickname()
-                .equals(dto.getNickname()) && accountService.findByNickname(dto.getNickname())
-                .isPresent()) {
-            errorType = "nickname";
-            errorText = "이미 존재하는 닉네임입니다.";
-            errorMap.put(
-                    errorType,
-                    errorText
-            );
-        }
-
-        // Account Email Validity Check
-        if (!dto.getEmail()
-                .equals("null") && dto.getEmail()
-                .length() > 0) {
-            if (!validityCheck.emailCheck(dto.getEmail())) {
-                errorType = "email";
-                errorText = "올바르지 않은 이메일입니다.";
-                errorMap.put(
-                        errorType,
-                        errorText
-                );
-            }
-        } else {
-            // 입력된 이메일 정보가 없을경우 Null 저장
-            dto.setEmail(null);
-        }
-
-        String accountEmailCheck = accountData.get()
-                .getEmail() == null ? "" : accountData.get()
+        String accountEmailCheck = accountData
+                .get()
+                .getEmail() == null ? "" : accountData
+                .get()
                 .getEmail();
-
-        if (dto.getEmail() != null && !accountEmailCheck.equals(dto.getEmail()) && accountService.findByEmail(dto.getEmail())
-                .isPresent()) {
-            errorType = "email";
-            errorText = "이미 존재하는 이메일입니다.";
-            errorMap.put(
-                    errorType,
-                    errorText
-            );
-        }
 
         // 유효성 검사 최종 반환
         if (errorMap.size() > 0) {
@@ -263,7 +140,8 @@ public class AccountController {
                     newAccount,
                     HttpStatus.OK
             );
-        } else {
+        }
+        else {
             return new ResponseEntity<Long>(
                     newAccount,
                     HttpStatus.ACCEPTED
@@ -289,7 +167,8 @@ public class AccountController {
 
         // Account Password Encode
         String rawPassword = dto.getOldPassword();
-        String oldPassword = accountData.get()
+        String oldPassword = accountData
+                .get()
                 .getPassword();
         Boolean passwordMatches = passwordEncoder.matches(
                 rawPassword,
@@ -316,7 +195,8 @@ public class AccountController {
             );
         }
 
-        if (!dto.getPassword()
+        if (!dto
+                .getPassword()
                 .equals(dto.getPasswordRe())) {
             errorType = "passwordRe";
             errorText = "새로운 비밀번호가 같지 않습니다.";
@@ -332,7 +212,8 @@ public class AccountController {
         }
 
         // 조회하는 유저의 본인 ID값을 설정
-        dto.setId(accountData.get()
+        dto.setId(accountData
+                .get()
                 .getId());
 
         Long newAccount = accountService.pwdUpdate(dto);
@@ -342,7 +223,8 @@ public class AccountController {
                     newAccount,
                     HttpStatus.OK
             );
-        } else {
+        }
+        else {
             return new ResponseEntity<Long>(
                     newAccount,
                     HttpStatus.ACCEPTED
@@ -376,7 +258,8 @@ public class AccountController {
     public ResponseEntity<?> adminAuthCheck(Authentication authentication) {
         PostAuthorizationToken token = (PostAuthorizationToken) authentication;
         return new ResponseEntity<String>(
-                token.getPrincipal()
+                token
+                        .getPrincipal()
                         .toString(),
                 HttpStatus.OK
         );

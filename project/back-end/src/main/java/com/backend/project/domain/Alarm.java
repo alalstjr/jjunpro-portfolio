@@ -12,8 +12,7 @@ import javax.persistence.Entity;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Alarm extends BaseEntity
-{
+public class Alarm extends BaseEntity {
     @Column(nullable = false)
     private Long userId;
 
@@ -29,12 +28,11 @@ public class Alarm extends BaseEntity
     private String writeId;
 
     @Builder
-    private Alarm(Long userId, Long dataId, String dataType, String dataContent, String writeId)
-    {
-        this.userId      = userId;
-        this.dataId      = dataId;
-        this.dataType    = dataType;
+    private Alarm(Long userId, Long dataId, String dataType, String dataContent, String writeId) {
+        this.userId = userId;
+        this.dataId = dataId;
+        this.dataType = dataType;
         this.dataContent = dataContent;
-        this.writeId     = writeId;
+        this.writeId = writeId;
     }
 }
