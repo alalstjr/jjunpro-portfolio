@@ -10,67 +10,45 @@ import com.backend.project.respone.WebProcessRespone;
 import com.backend.project.security.token.PostAuthorizationToken;
 import com.backend.project.service.AccountService;
 import com.backend.project.service.FileStorageService;
-import com.backend.project.util.AccountUtill;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/account")
-@CrossOrigin
 @RequiredArgsConstructor
 public class AccountController {
-    private final AccountService        accountService;
-    private final FileStorageService    fileStorageService;
-    private final WebProcessRespone     webProcessRespone;
-    private final AccountUtill          accountUtill;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final AccountService     accountService;
+    private final FileStorageService fileStorageService;
+    private final WebProcessRespone  webProcessRespone;
 
     /**
      * INSERT Account DATA
      */
     @PostMapping("")
-    public ResponseEntity<Boolean> insertAccount(
+    public ResponseEntity<?> insertAccount(
             @Valid
             @RequestBody
                     AccountSaveDTO dto, BindingResult bindingResult
     ) {
-        Map<String, String> errorMap  = new HashMap<String, String>();
-        String              errorType = null;
-        String              errorText = null;
-
-        // Field Check
+        // 유효성 검사 후 최종 반환합니다.
         if (bindingResult.hasErrors()) {
-            for (FieldError error : bindingResult.getFieldErrors()) {
-                errorMap.put(
-                        error.getField(),
-                        error.getDefaultMessage()
-                );
-            }
+            return webProcessRespone.webErrorRespone(bindingResult);
         }
 
-        // 유효성 검사 최종 반환
-        if (errorMap.size() > 0) {
-            return webProcessRespone.webErrorRespone(errorMap);
-        }
-
+        // 새로운 유저의 정보를 DB 에 저장합니다.
         Account newAccount = accountService.save(dto);
-        Boolean result     = ( newAccount.getId() != null ) ? true : false;
 
-        return new ResponseEntity<Boolean>(
-                result,
+        return new ResponseEntity<>(
+                newAccount.getId() != null,
                 HttpStatus.CREATED
         );
     }
@@ -79,53 +57,20 @@ public class AccountController {
      * UPDATE Account DATA
      */
     @PostMapping("/{id}")
-    public ResponseEntity<Long> updateAccount(
+    public ResponseEntity<?> updateAccount(
             @Valid
             @ModelAttribute
-                    AccountUpdateDTO dto, BindingResult bindingResult, Authentication authentication
+                    AccountUpdateDTO dto, BindingResult bindingResult
     ) {
-        Map<String, String> errorMap  = new HashMap<String, String>();
-        String              errorType = null;
-        String              errorText = null;
-
-        // Account Info
-        Optional<Account> accountData = accountUtill.accountInfo(authentication);
-
-        // Field Check
+        // 유효성 검사 후 최종 반환합니다.
         if (bindingResult.hasErrors()) {
-            for (FieldError error : bindingResult.getFieldErrors()) {
-                errorMap.put(
-                        error.getField(),
-                        error.getDefaultMessage()
-                );
-            }
+            return webProcessRespone.webErrorRespone(bindingResult);
         }
 
-        // Dto and token Check
-        if (dto.getId() != accountData
-                .get()
-                .getId()) {
-            errorType = "id";
-            errorText = "접근하는 id 가 맞지 않습니다.";
-            errorMap.put(
-                    errorType,
-                    errorText
-            );
-        }
-
-        String accountEmailCheck = accountData
-                .get()
-                .getEmail() == null ? "" : accountData
-                .get()
-                .getEmail();
-
-        // 유효성 검사 최종 반환
-        if (errorMap.size() > 0) {
-            return webProcessRespone.webErrorRespone(errorMap);
-        }
-
-        // 첨부파일이 존재하는 경우 파일 업로드 메소드
-        if (dto.getFile() != null) {
+        // 첨부파일이 존재하는 경우 파일 업로드 메소드입니다.
+        if (!dto
+                .getFile()
+                .isEmpty()) {
             File fileData = fileStorageService.uploadFile(
                     dto.getFile(),
                     "account"
@@ -133,103 +78,31 @@ public class AccountController {
             dto.setFileData(fileData);
         }
 
-        Long newAccount = accountService.update(dto);
-
-        if (newAccount == 1) {
-            return new ResponseEntity<Long>(
-                    newAccount,
-                    HttpStatus.OK
-            );
-        }
-        else {
-            return new ResponseEntity<Long>(
-                    newAccount,
-                    HttpStatus.ACCEPTED
-            );
-        }
+        // 업데이트 되는 유저의 정보를 DB 에 저장합니다.
+        return new ResponseEntity<>(
+                accountService.update(dto),
+                HttpStatus.OK
+        );
     }
 
     /**
      * UPDATE AccountPassword DATA accountId
      */
     @PostMapping("/password/{id}")
-    public ResponseEntity<Long> accountPwdUpdate(
+    public ResponseEntity<?> accountPwdUpdate(
             @Valid
             @RequestBody
-                    AccountPwdUpdateDTO dto, BindingResult bindingResult, Authentication authentication
+                    AccountPwdUpdateDTO dto, BindingResult bindingResult
     ) {
-        Map<String, String> errorMap  = new HashMap<String, String>();
-        String              errorType = null;
-        String              errorText = null;
-
-        // Account Info
-        Optional<Account> accountData = accountUtill.accountInfo(authentication);
-
-        // Account Password Encode
-        String rawPassword = dto.getOldPassword();
-        String oldPassword = accountData
-                .get()
-                .getPassword();
-        Boolean passwordMatches = passwordEncoder.matches(
-                rawPassword,
-                oldPassword
-        );
-
-        // Field Check
+        // 유효성 검사 후 최종 반환합니다.
         if (bindingResult.hasErrors()) {
-            for (FieldError error : bindingResult.getFieldErrors()) {
-                errorMap.put(
-                        error.getField(),
-                        error.getDefaultMessage()
-                );
-            }
+            return webProcessRespone.webErrorRespone(bindingResult);
         }
 
-        // Account OldPassword DB Check
-        if (!passwordMatches) {
-            errorType = "oldPassword";
-            errorText = "이전 비밀번호가 같지 않습니다.";
-            errorMap.put(
-                    errorType,
-                    errorText
-            );
-        }
-
-        if (!dto
-                .getPassword()
-                .equals(dto.getPasswordRe())) {
-            errorType = "passwordRe";
-            errorText = "새로운 비밀번호가 같지 않습니다.";
-            errorMap.put(
-                    errorType,
-                    errorText
-            );
-        }
-
-        // 유효성 검사 최종 반환
-        if (errorMap.size() > 0) {
-            return webProcessRespone.webErrorRespone(errorMap);
-        }
-
-        // 조회하는 유저의 본인 ID값을 설정
-        dto.setId(accountData
-                .get()
-                .getId());
-
-        Long newAccount = accountService.pwdUpdate(dto);
-
-        if (newAccount == 1) {
-            return new ResponseEntity<Long>(
-                    newAccount,
-                    HttpStatus.OK
-            );
-        }
-        else {
-            return new ResponseEntity<Long>(
-                    newAccount,
-                    HttpStatus.ACCEPTED
-            );
-        }
+        return new ResponseEntity<>(
+                accountService.pwdUpdate(dto),
+                HttpStatus.OK
+        );
     }
 
     @GetMapping("/public")
@@ -247,7 +120,7 @@ public class AccountController {
     ) {
         AccountPublic accountPublic = accountService.findOnePublicAccount(userId);
 
-        return new ResponseEntity<AccountPublic>(
+        return new ResponseEntity<>(
                 accountPublic,
                 HttpStatus.OK
         );
@@ -257,7 +130,8 @@ public class AccountController {
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> adminAuthCheck(Authentication authentication) {
         PostAuthorizationToken token = (PostAuthorizationToken) authentication;
-        return new ResponseEntity<String>(
+
+        return new ResponseEntity<>(
                 token
                         .getPrincipal()
                         .toString(),
@@ -273,3 +147,4 @@ public class AccountController {
         return null;
     }
 }
+

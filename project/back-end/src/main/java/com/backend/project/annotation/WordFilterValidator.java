@@ -6,6 +6,9 @@ import javax.validation.ConstraintValidatorContext;
 public class WordFilterValidator implements ConstraintValidator<WordFilter, String> {
     private String message;
 
+    /*
+     * initialize() 메소드는 어노테이션으로 받은 값을 해당 필드에 초기화 선언을 합니다.
+     * */
     @Override
     public void initialize(WordFilter constraintAnnotation) {
         message = constraintAnnotation.message();

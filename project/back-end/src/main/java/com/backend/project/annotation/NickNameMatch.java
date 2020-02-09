@@ -9,6 +9,9 @@ import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.*;
 
+/**
+ * 사용자로부터 받은 { DATA nickName } 이 DB 에 존재하는지 확인합니다.
+ */
 @Documented
 @Constraint(validatedBy = NickNameMatchValidator.class)
 @Target({ TYPE, METHOD, FIELD })

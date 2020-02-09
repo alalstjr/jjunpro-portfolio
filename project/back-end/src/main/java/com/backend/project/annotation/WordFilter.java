@@ -9,13 +9,18 @@ import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.*;
 
+/**
+ * 사용자로부터 받은 { String DATA } 에 금지된 단어가 있는지 확인합니다.
+ */
 @Documented
-@Constraint(validatedBy = WordFilterValidator.class)
 @Target({ TYPE, METHOD, FIELD })
 @Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = WordFilterValidator.class)
 public @interface WordFilter {
     String message() default "금지된 단어가 포함되어 있습니다.";
 
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
+
+

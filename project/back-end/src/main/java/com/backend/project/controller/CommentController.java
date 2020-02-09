@@ -7,7 +7,7 @@ import com.backend.project.respone.WebProcessRespone;
 import com.backend.project.service.CommentService;
 import com.backend.project.util.AccountUtill;
 import com.backend.project.util.IpUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,80 +18,47 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/comment")
-@CrossOrigin
-public class CommentController
-{
-
-    @Autowired
-    private CommentService commentService;
-
-    @Autowired
-    private WebProcessRespone webProcessRespone;
-
-    @Autowired
-    private IpUtil ipUtil;
-
-    @Autowired
-    private AccountUtill accountUtill;
+@RequiredArgsConstructor
+public class CommentController {
+    private final CommentService    commentService;
+    private final WebProcessRespone webProcessRespone;
+    private final IpUtil            ipUtil;
+    private final AccountUtill      accountUtill;
 
     /**
      * INSERT Comment DATA
      */
     @PostMapping("")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<CommentPublic> insertComment(
-            @Valid @RequestBody CommentSaveDTO dto,
-            BindingResult bindingResult,
-            Authentication authentication,
-            HttpServletRequest request
-    )
-    {
-        Map<String, String> errorMap = new HashMap<String, String>();
-        String errorType = null;
-        String errorText = null;
-
-        // Field Check
-        if(bindingResult.hasErrors())
-        {
+    public ResponseEntity<?> insertComment(
+            @Valid
+            @RequestBody
+                    CommentSaveDTO dto, BindingResult bindingResult, Authentication authentication, HttpServletRequest request
+    ) {
+        // 유효성 검사 후 최종 반환합니다.
+        if (bindingResult.hasErrors()) {
             return webProcessRespone.webErrorRespone(bindingResult);
         }
 
         // Account Info
         Optional<Account> accountData = accountUtill.accountInfo(authentication);
 
-        if(!accountData.isPresent())
-        {
-            errorType = "AuthenticationError";
-            errorText = "잘못된 계정 접근입니다.";
-            return webProcessRespone.webErrorRespone(errorType, errorText);
+        // 댓글을 작성하는 유저의 정보와 IP 주소를 저장합니다.
+        if (accountData.isPresent()) {
+            dto.setAccount(accountData.get());
+            dto.setIp(ipUtil.getUserIp(request));
         }
 
-        if(ipUtil.getUserIp(request).equals("0.0.0.0"))
-        {
-            errorType = "AuthenticationError";
-            errorText = "잘못된 IP 정보 접근입니다.";
-            return webProcessRespone.webErrorRespone(errorType, errorText);
-        }
-
-        // 유효성 검사 최종 반환
-        if(errorMap.size() > 0)
-        {
-            return webProcessRespone.webErrorRespone(errorMap);
-        }
-
-        dto.setAccount(accountData.get());
-        dto.setIp(ipUtil.getUserIp(request));
-
-        CommentPublic newComment = commentService.save(dto);
-
-        return new ResponseEntity<CommentPublic>(newComment, HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                commentService.save(dto),
+                HttpStatus.CREATED
+        );
     }
 
     /**
@@ -99,14 +66,13 @@ public class CommentController
      */
     @GetMapping("/{uniId}")
     public List<CommentPublic> getCommentListUniId(
-            @PathVariable Long uniId,
-            HttpServletRequest request
-    ) throws IOException
-    {
-        // Account Info
-        Account accountData = accountUtill.accountJWT(request);
-
-        return commentService.findByCommentList(uniId, accountData);
+            @PathVariable
+                    Long uniId, HttpServletRequest request
+    ) throws IOException {
+        return commentService.findByCommentList(
+                uniId,
+                accountUtill.accountJWT(request)
+        );
     }
 
     /**
@@ -115,34 +81,46 @@ public class CommentController
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<String> deleteCommentId(
-            @PathVariable Long id,
-            Authentication authentication
-    )
-    {
+            @PathVariable
+                    Long id, Authentication authentication
+    ) {
         String errorType = null;
         String errorText = null;
 
         Optional<Account> accountData = accountUtill.accountInfo(authentication);
 
-        if(accountData.isPresent())
-        {
+        if (accountData.isPresent()) {
 
-            if(!accountUtill.userDataCheck(id, accountData, "comment"))
-            {
+            if (!accountUtill.userDataCheck(
+                    id,
+                    accountData,
+                    "comment"
+            )) {
                 errorType = "AuthenticationError";
                 errorText = "잘못된 계정 접근입니다.";
-                return webProcessRespone.webErrorRespone(errorType, errorText);
+                return webProcessRespone.webErrorRespone(
+                        errorType,
+                        errorText
+                );
             }
 
-            commentService.deleteData(id, accountData.get());
+            commentService.deleteData(
+                    id,
+                    accountData.get()
+            );
         }
-        else
-        {
+        else {
             errorType = "AuthenticationError";
             errorText = "올바른 접근이 아닙니다.";
-            return webProcessRespone.webErrorRespone(errorType, errorText);
+            return webProcessRespone.webErrorRespone(
+                    errorType,
+                    errorText
+            );
         }
 
-        return new ResponseEntity<String>("처리가 완료되었습니다.", HttpStatus.OK);
+        return new ResponseEntity<String>(
+                "처리가 완료되었습니다.",
+                HttpStatus.OK
+        );
     }
 }

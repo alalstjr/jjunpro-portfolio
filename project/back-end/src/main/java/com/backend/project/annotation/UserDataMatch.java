@@ -11,15 +11,16 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 
 /**
- * 사용자로부터 받은 { DATA userId } 가 DB 에 존재하는지 확인합니다.
+ * 사용자로부터 받은 { DATA id } 와 접근하려는 { DB DATA id } 가 같은지 확인합니다.
  */
 @Documented
-@Target({ METHOD, FIELD })
+@Target({ FIELD, METHOD })
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = UserIdMatchValidator.class)
-public @interface UserIdMatch {
-    String message() default "이미 존재하는 아이디입니다.";
+@Constraint(validatedBy = UserDataMatchValidator.class)
+public @interface UserDataMatch {
+    String message() default "접근하는 정보가 맞지 않습니다.";
 
-    Class<?>[] groups() default {};
-    Class<? extends Payload>[] payload() default {};
+    Class<?>[] groups() default { };
+
+    Class<? extends Payload>[] payload() default { };
 }

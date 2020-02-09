@@ -8,6 +8,9 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.Optional;
 
+/**
+ * AccountService 사용자의 DB 정보를 조회하는 { Service class Bean } 이 필수입니다.
+ */
 @RequiredArgsConstructor
 public class EmailmatchValidator implements ConstraintValidator<EmailMatch, String> {
     private       String         message;

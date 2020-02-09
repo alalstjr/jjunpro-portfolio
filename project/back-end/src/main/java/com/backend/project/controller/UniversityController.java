@@ -147,9 +147,9 @@ public class UniversityController {
         }
 
         // 유효성 검사 최종 반환
-        if (errorMap.size() > 0) {
-            return webProcessRespone.webErrorRespone(errorMap);
-        }
+//        if (errorMap.size() > 0) {
+//            return webProcessRespone.webErrorRespone(errorMap);
+//        }
 
         // 첨부파일이 존재하는 경우 파일 업로드 메소드
         if (dto.getFiles() != null) {
@@ -209,9 +209,9 @@ public class UniversityController {
         }
 
         // 유효성 검사 최종 반환
-        if (errorMap.size() > 0) {
-            return webProcessRespone.webErrorRespone(errorMap);
-        }
+//        if (errorMap.size() > 0) {
+//            return webProcessRespone.webErrorRespone(errorMap);
+//        }
 
         // Like State Check
         if (universityData
