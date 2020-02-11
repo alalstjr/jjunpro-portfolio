@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class StorePublic {
+
     private String stoId;
     private String stoName;
     private String stoAddress;

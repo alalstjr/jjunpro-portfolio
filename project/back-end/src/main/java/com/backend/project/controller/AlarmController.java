@@ -2,31 +2,30 @@ package com.backend.project.controller;
 
 import com.backend.project.domain.Account;
 import com.backend.project.domain.Alarm;
-import com.backend.project.respone.WebProcessRespone;
+import com.backend.project.dto.AlarmDTO;
 import com.backend.project.service.AlarmService;
 import com.backend.project.util.AccountUtill;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
 @CrossOrigin
+@RestController
 @RequestMapping("/api/alarm")
+@RequiredArgsConstructor
 public class AlarmController {
-    @Autowired
-    private AlarmService alarmService;
 
-    @Autowired
-    private AccountUtill accountUtill;
-
-    @Autowired
-    private WebProcessRespone webProcessRespone;
+    private final AlarmService alarmService;
+    private final AccountUtill accountUtill;
 
     /**
      * GET Alarm List DATA
@@ -36,12 +35,16 @@ public class AlarmController {
     public ResponseEntity<List<Alarm>> getAlarmList(
             Authentication authentication
     ) {
+        List<Alarm> result = null;
+
         // Account Info
         Optional<Account> accountData = accountUtill.accountInfo(authentication);
 
-        List<Alarm> result = alarmService.findByAlarmListWhereUserId(accountData.get());
+        if (accountData.isPresent()) {
+            result = alarmService.findByAlarmListWhereUserId(accountData.get());
+        }
 
-        return new ResponseEntity<List<Alarm>>(
+        return new ResponseEntity<>(
                 result,
                 HttpStatus.OK
         );
@@ -53,42 +56,26 @@ public class AlarmController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<List<Alarm>> deleteAlarmId(
+            @Valid
             @PathVariable
-                    Long id, Authentication authentication
-    ) {
-        String errorType = null;
-        String errorText = null;
+                    AlarmDTO id, Authentication authentication, BindingResult bindingResult
+    ) throws BindException {
+        // 유효성 검사 후 최종 반환합니다.
+        if (bindingResult.hasErrors()) {
+            throw new BindException(bindingResult);
+        }
 
+        List<Alarm> result = null;
+
+        // Account Info
         Optional<Account> accountData = accountUtill.accountInfo(authentication);
 
         if (accountData.isPresent()) {
-
-            if (!accountUtill.userDataCheck(
-                    id,
-                    accountData,
-                    "alarm"
-            )) {
-                errorType = "AuthenticationError";
-                errorText = "잘못된 계정 접근입니다.";
-                return webProcessRespone.webErrorRespone(
-                        errorType,
-                        errorText
-                );
-            }
-
-            alarmService.deleteData(id);
-        } else {
-            errorType = "AuthenticationError";
-            errorText = "올바른 접근이 아닙니다.";
-            return webProcessRespone.webErrorRespone(
-                    errorType,
-                    errorText
-            );
+            alarmService.deleteData(id.getId());
+            result = alarmService.findByAlarmListWhereUserId(accountData.get());
         }
 
-        List<Alarm> result = alarmService.findByAlarmListWhereUserId(accountData.get());
-
-        return new ResponseEntity<List<Alarm>>(
+        return new ResponseEntity<>(
                 result,
                 HttpStatus.OK
         );

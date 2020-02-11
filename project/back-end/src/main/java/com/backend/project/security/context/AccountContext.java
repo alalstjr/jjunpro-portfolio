@@ -13,25 +13,28 @@ public class AccountContext extends User {
     private Account account;
 
     public AccountContext(
-            Account account,
-            String username,
-            String password,
-            Collection<? extends GrantedAuthority> authorities
+            Account account, String username, String password, Collection<? extends GrantedAuthority> authorities
     ) {
-        super(username, password, authorities);
+        super(
+                username,
+                password,
+                authorities
+        );
         this.account = account;
     }
 
     public AccountContext(
-            String username,
-            List<SimpleGrantedAuthority> userRole
+            String username, List<SimpleGrantedAuthority> userRole
     ) {
-        super(username, "password", userRole);
+        super(
+                username,
+                "password",
+                userRole
+        );
     }
 
     public static AccountContext fromAccountModel(
-            Account account,
-            List<SimpleGrantedAuthority> userRole
+            Account account, List<SimpleGrantedAuthority> userRole
     ) {
         return new AccountContext(
                 account,

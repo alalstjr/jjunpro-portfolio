@@ -31,7 +31,10 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public UniversityPublic findByPublicId(Long id, Account account) {
+    public UniversityPublic findByPublicId(
+            Long id,
+            Account account
+    ) {
         return university.findByPublicId(
                 id,
                 account
@@ -39,7 +42,10 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public Page<UniversityPublic> findByUniversityList(Pageable pageable, Account account) {
+    public Page<UniversityPublic> findByUniversityList(
+            Pageable pageable,
+            Account account
+    ) {
         return university.findByPublicAll(
                 pageable,
                 account
@@ -62,7 +68,7 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public UniversityPublic saveOrUpdate(UniversitySaveDTO dto, Account accountData) {
+    public UniversityPublic saveOrUpdate(UniversitySaveDTO dto) {
         // UPDATE
         if (dto.getId() != null) {
             // { DATA DB } 값이 조회
@@ -70,12 +76,22 @@ public class UniversityServiceImpl implements UniversityService {
 
             // { DATA DB } 조회한 값을 DTO 값에 UPDATE 수정
             if (updateDto.isPresent()) {
-                dto.setId(updateDto.get().getId());
-                dto.setUniLike(updateDto.get().getUniLike());
-                dto.setUniName(updateDto.get().getUniName());
-                dto.setComments(updateDto.get().getComments());
+                dto.setId(updateDto
+                        .get()
+                        .getId());
+                dto.setUniLike(updateDto
+                        .get()
+                        .getUniLike());
+                dto.setUniName(updateDto
+                        .get()
+                        .getUniName());
+                dto.setComments(updateDto
+                        .get()
+                        .getComments());
 
-                List<File> updateFile = updateDto.get().getFiles();
+                List<File> updateFile = updateDto
+                        .get()
+                        .getFiles();
 
                 // UPDATE 기존 file의 제거되는게 있는경우
                 if (dto.getRemoveFiles().length > 0) {
@@ -93,7 +109,9 @@ public class UniversityServiceImpl implements UniversityService {
                     dto.setFileData(updateFile);
                 }
                 else {
-                    dto.getFileData().addAll(updateFile);
+                    dto
+                            .getFileData()
+                            .addAll(updateFile);
                 }
             }
         }
@@ -110,7 +128,10 @@ public class UniversityServiceImpl implements UniversityService {
         // { DB } 에 음식점의 정보가 존재한다면 { Store DB } 에 저장한 University 값을 추가합니다.
         // { DB } 에 음식점의 정보가 없다면 음식점의 ID 정보를 추가
         if (storeData.isPresent()) {
-            storeData.get().getStoUniList().add(universityData);
+            storeData
+                    .get()
+                    .getStoUniList()
+                    .add(universityData);
 
             store.save(storeData.get());
         }
@@ -118,14 +139,16 @@ public class UniversityServiceImpl implements UniversityService {
             storeDTO.setStoName(dto.getStoName());
             storeDTO.setStoAddress(dto.getStoAddress());
             storeDTO.setStoUrl(dto.getStoUrl());
-            storeDTO.getStoUniList().add(universityData);
+            storeDTO
+                    .getStoUniList()
+                    .add(universityData);
 
             store.save(storeDTO.toEntity());
         }
 
         return findByPublicId(
                 universityData.getId(),
-                accountData
+                dto.getAccount()
         );
     }
 
@@ -135,7 +158,10 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public Boolean findByIdLike(Long id, Account account) {
+    public Boolean findByIdLike(
+            Long id,
+            Account account
+    ) {
         return university.findByIdLike(
                 id,
                 account
@@ -163,7 +189,10 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public void deleteData(Long id, Account accountData) {
+    public void deleteData(
+            Long id,
+            Account accountData
+    ) {
         university.deleteData(
                 id,
                 accountData
@@ -173,7 +202,14 @@ public class UniversityServiceImpl implements UniversityService {
     /**
      * Client 에서 기존 업로드된 파일의 제거된 {id}값을 기존 file와 비교하여 제거하는 메소드
      */
-    private List<File> updateFileFilter(List<File> result, UniversitySaveDTO dto, Integer i) {
-        return result.stream().filter(f -> f.getId() != dto.getRemoveFiles()[i]).collect(Collectors.toList());
+    private List<File> updateFileFilter(
+            List<File> result,
+            UniversitySaveDTO dto,
+            Integer i
+    ) {
+        return result
+                .stream()
+                .filter(f -> f.getId() != dto.getRemoveFiles()[i])
+                .collect(Collectors.toList());
     }
 }

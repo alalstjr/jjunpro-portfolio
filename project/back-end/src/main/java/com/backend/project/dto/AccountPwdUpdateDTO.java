@@ -14,6 +14,7 @@ import javax.validation.constraints.NotBlank;
 @UserDataMatch(id = "id")
 @PasswordMatch(password = "password", passwordRe = "passwordRe", oldPassword = "oldPassword", encoder = true)
 public class AccountPwdUpdateDTO {
+
     private Long id;
 
     @NotBlank(message = "새로운 비밀번호를 작성해 주세요.")

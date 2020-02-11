@@ -19,6 +19,7 @@ import java.util.Optional;
  */
 @RequiredArgsConstructor
 public class UserExistenceValidator implements ConstraintValidator<UserExistence, Object> {
+
     private       String          _message;
     private       String          _id;
     private final SecurityContext securityContext = SecurityContextHolder.getContext();
@@ -31,7 +32,10 @@ public class UserExistenceValidator implements ConstraintValidator<UserExistence
     }
 
     @Override
-    public boolean isValid(Object value, ConstraintValidatorContext context) {
+    public boolean isValid(
+            Object value,
+            ConstraintValidatorContext context
+    ) {
         Optional<Account> accountData = accountUtill.accountInfo(securityContext.getAuthentication());
 
         if (accountData.isEmpty()) {

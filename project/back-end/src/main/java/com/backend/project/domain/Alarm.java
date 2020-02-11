@@ -10,9 +10,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Alarm extends BaseEntity {
+
     @Column(nullable = false)
     private Long userId;
 

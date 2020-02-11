@@ -15,19 +15,38 @@ public class JwtFactory {
 
     private static final Logger log = LoggerFactory.getLogger(JwtFactory.class);
 
-    private static String signingKey = "jjunproProject";
-
     public String generateToken(AccountContext account) {
         String token = null;
         try {
-            token = JWT.create()
+            token = JWT
+                    .create()
                     .withIssuer("jjunpro")
-                    .withClaim("USERID", account.getAccount().getUserId())
-                    .withClaim("USERNICKNAME", account.getAccount().getNickname())
-                    .withClaim("USER_ROLE", account.getAccount().getUserRole().getKey())
-                    .withClaim("EXP", new Date(System.currentTimeMillis() + 864000000))
+                    .withClaim(
+                            "USERID",
+                            account
+                                    .getAccount()
+                                    .getUserId()
+                    )
+                    .withClaim(
+                            "USERNICKNAME",
+                            account
+                                    .getAccount()
+                                    .getNickname()
+                    )
+                    .withClaim(
+                            "USER_ROLE",
+                            account
+                                    .getAccount()
+                                    .getUserRole()
+                                    .getKey()
+                    )
+                    .withClaim(
+                            "EXP",
+                            new Date(System.currentTimeMillis() + 864000000)
+                    )
                     .sign(generateAlgorithm());
-        } catch(Exception e) {
+        }
+        catch (Exception e) {
             log.error(e.getMessage());
         }
 
@@ -35,6 +54,7 @@ public class JwtFactory {
     }
 
     private Algorithm generateAlgorithm() throws UnsupportedEncodingException {
+        String signingKey = "jjunproProject";
         return Algorithm.HMAC256(signingKey);
     }
 }

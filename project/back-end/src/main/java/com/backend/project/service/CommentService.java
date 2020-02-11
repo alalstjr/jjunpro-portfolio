@@ -11,8 +11,21 @@ import java.util.Optional;
 public interface CommentService {
 
     public CommentPublic save(CommentSaveDTO dto);
-    public void deleteData(Long id, Account account);
-    public void deleteUniComment(Long id, Account account);
+
+    public void deleteData(
+            Long id,
+            Account account
+    );
+
+    public void deleteUniComment(
+            Long id,
+            Account account
+    );
+
     public Optional<Comment> findById(Long id);
-    public List<CommentPublic> findByCommentList(Long uniId,  Account account);
+
+    public List<CommentPublic> findByCommentList(
+            Long uniId,
+            Account account
+    );
 }

@@ -18,7 +18,7 @@ import java.util.NoSuchElementException;
 
 public class FormLoginFilter extends AbstractAuthenticationProcessingFilter {
 
-    private ObjectMapper objectMapper;
+    private ObjectMapper                 objectMapper;
     private AuthenticationSuccessHandler successHandler;
     private AuthenticationFailureHandler failureHandler;
 
@@ -40,13 +40,15 @@ public class FormLoginFilter extends AbstractAuthenticationProcessingFilter {
             HttpServletResponse response
     ) throws AuthenticationException, IOException, ServletException {
         // 사용자 입력값을 JSON 으로 변환 후 DTO 생성
-        SecurityFormLoginDTO dto =
-                objectMapper.readValue(request.getReader(), SecurityFormLoginDTO.class);
+        SecurityFormLoginDTO dto = objectMapper.readValue(
+                request.getReader(),
+                SecurityFormLoginDTO.class
+        );
 
-        if(dto.getUserId() == null) {
+        if (dto.getUserId() == null) {
             throw new NoSuchElementException("아이디를 입력해 주세요.");
         }
-        if(dto.getPassword() == null) {
+        if (dto.getPassword() == null) {
             throw new NoSuchElementException("비밀번호를 입력해 주세요.");
         }
 
@@ -67,7 +69,11 @@ public class FormLoginFilter extends AbstractAuthenticationProcessingFilter {
             FilterChain chain,
             Authentication authResult
     ) throws IOException, ServletException {
-        this.successHandler.onAuthenticationSuccess(request, response, authResult);
+        this.successHandler.onAuthenticationSuccess(
+                request,
+                response,
+                authResult
+        );
     }
 
     @Override
@@ -76,6 +82,10 @@ public class FormLoginFilter extends AbstractAuthenticationProcessingFilter {
             HttpServletResponse response,
             AuthenticationException failed
     ) throws IOException, ServletException {
-        this.failureHandler.onAuthenticationFailure(request, response, failed);
+        this.failureHandler.onAuthenticationFailure(
+                request,
+                response,
+                failed
+        );
     }
 }

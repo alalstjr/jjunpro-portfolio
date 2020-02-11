@@ -9,25 +9,19 @@ import com.backend.project.projection.CommentPublic;
 import com.backend.project.repository.AlarmRepository;
 import com.backend.project.repository.CommentRepository;
 import com.backend.project.repository.UniversityRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
-    @Autowired
-    private CommentRepository comment;
 
-    @Autowired
-    private UniversityRepository university;
-
-    @Autowired
-    private AlarmRepository alarm;
-
-    @Autowired
-    private AlarmService alarmService;
+    private final CommentRepository    comment;
+    private final UniversityRepository university;
+    private final AlarmRepository      alarm;
 
     @Override
     public CommentPublic save(CommentSaveDTO dto) {
@@ -49,11 +43,12 @@ public class CommentServiceImpl implements CommentService {
 
             // 댓글이 정상적으로 작성이 됐고 댓글 작성자와 게시글 작성자가 다를경우
             // 알람 테이블에 추가
-            if (uniData.getId() != null && ( dto
+            if (uniData.getId() != null && ( !dto
                     .getAccount()
-                    .getId() != uniData
-                    .getAccount()
-                    .getId() )) {
+                    .getId()
+                    .equals(uniData
+                            .getAccount()
+                            .getId()) )) {
                 AlarmDTO alearmDTO = new AlarmDTO();
                 alearmDTO.setUserId(uniData
                         .getAccount()
@@ -72,7 +67,10 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteData(Long id, Account account) {
+    public void deleteData(
+            Long id,
+            Account account
+    ) {
         comment.deleteData(
                 id,
                 account
@@ -80,7 +78,10 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteUniComment(Long id, Account account) {
+    public void deleteUniComment(
+            Long id,
+            Account account
+    ) {
         comment.deleteUniComment(
                 id,
                 account
@@ -93,24 +94,22 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentPublic> findByCommentList(Long uniId, Account account) {
+    public List<CommentPublic> findByCommentList(
+            Long uniId,
+            Account account
+    ) {
         List<CommentPublic> result = null;
 
         // 해당 POST에 댓글이 존재하는지 확인합니다. 불필요한 DB검색 방지
-        if (!university
-                .findById(uniId)
-                .get()
-                .getComments()
-                .isEmpty()) {
-            // 사용자가 댓글을 조회하면 게시글이 사용자가 작성한것인지 확인 후
-            // 알람 DATA 를 삭제합니다.
-            if (account != null)
-                alarmService.deleteDataId(
-                        uniId,
-                        account
-                );
+        Optional<University> universityData = university.findById(uniId);
 
-            result = comment.findByCommentList(uniId);
+        if (universityData.isPresent()) {
+            if (!universityData
+                    .get()
+                    .getComments()
+                    .isEmpty()) {
+                result = comment.findByCommentList(uniId);
+            }
         }
 
         return result;

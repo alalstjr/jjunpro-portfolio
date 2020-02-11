@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Locale;
 
-@ControllerAdvice // 전역 설정을 위한 annotaion
 @RestController
+@ControllerAdvice // 전역 설정을 위한 annotaion
 @RequiredArgsConstructor
 public class ExceptionAdvisor {
+
     private final MessageSource messageSource;
 
     @ExceptionHandler(BindException.class)

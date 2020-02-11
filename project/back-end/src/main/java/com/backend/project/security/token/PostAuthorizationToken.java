@@ -13,7 +13,11 @@ public class PostAuthorizationToken extends UsernamePasswordAuthenticationToken 
             Object credentials,
             Collection<? extends GrantedAuthority> authorities
     ) {
-        super(principal, credentials, authorities);
+        super(
+                principal,
+                credentials,
+                authorities
+        );
     }
 
     public static PostAuthorizationToken getTokenFromAccountContext(AccountContext context) {

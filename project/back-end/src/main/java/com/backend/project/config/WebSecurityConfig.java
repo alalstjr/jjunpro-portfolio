@@ -10,7 +10,7 @@ import com.backend.project.security.jwt.HeaderTokenExtractor;
 import com.backend.project.security.provider.FormLoginAuthenticationProvider;
 import com.backend.project.security.provider.JwtAuthenticationProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,25 +31,19 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private FormLoginAuthenticationProvider provider;
-    @Autowired
-    private FormLoginAuthenticationSuccessHandler successHandler;
-    @Autowired
-    private FormLoginAuthenticationFailuerHandler failureHandler;
+    private final FormLoginAuthenticationProvider       provider;
+    private final FormLoginAuthenticationSuccessHandler successHandler;
+    private final FormLoginAuthenticationFailuerHandler failureHandler;
 
-    @Autowired
-    private JwtAuthenticationProvider jwtProvider;
-    @Autowired
-    private JwtAuthenticationFailureHandler jwtFailureHandler;
-    @Autowired
-    private HeaderTokenExtractor headerTokenExtractor;
+    private final JwtAuthenticationProvider       jwtProvider;
+    private final JwtAuthenticationFailureHandler jwtFailureHandler;
+    private final HeaderTokenExtractor            headerTokenExtractor;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     // Bean 관리
     @Bean
@@ -73,14 +67,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.addExposedHeader("X-Total-Count");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration(
+                "/**",
+                configuration
+        );
         return source;
     }
 
     // Filter 관리
     private FormLoginFilter formLoginFilter() throws Exception {
-        FormLoginFilter filter =
-                new FormLoginFilter("/api/account/login", objectMapper, successHandler, failureHandler);
+        FormLoginFilter filter = new FormLoginFilter(
+                "/api/account/login",
+                objectMapper,
+                successHandler,
+                failureHandler
+        );
 
         filter.setAuthenticationManager(super.authenticationManagerBean());
 
@@ -105,8 +106,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         skipPath.add("GET,/api/comment/**");
 
-        FilterSkipMatcher matcher = new FilterSkipMatcher(skipPath, "/api/**");
-        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(matcher, jwtFailureHandler, headerTokenExtractor);
+        FilterSkipMatcher       matcher = new FilterSkipMatcher(
+                skipPath,
+                "/api/**"
+        );
+        JwtAuthenticationFilter filter  = new JwtAuthenticationFilter(
+                matcher,
+                jwtFailureHandler,
+                headerTokenExtractor
+        );
         filter.setAuthenticationManager(super.authenticationManagerBean());
 
         return filter;
@@ -142,11 +150,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable();
 
         http
-                .addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(
+                        formLoginFilter(),
+                        UsernamePasswordAuthenticationFilter.class
+                )
+                .addFilterBefore(
+                        jwtFilter(),
+                        UsernamePasswordAuthenticationFilter.class
+                );
 
         http
                 .headers()
-                .addHeaderWriter(new StaticHeadersWriter("X-Total-Count", "10"));
+                .addHeaderWriter(new StaticHeadersWriter(
+                        "X-Total-Count",
+                        "10"
+                ));
     }
 }

@@ -23,7 +23,7 @@ public class EnumMapper {
     /**
      * <String> Role 값을 List 형태로 변환하는 메서드
      */
-    public List<SimpleGrantedAuthority> userRoleListString(String userRole){
+    public List<SimpleGrantedAuthority> userRoleListString(String userRole) {
         return Arrays
                 .asList(userRole)
                 .stream()

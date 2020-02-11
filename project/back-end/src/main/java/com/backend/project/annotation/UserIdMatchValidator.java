@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 public class UserIdMatchValidator implements ConstraintValidator<UserIdMatch, String> {
+
     private       String         _message;
     private final AccountService accountService;
 
@@ -19,7 +20,10 @@ public class UserIdMatchValidator implements ConstraintValidator<UserIdMatch, St
     }
 
     @Override
-    public boolean isValid(String value, ConstraintValidatorContext context) {
+    public boolean isValid(
+            String value,
+            ConstraintValidatorContext context
+    ) {
         Optional<Account> byUserId = accountService.findByUserId(value);
         if (!byUserId.isEmpty()) {
             context

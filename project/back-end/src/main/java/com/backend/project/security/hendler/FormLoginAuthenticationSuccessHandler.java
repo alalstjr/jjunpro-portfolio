@@ -6,7 +6,7 @@ import com.backend.project.security.jwt.JwtFactory;
 import com.backend.project.security.token.PostAuthorizationToken;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -19,13 +19,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
+@RequiredArgsConstructor
 public class FormLoginAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    @Autowired
-    private JwtFactory factory;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final JwtFactory   factory;
+    private final ObjectMapper objectMapper;
 
     @Override
     public void onAuthenticationSuccess(
@@ -34,20 +32,43 @@ public class FormLoginAuthenticationSuccessHandler implements AuthenticationSucc
             Authentication authentication
     ) throws IOException, ServletException {
 
-        PostAuthorizationToken token = (PostAuthorizationToken) authentication;
-        AccountContext context = (AccountContext) token.getPrincipal();
+        PostAuthorizationToken token   = (PostAuthorizationToken) authentication;
+        AccountContext         context = (AccountContext) token.getPrincipal();
 
         String tokenString = factory.generateToken(context);
 
-        Long id = context.getAccount().getId();
-        String userId = context.getAccount().getUserId();
-        String nickname = context.getAccount().getNickname();
+        Long   id       = context
+                .getAccount()
+                .getId();
+        String userId   = context
+                .getAccount()
+                .getUserId();
+        String nickname = context
+                .getAccount()
+                .getNickname();
 
-        processRespone(response, writeDTO(id, tokenString, userId, nickname));
+        processRespone(
+                response,
+                writeDTO(id,
+                        tokenString,
+                        userId,
+                        nickname
+                )
+        );
     }
 
-    private TokenDTO writeDTO(Long id, String token, String userId, String nickname) {
-        return new TokenDTO(id, token, userId, nickname);
+    private TokenDTO writeDTO(
+            Long id,
+            String token,
+            String userId,
+            String nickname
+    ) {
+        return new TokenDTO(
+                id,
+                token,
+                userId,
+                nickname
+        );
     }
 
     private void processRespone(
@@ -56,6 +77,8 @@ public class FormLoginAuthenticationSuccessHandler implements AuthenticationSucc
     ) throws JsonProcessingException, IOException {
         res.setContentType(MediaType.APPLICATION_JSON_VALUE);
         res.setStatus(HttpStatus.OK.value());
-        res.getWriter().write(objectMapper.writeValueAsString(dto));
+        res
+                .getWriter()
+                .write(objectMapper.writeValueAsString(dto));
     }
 }

@@ -10,6 +10,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class UniversityPublic implements Comparable<UniversityPublic> {
+
     private Long          id;
     private String        uniSubject;
     private String        uniAtmosphere;

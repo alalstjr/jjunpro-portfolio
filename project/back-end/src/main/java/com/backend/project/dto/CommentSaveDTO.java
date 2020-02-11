@@ -16,6 +16,7 @@ import javax.validation.constraints.Size;
 @UserExistence(id = "id")
 @NoArgsConstructor
 public class CommentSaveDTO {
+    
     private Long id;
 
     private Long uniId;

@@ -11,7 +11,17 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * UniversityPublic saveOrUpdate() :
+ * UniversitySaveDTO 정보를 DB 저장합니다.
+ * 전체적인 정보를 저장할때 사용합니다.
+ * <p>
+ * University saveOrUpdate() :
+ * University 일부 정보를 DB 에 수정합니다.
+ * 단일 부분을 수정할때 사용합니다.
+ */
 public interface UniversityService {
+
     public Optional<University> findById(Long id);
 
     public UniversityPublic findByPublicId(Long id, Account account);
@@ -34,7 +44,7 @@ public interface UniversityService {
 
     public Long findByIdUniCount(String uniName);
 
-    public UniversityPublic saveOrUpdate(UniversitySaveDTO dto, Account accountData);
+    public UniversityPublic saveOrUpdate(UniversitySaveDTO dto);
 
     public University saveOrUpdate(University universityData);
 

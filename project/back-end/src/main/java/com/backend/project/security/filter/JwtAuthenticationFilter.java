@@ -48,8 +48,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
         // JWT 값을 담아주는 변수 TokenPayload
         String tokenPayload = request.getHeader("Authorization");
 
-        JwtPreProcessingToken token =
-                new JwtPreProcessingToken(extractor.extract(tokenPayload));
+        JwtPreProcessingToken token = new JwtPreProcessingToken(extractor.extract(tokenPayload));
 
         return super
                 .getAuthenticationManager()
@@ -75,7 +74,10 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
         /*
          *	FilterChain chain 해당 필터가 실행 후 다른 필터도 실행할 수 있도록 연결실켜주는 메서드
          */
-        chain.doFilter(request, response);
+        chain.doFilter(
+                request,
+                response
+        );
     }
 
     @Override
@@ -91,6 +93,10 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
          */
         SecurityContextHolder.clearContext();
 
-        this.unsuccessfulAuthentication(request, response, failed);
+        this.unsuccessfulAuthentication(
+                request,
+                response,
+                failed
+        );
     }
 }

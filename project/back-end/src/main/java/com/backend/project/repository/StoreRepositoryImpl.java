@@ -10,7 +10,6 @@ import com.backend.project.util.RepositoryUtill;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,12 +17,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class StoreRepositoryImpl implements StoreRepositoryDSL {
 
-    private final JPAQueryFactory queryFactory;
-    private       QStore          qStore      = QStore.store;
-    private       QUniversity     qUniversity = QUniversity.university;
+    private QStore      qStore      = QStore.store;
+    private QUniversity qUniversity = QUniversity.university;
 
-    @Autowired
-    private RepositoryUtill repositoryUtill;
+    private final JPAQueryFactory queryFactory;
+    private final RepositoryUtill repositoryUtill;
 
     @Override
     public Long findByUniCount(String keyword) {

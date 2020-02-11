@@ -10,6 +10,7 @@ import javax.persistence.*;
 @MappedSuperclass
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class BaseEntity extends BaseDate {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;

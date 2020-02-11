@@ -21,6 +21,7 @@ import java.util.Optional;
  */
 @RequiredArgsConstructor
 public class PasswordMatchValidator implements ConstraintValidator<PasswordMatch, Object> {
+
     private String  _message;
     private String  _password;
     private String  _passwordRe;
@@ -44,7 +45,10 @@ public class PasswordMatchValidator implements ConstraintValidator<PasswordMatch
     }
 
     @Override
-    public boolean isValid(Object value, ConstraintValidatorContext context) {
+    public boolean isValid(
+            Object value,
+            ConstraintValidatorContext context
+    ) {
         boolean valid;
         Object  passwordCheck    = null;
         Object  passwordReCheck  = null;

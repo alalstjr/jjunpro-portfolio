@@ -31,8 +31,7 @@ public class IpUtil {
         for (String header : IP_HEADER_CANDIDATES) {
             String ipList = request.getHeader(header);
             if (ipList != null && ipList.length() != 0 && !"unknown".equalsIgnoreCase(ipList)) {
-                String ip = ipList.split(",")[0];
-                return ip;
+                return ipList.split(",")[0];
             }
         }
 

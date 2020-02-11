@@ -12,10 +12,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 
 @Component
 public class CloudStorageHelper {
+
     private static Storage     storage = null;
     private static Credentials credentials;
 
@@ -28,7 +29,8 @@ public class CloudStorageHelper {
         catch (IOException e) {
             e.printStackTrace();
         }
-        storage = StorageOptions.newBuilder()
+        storage = StorageOptions
+                .newBuilder()
                 .setCredentials(credentials)
                 .build()
                 .getService();
@@ -43,7 +45,11 @@ public class CloudStorageHelper {
      */
     // Note: this sample assumes small files are uploaded. For large files or streams use:
     // Storage.writer(BlobInfo blobInfo, Storage.BlobWriteOption... options)
-    public String uploadFile(InputStream file, String fileName, final String bucketName) throws IOException {
+    public String uploadFile(
+            InputStream file,
+            String fileName,
+            final String bucketName
+    ) throws IOException {
         // The InputStream is closed by default, so we don't need to close it here
         // Read InputStream into a ByteArrayOutputStream.
         ByteArrayOutputStream os      = new ByteArrayOutputStream();
@@ -64,7 +70,7 @@ public class CloudStorageHelper {
                         fileName
                 )
                         // Modify access list to allow all users with link to read file
-                        .setAcl(new ArrayList<>(Arrays.asList(Acl.of(
+                        .setAcl(new ArrayList<>(Collections.singletonList(Acl.of(
                                 User.ofAllUsers(),
                                 Role.READER
                         ))))
@@ -76,7 +82,10 @@ public class CloudStorageHelper {
     }
     // [END uploadFile]
 
-    public void deleteFile(String blobName, String bucketName) {
+    public void deleteFile(
+            String blobName,
+            String bucketName
+    ) {
         BlobId blobId = BlobId.of(
                 bucketName,
                 blobName
@@ -85,7 +94,8 @@ public class CloudStorageHelper {
         if (deleted) {
             // the blob was deleted
             System.out.println("OK");
-        } else {
+        }
+        else {
             // the blob was not found
             System.out.println("FAILE");
         }

@@ -5,7 +5,8 @@ import com.backend.project.dto.SearchDTO;
 import com.backend.project.projection.UniversityPublic;
 import com.backend.project.service.StoreService;
 import com.backend.project.util.AccountUtill;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.backend.project.util.SearchUtill;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,74 +18,73 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/store")
-@CrossOrigin
-public class StoreController
-{
+@RequiredArgsConstructor
+public class StoreController {
 
-    @Autowired
-    private StoreService storeService;
-
-    @Autowired
-    private AccountUtill accountUtill;
+    private final StoreService storeService;
+    private final AccountUtill accountUtill;
+    private final SearchUtill  searchUtill;
 
     /**
-     *  GET University List DATA StoreId
+     * GET University List DATA StoreId
      */
     @GetMapping("/{keyword}")
     @PreAuthorize("permitAll()")
     public ResponseEntity<?> getStoreIdUniList(
-            @PathVariable String keyword,
-            @RequestParam("classification") String classification,
-            @RequestParam("offsetCount") Long offsetCount,
-            @RequestParam("ifCateA") String ifCateA,
-            @RequestParam("ifCateB") String ifCateB,
-            HttpServletRequest request
-    ) throws IOException
-    {
-
-        // Search DTO 생성
-        SearchDTO searchDTO = new SearchDTO();
-
+            @PathVariable
+                    String keyword,
+            @RequestParam("classification")
+                    String classification,
+            @RequestParam("offsetCount")
+                    int offsetCount,
+            @RequestParam("ifCateA")
+                    String ifCateA,
+            @RequestParam("ifCateB")
+                    String ifCateB, HttpServletRequest request
+    ) throws IOException {
         // Account Info
         Account accountData = accountUtill.accountJWT(request);
 
-        if(keyword != null || offsetCount != null)
-        {
-            // Param 값을 DTO 에 담아줍니다.
-            // (관리하기 쉽게 DTO 한곳에 모아줍니다.)
-            searchDTO.setKeyword(keyword);
-            searchDTO.setClassification(classification);
-            searchDTO.setOffsetCount(offsetCount);
-            searchDTO.setAccount(accountData);
-            searchDTO.setIfCateA(ifCateA);
-            searchDTO.setIfCateB(ifCateB);
-        }
-        else
-        {
-            throw new IOException("검색에 필요한 정보를 전부 받지 못했습니다.");
-        }
+        SearchDTO searchDTO = searchUtill.setSearchDTO(
+                keyword,
+                classification,
+                offsetCount,
+                ifCateA,
+                ifCateB,
+                accountData
+        );
 
         List<UniversityPublic> result = storeService.findByStoreUniAll(searchDTO);
 
-        return new ResponseEntity<List<UniversityPublic>>(result, HttpStatus.OK);
+        return new ResponseEntity<>(
+                result,
+                HttpStatus.OK
+        );
     }
 
     /**
-     *  GET University Count DATA StoreId
+     * GET University Count DATA StoreId
      */
     @GetMapping("/count/{keyword}")
     @PreAuthorize("permitAll()")
     public ResponseEntity<Map<String, Long>> getUniCountStoId(
-            @PathVariable String keyword
-    )
-    {
+            @PathVariable
+                    String keyword
+    ) {
         Long result = storeService.findByUniCount(keyword);
 
-        Map<String, Long> resultMap = new HashMap<String, Long>();
-        resultMap.put("count", result);
+        Map<String, Long> resultMap = new HashMap<>();
+        resultMap.put(
+                "count",
+                result
+        );
 
-        return new ResponseEntity<Map<String, Long>>(resultMap, HttpStatus.OK);
+        return new ResponseEntity<>(
+                resultMap,
+                HttpStatus.OK
+        );
     }
 }

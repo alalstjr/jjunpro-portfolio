@@ -9,16 +9,24 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class FileDTO {
+
     private Long id;
+
     private String filename;
+
     private String fileType;
+
     private long fileSize;
+
     private Integer fileDivision;
+
     private String fileOriginal;
+
     private String fileThumbnail;
 
     public File toEntity() {
-        return File.builder()
+        return File
+                .builder()
                 .id(id)
                 .filename(filename)
                 .fileType(fileType)

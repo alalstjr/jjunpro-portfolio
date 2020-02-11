@@ -5,14 +5,15 @@ import com.backend.project.domain.File;
 import com.backend.project.domain.University;
 import com.backend.project.dto.SearchDTO;
 import com.backend.project.dto.UniLikeDTO;
+import com.backend.project.dto.UniversityDTO;
 import com.backend.project.dto.UniversitySaveDTO;
 import com.backend.project.projection.UniversityPublic;
-import com.backend.project.respone.WebProcessRespone;
 import com.backend.project.service.CommentService;
 import com.backend.project.service.FileStorageService;
 import com.backend.project.service.UniversityService;
 import com.backend.project.util.AccountUtill;
 import com.backend.project.util.IpUtil;
+import com.backend.project.util.SearchUtill;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,9 +36,10 @@ import java.util.Optional;
 @RequestMapping("/api/university")
 @RequiredArgsConstructor
 public class UniversityController {
-    private final WebProcessRespone  webProcessRespone;
+
     private final IpUtil             ipUtil;
     private final AccountUtill       accountUtill;
+    private final SearchUtill        searchUtill;
     private final UniversityService  universityService;
     private final FileStorageService fileStorageService;
     private final CommentService     commentService;
@@ -76,7 +78,10 @@ public class UniversityController {
 
                     // 업로드된 Domin의 File 갯수를 조회
                     if (byId.isPresent()) {
-                        fileSizeDB = byId.get().getFiles().size();
+                        fileSizeDB = byId
+                                .get()
+                                .getFiles()
+                                .size();
                     }
                 }
 
@@ -90,13 +95,11 @@ public class UniversityController {
                 dto.setFileData(fileData);
             }
 
+            // 유저의 정보와 IP 주소를 저장합니다.
             dto.setAccount(accountData.get());
             dto.setUniIp(ipUtil.getUserIp(request));
 
-            newUniversity = universityService.saveOrUpdate(
-                    dto,
-                    accountData.get()
-            );
+            newUniversity = universityService.saveOrUpdate(dto);
         }
 
         return new ResponseEntity<>(
@@ -126,20 +129,31 @@ public class UniversityController {
 
             if (universityData.isPresent()) {
                 // Like State Check
-                if (universityData.get().getUniLike().contains(accountData.get())) {
+                if (universityData
+                        .get()
+                        .getUniLike()
+                        .contains(accountData.get())) {
                     // Like False
-                    universityData.get().getUniLike().remove(accountData.get());
+                    universityData
+                            .get()
+                            .getUniLike()
+                            .remove(accountData.get());
                 }
                 else {
                     // Like True
-                    universityData.get().getUniLike().add(accountData.get());
+                    universityData
+                            .get()
+                            .getUniLike()
+                            .add(accountData.get());
                     uniLikeState = true;
                 }
 
                 // DTO 설정
                 University earlyUniversity = universityService.saveOrUpdate(universityData.get());
                 uniLikeDTO.setId(earlyUniversity.getId());
-                uniLikeDTO.setUniLike(earlyUniversity.getUniLike().size());
+                uniLikeDTO.setUniLike(earlyUniversity
+                        .getUniLike()
+                        .size());
                 uniLikeDTO.setUniLikeState(uniLikeState);
             }
         }
@@ -153,33 +167,28 @@ public class UniversityController {
     /**
      * GET University List DATA userId
      */
-    @GetMapping("/pugjjigs/userId/{userId}")
+    @GetMapping("/pugjjigs/userId/{keyword}")
     public ResponseEntity<?> getUniListUserId(
             @PathVariable
-                    String userId,
-            @RequestParam("offsetCount")
-                    Long offsetCount,
+                    String keyword,
+            @RequestParam(value = "offsetCount")
+                    int offsetCount,
             @RequestParam("ifCateA")
                     String ifCateA,
             @RequestParam("ifCateB")
                     String ifCateB, HttpServletRequest request
     ) throws IOException {
-        // Search DTO 생성
-        SearchDTO searchDTO = new SearchDTO();
-
         // Account Info
         Account accountData = accountUtill.accountJWT(request);
 
-        // offsetCount 없는경우 기본값 0 설정
-        offsetCount = ( offsetCount == null ) ? 0L : offsetCount;
-
-        // Param 값을 DTO 에 담아줍니다.
-        // (관리하기 쉽게 DTO 한곳에 모아줍니다.)
-        searchDTO.setKeyword(userId);
-        searchDTO.setOffsetCount(offsetCount);
-        searchDTO.setAccount(accountData);
-        searchDTO.setIfCateA(ifCateA);
-        searchDTO.setIfCateB(ifCateB);
+        SearchDTO searchDTO = searchUtill.setSearchDTO(
+                keyword,
+                null,
+                offsetCount,
+                ifCateA,
+                ifCateB,
+                accountData
+        );
 
         List<UniversityPublic> result = universityService.findByUniversityListWhereAccountId(searchDTO);
 
@@ -192,33 +201,28 @@ public class UniversityController {
     /**
      * GET University List DATA nickname
      */
-    @GetMapping("/pugjjigs/nickname/{nickname}")
+    @GetMapping("/pugjjigs/nickname/{keyword}")
     public ResponseEntity<?> getUniListNickname(
             @PathVariable
-                    String nickname,
+                    String keyword,
             @RequestParam("offsetCount")
-                    Long offsetCount,
+                    int offsetCount,
             @RequestParam("ifCateA")
                     String ifCateA,
             @RequestParam("ifCateB")
                     String ifCateB, HttpServletRequest request
     ) throws IOException {
-        // Search DTO 생성
-        SearchDTO searchDTO = new SearchDTO();
-
         // Account Info
         Account accountData = accountUtill.accountJWT(request);
 
-        // offsetCount 없는경우 기본값 0 설정
-        offsetCount = ( offsetCount == null ) ? 0L : offsetCount;
-
-        // Param 값을 DTO 에 담아줍니다.
-        // (관리하기 쉽게 DTO 한곳에 모아줍니다.)
-        searchDTO.setKeyword(nickname);
-        searchDTO.setOffsetCount(offsetCount);
-        searchDTO.setAccount(accountData);
-        searchDTO.setIfCateA(ifCateA);
-        searchDTO.setIfCateB(ifCateB);
+        SearchDTO searchDTO = searchUtill.setSearchDTO(
+                keyword,
+                null,
+                offsetCount,
+                ifCateA,
+                ifCateB,
+                accountData
+        );
 
         List<UniversityPublic> result = universityService.findByUniversityListWhereAccountNickname(searchDTO);
 
@@ -290,36 +294,26 @@ public class UniversityController {
             @PathVariable
                     String keyword,
             @RequestParam("offsetCount")
-                    Long offsetCount,
+                    int offsetCount,
             @RequestParam("ifCateA")
                     String ifCateA,
             @RequestParam("ifCateB")
                     String ifCateB, HttpServletRequest request
     ) throws IOException {
-        // Search DTO 생성
-        SearchDTO searchDTO = new SearchDTO();
-
         // Account Info
         Account accountData = accountUtill.accountJWT(request);
 
-        // offsetCount 없는경우 기본값 0 설정
-        offsetCount = ( offsetCount == null ) ? 0L : offsetCount;
-
-        if (keyword != null || offsetCount != null) {
-            // Param 값을 DTO 에 담아줍니다.
-            // (관리하기 쉽게 DTO 한곳에 모아줍니다.)
-            searchDTO.setKeyword(keyword);
-            searchDTO.setOffsetCount(offsetCount);
-            searchDTO.setAccount(accountData);
-            searchDTO.setIfCateA(ifCateA);
-            searchDTO.setIfCateB(ifCateB);
-        }
-        else {
-            throw new IOException("검색에 필요한 정보를 전부 받지 못했습니다.");
-        }
+        SearchDTO searchDTO = searchUtill.setSearchDTO(
+                keyword,
+                null,
+                offsetCount,
+                ifCateA,
+                ifCateB,
+                accountData
+        );
 
         List<UniversityPublic> result = universityService.findByLikeListWhereAccountId(searchDTO);
-        return new ResponseEntity<List<UniversityPublic>>(
+        return new ResponseEntity<>(
                 result,
                 HttpStatus.OK
         );
@@ -335,38 +329,27 @@ public class UniversityController {
             @RequestParam("classification")
                     String classification,
             @RequestParam("offsetCount")
-                    Long offsetCount,
+                    int offsetCount,
             @RequestParam("ifCateA")
                     String ifCateA,
             @RequestParam("ifCateB")
                     String ifCateB, HttpServletRequest request
     ) throws IOException {
-        // Search DTO 생성
-        SearchDTO searchDTO = new SearchDTO();
-
-        // offsetCount 없는경우 기본값 0 설정
-        offsetCount = ( offsetCount == null ) ? 0L : offsetCount;
-
         // Account Info
         Account accountData = accountUtill.accountJWT(request);
 
-        if (keyword != null || classification != null || offsetCount != null) {
-            // Param 값을 DTO 에 담아줍니다.
-            // (관리하기 쉽게 DTO 한곳에 모아줍니다.)
-            searchDTO.setKeyword(keyword);
-            searchDTO.setClassification(classification);
-            searchDTO.setOffsetCount(offsetCount);
-            searchDTO.setAccount(accountData);
-            searchDTO.setIfCateA(ifCateA);
-            searchDTO.setIfCateB(ifCateB);
-        }
-        else {
-            throw new IOException("검색에 필요한 정보를 전부 받지 못했습니다.");
-        }
+        SearchDTO searchDTO = searchUtill.setSearchDTO(
+                keyword,
+                classification,
+                offsetCount,
+                ifCateA,
+                ifCateB,
+                accountData
+        );
 
         List<UniversityPublic> result = universityService.findByUniversityListWhereKeyword(searchDTO);
 
-        return new ResponseEntity<List<UniversityPublic>>(
+        return new ResponseEntity<>(
                 result,
                 HttpStatus.OK
         );
@@ -380,9 +363,11 @@ public class UniversityController {
             @PathVariable
                     String uniName
     ) {
-        String result = universityService.findByIdUniCount(uniName).toString();
+        String result = universityService
+                .findByIdUniCount(uniName)
+                .toString();
 
-        Map<String, String> resultMap = new HashMap<String, String>();
+        Map<String, String> resultMap = new HashMap<>();
         resultMap.put(
                 "count",
                 result
@@ -392,7 +377,7 @@ public class UniversityController {
                 uniName
         );
 
-        return new ResponseEntity<Map<String, String>>(
+        return new ResponseEntity<>(
                 resultMap,
                 HttpStatus.OK
         );
@@ -404,57 +389,38 @@ public class UniversityController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<String> deleteUniversityuniId(
+            @Valid
             @PathVariable
-                    Long id, Authentication authentication
-    ) {
-        String errorType = null;
-        String errorText = null;
+                    UniversityDTO id, Authentication authentication, BindingResult bindingResult
+    ) throws BindException {
+        // 유효성 검사 후 최종 반환합니다.
+        if (bindingResult.hasErrors()) {
+            throw new BindException(bindingResult);
+        }
 
         Optional<Account> accountData = accountUtill.accountInfo(authentication);
 
         if (accountData.isPresent()) {
-
-            if (!accountUtill.userDataCheck(
-                    id,
-                    accountData,
-                    "university"
-            )) {
-                errorType = "AuthenticationError";
-                errorText = "잘못된 계정 접근입니다.";
-                return webProcessRespone.webErrorRespone(
-                        errorType,
-                        errorText
-                );
-            }
-
             // University 등록된 File 를 삭제합니다.
             Optional<University> uniFiles;
-            uniFiles = universityService.findById(id);
+            uniFiles = universityService.findById(id.getId());
             uniFiles.ifPresent(university -> fileStorageService.filesDelete(university.getFiles()));
 
             // University 등록된 Comment 를 삭제합니다.
             commentService.deleteUniComment(
-                    id,
+                    id.getId(),
                     accountData.get()
             );
 
             // University 를 삭제합니다.
             universityService.deleteData(
-                    id,
+                    id.getId(),
                     accountData.get()
             );
         }
-        else {
-            errorType = "AuthenticationError";
-            errorText = "올바른 접근이 아닙니다.";
-            return webProcessRespone.webErrorRespone(
-                    errorType,
-                    errorText
-            );
-        }
 
-        return new ResponseEntity<String>(
-                "처리가 완료되었습니다.",
+        return new ResponseEntity<>(
+                "삭제가 완료되었습니다.",
                 HttpStatus.OK
         );
     }

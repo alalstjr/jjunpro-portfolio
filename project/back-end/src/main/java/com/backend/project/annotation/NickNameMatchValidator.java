@@ -22,7 +22,10 @@ public class NickNameMatchValidator implements ConstraintValidator<NickNameMatch
     }
 
     @Override
-    public boolean isValid(String value, ConstraintValidatorContext context) {
+    public boolean isValid(
+            String value,
+            ConstraintValidatorContext context
+    ) {
         Optional<Account> byNickname = accountService.findByNickname(value);
         if (!byNickname.isEmpty()) {
             context

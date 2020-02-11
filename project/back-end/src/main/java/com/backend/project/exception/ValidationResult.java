@@ -14,10 +14,11 @@ import java.util.Map;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ValidationResult {
+
     private final Map<String, String> errors;
 
     public static ValidationResult create(Errors bindingResult, MessageSource messageSource, Locale locale) {
-        Map<String, String> errors = new HashMap<String, String>();
+        Map<String, String> errors = new HashMap<>();
 
         for (FieldError error : bindingResult.getFieldErrors()) {
             errors.put(

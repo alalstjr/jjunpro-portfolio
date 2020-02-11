@@ -9,10 +9,11 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 public class CommentPublic {
-    private Long id;
-    private String content;
+
+    private Long          id;
+    private String        content;
     private LocalDateTime modifiedDate;
-    private Long account_id;
-    private String account_nickname;
-    private File account_photo;
+    private Long          account_id;
+    private String        account_nickname;
+    private File          account_photo;
 }

@@ -30,7 +30,8 @@ public class StoreDTO {
     private Set<University> stoUniList = new HashSet<>();
 
     public Store toEntity() {
-        return Store.builder()
+        return Store
+                .builder()
                 .stoId(stoId)
                 .stoName(stoName)
                 .stoAddress(stoAddress)

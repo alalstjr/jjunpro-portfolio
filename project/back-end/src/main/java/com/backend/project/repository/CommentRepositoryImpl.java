@@ -10,13 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class CommentRepositoryImpl implements CommentRepositoryDSL
-{
-    private final JPAQueryFactory queryFactory;
-    private QComment qComment       = QComment.comment;
+public class CommentRepositoryImpl implements CommentRepositoryDSL {
+
+    private QComment    qComment    = QComment.comment;
     private QUniversity qUniversity = QUniversity.university;
-    private QAccount qAccount       = QAccount.account;
-    private QFile qFile             = QFile.file;
+    private QFile       qFile       = QFile.file;
+
+    private final JPAQueryFactory queryFactory;
 
     @Override
     @Transactional
@@ -24,10 +24,9 @@ public class CommentRepositoryImpl implements CommentRepositoryDSL
 
         queryFactory
                 .delete(qComment)
-                .where(
-                        qComment.id.eq(id)
-                                .and(qComment.account.eq(accountData))
-                )
+                .where(qComment.id
+                        .eq(id)
+                        .and(qComment.account.eq(accountData)))
                 .execute();
     }
 
@@ -38,10 +37,9 @@ public class CommentRepositoryImpl implements CommentRepositoryDSL
         // University 저장된 Comment 삭제
         queryFactory
                 .delete(qComment)
-                .where(
-                        qComment.university.id.eq(id)
-                                .and(qComment.account.eq(accountData))
-                )
+                .where(qComment.university.id
+                        .eq(id)
+                        .and(qComment.account.eq(accountData)))
                 .execute();
     }
 
@@ -49,22 +47,21 @@ public class CommentRepositoryImpl implements CommentRepositoryDSL
     public CommentPublic findByPublicId(Long id) {
 
         CommentPublic result = queryFactory
-                .select(
-                        Projections.constructor(
-                                CommentPublic.class,
-                                qComment.id,
-                                qComment.content,
-                                qComment.modifiedDate,
-                                qComment.account.id,
-                                qComment.account.nickname,
-                                qComment.account.photo
-                        )
-                )
+                .select(Projections.constructor(
+                        CommentPublic.class,
+                        qComment.id,
+                        qComment.content,
+                        qComment.modifiedDate,
+                        qComment.account.id,
+                        qComment.account.nickname,
+                        qComment.account.photo
+                ))
                 .from(qComment)
-                .leftJoin(qComment.account.photo, qFile)
-                .where(
-                        qComment.id.eq(id)
+                .leftJoin(
+                        qComment.account.photo,
+                        qFile
                 )
+                .where(qComment.id.eq(id))
                 .fetchOne();
 
         return result;
@@ -74,20 +71,24 @@ public class CommentRepositoryImpl implements CommentRepositoryDSL
     public List<CommentPublic> findByCommentList(Long id) {
 
         List<CommentPublic> result = queryFactory
-                .select(
-                        Projections.constructor(
-                                CommentPublic.class,
-                                qComment.id,
-                                qComment.content,
-                                qComment.modifiedDate,
-                                qComment.account.id,
-                                qComment.account.nickname,
-                                qComment.account.photo
-                        )
-                )
+                .select(Projections.constructor(
+                        CommentPublic.class,
+                        qComment.id,
+                        qComment.content,
+                        qComment.modifiedDate,
+                        qComment.account.id,
+                        qComment.account.nickname,
+                        qComment.account.photo
+                ))
                 .from(qUniversity)
-                .leftJoin(qUniversity.comments, qComment)
-                .leftJoin(qComment.account.photo, qFile)
+                .leftJoin(
+                        qUniversity.comments,
+                        qComment
+                )
+                .leftJoin(
+                        qComment.account.photo,
+                        qFile
+                )
                 .where(qUniversity.id.eq(id))
                 .orderBy(qComment.modifiedDate.desc())
                 .fetch();

@@ -33,10 +33,10 @@ public class Store extends BaseEntity {
 
     @Builder
     public Store(String stoId, String stoName, String stoAddress, String stoUrl, Set<University> stoUniList) {
-        this.stoId      = stoId;
-        this.stoName    = stoName;
+        this.stoId = stoId;
+        this.stoName = stoName;
         this.stoAddress = stoAddress;
-        this.stoUrl     = stoUrl;
+        this.stoUrl = stoUrl;
         this.stoUniList = stoUniList;
     }
 }

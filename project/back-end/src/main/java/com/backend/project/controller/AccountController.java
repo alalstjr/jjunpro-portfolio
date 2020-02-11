@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -64,6 +65,28 @@ public class AccountController {
         // 유효성 검사 후 최종 반환합니다.
         if (bindingResult.hasErrors()) {
             throw new BindException(bindingResult);
+        }
+
+        // 파일을 전송받는경우와 안받는 경우
+        if (dto
+                .toEntity()
+                .getPhoto() != null) {
+            // Account Info
+            Optional<Account> accountData = accountService.findById(dto
+                    .toEntity()
+                    .getId());
+
+            if (accountData.isPresent()) {
+                File accountFile = accountData
+                        .get()
+                        .getPhoto();
+
+                // 기존에 업로드된 파일이 존재할 경우
+                if (accountFile != null) {
+                    // Account 저장된 File 삭제
+                    fileStorageService.fileDelete(accountFile);
+                }
+            }
         }
 
         // 첨부파일이 존재하는 경우 파일 업로드 메소드입니다.

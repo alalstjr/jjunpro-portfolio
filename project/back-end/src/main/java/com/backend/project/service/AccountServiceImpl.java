@@ -8,7 +8,7 @@ import com.backend.project.dto.AlarmDTO;
 import com.backend.project.projection.AccountPublic;
 import com.backend.project.repository.AccountRepository;
 import com.backend.project.repository.AlarmRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,16 +16,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
-    @Autowired
-    private AccountRepository account;
-
-    @Autowired
-    private AlarmRepository alarm;
-
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private final AccountRepository     account;
+    private final AlarmRepository       alarm;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public Account save(AccountSaveDTO dto) {

@@ -10,13 +10,14 @@ import org.hibernate.annotations.Type;
 @Setter
 @NoArgsConstructor
 public class SearchDTO {
+
     @Type(type = "text")
     private String keyword;
 
     @Type(type = "text")
     private String classification;
 
-    private Long offsetCount;
+    private int offsetCount;
 
     private Account account;
 

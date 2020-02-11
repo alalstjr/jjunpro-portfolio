@@ -8,6 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Setter
 @ConfigurationProperties(prefix = "file")
 public class FileStorageProperties {
+
     private String uploadDir;
     private String uploadDirAccount;
     private String uploadDirThumbnail;

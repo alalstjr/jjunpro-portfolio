@@ -1,6 +1,7 @@
 package com.backend.project.enums;
 
 public enum UserRole implements EnumModel {
+    
     ADMIN("ROLE_ADMIN"),
     USER("ROLE_USER");
 

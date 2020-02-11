@@ -19,7 +19,10 @@ public class EmailmatchValidator implements ConstraintValidator<EmailMatch, Stri
     }
 
     @Override
-    public boolean isValid(String value, ConstraintValidatorContext context) {
+    public boolean isValid(
+            String value,
+            ConstraintValidatorContext context
+    ) {
         Optional<Account> byUserId = accountService.findByEmail(value);
         if (!byUserId.isEmpty()) {
             context

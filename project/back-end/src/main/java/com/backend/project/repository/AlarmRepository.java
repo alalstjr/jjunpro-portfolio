@@ -5,8 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface AlarmRepository extends JpaRepository<Alarm, Long>, AlarmRepositoryDSL
-{
+public interface AlarmRepository extends JpaRepository<Alarm, Long>, AlarmRepositoryDSL {
+
     Optional<Alarm> findById(Long id);
+
     Optional<Alarm> findByUserId(Long userId);
 }

@@ -20,6 +20,7 @@ import java.util.Optional;
  */
 @RequiredArgsConstructor
 public class UserDataMatchValidator implements ConstraintValidator<UserDataMatch, Object> {
+
     private       String          _message;
     private       String          _id;
     private final SecurityContext securityContext = SecurityContextHolder.getContext();
@@ -32,7 +33,10 @@ public class UserDataMatchValidator implements ConstraintValidator<UserDataMatch
     }
 
     @Override
-    public boolean isValid(Object value, ConstraintValidatorContext context) {
+    public boolean isValid(
+            Object value,
+            ConstraintValidatorContext context
+    ) {
         boolean valid   = true;
         String  idCheck = null;
 
@@ -46,7 +50,7 @@ public class UserDataMatchValidator implements ConstraintValidator<UserDataMatch
             e.printStackTrace();
         }
 
-        if(idCheck != null && !idCheck.isEmpty()) {
+        if (idCheck != null && !idCheck.isEmpty()) {
             Optional<Account> accountData = accountUtill.accountInfo(securityContext.getAuthentication());
 
             valid = accountData.isPresent() && accountData

@@ -24,9 +24,9 @@ public class TokenDTO {
 
     public TokenDTO(Long id, String token, String userId, String nickname) {
         super();
-        this.id       = id;
-        this.token    = token;
-        this.userId   = userId;
+        this.id = id;
+        this.token = token;
+        this.userId = userId;
         this.nickname = nickname;
     }
 }

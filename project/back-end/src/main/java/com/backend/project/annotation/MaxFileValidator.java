@@ -1,17 +1,18 @@
 package com.backend.project.annotation;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.util.Objects;
 
 @RequiredArgsConstructor
 public class MaxFileValidator implements ConstraintValidator<MaxFile, MultipartFile[]> {
-    private       String      _message;
-    private final Environment environment;
+    private String _message;
+
+    @Value("${max-upload-count}")
+    private Integer _maxUploadCount;
 
     @Override
     public void initialize(MaxFile constraintAnnotation) {
@@ -19,19 +20,19 @@ public class MaxFileValidator implements ConstraintValidator<MaxFile, MultipartF
     }
 
     @Override
-    public boolean isValid(MultipartFile[] value, ConstraintValidatorContext context) {
-        Integer max = 3;
+    public boolean isValid(
+            MultipartFile[] value,
+            ConstraintValidatorContext context
+    ) {
+        // Client 에서 file 을 받은 경우
+        if (value != null) {
+            if (value.length > _maxUploadCount) {
+                context
+                        .buildConstraintViolationWithTemplate(_message)
+                        .addConstraintViolation();
 
-        if (environment.getProperty("max-upload-count") != null) {
-            max = Integer.parseInt(Objects.requireNonNull(environment.getProperty("max-upload-count")));
-        }
-
-        if (value.length > max) {
-            context
-                    .buildConstraintViolationWithTemplate(_message)
-                    .addConstraintViolation();
-
-            return false;
+                return false;
+            }
         }
 
         return true;

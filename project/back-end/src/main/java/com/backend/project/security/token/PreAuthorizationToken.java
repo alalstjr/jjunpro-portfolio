@@ -5,12 +5,21 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 
 public class PreAuthorizationToken extends UsernamePasswordAuthenticationToken {
 
-    public PreAuthorizationToken(Object principal, Object credentials) {
-        super(principal, credentials);
+    public PreAuthorizationToken(
+            Object principal,
+            Object credentials
+    ) {
+        super(
+                principal,
+                credentials
+        );
     }
 
     public PreAuthorizationToken(SecurityFormLoginDTO dto) {
-        this(dto.getUserId(), dto.getPassword());
+        this(
+                dto.getUserId(),
+                dto.getPassword()
+        );
     }
 
     @Override

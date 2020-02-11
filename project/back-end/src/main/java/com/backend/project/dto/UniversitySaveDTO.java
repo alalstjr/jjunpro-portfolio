@@ -26,6 +26,7 @@ import java.util.Set;
 @UserExistence(id = "id")
 @UserDataMatch(id = "id")
 public class UniversitySaveDTO {
+
     private Long id;
 
     @Size(max = 50, message = "제목이 너무 깁니다.")

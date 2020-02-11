@@ -23,9 +23,11 @@ import static com.querydsl.core.group.GroupBy.list;
 
 @RequiredArgsConstructor
 public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
-    private       QUniversity     qUniversity = QUniversity.university;
-    private       QAccount        qAccount    = QAccount.account;
-    private       QStore          qStore      = QStore.store;
+
+    private QUniversity qUniversity = QUniversity.university;
+    private QAccount    qAccount    = QAccount.account;
+    private QStore      qStore      = QStore.store;
+
     private final JPAQueryFactory queryFactory;
     private final StoreService    storeService;
     private final RepositoryUtill repositoryUtill;
@@ -33,7 +35,6 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
     @Override
     @Transactional
     public void deleteData(Long id, Account accountData) {
-
         // qStore 삭제
         queryFactory
                 .delete(qStore)
@@ -260,7 +261,7 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                         .and(qUniversity.uniLike.contains(account)))
                 .fetchOne();
 
-        return ( result == null ? false : true );
+        return ( result != null );
     }
 
     private UniversityPublic getUniversityPublic(University data, Account account) {

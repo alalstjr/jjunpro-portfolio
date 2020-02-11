@@ -12,9 +12,10 @@ import java.util.List;
 import java.util.Set;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class University extends BaseEntity {
+
     @Column(nullable = false)
     private String uniSubject;
 

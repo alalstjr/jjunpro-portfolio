@@ -24,12 +24,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class FileStorageServiceImpl implements FileStorageService {
+
     @Value("${google.id}")
     private String _GCSID;
 
@@ -86,7 +88,11 @@ public class FileStorageServiceImpl implements FileStorageService {
     }
 
     @Override
-    public List<File> uploadMultipleFiles(int fileSize, MultipartFile[] files, String domain) {
+    public List<File> uploadMultipleFiles(
+            int fileSize,
+            MultipartFile[] files,
+            String domain
+    ) {
 
         // File 최대갯수 확인
         // UPDATE 기존 file과 수정되는 file 갯수의 최대값을 비교합니다.
@@ -100,20 +106,22 @@ public class FileStorageServiceImpl implements FileStorageService {
         }
 
         // 서버로 받은 파일'들'을 List로 변환하여 하나씩 서버로 업로드 합니다.
-        List<File> fileResult = Arrays
-                .asList(files)
-                .stream()
+
+        assert files != null;
+        return Arrays
+                .stream(files)
                 .map(file -> uploadFile(
                         file,
                         domain
                 ))
                 .collect(Collectors.toList());
-
-        return fileResult;
     }
 
     @Override
-    public File uploadFile(MultipartFile file, String domain) {
+    public File uploadFile(
+            MultipartFile file,
+            String domain
+    ) {
         /*
          * 파일 이름 표준화
          * { Class StringUtils }
@@ -122,7 +130,7 @@ public class FileStorageServiceImpl implements FileStorageService {
          * 결과는 경로 비교에 편리합니다.
          * 예제로 Windows 구분 기호 ("\")가 간단한 슬래시로 바뀌 었음을 알 수 있습니다.
          */
-        final String fileOriName = StringUtils.cleanPath(file.getOriginalFilename());
+        final String fileOriName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         final String fileType = fileOriName
                 .substring(fileOriName.lastIndexOf("."))
                 .replace(
@@ -144,6 +152,8 @@ public class FileStorageServiceImpl implements FileStorageService {
              */
             String thisfileType = file.getContentType();
             int    fileDivision = 0;
+
+            assert thisfileType != null;
             fileDivision = thisfileType.split("/")[0].equals("image") ? 1 : 0;
 
             String gcsFileName = handleFileName(
@@ -154,8 +164,8 @@ public class FileStorageServiceImpl implements FileStorageService {
             // 썸네일 이미지파일 저장
             // resizeWidth, resizeHeight 줄이는 이미지 크기
             // resizeContent 이미지 이름에 들어가는 사이즈 크기 문자열
-            Integer resizeWidth  = 600;
-            Integer resizeHeight = 600;
+            int resizeWidth  = 600;
+            int resizeHeight = 600;
             // String resizeContent = imageSizeCheck(file.getBytes()) ? "-" + resizeWidth + "x" + resizeHeight : "-thumb";
             String resizeContent = "-" + resizeWidth + "x" + resizeHeight;
 
@@ -221,7 +231,10 @@ public class FileStorageServiceImpl implements FileStorageService {
         }
     }
 
-    private String handleFileName(String fileOriName, String fileRoute) {
+    private String handleFileName(
+            String fileOriName,
+            String fileRoute
+    ) {
         DateTimeFormatter dtf      = DateTimeFormat.forPattern("-YYYY-MM-dd-HHmmssSSS");
         DateTime          dt       = DateTime.now(DateTimeZone.UTC);
         String            dtString = dt.toString(dtf);
@@ -232,20 +245,19 @@ public class FileStorageServiceImpl implements FileStorageService {
         );
         final String fileType = fileOriName.substring(fileOriName.lastIndexOf("."));
 
-        String result = fileRoute + fileName + dtString + fileType;
-
-        return result;
+        return fileRoute + fileName + dtString + fileType;
     }
 
-    private String handleThumbFileName(String gcsFileName, String size) {
+    private String handleThumbFileName(
+            String gcsFileName,
+            String size
+    ) {
         final String fileName = gcsFileName.substring(
                 0,
                 gcsFileName.lastIndexOf(".")
         );
         final String fileType = gcsFileName.substring(gcsFileName.lastIndexOf("."));
 
-        String result = fileName + size + fileType;
-
-        return result;
+        return fileName + size + fileType;
     }
 }
