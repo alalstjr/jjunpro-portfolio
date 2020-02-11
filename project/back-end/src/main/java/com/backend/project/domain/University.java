@@ -14,9 +14,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class University extends BaseEntity
-{
-
+public class University extends BaseEntity {
     @Column(nullable = false)
     private String uniSubject;
 
@@ -47,24 +45,23 @@ public class University extends BaseEntity
     @ManyToMany
     private List<File> files;
 
-    @ManyToMany(mappedBy = "university")
+    @ManyToMany
     private Set<Comment> comments = new HashSet<>();
 
     @Builder
-    public University(Long id, String uniSubject, String uniContent, String uniName, String uniTag, Integer uniStar, Set<Account> uniLike, String uniIp, Account account, List<File> files, Set<Comment> comments, String uniAtmosphere, String uniPrice)
-    {
-        this.id         = id;
+    public University(Long id, String uniSubject, String uniContent, String uniName, String uniTag, Integer uniStar, Set<Account> uniLike, String uniIp, Account account, List<File> files, Set<Comment> comments, String uniAtmosphere, String uniPrice) {
+        this.id = id;
         this.uniSubject = uniSubject;
         this.uniContent = uniContent;
-        this.uniName    = uniName;
-        this.uniTag     = uniTag;
-        this.uniStar    = uniStar;
-        this.uniLike    = uniLike;
-        this.uniIp      = uniIp;
-        this.account    = account;
-        this.files      = files;
-        this.comments   = comments;
+        this.uniName = uniName;
+        this.uniTag = uniTag;
+        this.uniStar = uniStar;
+        this.uniLike = uniLike;
+        this.uniIp = uniIp;
+        this.account = account;
+        this.files = files;
+        this.comments = comments;
         this.uniAtmosphere = uniAtmosphere;
-        this.uniPrice   = uniPrice;
+        this.uniPrice = uniPrice;
     }
 }

@@ -44,7 +44,7 @@ public class AccountSaveDTO {
 
     @Email
     @EmailMatch
-    private String email;
+    private String email = null;
 
     private String[] urlList;
 

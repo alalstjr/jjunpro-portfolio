@@ -4,14 +4,14 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 public class WordFilterValidator implements ConstraintValidator<WordFilter, String> {
-    private String message;
+    private String _message;
 
     /*
      * initialize() 메소드는 어노테이션으로 받은 값을 해당 필드에 초기화 선언을 합니다.
      * */
     @Override
     public void initialize(WordFilter constraintAnnotation) {
-        message = constraintAnnotation.message();
+        _message = constraintAnnotation.message();
     }
 
     @Override
@@ -21,7 +21,7 @@ public class WordFilterValidator implements ConstraintValidator<WordFilter, Stri
         for (String keyword : checkChar) {
             if (value.contains(keyword)) {
                 context
-                        .buildConstraintViolationWithTemplate(message)
+                        .buildConstraintViolationWithTemplate(_message)
                         .addConstraintViolation();
 
                 return false;

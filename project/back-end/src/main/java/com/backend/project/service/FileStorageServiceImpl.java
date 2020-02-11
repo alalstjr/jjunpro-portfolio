@@ -1,15 +1,16 @@
 package com.backend.project.service;
 
 import com.backend.project.domain.File;
+import com.backend.project.exception.SimpleException;
 import com.backend.project.exception.StoreFileException;
 import com.backend.project.repository.FileRepository;
 import com.backend.project.util.CloudStorageHelper;
+import lombok.RequiredArgsConstructor;
 import org.imagelib.ImageLib;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -27,15 +28,16 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class FileStorageServiceImpl implements FileStorageService {
     @Value("${google.id}")
-    private String GCSID;
+    private String _GCSID;
 
-    @Autowired
-    private FileRepository fileRepository;
+    @Value("${max-upload-count}")
+    private Integer _maxUploadCount;
 
-    @Autowired
-    private CloudStorageHelper cloudStorageHelper;
+    private final FileRepository     fileRepository;
+    private final CloudStorageHelper cloudStorageHelper;
 
     @Override
     public Optional<File> findById(Long id) {
@@ -50,11 +52,11 @@ public class FileStorageServiceImpl implements FileStorageService {
         // GCS File Delete
         cloudStorageHelper.deleteFile(
                 fileUrl,
-                GCSID
+                _GCSID
         );
         cloudStorageHelper.deleteFile(
                 thumbnailUrl,
-                GCSID
+                _GCSID
         );
 
         // DB File Delete
@@ -68,11 +70,38 @@ public class FileStorageServiceImpl implements FileStorageService {
         }
     }
 
+    /**
+     * Client 에서 기존 업로드된 파일의 제거된 {id}값을 기존 제거되는 file 반환하는 메소드
+     **/
     @Override
-    public List<File> uploadMultipleFiles(MultipartFile[] files, String domain) {
+    public void deleteFileFilter(Long[] removeFiles) {
+        Optional<File> uniFile;
+
+        if (removeFiles != null && removeFiles.length > 0) {
+            for (Long removeFile : removeFiles) {
+                uniFile = findById(removeFile);
+                uniFile.ifPresent(this :: fileDelete);
+            }
+        }
+    }
+
+    @Override
+    public List<File> uploadMultipleFiles(int fileSize, MultipartFile[] files, String domain) {
+
+        // File 최대갯수 확인
+        // UPDATE 기존 file과 수정되는 file 갯수의 최대값을 비교합니다.
+        if (files != null && fileSize + files.length > _maxUploadCount) {
+            try {
+                throw new SimpleException("파일은 최대 " + _maxUploadCount + "개 까지만 추가할 수 있습니다.");
+            }
+            catch (SimpleException e) {
+                e.printStackTrace();
+            }
+        }
 
         // 서버로 받은 파일'들'을 List로 변환하여 하나씩 서버로 업로드 합니다.
-        List<File> fileResult = Arrays.asList(files)
+        List<File> fileResult = Arrays
+                .asList(files)
                 .stream()
                 .map(file -> uploadFile(
                         file,
@@ -94,12 +123,13 @@ public class FileStorageServiceImpl implements FileStorageService {
          * 예제로 Windows 구분 기호 ("\")가 간단한 슬래시로 바뀌 었음을 알 수 있습니다.
          */
         final String fileOriName = StringUtils.cleanPath(file.getOriginalFilename());
-        final String fileType    = fileOriName.substring(fileOriName.lastIndexOf("."))
+        final String fileType = fileOriName
+                .substring(fileOriName.lastIndexOf("."))
                 .replace(
                         ".",
                         ""
                 );
-        final String fileRoute   = domain + "/";
+        final String fileRoute = domain + "/";
 
         try {
             // 파일의 이름에 유효하지 않은 문자가 포함되어 있는지 확인합니다.
@@ -152,7 +182,8 @@ public class FileStorageServiceImpl implements FileStorageService {
             InputStream thumbnail = new ByteArrayInputStream(os.toByteArray());
 
             // DB Save Code
-            File dbFile = File.builder()
+            File dbFile = File
+                    .builder()
                     .filename(file.getOriginalFilename())
                     .fileType(fileType)
                     .fileSize(file.getSize())
@@ -168,12 +199,12 @@ public class FileStorageServiceImpl implements FileStorageService {
                 cloudStorageHelper.uploadFile(
                         file.getInputStream(),
                         gcsFileName,
-                        GCSID
+                        _GCSID
                 );
                 cloudStorageHelper.uploadFile(
                         thumbnail,
                         gcsThumbFileName,
-                        GCSID
+                        _GCSID
                 );
             }
             catch (IOException e) {

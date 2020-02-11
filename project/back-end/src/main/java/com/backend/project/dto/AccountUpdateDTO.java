@@ -14,8 +14,8 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @NoArgsConstructor
+@UserDataMatch(id = "id")
 public class AccountUpdateDTO {
-    @UserDataMatch
     private Long id;
 
     @Size(min = 3, max = 10, message = "올바른 닉네임을 작성해 주세요.")

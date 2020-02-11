@@ -1,5 +1,8 @@
 package com.backend.project.dto;
 
+import com.backend.project.annotation.MaxFile;
+import com.backend.project.annotation.UserDataMatch;
+import com.backend.project.annotation.UserExistence;
 import com.backend.project.domain.Account;
 import com.backend.project.domain.Comment;
 import com.backend.project.domain.File;
@@ -20,28 +23,30 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UniversitySaveDTO
-{
+@UserExistence(id = "id")
+@UserDataMatch(id = "id")
+public class UniversitySaveDTO {
     private Long id;
 
-    @Size(max=50, message = "제목이 너무 깁니다.")
+    @Size(max = 50, message = "제목이 너무 깁니다.")
     @NotBlank(message = "제목을 작성해 주세요.")
     private String uniSubject;
 
-    private String uniAtmosphere;
+    private String uniAtmosphere = null;
 
-    private String uniPrice;
+    private String uniPrice = null;
 
     @NotBlank(message = "내용을 작성해 주세요.")
     @Type(type = "text")
     private String uniContent;
 
-    @Size(max=15, message = "대학교 이름이 너무 깁니다.")
+    @Size(max = 15, message = "대학교 이름이 너무 깁니다.")
     @NotBlank(message = "대학교 입력은 필수입니다.")
     private String uniName;
 
     private String uniTag;
 
+    //@Size(max = 5, message = "점수는 5점 만점입니다.")
     private Integer uniStar;
 
     private Set<Account> uniLike;
@@ -71,14 +76,15 @@ public class UniversitySaveDTO
     private Long[] removeFiles;
 
     // 클라이언트에서 받은 Files
+    @MaxFile
     private MultipartFile[] files;
 
     // COMMENT DATA
     private Set<Comment> comments = new HashSet<>();
 
-    public University toEntity()
-    {
-        return University.builder()
+    public University toEntity() {
+        return University
+                .builder()
                 .id(id)
                 .uniSubject(uniSubject)
                 .uniAtmosphere(uniAtmosphere)

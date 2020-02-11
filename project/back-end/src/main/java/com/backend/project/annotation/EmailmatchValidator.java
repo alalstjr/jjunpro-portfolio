@@ -8,17 +8,14 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.Optional;
 
-/**
- * AccountService 사용자의 DB 정보를 조회하는 { Service class Bean } 이 필수입니다.
- */
 @RequiredArgsConstructor
 public class EmailmatchValidator implements ConstraintValidator<EmailMatch, String> {
-    private       String         message;
+    private       String         _message;
     private final AccountService accountService;
 
     @Override
     public void initialize(EmailMatch constraintAnnotation) {
-        message = constraintAnnotation.message();
+        _message = constraintAnnotation.message();
     }
 
     @Override
@@ -26,7 +23,7 @@ public class EmailmatchValidator implements ConstraintValidator<EmailMatch, Stri
         Optional<Account> byUserId = accountService.findByEmail(value);
         if (!byUserId.isEmpty()) {
             context
-                    .buildConstraintViolationWithTemplate(message)
+                    .buildConstraintViolationWithTemplate(_message)
                     .addConstraintViolation();
 
             return false;

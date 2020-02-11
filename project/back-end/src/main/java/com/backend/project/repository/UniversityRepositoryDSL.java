@@ -13,12 +13,19 @@ public interface UniversityRepositoryDSL {
     void deleteData(Long id, Account accountData);
 
     Page<UniversityPublic> findByPublicAll(Pageable pageable, Account account);
+
     List<UniversityPublic> findByUniversityListWhereAccountId(SearchDTO searchDTO);
+
     List<UniversityPublic> findByUniversityListWhereAccountNickname(SearchDTO searchDTO);
+
     List<UniversityPublic> findByLikeListWhereAccountId(SearchDTO searchDTO);
+
     List<UniversityPublic> findByUniversityListWhereKeyword(SearchDTO searchDTO);
+
     List<UniversityPublic> findByOrderByCreatedDateDesc(Account account);
+
     List<UniversityPublic> findByOrderByMostLike(Account account);
+
     Long findByIdUniCount(String uniName);
 
     UniversityPublic findByPublicId(Long id, Account account);

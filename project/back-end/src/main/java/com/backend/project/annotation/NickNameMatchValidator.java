@@ -8,12 +8,9 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.Optional;
 
-/**
- * AccountService 사용자의 DB 정보를 조회하는 { Service class Bean } 이 필수입니다.
- */
 @RequiredArgsConstructor
 public class NickNameMatchValidator implements ConstraintValidator<NickNameMatch, String> {
-    private       String         message;
+    private       String         _message;
     private final AccountService accountService;
 
     /*
@@ -21,7 +18,7 @@ public class NickNameMatchValidator implements ConstraintValidator<NickNameMatch
      * */
     @Override
     public void initialize(NickNameMatch constraintAnnotation) {
-        message = constraintAnnotation.message();
+        _message = constraintAnnotation.message();
     }
 
     @Override
@@ -29,7 +26,7 @@ public class NickNameMatchValidator implements ConstraintValidator<NickNameMatch
         Optional<Account> byNickname = accountService.findByNickname(value);
         if (!byNickname.isEmpty()) {
             context
-                    .buildConstraintViolationWithTemplate(message)
+                    .buildConstraintViolationWithTemplate(_message)
                     .addConstraintViolation();
 
             return false;

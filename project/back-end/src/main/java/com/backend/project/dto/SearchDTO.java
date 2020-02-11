@@ -9,8 +9,7 @@ import org.hibernate.annotations.Type;
 @Getter
 @Setter
 @NoArgsConstructor
-public class SearchDTO
-{
+public class SearchDTO {
     @Type(type = "text")
     private String keyword;
 

@@ -7,12 +7,11 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @MappedSuperclass
-public abstract class BaseEntity extends BaseDate
-{
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public abstract class BaseEntity extends BaseDate {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
 
     @Column(nullable = false)

@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 public class StoreRepositoryImpl implements StoreRepositoryDSL {
 
     private final JPAQueryFactory queryFactory;
-    private QStore qStore = QStore.store;
-    private QUniversity qUniversity = QUniversity.university;
+    private       QStore          qStore      = QStore.store;
+    private       QUniversity     qUniversity = QUniversity.university;
 
     @Autowired
     private RepositoryUtill repositoryUtill;
@@ -31,7 +31,10 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
         Long result = queryFactory
                 .select(qUniversity)
                 .from(qStore)
-                .leftJoin(qStore.stoUniList, qUniversity)
+                .leftJoin(
+                        qStore.stoUniList,
+                        qUniversity
+                )
                 .where(qStore.stoId.eq(keyword))
                 .fetchCount();
 
@@ -44,22 +47,23 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
         List<University> uniData = queryFactory
                 .select(qUniversity)
                 .from(qStore)
-                .leftJoin(qStore.stoUniList, qUniversity)
-                .where(
-                        qUniversity.publicStatus.eq(true)
+                .leftJoin(
+                        qStore.stoUniList,
+                        qUniversity
+                )
+                .where(qUniversity.publicStatus
+                        .eq(true)
                         .and(qUniversity.controlStatus.eq(false))
                         .and(repositoryUtill.getSearchClassification(searchDTO))
-                        .and(repositoryUtill.getSearchCate(searchDTO))
-                )
-                .orderBy(
-                        repositoryUtill.getSearchOrderBy(searchDTO)
-                )
+                        .and(repositoryUtill.getSearchCate(searchDTO)))
+                .orderBy(repositoryUtill.getSearchOrderBy(searchDTO))
                 .offset(8 * searchDTO.getOffsetCount())
                 .limit(8)
                 .fetch();
 
-        List<UniversityPublic> results = uniData.stream().map(
-                u -> new UniversityPublic(
+        List<UniversityPublic> results = uniData
+                .stream()
+                .map(u -> new UniversityPublic(
                         u.getId(),
                         u.getUniSubject(),
                         u.getUniAtmosphere(),
@@ -69,17 +73,31 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
                         u.getUniTag(),
                         u.getUniStar(),
                         u.getModifiedDate(),
-                        u.getAccount().getId(),
-                        u.getAccount().getNickname(),
-                        u.getAccount().getUrlList(),
-                        u.getUniLike().size(),
-                        u.getUniLike().contains(searchDTO.getAccount()),
+                        u
+                                .getAccount()
+                                .getId(),
+                        u
+                                .getAccount()
+                                .getNickname(),
+                        u
+                                .getAccount()
+                                .getUrlList(),
+                        u
+                                .getUniLike()
+                                .size(),
+                        u
+                                .getUniLike()
+                                .contains(searchDTO.getAccount()),
                         u.getFiles(),
-                        u.getAccount().getPhoto(),
+                        u
+                                .getAccount()
+                                .getPhoto(),
                         findByStoreOne(u.getId()),
-                        u.getComments().size()
-                )
-        ).collect(Collectors.toList());
+                        u
+                                .getComments()
+                                .size()
+                ))
+                .collect(Collectors.toList());
 
         return results;
     }
@@ -88,19 +106,17 @@ public class StoreRepositoryImpl implements StoreRepositoryDSL {
      * Long id
      * University {id} 값을 필요로 합니다.
      * Store 상점의 정보를 얻어오는 메소드
-     * */
+     */
     @Override
     public StorePublic findByStoreOne(Long id) {
         return queryFactory
-                .select(
-                        Projections.constructor(
-                                StorePublic.class,
-                                qStore.stoId,
-                                qStore.stoName,
-                                qStore.stoAddress,
-                                qStore.stoUrl
-                        )
-                )
+                .select(Projections.constructor(
+                        StorePublic.class,
+                        qStore.stoId,
+                        qStore.stoName,
+                        qStore.stoAddress,
+                        qStore.stoUrl
+                ))
                 .from(qStore)
                 .where(qStore.stoUniList.any().id.eq(id))
                 .fetchOne();

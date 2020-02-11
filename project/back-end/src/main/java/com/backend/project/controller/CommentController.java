@@ -1,9 +1,9 @@
 package com.backend.project.controller;
 
 import com.backend.project.domain.Account;
+import com.backend.project.domain.Comment;
 import com.backend.project.dto.CommentSaveDTO;
 import com.backend.project.projection.CommentPublic;
-import com.backend.project.respone.WebProcessRespone;
 import com.backend.project.service.CommentService;
 import com.backend.project.util.AccountUtill;
 import com.backend.project.util.IpUtil;
@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,10 +27,9 @@ import java.util.Optional;
 @RequestMapping("/api/comment")
 @RequiredArgsConstructor
 public class CommentController {
-    private final CommentService    commentService;
-    private final WebProcessRespone webProcessRespone;
-    private final IpUtil            ipUtil;
-    private final AccountUtill      accountUtill;
+    private final CommentService commentService;
+    private final IpUtil         ipUtil;
+    private final AccountUtill   accountUtill;
 
     /**
      * INSERT Comment DATA
@@ -40,10 +40,10 @@ public class CommentController {
             @Valid
             @RequestBody
                     CommentSaveDTO dto, BindingResult bindingResult, Authentication authentication, HttpServletRequest request
-    ) {
+    ) throws BindException {
         // 유효성 검사 후 최종 반환합니다.
         if (bindingResult.hasErrors()) {
-            return webProcessRespone.webErrorRespone(bindingResult);
+            throw new BindException(bindingResult);
         }
 
         // Account Info
@@ -78,44 +78,14 @@ public class CommentController {
     /**
      * DELETE Comment DATA id
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{comment}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<String> deleteCommentId(
-            @PathVariable
-                    Long id, Authentication authentication
-    ) {
-        String errorType = null;
-        String errorText = null;
-
-        Optional<Account> accountData = accountUtill.accountInfo(authentication);
-
-        if (accountData.isPresent()) {
-
-            if (!accountUtill.userDataCheck(
-                    id,
-                    accountData,
-                    "comment"
-            )) {
-                errorType = "AuthenticationError";
-                errorText = "잘못된 계정 접근입니다.";
-                return webProcessRespone.webErrorRespone(
-                        errorType,
-                        errorText
-                );
-            }
-
-            commentService.deleteData(
-                    id,
-                    accountData.get()
-            );
-        }
-        else {
-            errorType = "AuthenticationError";
-            errorText = "올바른 접근이 아닙니다.";
-            return webProcessRespone.webErrorRespone(
-                    errorType,
-                    errorText
-            );
+    public ResponseEntity<?> deleteCommentId(
+            @Valid Comment comment, BindingResult bindingResult
+    ) throws BindException {
+        // 유효성 검사 후 최종 반환합니다.
+        if (bindingResult.hasErrors()) {
+            throw new BindException(bindingResult);
         }
 
         return new ResponseEntity<String>(

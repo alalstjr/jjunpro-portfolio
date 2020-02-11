@@ -6,7 +6,6 @@ import com.backend.project.dto.AccountPwdUpdateDTO;
 import com.backend.project.dto.AccountSaveDTO;
 import com.backend.project.dto.AccountUpdateDTO;
 import com.backend.project.projection.AccountPublic;
-import com.backend.project.respone.WebProcessRespone;
 import com.backend.project.security.token.PostAuthorizationToken;
 import com.backend.project.service.AccountService;
 import com.backend.project.service.FileStorageService;
@@ -15,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +28,6 @@ import java.util.List;
 public class AccountController {
     private final AccountService     accountService;
     private final FileStorageService fileStorageService;
-    private final WebProcessRespone  webProcessRespone;
 
     /**
      * INSERT Account DATA
@@ -38,10 +37,10 @@ public class AccountController {
             @Valid
             @RequestBody
                     AccountSaveDTO dto, BindingResult bindingResult
-    ) {
+    ) throws BindException {
         // 유효성 검사 후 최종 반환합니다.
         if (bindingResult.hasErrors()) {
-            return webProcessRespone.webErrorRespone(bindingResult);
+            throw new BindException(bindingResult);
         }
 
         // 새로운 유저의 정보를 DB 에 저장합니다.
@@ -61,10 +60,10 @@ public class AccountController {
             @Valid
             @ModelAttribute
                     AccountUpdateDTO dto, BindingResult bindingResult
-    ) {
+    ) throws BindException {
         // 유효성 검사 후 최종 반환합니다.
         if (bindingResult.hasErrors()) {
-            return webProcessRespone.webErrorRespone(bindingResult);
+            throw new BindException(bindingResult);
         }
 
         // 첨부파일이 존재하는 경우 파일 업로드 메소드입니다.
@@ -93,10 +92,10 @@ public class AccountController {
             @Valid
             @RequestBody
                     AccountPwdUpdateDTO dto, BindingResult bindingResult
-    ) {
+    ) throws BindException {
         // 유효성 검사 후 최종 반환합니다.
         if (bindingResult.hasErrors()) {
-            return webProcessRespone.webErrorRespone(bindingResult);
+            throw new BindException(bindingResult);
         }
 
         return new ResponseEntity<>(
