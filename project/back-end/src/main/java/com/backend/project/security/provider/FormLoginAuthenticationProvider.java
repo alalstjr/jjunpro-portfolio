@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -68,6 +69,14 @@ public class FormLoginAuthenticationProvider implements AuthenticationProvider {
             String password,
             Account account
     ) {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String hashedPassword = passwordEncoder.encode(account.getPassword());
+
+        System.out.println(password);
+        System.out.println(account.getPassword());
+        System.out.println(hashedPassword);
+        System.out.println(passwordEncoder.matches(password, account.getPassword()));
+
         // 비교대상이 앞에 와야한다.
         return passwordEncoder.matches(
                 password,

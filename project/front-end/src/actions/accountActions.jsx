@@ -73,7 +73,10 @@ export const insertAccount = (account) => async dispatch => {
             }
         }
     } catch (error) {
-        alert(error.response.data.error);
+        dispatch({
+            type: GET_ERRORS,
+            payload: error.response.data.errors
+        });
     }
 }
 
@@ -253,7 +256,10 @@ export const updateAccount = (account, files, history) => async dispatch => {
             }
         }
     } catch (error) {
-        alert(error.response.data.error);
+        dispatch({
+            type: GET_ERRORS,
+            payload: error.response.data.errors
+        });
     }
 }
 
@@ -295,8 +301,11 @@ export const updateAccountPwdId = (account, history) => async dispatch => {
                 }
             });
         }
-    } catch (e) {
-        console.log(e);
+    } catch (error) {
+        dispatch({
+            type: GET_ERRORS,
+            payload: error.response.data.errors
+        });
     }
 }
 

@@ -390,7 +390,6 @@ public class UniversityController {
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<String> deleteUniversityuniId(
             @Valid
-            @PathVariable
                     UniversityDTO id, Authentication authentication, BindingResult bindingResult
     ) throws BindException {
         // 유효성 검사 후 최종 반환합니다.

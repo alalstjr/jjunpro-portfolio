@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @UserExistence(id = "id")
-@UserDataMatch(id = "id")
+@UserDataMatch(id = "id", domain = "university")
 public class UniversityDTO {
 
     private Long id;

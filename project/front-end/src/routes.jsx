@@ -23,6 +23,9 @@ export const USER_AUTH = () => {
         return false;
     }
 }
+export const AUTH_UPDATE = () => {
+    return axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
+}
 export const USER_ID = () => {
     if(localStorage.getItem("userInfo")) {
         return JSON.parse(localStorage.getItem("userInfo")).userId;

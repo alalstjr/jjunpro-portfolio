@@ -21,8 +21,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserDataMatchValidator implements ConstraintValidator<UserDataMatch, Object> {
 
-    private       String          _message;
-    private       String          _id;
+    private String _message;
+    private String _id;
+    private String _domain;
+
     private final SecurityContext securityContext = SecurityContextHolder.getContext();
     private final AccountUtill    accountUtill;
 
@@ -30,6 +32,7 @@ public class UserDataMatchValidator implements ConstraintValidator<UserDataMatch
     public void initialize(UserDataMatch constraintAnnotation) {
         _message = constraintAnnotation.message();
         _id = constraintAnnotation.id();
+        _domain = constraintAnnotation.domain();
     }
 
     @Override
@@ -53,10 +56,13 @@ public class UserDataMatchValidator implements ConstraintValidator<UserDataMatch
         if (idCheck != null && !idCheck.isEmpty()) {
             Optional<Account> accountData = accountUtill.accountInfo(securityContext.getAuthentication());
 
-            valid = accountData.isPresent() && accountData
-                    .get()
-                    .getId()
-                    .equals(Long.parseLong(idCheck));
+            if (accountData.isPresent()) {
+                valid = accountUtill.userDataCheck(
+                        Long.parseLong(idCheck),
+                        accountData.get(),
+                        _domain
+                );
+            }
         }
 
         if (!valid) {

@@ -81,7 +81,7 @@ public class PasswordMatchValidator implements ConstraintValidator<PasswordMatch
                     .addPropertyNode(_password)
                     .addConstraintViolation();
 
-            //return false;
+            return false;
         }
 
         // 비밀번호 변경인 경우 oldPassword 가 동일한지 확인합니다.

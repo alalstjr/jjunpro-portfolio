@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class UniLikeDTO {
 
-    Long    id;
+    Long id;
 
     Integer uniLike;
 

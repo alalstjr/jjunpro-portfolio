@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @UserExistence(id = "id")
-@UserDataMatch(id = "id")
+@UserDataMatch(id = "id", domain = "comment")
 public class CommentDTO {
 
     private Long id;

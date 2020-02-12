@@ -1,6 +1,9 @@
 package com.backend.project.util;
 
 import com.backend.project.domain.Account;
+import com.backend.project.domain.Alarm;
+import com.backend.project.domain.Comment;
+import com.backend.project.domain.University;
 import com.backend.project.security.context.AccountContext;
 import com.backend.project.security.jwt.HeaderTokenExtractor;
 import com.backend.project.security.jwt.JwtDecoder;
@@ -20,11 +23,11 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 public class AccountUtill {
-    private final AccountService accountService;
-    private final UniversityService universityService;
-    private final CommentService commentService;
-    private final AlarmService alarmService;
-    private final JwtDecoder jwtDecoder;
+    private final AccountService       accountService;
+    private final UniversityService    universityService;
+    private final CommentService       commentService;
+    private final AlarmService         alarmService;
+    private final JwtDecoder           jwtDecoder;
     private final HeaderTokenExtractor headerTokenExtractor;
 
     /*
@@ -65,39 +68,51 @@ public class AccountUtill {
      *  String checkDomain 값은 검색하는 Domain 의 이름값입니다.
      *  DATA 가 존재하지 않을경우 NULL 을 반환합니다.
      */
-    public boolean userDataCheck(Long id, Optional<Account> accountData, String checkDomain) {
+    public boolean userDataCheck(
+            Long id,
+            Account accountData,
+            String checkDomain
+    ) {
         Long data = null;
 
         // 해당 데이터의 작성자 {id} 값을 가져옵니다.
         switch (checkDomain) {
             case "university":
-                data = universityService
-                        .findById(id)
-                        .get()
-                        .getAccount()
-                        .getId();
+                Optional<University> uniDataDB = universityService.findById(id);
+                if (uniDataDB != null && uniDataDB.isPresent()) {
+                    data = uniDataDB
+                            .get()
+                            .getAccount()
+                            .getId();
+                }
                 break;
 
             case "comment":
-                data = commentService
-                        .findById(id)
-                        .get()
-                        .getAccount()
-                        .getId();
+                Optional<Comment> commentDataDB = commentService.findById(id);
+                if (commentDataDB != null && commentDataDB.isPresent()) {
+                    data = commentDataDB
+                            .get()
+                            .getAccount()
+                            .getId();
+                }
                 break;
 
             case "account":
-                data = accountService
-                        .findById(id)
-                        .get()
-                        .getId();
+                Optional<Account> accountDataDB = accountService.findById(id);
+                if (accountDataDB != null && accountDataDB.isPresent()) {
+                    data = accountDataDB
+                            .get()
+                            .getId();
+                }
                 break;
 
             case "alarm":
-                data = alarmService
-                        .findById(id)
-                        .get()
-                        .getUserId();
+                Optional<Alarm> alarmDataDB = alarmService.findById(id);
+                if (alarmDataDB != null && alarmDataDB.isPresent()) {
+                    data = alarmDataDB
+                            .get()
+                            .getUserId();
+                }
                 break;
 
             default:
@@ -105,11 +120,10 @@ public class AccountUtill {
         }
 
         // 해당 데이터의 작성자가 맞는지 검사합니다.
-        if (!data.equals(accountData
-                .get()
-                .getId()) || data == null) {
-            return false;
+        if (data != null) {
+            return data.equals(accountData.getId());
         }
-        return true;
+
+        return false;
     }
 }

@@ -1,5 +1,5 @@
 import axios from "axios"
-import { SERVER_URL, USER_AUTH, USER_ID } from "../routes"
+import { SERVER_URL, USER_AUTH, USER_ID, AUTH_UPDATE } from "../routes"
 import {
     GET_UNIVERSITY_COUNT,
     TEMP_UNIVERSITY_LIST,
@@ -87,7 +87,7 @@ export const insertUniversity = (pugjjig, files, history) => async dispatch => {
         });
 
         // 유저 JWT Token정보
-        USER_AUTH();
+        axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`
         
         const res = await axios.post(`${SERVER_URL}/api/university`, formData, config);
 

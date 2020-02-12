@@ -93,7 +93,6 @@ public class FileStorageServiceImpl implements FileStorageService {
             MultipartFile[] files,
             String domain
     ) {
-
         // File 최대갯수 확인
         // UPDATE 기존 file과 수정되는 file 갯수의 최대값을 비교합니다.
         if (files != null && fileSize + files.length > _maxUploadCount) {

@@ -64,8 +64,8 @@ class MyPageProvider extends Component {
             if(nextProps.error.data.oldPassword) {
                 this.warningSet(true, nextProps.error.data.oldPassword);
             }
-            if(nextProps.error.data.passwordRe) {
-                this.warningSet(true, nextProps.error.data.passwordRe);
+            if(nextProps.error.data.password) {
+                this.warningSet(true, nextProps.error.data.password);
             }
         }
 

@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Setter
 @NoArgsConstructor
-@UserDataMatch(id = "id")
+@UserDataMatch(id = "id", domain = "account")
 @PasswordMatch(password = "password", passwordRe = "passwordRe", oldPassword = "oldPassword", encoder = true)
 public class AccountPwdUpdateDTO {
 

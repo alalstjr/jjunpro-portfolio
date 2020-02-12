@@ -56,9 +56,9 @@ public class AlarmController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<List<Alarm>> deleteAlarmId(
-            @Valid
-            @PathVariable
-                    AlarmDTO id, Authentication authentication, BindingResult bindingResult
+            @Valid AlarmDTO id,
+            Authentication authentication,
+            BindingResult bindingResult
     ) throws BindException {
         // 유효성 검사 후 최종 반환합니다.
         if (bindingResult.hasErrors()) {

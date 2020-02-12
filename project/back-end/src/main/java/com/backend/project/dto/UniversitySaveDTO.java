@@ -24,7 +24,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @UserExistence(id = "id")
-@UserDataMatch(id = "id")
+@UserDataMatch(id = "id", domain = "university")
 public class UniversitySaveDTO {
 
     private Long id;

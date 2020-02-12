@@ -90,7 +90,7 @@ public class AccountController {
         }
 
         // 첨부파일이 존재하는 경우 파일 업로드 메소드입니다.
-        if (!dto
+        if (dto.getFile() != null && !dto
                 .getFile()
                 .isEmpty()) {
             File fileData = fileStorageService.uploadFile(
