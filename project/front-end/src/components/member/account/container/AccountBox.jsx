@@ -1,17 +1,17 @@
-import React, { Component, Fragment } from "react";
+import React, {Component, Fragment} from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { accountLoginCheck, logoutAccount, modalAccount } from "../../../../actions/accountActions";
-import { USER_AUTH } from "../../../../routes";
+import {connect} from "react-redux";
+import {Link} from "react-router-dom";
+import {accountLoginCheck, logoutAccount, modalAccount} from "../../../../actions/accountActions";
+import {USER_AUTH} from "../../../../routes";
 
-import { 
+import {
     LoginWrap,
     LoginLogo,
     SignUpBtn,
     LoginBtn
 } from "../../style"
- 
+
 class LoginBox extends Component {
 
     componentDidMount() {
@@ -27,35 +27,35 @@ class LoginBox extends Component {
 
     // Modal State
     openModal = (target) => {
-        const { modalAccount } = this.props;
-        
+        const {modalAccount} = this.props;
+
         // 로그인 사용자가 아닐경우
-        if(!USER_AUTH()) {
-            modalAccount(target, true); 
+        if (!USER_AUTH()) {
+            modalAccount(target, true);
             return false;
         }
     }
 
     render() {
 
-        const { initSearch } = this.props;
+        const {initSearch} = this.props;
 
         return (
             <LoginWrap>
-                <LoginLogo initSearch = {initSearch} >푹찍</LoginLogo>
+                <LoginLogo initSearch={initSearch}>푹찍</LoginLogo>
                 {
                     !USER_AUTH() ?
-                    <Fragment>
-                        <LoginBtn onClick = {() => this.openModal("login")}>로그인</LoginBtn>
-                        <SignUpBtn onClick = {() => this.openModal("sign_up")}>회원가입</SignUpBtn>
-                    </Fragment>
-                    :
-                    <Fragment>
-                        <LoginBtn onClick={this.logoutHandler}>로그아웃</LoginBtn>
-                        <SignUpBtn>
-                            <Link to="/mypage">마이페이지</Link>
-                        </SignUpBtn>
-                    </Fragment>
+                        <Fragment>
+                            <LoginBtn onClick={() => this.openModal("login")}>로그인</LoginBtn>
+                            <SignUpBtn onClick={() => this.openModal("sign_up")}>회원가입</SignUpBtn>
+                        </Fragment>
+                        :
+                        <Fragment>
+                            <LoginBtn onClick={this.logoutHandler}>로그아웃</LoginBtn>
+                            <SignUpBtn>
+                                <Link to="/mypage">마이페이지</Link>
+                            </SignUpBtn>
+                        </Fragment>
                 }
                 <SignUpBtn>
                     <Link to="/square">리뷰검색</Link>
@@ -71,7 +71,7 @@ LoginBox.propTypes = {
     error: PropTypes.object.isRequired,
     user_info: PropTypes.object.isRequired
 }
-  
+
 const mapStateToProps = state => ({
     error: state.errors,
     user_info: state.account.user_info
@@ -79,8 +79,8 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { 
-        accountLoginCheck, 
+    {
+        accountLoginCheck,
         logoutAccount,
         modalAccount
     }

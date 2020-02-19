@@ -1,5 +1,5 @@
-import styled, { css } from "styled-components"
-import { 
+import styled, {css} from "styled-components"
+import {
     ClearFix,
     FlexInit,
     FlexCenter,
@@ -11,8 +11,8 @@ import {
 const MOBILE_S = 480;
 
 /*******************
-    Common CSS
-********************/
+ Common CSS
+ ********************/
 export const WrapPadding = css`
     padding: 0.9375rem;
 `;
@@ -29,8 +29,8 @@ export const ModalWrapCSS = css`
 `;
 
 /*******************
-    Form Style
-********************/
+ Form Style
+ ********************/
 export const TitleWrap = styled.div`
     padding-bottom: 0.625rem;
     margin-bottom: 0.625rem;
@@ -111,8 +111,8 @@ export const CloseBtn = styled.div`
 `;
 
 /*******************
-    Item Style
-********************/
+ Item Style
+ ********************/
 export const PugjjigItemWrap = styled.ul`
     ${ScrollBar}
     height: 100%;
@@ -251,7 +251,7 @@ export const ItemLikeBtn = styled.button.attrs({
     a {
         color: #999;
     }
-`;  
+`;
 export const ItemLikeText = styled.div`
     float: left;
 `;
@@ -278,11 +278,11 @@ export const ItemEditModalBtn = styled.button.attrs({
     border-bottom: 0.0625rem solid #eee;
 
     ${
-        props => props.warring ?
+    props => props.warring ?
         `color: #ed4956`
         :
         `color: #333333`
-    }
+}
 
     &:last-child {
         border-bottom: none;
@@ -296,8 +296,8 @@ export const ItemEditModalBtn = styled.button.attrs({
 `;
 
 /*******************
-    List Style
-********************/
+ List Style
+ ********************/
 export const ListModalWrap = styled.div`
     ${FlexInit}
     ${FlexCenter}
@@ -312,8 +312,8 @@ export const ListModalWrap = styled.div`
 `;
 
 /*******************
-    Insert Style
-********************/
+ Insert Style
+ ********************/
 export const InsertModalWrap = styled.div`
     ${FlexInit}
     ${FlexCenter}
@@ -348,8 +348,8 @@ export const OptionBox = styled.div`
 `;
 
 /*******************
-    View Style
-********************/
+ View Style
+ ********************/
 export const ViewWrap = styled.div`
     background-color: ${props => props.theme.backgroundColor};
 `;
@@ -371,8 +371,8 @@ export const ItemOption = styled.div`
 `;
 
 /*******************
-    Comment Style
-********************/
+ Comment Style
+ ********************/
 export const CommentNickname = styled.span`
     font-weight: 600;
     margin-right: 0.3125rem;
@@ -402,8 +402,7 @@ export const InputCommentWrap = styled.div`
     height: 2.625rem;
     border: 0.0625rem solid #eee;
 `;
-export const InputComment = styled.textarea.attrs({
-})`
+export const InputComment = styled.textarea.attrs({})`
     border: none;
     width: 100%;
     padding: 0.625rem;
@@ -429,8 +428,8 @@ export const NoneComment = styled.div`
 `;
 
 /*******************
-    UniList Style
-********************/
+ UniList Style
+ ********************/
 export const UniBtn = styled.button.attrs({
     type: "button"
 })`

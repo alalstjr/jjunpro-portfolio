@@ -1,10 +1,10 @@
-import React, { Fragment, Component } from "react"
+import React, {Fragment, Component} from "react"
 import ReactTransitionGroup from "react-addons-css-transition-group"
 
 import List from "../list/List"
 
-import { 
-    ModalCloseBtn, 
+import {
+    ModalCloseBtn,
     ModalWrap
 } from "../../../style/globalStyles";
 
@@ -17,34 +17,35 @@ class ListModal extends Component {
     render() {
 
         // props Init
-        const { 
+        const {
             keyword,
             modalState,
             closeModal
         } = this.props;
-        
+
         return (
             <Fragment>
                 {
-                    modalState ? 
-                    <ReactTransitionGroup
-                        transitionName         = {'Modal-anim'}
-                        transitionEnterTimeout = {200}
-                        transitionLeaveTimeout = {200}
-                    >
-                    <ModalWrap>
-                        <ListModalWrap>
-                            <ModalCloseBtn onClick={() => closeModal("listModalState")}/>
-                            <List
-                                keyword        = {keyword}
-                                classification = {"storeId"}
-                                modalState     = {modalState}
-                            />
-                        </ListModalWrap>
-                    </ModalWrap>
-                    </ReactTransitionGroup>
-                    :
-                    <ReactTransitionGroup transitionName={'Modal-anim'} transitionEnterTimeout={200} transitionLeaveTimeout={200} />
+                    modalState ?
+                        <ReactTransitionGroup
+                            transitionName={'Modal-anim'}
+                            transitionEnterTimeout={200}
+                            transitionLeaveTimeout={200}
+                        >
+                            <ModalWrap>
+                                <ListModalWrap>
+                                    <ModalCloseBtn onClick={() => closeModal("listModalState")}/>
+                                    <List
+                                        keyword={keyword}
+                                        classification={"storeId"}
+                                        modalState={modalState}
+                                    />
+                                </ListModalWrap>
+                            </ModalWrap>
+                        </ReactTransitionGroup>
+                        :
+                        <ReactTransitionGroup transitionName={'Modal-anim'} transitionEnterTimeout={200}
+                                              transitionLeaveTimeout={200}/>
                 }
             </Fragment>
         )

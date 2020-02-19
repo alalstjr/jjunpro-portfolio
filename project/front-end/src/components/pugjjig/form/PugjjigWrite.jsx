@@ -1,19 +1,19 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
+import {connect} from "react-redux";
+import {withRouter} from "react-router-dom";
 import ReactTransitionGroup from "react-addons-css-transition-group";
 
-import { insertUniversity } from "../../../actions/PugjjigActions";
+import {insertUniversity} from "../../../actions/PugjjigActions";
 import FileDrop from "../../widget/fileDrop/FileDrop";
 import SVG from "../../../static/svg/SVG";
 import SVGLoading from "../../../static/svg/SVGLoading";
 import UniversityList from "../list/universityList/UniversityList";
 
-import { 
-    InputClean, 
-    Formlabel, 
-    FormGroup, 
+import {
+    InputClean,
+    Formlabel,
+    FormGroup,
     Textarea,
     WaringWrap,
     SmallBtn,
@@ -39,9 +39,9 @@ import {
 
 class PugjjigWrite extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
-    
+
         this.state = {
             // update id
             uniId: null,
@@ -91,19 +91,19 @@ class PugjjigWrite extends Component {
         });
 
         // editPugjjig 값을 props 전달받은 경우 (Edit 상태)
-        if(editPugjjig !== undefined) {
+        if (editPugjjig !== undefined) {
             this.setState({
                 uniId: editPugjjig.id,
                 uniSubject: editPugjjig.uniSubject,
                 uniAtmosphere: editPugjjig.uniAtmosphere,
-                uniPrice: editPugjjig.uniPrice, 
+                uniPrice: editPugjjig.uniPrice,
                 uniContent: editPugjjig.uniContent,
                 uniName: editPugjjig.uniName,
                 uniTag: this.handleTagArray(editPugjjig.uniTag),
                 uniStar: editPugjjig.uniStar,
                 registerFiles: editPugjjig.files,
                 stoId: editPugjjig.storePublic.stoId
-            }); 
+            });
         }
     }
 
@@ -138,7 +138,7 @@ class PugjjigWrite extends Component {
     }
     // Tag Input Setup
     onTagChange = (e) => {
-        if(e.target.value !== " ") {
+        if (e.target.value !== " ") {
             this.setState({
                 [e.target.name]: e.target.value
             });
@@ -162,7 +162,7 @@ class PugjjigWrite extends Component {
 
     // registerFiles Setup
     registerFileState = (file) => {
-        const { registerFiles, removeFiles } = this.state;
+        const {registerFiles, removeFiles} = this.state;
         registerFiles.splice(registerFiles.indexOf(file), 1);
 
         removeFiles.push(file.id)
@@ -183,7 +183,7 @@ class PugjjigWrite extends Component {
             stoAddress,
             stoUrl,
             uniId,
-            uniSubject, 
+            uniSubject,
             uniAtmosphere,
             uniPrice,
             uniContent,
@@ -196,13 +196,13 @@ class PugjjigWrite extends Component {
 
         const pugjjig = {
             uniId,
-            uniSubject, 
+            uniSubject,
             uniAtmosphere,
             uniPrice,
             uniContent,
             uniName,
             uniTag,
-            uniStar: uniStar*1,
+            uniStar: uniStar * 1,
             stoId,
             stoName,
             stoAddress,
@@ -211,44 +211,44 @@ class PugjjigWrite extends Component {
         };
 
         // {Client} 유효성 검사 출력 코드입니다.
-        if(!pugjjig.uniName) {
+        if (!pugjjig.uniName) {
             this.warningSet(true, "대학교 선택은 필수입니다.");
             return false;
         }
-        if(!pugjjig.uniSubject) {
+        if (!pugjjig.uniSubject) {
             this.warningSet(true, "제목 작성은 필수입니다.");
             return false;
         }
-        if(!pugjjig.uniContent) {
+        if (!pugjjig.uniContent) {
             this.warningSet(true, "내용 작성은 필수입니다.");
             return false;
         }
-        
+
         // Array to String
         pugjjig.uniTag = this.handleTagArray(pugjjig.uniTag);
 
         this.setState({
             loding: true
         });
-        
+
         this.props.insertUniversity(pugjjig, files, this.props.history);
     }
 
     // 태그 메소드
     handleTagEvent = (e) => {
-        const { uniTagText } = this.state;
-        
-        if( (e.keyCode === 32 || e.keyCode === 13) && uniTagText ) {
+        const {uniTagText} = this.state;
+
+        if ((e.keyCode === 32 || e.keyCode === 13) && uniTagText) {
             this.handleTagUpdate();
         }
     }
-    
+
     handleTagUpdate = () => {
-        const { uniTag, uniTagText } = this.state;
+        const {uniTag, uniTagText} = this.state;
         let tagVal = uniTagText.replace(/\s/gi, "");
 
-        if(uniTag.length < 6 && uniTagText.length < 10) {
-            if( uniTag.filter( tag => tag === uniTagText ).length >= 1 ) {
+        if (uniTag.length < 6 && uniTagText.length < 10) {
+            if (uniTag.filter(tag => tag === uniTagText).length >= 1) {
                 return false;
             }
 
@@ -260,21 +260,21 @@ class PugjjigWrite extends Component {
     }
 
     handleTagRemove = (target) => {
-        const { uniTag } = this.state;
-        
+        const {uniTag} = this.state;
+
         this.setState({
-            uniTag: uniTag.filter( tag => tag !== target)
+            uniTag: uniTag.filter(tag => tag !== target)
         });
     }
 
     handleTagArray = (target) => {
-        if(target === "") {
+        if (target === "") {
             return [];
-        } else if(typeof target === "string") {
+        } else if (typeof target === "string") {
             return target.split(",");
         } else {
             return target.join(",");
-        }   
+        }
     }
 
     handleUniName = (target) => {
@@ -314,28 +314,28 @@ class PugjjigWrite extends Component {
     render() {
 
         // State Init
-        const { 
+        const {
             uniName,
             uniSubject,
             uniAtmosphere,
-            uniPrice, 
+            uniPrice,
             uniContent,
             uniTag,
             uniTagText,
             uniStar,
             registerFiles,
             loding,
-            warning, 
+            warning,
             warningText
         } = this.state;
 
-        const { pugjjig_university, file_progress } = this.props;
+        const {pugjjig_university, file_progress} = this.props;
 
         const tags = uniTag.map((tag, index) => (
             <TagPart key={index}>
                 {tag}
-                <CloseBtn onClick={ () => this.handleTagRemove(tag)} key={index} >
-                    <SVG name={"close"} width="8px" height="8px" color={"#ffffff"} />
+                <CloseBtn onClick={() => this.handleTagRemove(tag)} key={index}>
+                    <SVG name={"close"} width="8px" height="8px" color={"#ffffff"}/>
                 </CloseBtn>
             </TagPart>
         ));
@@ -353,28 +353,28 @@ class PugjjigWrite extends Component {
                     <RatingWrap>
                         <Rating>
                             <RatingPointInput id="star5" name="uniStar" value="5"
-                                checked={uniStar === 5} 
-                                onChange={this.onChangeInt}
+                                              checked={uniStar === 5}
+                                              onChange={this.onChangeInt}
                             />
                             <RatingPointLabel htmlFor="star5"/>
                             <RatingPointInput id="star4" name="uniStar" value="4"
-                                checked={uniStar === 4} 
-                                onChange={this.onChangeInt}
+                                              checked={uniStar === 4}
+                                              onChange={this.onChangeInt}
                             />
                             <RatingPointLabel htmlFor="star4"/>
                             <RatingPointInput id="star3" name="uniStar" value="3"
-                                checked={uniStar === 3} 
-                                onChange={this.onChangeInt}
+                                              checked={uniStar === 3}
+                                              onChange={this.onChangeInt}
                             />
                             <RatingPointLabel htmlFor="star3"/>
                             <RatingPointInput id="star2" name="uniStar" value="2"
-                                checked={uniStar === 2} 
-                                onChange={this.onChangeInt}
+                                              checked={uniStar === 2}
+                                              onChange={this.onChangeInt}
                             />
                             <RatingPointLabel htmlFor="star2"/>
                             <RatingPointInput id="star1" name="uniStar" value="1"
-                                checked={uniStar === 1} 
-                                onChange={this.onChangeInt}
+                                              checked={uniStar === 1}
+                                              onChange={this.onChangeInt}
                             />
                             <RatingPointLabel htmlFor="star1"/>
                         </Rating>
@@ -382,16 +382,16 @@ class PugjjigWrite extends Component {
                     </RatingWrap>
                     {
                         (pugjjig_university === "" || pugjjig_university === undefined || pugjjig_university === null) ?
-                        <UniversityList
-                            uniName = {uniName}
-                            handleUniName = {this.handleUniName}
-                        />
-                        :
-                        null
+                            <UniversityList
+                                uniName={uniName}
+                                handleUniName={this.handleUniName}
+                            />
+                            :
+                            null
                     }
                     <FormGroup>
                         <Formlabel>제목</Formlabel>
-                        <InputClean                                    
+                        <InputClean
                             id="uniSubject"
                             name="uniSubject"
                             type="text"
@@ -402,7 +402,7 @@ class PugjjigWrite extends Component {
                     <FormGroup>
                         <Formlabel>분위기&amp;가격대</Formlabel>
                         <OptionBox>
-                            <SelectBox                                   
+                            <SelectBox
                                 id="uniAtmosphere"
                                 name="uniAtmosphere"
                                 value={uniAtmosphere}
@@ -413,7 +413,7 @@ class PugjjigWrite extends Component {
                                 <option value="고급스런 분위기">고급스런 분위기</option>
                                 <option value="활발한 분위기">활발한 분위기</option>
                             </SelectBox>
-                            <SelectBox                                   
+                            <SelectBox
                                 id="uniPrice"
                                 name="uniPrice"
                                 value={uniPrice}
@@ -430,7 +430,7 @@ class PugjjigWrite extends Component {
                     </FormGroup>
                     <FormGroup>
                         <Formlabel>내용</Formlabel>
-                        <Textarea                                    
+                        <Textarea
                             id="uniContent"
                             name="uniContent"
                             value={uniContent}
@@ -442,46 +442,46 @@ class PugjjigWrite extends Component {
                         <TagWrap>
                             {tags}
                             <InputClean
-                                id = "uniTagText"
-                                name = "uniTagText"
-                                type = "text"
-                                value = {uniTagText}
-                                onChange = {this.onTagChange}
-                                onKeyDown = {this.handleTagEvent}
-                                placeholder = "태그 작성 후 Space 키를 눌러주세요. (10자 제한)"
+                                id="uniTagText"
+                                name="uniTagText"
+                                type="text"
+                                value={uniTagText}
+                                onChange={this.onTagChange}
+                                onKeyDown={this.handleTagEvent}
+                                placeholder="태그 작성 후 Space 키를 눌러주세요. (10자 제한)"
                             />
                         </TagWrap>
-                        <SmallBtn 
-                            onClick = {this.handleTagUpdate}
-                            type = "button"
+                        <SmallBtn
+                            onClick={this.handleTagUpdate}
+                            type="button"
                         >태그추가</SmallBtn>
                     </FormGroup>
                     <FormGroup>
                         <Formlabel>사진</Formlabel>
                         <FileDrop
-                            fileState = {this.fileState}
-                            registerFileState = {this.registerFileState}
-                            registerFiles = {registerFiles}
-                            multiple = {true}
+                            fileState={this.fileState}
+                            registerFileState={this.registerFileState}
+                            registerFiles={registerFiles}
+                            multiple={true}
                         />
                     </FormGroup>
                 </Content>
                 <InsertSubmitBtn
                     type="submit"
                 >
-                        작성 완료
+                    작성 완료
                 </InsertSubmitBtn>
 
                 {/* 작성 완료 클릭시 Loding 대기화면 */}
                 {
                     loding ?
-                    <div>
-                        <SVGLoading
-                            loadText = {file_progress}
-                        />   
-                    </div>
-                    :
-                    null
+                        <div>
+                            <SVGLoading
+                                loadText={file_progress}
+                            />
+                        </div>
+                        :
+                        null
                 }
 
                 {/* Write 안내문 */}
@@ -490,12 +490,12 @@ class PugjjigWrite extends Component {
                     transitionEnterTimeout={200}
                     transitionLeaveTimeout={200}
                 >
-                {
-                    warning ? 
-                    <WaringWrap>{warningText}</WaringWrap>
-                    :
-                    null
-                }
+                    {
+                        warning ?
+                            <WaringWrap>{warningText}</WaringWrap>
+                            :
+                            null
+                    }
                 </ReactTransitionGroup>
             </Form>
         )
@@ -514,8 +514,8 @@ const mapStateToProps = state => ({
     pugjjig_university: state.pugjjig.pugjjig_university,
     file_progress: state.pugjjig.file_progress
 });
-  
+
 export default withRouter(connect(
-    mapStateToProps, 
-    { insertUniversity }
+    mapStateToProps,
+    {insertUniversity}
 )(PugjjigWrite));

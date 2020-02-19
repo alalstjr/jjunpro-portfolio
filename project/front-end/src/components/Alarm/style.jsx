@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import { FlexCol2, ScrollBar } from "../../style/globalStyles";
+import {FlexCol2, ScrollBar} from "../../style/globalStyles";
 
 const MOBILE_M = 640;
 
 /*******************
-    Common CSS
-********************/
+ Common CSS
+ ********************/
 export const AlarmWrap = styled.div`
     position: fixed;
     bottom: 50px;
@@ -35,11 +35,11 @@ export const AlarmItemWrap = styled.div`
     border-right: 1px solid #ddd;
 
     ${
-        props => props.modalState ?
+    props => props.modalState ?
         `left: 0;`
         :
         `left: -300px;`
-    }
+}
 `;
 export const AlarmHead = styled.div`
     display: flex;

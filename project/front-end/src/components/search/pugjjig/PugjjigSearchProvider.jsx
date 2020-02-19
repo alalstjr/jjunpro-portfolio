@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react"
+import React, {Component, Fragment} from "react"
 import NormalHeader from "../../layout/header/normal/NormalHeader"
 import List from "../../pugjjig/list/List"
 import Category from "../category/Category"
@@ -26,7 +26,7 @@ class PugjjigSearchProvider extends Component {
 
     componentDidMount() {
         // Props Init
-        const { 
+        const {
             match
         } = this.props;
 
@@ -39,11 +39,11 @@ class PugjjigSearchProvider extends Component {
 
     componentWillReceiveProps(nextProps) {
         // Props Init
-        const { 
+        const {
             match
         } = this.props;
 
-        if(nextProps.match !== match) {
+        if (nextProps.match !== match) {
             this.setState({
                 keyword: nextProps.match.params.id,
                 inputKeyword: nextProps.match.params.id,
@@ -54,34 +54,34 @@ class PugjjigSearchProvider extends Component {
 
     // match path 를 조회하여 검색 대상의 분류를 구분합니다.
     handleClassification = (target) => {
-        if(target.indexOf("uniSearch") !== -1) {
+        if (target.indexOf("uniSearch") !== -1) {
             return "uniName";
         }
-        if(target.indexOf("stoSearch") !== -1) {
+        if (target.indexOf("stoSearch") !== -1) {
             return "stoId";
         }
-        if(target.indexOf("tagSearch") !== -1) {
+        if (target.indexOf("tagSearch") !== -1) {
             return "uniTag";
         }
-        if(target.indexOf("userSearch") !== -1) {
+        if (target.indexOf("userSearch") !== -1) {
             return "nickname";
         }
     }
 
     onChange = (e) => {
         this.setState({
-            [e.target.name]: e.target.value 
+            [e.target.name]: e.target.value
         });
     }
 
     onSearch = (e) => {
-        if(e.key === "Enter") {
+        if (e.key === "Enter") {
             this.handleReSearch();
         }
     }
 
     handleReSearch = () => {
-        const { reSearch } = this.state;
+        const {reSearch} = this.state;
         this.setState({
             reSearch: !reSearch
         });
@@ -90,7 +90,7 @@ class PugjjigSearchProvider extends Component {
     render() {
 
         // State Init
-        const { 
+        const {
             keyword,
             classification,
             offsetCount,
@@ -101,7 +101,7 @@ class PugjjigSearchProvider extends Component {
         } = this.state;
 
         const handleTitle = () => {
-            switch(classification) {
+            switch (classification) {
                 case "uniName" :
                     return "대학교 검색";
 
@@ -127,25 +127,25 @@ class PugjjigSearchProvider extends Component {
                         {handleTitle()}
                     </SearchTitle>
                     <Category
-                        onChange           = {this.onChange}
-                        onSearch           = {this.onSearch}
-                        handleReSearch     = {this.handleReSearch}
-                        keyword            = {keyword}
+                        onChange={this.onChange}
+                        onSearch={this.onSearch}
+                        handleReSearch={this.handleReSearch}
+                        keyword={keyword}
                     />
                     {
                         (keyword !== null && classification !== null) ?
-                        <List
-                            keyword        = {keyword}
-                            inputKeyword   = {inputKeyword}
-                            classification = {classification}
-                            offsetCount    = {offsetCount}
-                            ifCateA        = {ifCateA}
-                            ifCateB        = {ifCateB}
-                            reSearch       = {reSearch}
-                            handleReSearch = {this.handleReSearch}
-                        />
-                        :
-                        null
+                            <List
+                                keyword={keyword}
+                                inputKeyword={inputKeyword}
+                                classification={classification}
+                                offsetCount={offsetCount}
+                                ifCateA={ifCateA}
+                                ifCateB={ifCateB}
+                                reSearch={reSearch}
+                                handleReSearch={this.handleReSearch}
+                            />
+                            :
+                            null
                     }
                 </SearchWrap>
                 <ScrollUp/>

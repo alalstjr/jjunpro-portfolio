@@ -1,13 +1,13 @@
-import React, { Component, Fragment } from 'react'
+import React, {Component, Fragment} from 'react'
 import ReactTransitionGroup from "react-addons-css-transition-group"
 import SVG from "../../../static/svg/SVG"
 
-import { ScrollUpBtn } from "../style"
+import {ScrollUpBtn} from "../style"
 
 class ScrollUp extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
-    
+
         this.state = {
             scrollBtn: false
         }
@@ -22,10 +22,10 @@ class ScrollUp extends Component {
     }
 
     onScroll = () => {
-        if(window.scrollY > 1) {
+        if (window.scrollY > 1) {
             this.setState({
                 scrollBtn: true
-            });   
+            });
         } else {
             this.setState({
                 scrollBtn: false
@@ -39,7 +39,7 @@ class ScrollUp extends Component {
 
     render() {
 
-        const { scrollBtn } = this.state;
+        const {scrollBtn} = this.state;
 
         return (
             <Fragment>
@@ -48,19 +48,19 @@ class ScrollUp extends Component {
                     transitionEnterTimeout={200}
                     transitionLeaveTimeout={200}
                 >
-                {
-                    scrollBtn ?
-                    <ScrollUpBtn onClick = {this.handleUp}>
-                        <SVG 
-                            name={"arrowUp"} 
-                            width="50px" 
-                            height="50px" 
-                            color={"#E71D36"} 
-                        />
-                    </ScrollUpBtn>
-                    :
-                    null
-                }
+                    {
+                        scrollBtn ?
+                            <ScrollUpBtn onClick={this.handleUp}>
+                                <SVG
+                                    name={"arrowUp"}
+                                    width="50px"
+                                    height="50px"
+                                    color={"#E71D36"}
+                                />
+                            </ScrollUpBtn>
+                            :
+                            null
+                    }
                 </ReactTransitionGroup>
             </Fragment>
         )

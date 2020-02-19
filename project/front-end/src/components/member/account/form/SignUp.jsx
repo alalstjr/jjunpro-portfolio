@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { insertAccount, modalAccount } from "../../../../actions/accountActions";
+import {connect} from "react-redux";
+import {insertAccount, modalAccount} from "../../../../actions/accountActions";
 import SVGLoading from "../../../../static/svg/SVGLoading"
 
-import { 
+import {
     Content
 } from "../../style";
 
@@ -45,24 +45,24 @@ class SignUp extends Component {
         } = this.props;
 
         // {Server} 유효성 검사 출력 코드입니다.
-        if(nextProps.error.data !== error.data) {
-            if(nextProps.error.data.userId) {
+        if (nextProps.error.data !== error.data) {
+            if (nextProps.error.data.userId) {
                 warningSet("userId", true, nextProps.error.data.userId);
             }
-            if(nextProps.error.data.nickname) {
+            if (nextProps.error.data.nickname) {
                 warningSet("nickname", true, nextProps.error.data.nickname);
             }
-            if(nextProps.error.data.password) {
+            if (nextProps.error.data.password) {
                 warningSet("password", true, nextProps.error.data.password);
             }
 
-            this.setState({ loding: false });
+            this.setState({loding: false});
         }
-        
+
         // DB 전송 최종 완료된후 실행되는 이벤트 코드입니다.
-        if(nextProps.account_create.data !== account_create.data) {
-            if(nextProps.account_create.data === true) {
-                this.setState({ loding: false });
+        if (nextProps.account_create.data !== account_create.data) {
+            if (nextProps.account_create.data === true) {
+                this.setState({loding: false});
                 closeModal();
                 warningSet("success", true, "회원가입이 완료되었습니다.");
                 modalAccount("login", true);
@@ -82,10 +82,10 @@ class SignUp extends Component {
         e.preventDefault();
 
         // Props Init
-        const { warningSet } = this.props;
+        const {warningSet} = this.props;
 
         // State Init
-        const { 
+        const {
             userId,
             nickname,
             password,
@@ -105,19 +105,19 @@ class SignUp extends Component {
         };
 
         // {Client} 유효성 검사 출력 코드입니다.
-        if(!account.userId) {
+        if (!account.userId) {
             warningSet("userId", true, "아이디는 필수로 작성해야 합니다.");
-            return false; 
+            return false;
         }
-        if(!account.nickname) {
+        if (!account.nickname) {
             warningSet("nickname", true, "닉네임은 필수로 작성해야 합니다.");
             return false;
         }
-        if(!account.password) {
+        if (!account.password) {
             warningSet("password", true, "비밀번호는 필수로 작성해야 합니다.");
             return false;
         }
-        if(password !== passwordRe) {
+        if (password !== passwordRe) {
             warningSet("passwordRe", true, "비밀번호가 동일하지 않습니다.");
             return false;
         }
@@ -132,14 +132,14 @@ class SignUp extends Component {
     render() {
 
         // Props Init
-        const { 
-            warning, 
-            warningText, 
+        const {
+            warning,
+            warningText,
             initWarning
         } = this.props;
 
         // State Init
-        const { 
+        const {
             userId,
             nickname,
             password,
@@ -152,7 +152,7 @@ class SignUp extends Component {
                 <Content>
                     <FormGroup>
                         <Formlabel>아이디</Formlabel>
-                        <InputClean                                    
+                        <InputClean
                             id="userId"
                             name="userId"
                             type="text"
@@ -162,14 +162,14 @@ class SignUp extends Component {
                             placeholder="영문 4글자이상 입력가능합니다."
                         />
                         {
-                            warning.userId ? 
-                            <InputWarning
-                                active={warningText.userId}
-                            >
-                                {warningText.userId}
-                            </InputWarning>
-                            : 
-                            null
+                            warning.userId ?
+                                <InputWarning
+                                    active={warningText.userId}
+                                >
+                                    {warningText.userId}
+                                </InputWarning>
+                                :
+                                null
                         }
                     </FormGroup>
                     <FormGroup>
@@ -183,14 +183,14 @@ class SignUp extends Component {
                             onKeyDown={initWarning}
                         />
                         {
-                            warning.nickname ? 
-                            <InputWarning
-                                active={warningText.nickname}
-                            >
-                                {warningText.nickname}
-                            </InputWarning>
-                            : 
-                            null
+                            warning.nickname ?
+                                <InputWarning
+                                    active={warningText.nickname}
+                                >
+                                    {warningText.nickname}
+                                </InputWarning>
+                                :
+                                null
                         }
                     </FormGroup>
                     <FormGroup>
@@ -205,14 +205,14 @@ class SignUp extends Component {
                             autocomplete="current-password"
                         />
                         {
-                            warning.password ? 
-                            <InputWarning
-                                active={warningText.password}
-                            >
-                                {warningText.password}
-                            </InputWarning>
-                            : 
-                            null
+                            warning.password ?
+                                <InputWarning
+                                    active={warningText.password}
+                                >
+                                    {warningText.password}
+                                </InputWarning>
+                                :
+                                null
                         }
                     </FormGroup>
                     <FormGroup>
@@ -227,29 +227,29 @@ class SignUp extends Component {
                             autocomplete="current-password"
                         />
                         {
-                            warning.passwordRe ? 
-                            <InputWarning
-                                active={warningText.passwordRe}
-                            >
-                                {warningText.passwordRe}
-                            </InputWarning>
-                            : 
-                            null
+                            warning.passwordRe ?
+                                <InputWarning
+                                    active={warningText.passwordRe}
+                                >
+                                    {warningText.passwordRe}
+                                </InputWarning>
+                                :
+                                null
                         }
                     </FormGroup>
                 </Content>
                 <SubmitBtn
                     type="submit"
                 >
-                        회원가입
+                    회원가입
                 </SubmitBtn>
-                
+
                 {/* 작성 완료 클릭시 Loding 대기화면 */}
                 {
-                    loding ? 
-                    <SVGLoading/>
-                    :
-                    null
+                    loding ?
+                        <SVGLoading/>
+                        :
+                        null
                 }
             </Form>
         )
@@ -269,6 +269,6 @@ const mapStateToProps = state => ({
 });
 
 export default connect(
-    mapStateToProps, 
-    { insertAccount, modalAccount }
+    mapStateToProps,
+    {insertAccount, modalAccount}
 )(SignUp);

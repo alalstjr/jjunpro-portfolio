@@ -1,16 +1,16 @@
 import React from "react"
 
-import { 
+import {
     Item,
     ItemUniName,
     ItemUniCount
- } from "../../style"
+} from "../../style"
 
 const UniversityItem = ({uniName, uniPujjig, categorySearch}) => (
     <Item onClick={categorySearch}>
         <ItemUniName>{uniName}</ItemUniName>
         <ItemUniCount>리뷰 {uniPujjig}개</ItemUniCount>
-    </Item> 
+    </Item>
 );
 
 export default UniversityItem;

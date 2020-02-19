@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ClearFix, CookieFontB } from "../../../style/globalStyles";
+import {ClearFix, CookieFontB} from "../../../style/globalStyles";
 
 export const NormalHeaderWrap = styled.div`
     padding: 0.6875rem 0;

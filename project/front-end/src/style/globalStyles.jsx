@@ -1,6 +1,6 @@
-import styled, { createGlobalStyle, css } from 'styled-components';
+import styled, {createGlobalStyle, css} from 'styled-components';
 import reset from './reset';
-import { ShakeWeakly } from "./keyFrames";
+import {ShakeWeakly} from "./keyFrames";
 import gyeonggiOTF from '../details/fonts/gyeonggi/Title_Medium.otf';
 import gyeonggiWOFF from '../details/fonts/gyeonggi/Title_Medium.woff';
 import CookieRunBold from '../details/fonts/cookieRun/CookieRunOTF-Bold.woff';
@@ -13,8 +13,8 @@ const MOBILE_M = 640;
 const MOBILE_S = 480;
 
 /*******************
-    Global Style
-********************/
+ Global Style
+ ********************/
 export const GlobalStyle = createGlobalStyle`
     ${reset};
 
@@ -90,8 +90,8 @@ export const ClearFix = css`
 `;
 
 /****************************************
-    Animation Style
-****************************************/
+ Animation Style
+ ****************************************/
 export const ModalActive = css`
     &.Modal-anim-enter {
         opacity: 0.00;
@@ -130,8 +130,8 @@ export const WaringActive = css`
 `;
 
 /*******************
-    Text Style
-********************/
+ Text Style
+ ********************/
 export const Ellipsis = css`
     display: block;
     text-overflow: ellipsis;
@@ -141,9 +141,9 @@ export const Ellipsis = css`
 `;
 
 /*******************
-    Flex Style
-********************/
-export const FlexInit  = css`
+ Flex Style
+ ********************/
+export const FlexInit = css`
     display: flex;
     flex-direction: column;
 
@@ -152,13 +152,13 @@ export const FlexInit  = css`
 export const FlexCenter = css`
     margin: auto 0;
 `;
-export const FlexCol2  = css`
+export const FlexCol2 = css`
     display: flex;
     flex-direction: column;
     flex-basis: 50%;
     max-width: 50%;
 `;
-export const FlexCol3  = css`
+export const FlexCol3 = css`
     display: flex;
     flex-direction: column;
     flex-basis: 33.333%;
@@ -172,7 +172,7 @@ export const FlexCol3  = css`
         max-width: 100%;
     }
 `;
-export const FlexCol4  = css`
+export const FlexCol4 = css`
     display: flex;
     flex-direction: column;
     flex-basis: 25%;
@@ -190,15 +190,15 @@ export const FlexBottom = styled.div`
 `;
 
 /*******************
-    일반 페이지 상단 넓이 공통
-********************/
+ 일반 페이지 상단 넓이 공통
+ ********************/
 export const CommonSpace = css`
     margin: 3.75rem auto 3.75rem;
 `;
 
 /****************************************
-    Scroll Style
-****************************************/
+ Scroll Style
+ ****************************************/
 export const ScrollBar = css`
     overflow-y: scroll;
 
@@ -223,8 +223,8 @@ export const ScrollBar = css`
 `;
 
 /*******************
-    Botton Style
-********************/
+ Botton Style
+ ********************/
 export const Btn = css`
     display: inline-block;
     padding: 0.375rem 0.75rem;
@@ -262,14 +262,14 @@ export const WriteBtn = styled.button`
     ${Btn};
     background-color: #286090;
 `;
-export const DataNone  = styled.div`
+export const DataNone = styled.div`
     text-align: center;
     padding: 2.5rem 0;
     border: 0.0625rem solid #ddd;
     border-radius: 0.4rem;
     width: 100%;
 `;
-export const SmallBtn  = styled.button`
+export const SmallBtn = styled.button`
     height: 1.875rem;
     background-color: ${props => props.theme.themeColor};
     color: #fff;
@@ -282,8 +282,8 @@ export const SmallBtn  = styled.button`
 `;
 
 /*******************
-    Form Style
-********************/
+ Form Style
+ ********************/
 export const FormCss = css`
     display: block;
     width: 100%;
@@ -380,8 +380,8 @@ export const HiddenBtn = styled.button`
 `;
 
 /*******************
-    Waring Style
-********************/
+ Waring Style
+ ********************/
 export const WaringCss = css`
     ${WaringActive}
 
@@ -406,8 +406,8 @@ export const SuccessWrap = styled.div`
 `;
 
 /****************************************
-    Active&Hover Style
-****************************************/
+ Active&Hover Style
+ ****************************************/
 export const ActiveList = css`
     transition: 0.2s cubic-bezier(0.91, 0.35, 0.21, 0.72);
     
@@ -444,8 +444,8 @@ export const ListUl = styled.ul`
 `;
 
 /****************************************
-    Modal Style
-****************************************/
+ Modal Style
+ ****************************************/
 export const ModalWrap = styled.div`
     ${FlexInit}
     ${ModalActive}
@@ -566,20 +566,20 @@ export const MainList = styled.div`
     position: relative;
     background: #fff;
     ${
-        props => props.initSearch === true ?
+    props => props.initSearch === true ?
         `
             width: 100%;
         `
-        : 
+        :
         `
             width: 18.75rem;
             @media only screen and (max-width: ${MOBILE_S}px) {
                 width: 100%;
             }
         `
-    }
+}
     ${
-        props => props.mobile === true ?
+    props => props.mobile === true ?
         `
             @media only screen and (max-width: ${MOBILE_S}px) {
                 left: -100%;
@@ -591,12 +591,12 @@ export const MainList = styled.div`
                 left: 0;
             }
         `
-    }
+}
 `;
 export const MainListContainer = styled.div`
     ${InitTransition}
     ${
-        props => props.initSearch === true ?
+    props => props.initSearch === true ?
         `
             width: 31.25rem;
             margin: auto auto 0;
@@ -606,7 +606,7 @@ export const MainListContainer = styled.div`
                 width: 100%;
             }
         `
-        : 
+        :
         `
             width: 18.75rem;
             margin: 0 auto;
@@ -616,7 +616,7 @@ export const MainListContainer = styled.div`
                 position: absolute;
             }
         `
-    }
+}
 `;
 export const MainMap = styled.div`
     width: calc(100% - 18.75rem);
@@ -681,8 +681,8 @@ export const GitV = styled.span`
 `;
 
 /*******************
-    Image Style
-********************/
+ Image Style
+ ********************/
 export const ImgBox = styled.div`
     background-image: url(${props => props.bgImg});
     padding-bottom: ${props => props.bgSize};
@@ -713,8 +713,8 @@ export const NoneImg = styled.img`
 `;
 
 /****************************************
-    Mobile Style
-****************************************/
+ Mobile Style
+ ****************************************/
 export const MobilePadding = styled.div`
     padding: 0 0.625rem;
 `;

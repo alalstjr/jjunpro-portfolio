@@ -1,21 +1,21 @@
-import React, { Component, Fragment } from "react";
-import { connect } from "react-redux";
+import React, {Component, Fragment} from "react";
+import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import ReactTransitionGroup from "react-addons-css-transition-group";
 
 import LoginModal from "./modal/LoginModal";
 import SignUpModal from "./modal/SignUpModal";
 
-import { modalAccount } from "../../../actions/accountActions";
+import {modalAccount} from "../../../actions/accountActions";
 
-import { SuccessWrap } from "../../../style/globalStyles";
+import {SuccessWrap} from "../../../style/globalStyles";
 import {
     LoginBtn,
     SignUpBtn
 } from "../style";
 
 class AccountProvider extends Component {
-    constructor(props) { 
+    constructor(props) {
         super(props);
 
         this.state = {
@@ -49,14 +49,14 @@ class AccountProvider extends Component {
     }
 
     openModal = (target) => {
-        const { modalAccount } = this.props;
+        const {modalAccount} = this.props;
 
         this.initWarning();
         modalAccount(target, true);
     }
-    
+
     closeModal = () => {
-        const { modalAccount } = this.props;
+        const {modalAccount} = this.props;
 
         this.initWarning();
         modalAccount(false);
@@ -96,7 +96,7 @@ class AccountProvider extends Component {
      *  모달창 ESC 클릭 반응 메소드입니다.
      */
     escFunction = (event) => {
-        if(event.keyCode === 27) {
+        if (event.keyCode === 27) {
             this.closeModal();
         }
     }
@@ -109,9 +109,9 @@ class AccountProvider extends Component {
     warningSet = (target, state, message) => {
         // message undefined 값 체크
         message = (message === undefined) ? "" : message;
-        
-        switch(target) {
-            case "userId" : 
+
+        switch (target) {
+            case "userId" :
                 this.setState(prevState => ({
                     warning: {
                         ...prevState.warning,
@@ -123,8 +123,8 @@ class AccountProvider extends Component {
                     }
                 }));
                 break;
-                
-            case "nickname" : 
+
+            case "nickname" :
                 this.setState(prevState => ({
                     warning: {
                         ...prevState.warning,
@@ -137,7 +137,7 @@ class AccountProvider extends Component {
                 }));
                 break;
 
-            case "password" : 
+            case "password" :
                 this.setState(prevState => ({
                     warning: {
                         ...prevState.warning,
@@ -203,30 +203,30 @@ class AccountProvider extends Component {
         } = this.props;
 
         // State Init
-        const { 
-            warning, 
+        const {
+            warning,
             warningText
-        } = this.state; 
+        } = this.state;
 
         return (
             <Fragment>
                 {/* Form Modal */}
-                <LoginModal 
-                    loginModal = {modal_account.login}
-                    closeModal = {this.closeModal}
-                    warning = {warning}
-                    warningText = {warningText}
-                    warningSet = {this.warningSet}
-                    initWarning = {this.initWarning}
-                />
-                <SignUpModal 
-                    signUpModal = {modal_account.sign_up}
-                    closeModal = {this.closeModal}
-                    warning = {warning}
-                    warningText = {warningText}
+                <LoginModal
+                    loginModal={modal_account.login}
+                    closeModal={this.closeModal}
+                    warning={warning}
+                    warningText={warningText}
                     warningSet={this.warningSet}
                     initWarning={this.initWarning}
-                    openModal = {this.openModal}
+                />
+                <SignUpModal
+                    signUpModal={modal_account.sign_up}
+                    closeModal={this.closeModal}
+                    warning={warning}
+                    warningText={warningText}
+                    warningSet={this.warningSet}
+                    initWarning={this.initWarning}
+                    openModal={this.openModal}
                 />
 
                 <ReactTransitionGroup
@@ -234,13 +234,13 @@ class AccountProvider extends Component {
                     transitionEnterTimeout={200}
                     transitionLeaveTimeout={200}
                 >
-                {
-                    // 회원가입 안내문
-                    warning.success ?
-                    <SuccessWrap>{warningText.success}</SuccessWrap>
-                    :
-                    null
-                }
+                    {
+                        // 회원가입 안내문
+                        warning.success ?
+                            <SuccessWrap>{warningText.success}</SuccessWrap>
+                            :
+                            null
+                    }
                 </ReactTransitionGroup>
             </Fragment>
         )
@@ -260,5 +260,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { modalAccount }
+    {modalAccount}
 )(AccountProvider);

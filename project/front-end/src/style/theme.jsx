@@ -5,5 +5,5 @@ const theme = {
     themeColor: '#E71D36',
     themeColorHover: '#d11d33'
 }
-  
+
 export default theme;

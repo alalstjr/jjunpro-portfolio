@@ -1,6 +1,6 @@
 import axios from "axios";
-import { SERVER_URL, USER_ID } from "../routes";
-import { 
+import {SERVER_URL, USER_ID} from "../routes";
+import {
     MODAL_ACCOUNT,
     GET_ERRORS,
     ACCOUNT_CREATE,
@@ -11,17 +11,19 @@ import {
 } from "./types";
 
 /****************************************
-    로그인 모달 상태
-    String login, String sign_up
-****************************************/
+ 로그인 모달 상태
+ String login, String sign_up
+ ****************************************/
 export const modalAccount = (modal, state) => async dispatch => {
     let login = false;
     let sign_up = false;
 
-    switch(modal) {
-        case "login": login = state;
+    switch (modal) {
+        case "login":
+            login = state;
             break;
-        case "sign_up": sign_up = state;
+        case "sign_up":
+            sign_up = state;
             break;
         default:
             break;
@@ -39,29 +41,29 @@ export const modalAccount = (modal, state) => async dispatch => {
 }
 
 /****************************************
-    INSERT Account DATA
-****************************************/
+ INSERT Account DATA
+ ****************************************/
 export const insertAccount = (account) => async dispatch => {
     try {
         // 유저가 로그인 상태가 아니라면
-        if(!localStorage.getItem("userInfo")) {
+        if (!localStorage.getItem("userInfo")) {
             const res = await axios.post(`${SERVER_URL}/api/account`, account);
 
-            switch(res.status) {
-                case 201 : 
+            switch (res.status) {
+                case 201 :
                     dispatch({
                         type: ACCOUNT_CREATE,
                         payload: true
                     });
-                    
+
                     // create 상태 init
                     dispatch({
                         type: ACCOUNT_CREATE,
                         payload: false
                     });
                     break;
-                    
-                case 202 : 
+
+                case 202 :
                     dispatch({
                         type: GET_ERRORS,
                         payload: res.data
@@ -81,19 +83,19 @@ export const insertAccount = (account) => async dispatch => {
 }
 
 /****************************************
-    LOGIN Account DATA
-****************************************/
+ LOGIN Account DATA
+ ****************************************/
 export const loginAccount = (account) => async dispatch => {
     try {
         const res = await axios.post(`${SERVER_URL}/api/account/login`, account)
-        switch(res.status) {
-            case 200 : 
+        switch (res.status) {
+            case 200 :
                 const id = res.data.id;
                 const token = res.data.token;
                 const userId = res.data.userId;
                 const nickname = res.data.nickname;
 
-                if(token) {
+                if (token) {
                     /*
                     *  사용자가 서버에 서 로그인 인증을 받았을경우 localStorage에 Token을 저장합니다.
                     */
@@ -119,7 +121,7 @@ export const loginAccount = (account) => async dispatch => {
                         }
                     });
                 }
-            break;
+                break;
 
             default :
                 alert("잘못된 접근입니다.");
@@ -138,12 +140,12 @@ export const loginAccount = (account) => async dispatch => {
 }
 
 /****************************************
-    LOGOUT Account DATA
-****************************************/
+ LOGOUT Account DATA
+ ****************************************/
 export const logoutAccount = () => dispatch => {
     delete axios.defaults.headers.common['Authorization'];
 
-    if(localStorage.removeItem("userInfo") === undefined) {
+    if (localStorage.removeItem("userInfo") === undefined) {
         dispatch({
             type: CHECK_USER_FAILURE,
             payload: {}
@@ -152,12 +154,12 @@ export const logoutAccount = () => dispatch => {
 }
 
 /****************************************
-    Account DATA Check
-****************************************/
+ Account DATA Check
+ ****************************************/
 export const accountLoginCheck = () => dispatch => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    
-    if(userInfo !== null) {
+
+    if (userInfo !== null) {
         dispatch({
             type: CHECK_USER,
             payload: {
@@ -170,13 +172,13 @@ export const accountLoginCheck = () => dispatch => {
 }
 
 /****************************************
-    GET Account DATA userId
-****************************************/
+ GET Account DATA userId
+ ****************************************/
 export const getAccountUserId = () => async dispatch => {
     try {
         const res = await axios.get(`${SERVER_URL}/api/account/public/${USER_ID()}`)
 
-        switch(res.status) {
+        switch (res.status) {
             case 200 :
                 dispatch({
                     type: ACCOUNT_GET,
@@ -193,12 +195,12 @@ export const getAccountUserId = () => async dispatch => {
 }
 
 /****************************************
-    UPDATE Account DATA
-****************************************/
+ UPDATE Account DATA
+ ****************************************/
 export const updateAccount = (account, files, history) => async dispatch => {
     try {
         // 유저가 로그인 상태 라면
-        if(localStorage.getItem("userInfo")) {
+        if (localStorage.getItem("userInfo")) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
 
             // file upload form
@@ -210,7 +212,7 @@ export const updateAccount = (account, files, history) => async dispatch => {
                 },
                 // File Upload 진행상황
                 onUploadProgress: progressEvent => {
-                    console.log("업로드 진행률.." + Math.round(progressEvent.loaded / progressEvent.total*100) + "%");
+                    console.log("업로드 진행률.." + Math.round(progressEvent.loaded / progressEvent.total * 100) + "%");
                 }
             };
 
@@ -220,14 +222,14 @@ export const updateAccount = (account, files, history) => async dispatch => {
             formData.append("email", account.email);
             formData.append("urlList", account.urlList);
 
-            if(files.length > 0) {
+            if (files.length > 0) {
                 formData.append('file', files[0]);
             }
 
             const res = await axios.post(`${SERVER_URL}/api/account/${account.id}`, formData, config)
 
-            switch(res.status) {
-                case 200 : 
+            switch (res.status) {
+                case 200 :
                     dispatch({
                         type: ACCOUNT_CREATE,
                         payload: true
@@ -238,13 +240,13 @@ export const updateAccount = (account, files, history) => async dispatch => {
                         type: ACCOUNT_CREATE,
                         payload: false
                     });
-                    
-                    if(files.length > 0) {
+
+                    if (files.length > 0) {
                         window.location.reload();
                     }
                     break;
-                    
-                case 202 : 
+
+                case 202 :
                     dispatch({
                         type: GET_ERRORS,
                         payload: res.data
@@ -264,42 +266,42 @@ export const updateAccount = (account, files, history) => async dispatch => {
 }
 
 /****************************************
-    UPDATE Account Password DATA accountId
-****************************************/
+ UPDATE Account Password DATA accountId
+ ****************************************/
 export const updateAccountPwdId = (account, history) => async dispatch => {
     try {
         // 유저가 로그인 상태 라면
-        if(localStorage.getItem("userInfo")) {
+        if (localStorage.getItem("userInfo")) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
 
             await axios.post(`${SERVER_URL}/api/account/password/${account.id}`, account)
-            .then(res => {
-                switch(res.status) {
-                    case 200 : 
-                        dispatch({
-                            type: ACCOUNT_CREATE,
-                            payload: true
-                        });
+                .then(res => {
+                    switch (res.status) {
+                        case 200 :
+                            dispatch({
+                                type: ACCOUNT_CREATE,
+                                payload: true
+                            });
 
-                        // warningSet success 경고문 초기화해주기 위해서 false
-                        dispatch({
-                            type: ACCOUNT_CREATE,
-                            payload: false
-                        });
-                        break;
-                        
-                    case 202 : 
-                        dispatch({
-                            type: GET_ERRORS,
-                            payload: res.data
-                        });
-                        break;
+                            // warningSet success 경고문 초기화해주기 위해서 false
+                            dispatch({
+                                type: ACCOUNT_CREATE,
+                                payload: false
+                            });
+                            break;
 
-                    default :
-                        console.log(res);
-                        break;
-                }
-            });
+                        case 202 :
+                            dispatch({
+                                type: GET_ERRORS,
+                                payload: res.data
+                            });
+                            break;
+
+                        default :
+                            console.log(res);
+                            break;
+                    }
+                });
         }
     } catch (error) {
         dispatch({
@@ -315,11 +317,11 @@ export const updateAccountPwdId = (account, history) => async dispatch => {
 export const adminAccountCheck = async () => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
     return await axios.post("http://localhost:8080/api/account/admin")
-        .then(function(){
+        .then(function () {
             return Promise.resolve();
-        }).catch(function() {
-            return Promise.reject({ redirectTo: '/' });
-        });    
+        }).catch(function () {
+            return Promise.reject({redirectTo: '/'});
+        });
 }
 
 /*
@@ -327,23 +329,23 @@ export const adminAccountCheck = async () => {
  */
 export const adminAccountLogin = async (account) => {
     return await axios.post("http://localhost:8080/api/account/login", account)
-    .then(res => {
-        const token = res.data.token;
-        const userId = res.data.userId;
-        const username = res.data.username;
+        .then(res => {
+            const token = res.data.token;
+            const userId = res.data.userId;
+            const username = res.data.username;
 
-        if(token) {
-            const userInfo = JSON.stringify({
-                token,
-                userId,
-                username
-            });
-            localStorage.setItem('userInfo', userInfo);
-        } else {
-            return Promise.reject("잘못된 상태 입니다.");    
-        }
-    }, (error) => {
-        console.log(error);
-        return Promise.reject("정보가 틀립니다.");
-    });
+            if (token) {
+                const userInfo = JSON.stringify({
+                    token,
+                    userId,
+                    username
+                });
+                localStorage.setItem('userInfo', userInfo);
+            } else {
+                return Promise.reject("잘못된 상태 입니다.");
+            }
+        }, (error) => {
+            console.log(error);
+            return Promise.reject("정보가 틀립니다.");
+        });
 }

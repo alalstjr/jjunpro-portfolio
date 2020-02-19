@@ -1,8 +1,8 @@
-import { keyframes } from 'styled-components';
+import {keyframes} from 'styled-components';
 
 /*******************
-    Keyframe
-********************/
+ Keyframe
+ ********************/
 export const ShakeWeakly = keyframes`
   0% {
     transform: translateX(0);

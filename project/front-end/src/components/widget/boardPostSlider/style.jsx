@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { 
-    ClearFix, 
+import {
+    ClearFix,
     Ellipsis
 } from "../../../style/globalStyles";
 

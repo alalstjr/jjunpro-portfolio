@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, {Component, Fragment} from 'react'
 
 import InsertModal from "./modal/InsertModal"
 import ListModal from "../pugjjig/modal/ListModal"
@@ -7,7 +7,7 @@ class PugjjigProvider extends Component {
     render() {
 
         // Props Init
-        const { 
+        const {
             closeModal,
             insertModalState,
             listModalState,
@@ -20,17 +20,17 @@ class PugjjigProvider extends Component {
         return (
             <Fragment>
                 <InsertModal
-                    closeModal = {closeModal}
-                    modalState = {insertModalState}
-                    stoId      = {stoId}
-                    stoName    = {stoName}
-                    stoAddress = {stoAddress}
-                    stoUrl     = {stoUrl}
+                    closeModal={closeModal}
+                    modalState={insertModalState}
+                    stoId={stoId}
+                    stoName={stoName}
+                    stoAddress={stoAddress}
+                    stoUrl={stoUrl}
                 />
                 <ListModal
-                    keyword     = {stoName}
-                    modalState  = {listModalState}
-                    closeModal  = {closeModal}
+                    keyword={stoName}
+                    modalState={listModalState}
+                    closeModal={closeModal}
                 />
             </Fragment>
         )

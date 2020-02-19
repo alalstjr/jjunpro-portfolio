@@ -1,4 +1,4 @@
-import { UserList } from './userList';
+import {UserList} from './userList';
 
 export {
     UserList

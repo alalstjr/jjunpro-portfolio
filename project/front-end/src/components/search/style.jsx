@@ -1,6 +1,6 @@
 import styled from "styled-components"
-import { FlexInit, WaringActive, CommonSpace, FormCssBasic } from "../../style/globalStyles"
-import { PugjjigItemWrap, PugjjigItem } from "../pugjjig/style"
+import {FlexInit, WaringActive, CommonSpace, FormCssBasic} from "../../style/globalStyles"
+import {PugjjigItemWrap, PugjjigItem} from "../pugjjig/style"
 
 const PC_S = 1200;
 const TABLET = 991;
@@ -9,8 +9,8 @@ const MOBILE_M = 640;
 const MOBILE_S = 480;
 
 /*******************
-    Search Style
-********************/
+ Search Style
+ ********************/
 export const SearchWrap = styled.div`
     ${CommonSpace}
 
@@ -49,8 +49,8 @@ export const SearchWrap = styled.div`
 `;
 
 /*******************
-    Category Style
-********************/
+ Category Style
+ ********************/
 export const CategoryWrap = styled.div`
     margin: 0.5%;
 

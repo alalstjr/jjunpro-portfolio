@@ -1,13 +1,13 @@
-import React, { Component, Fragment } from "react";
+import React, {Component, Fragment} from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import ReactTransitionGroup from "react-addons-css-transition-group";
 
-import { modalAccount } from "../../../actions/accountActions";
-import { insertComment } from "../../../actions/PugjjigActions";
-import { USER_AUTH } from "../../../routes";
+import {modalAccount} from "../../../actions/accountActions";
+import {insertComment} from "../../../actions/PugjjigActions";
+import {USER_AUTH} from "../../../routes";
 
-import { 
+import {
     WaringWrap
 } from "../../../style/globalStyles";
 import {
@@ -20,9 +20,9 @@ import {
 
 class CommentWrite extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
-    
+
         this.state = {
             // update id
             uniId: null,
@@ -36,7 +36,7 @@ class CommentWrite extends Component {
     componentDidMount() {
 
         // Props Init
-        const { 
+        const {
             uniId
         } = this.props;
 
@@ -48,12 +48,12 @@ class CommentWrite extends Component {
     componentWillReceiveProps(nextProps) {
 
         // Props Init
-        const { 
+        const {
             pugjjig_comment
         } = this.props;
 
         // 댓글 {INSERT DATA} 배열 생성
-        if(nextProps.pugjjig_comment !== pugjjig_comment) {
+        if (nextProps.pugjjig_comment !== pugjjig_comment) {
             this.setState({
                 content: ""
             });
@@ -82,17 +82,17 @@ class CommentWrite extends Component {
         };
 
         // {Client} 유효성 검사 출력 코드입니다.
-        if(!commentData.uniId) {
+        if (!commentData.uniId) {
             console.log("uniId 값이 존재하지 않습니다.");
             this.warningSet(true, "잘못된 접근입니다.");
             return false;
         }
-    
-        if(!commentData.content || commentData.content === "") {
+
+        if (!commentData.content || commentData.content === "") {
             this.warningSet(true, "댓글을 작성해 주세요.");
             return false;
         }
-        
+
         this.props.insertComment(commentData);
     }
 
@@ -127,11 +127,11 @@ class CommentWrite extends Component {
 
     // Modal State
     openModal = () => {
-        const { modalAccount } = this.props;
-        
+        const {modalAccount} = this.props;
+
         // 로그인 사용자가 아닐경우
-        if(!USER_AUTH()) {
-            modalAccount("login", true); 
+        if (!USER_AUTH()) {
+            modalAccount("login", true);
             return false;
         }
     }
@@ -139,54 +139,54 @@ class CommentWrite extends Component {
     render() {
 
         // State Init
-        const { 
+        const {
             content,
-            warning, 
+            warning,
             warningText
         } = this.state;
 
         return (
             <Fragment>
-            {
-                USER_AUTH() ?
-                <Form
-                    onSubmit={this.onSubmit}
-                >
-                    <InputCommentWrap>
-                        <InputComment
-                            id = "content"
-                            name = "content"
-                            type = "text"
-                            value = {content}
-                            onChange = {this.onChange}
-                            placeholder = "댓글 쓰기..."
-                        />
-                        <CommentBtn>
-                            완료
-                        </CommentBtn>
-                    </InputCommentWrap>
+                {
+                    USER_AUTH() ?
+                        <Form
+                            onSubmit={this.onSubmit}
+                        >
+                            <InputCommentWrap>
+                                <InputComment
+                                    id="content"
+                                    name="content"
+                                    type="text"
+                                    value={content}
+                                    onChange={this.onChange}
+                                    placeholder="댓글 쓰기..."
+                                />
+                                <CommentBtn>
+                                    완료
+                                </CommentBtn>
+                            </InputCommentWrap>
 
-                    {/* Write 안내문 */}
-                    <ReactTransitionGroup
-                        transitionName={'Waring-anim'}
-                        transitionEnterTimeout={200}
-                        transitionLeaveTimeout={200}
-                    >
-                    {
-                        warning ? 
-                        <WaringWrap>{warningText}</WaringWrap>
+                            {/* Write 안내문 */}
+                            <ReactTransitionGroup
+                                transitionName={'Waring-anim'}
+                                transitionEnterTimeout={200}
+                                transitionLeaveTimeout={200}
+                            >
+                                {
+                                    warning ?
+                                        <WaringWrap>{warningText}</WaringWrap>
+                                        :
+                                        null
+                                }
+                            </ReactTransitionGroup>
+                        </Form>
                         :
-                        null
-                    }
-                    </ReactTransitionGroup>
-                </Form>
-                :
-                <InputCommentWrap>
-                    <NoneComment onClick={this.openModal}>
-                        푹찍 유저만 댓글을 작성할 수 있습니다.
-                    </NoneComment>
-                </InputCommentWrap>
-            }
+                        <InputCommentWrap>
+                            <NoneComment onClick={this.openModal}>
+                                푹찍 유저만 댓글을 작성할 수 있습니다.
+                            </NoneComment>
+                        </InputCommentWrap>
+                }
             </Fragment>
         )
     }
@@ -197,18 +197,18 @@ CommentWrite.propTypes = {
     modalAccount: PropTypes.func.isRequired,
     pugjjig_comment: PropTypes.object.isRequired,
     error: PropTypes.object.isRequired
-  }
-  
-  
-  const mapStateToProps = state => ({
+}
+
+
+const mapStateToProps = state => ({
     error: state.errors,
     pugjjig_comment: state.pugjjig.pugjjig_comment
-  });
-  
-  export default connect(
-    mapStateToProps, 
-    { 
+});
+
+export default connect(
+    mapStateToProps,
+    {
         insertComment,
         modalAccount
     }
-  )(CommentWrite);
+)(CommentWrite);

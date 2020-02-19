@@ -1,10 +1,10 @@
-import React, { Component, Fragment } from "react";
-import { Link } from "react-router-dom";
+import React, {Component, Fragment} from "react";
+import {Link} from "react-router-dom";
 import NormalHeader from "../layout/header/normal/NormalHeader";
 import List from "../pugjjig/list/List";
 
-import { Container } from "../../style/globalStyles";
-import { BestWrap, Title, Content, Group, ContentTitle, ContentP } from "./style";
+import {Container} from "../../style/globalStyles";
+import {BestWrap, Title, Content, Group, ContentTitle, ContentP} from "./style";
 
 class SquareProvider extends Component {
     render() {
@@ -34,13 +34,13 @@ class SquareProvider extends Component {
                             <Title>최근 작성된 리뷰</Title>
                             <Content>
                                 <List
-                                    keyword        = {"null"}
-                                    classification = {"createdDate"}
-                                    offsetCount    = {null}
-                                    ifCateA        = {null}
-                                    ifCateB        = {null}
-                                    reSearch       = {null}
-                                    handleReSearch = {null}
+                                    keyword={"null"}
+                                    classification={"createdDate"}
+                                    offsetCount={null}
+                                    ifCateA={null}
+                                    ifCateB={null}
+                                    reSearch={null}
+                                    handleReSearch={null}
                                 />
                             </Content>
                         </Group>

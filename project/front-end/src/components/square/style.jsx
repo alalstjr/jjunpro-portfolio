@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { SERVER_FILE_URL } from "../../routes"
-import { PugjjigItemWrap, PugjjigItem } from "../pugjjig/style"
-import { CommonSpace, FlexInit, FlexCol3 } from "../../style/globalStyles";
+import {SERVER_FILE_URL} from "../../routes"
+import {PugjjigItemWrap, PugjjigItem} from "../pugjjig/style"
+import {CommonSpace, FlexInit, FlexCol3} from "../../style/globalStyles";
 
 const PC_S = 1200;
 const TABLET = 991;

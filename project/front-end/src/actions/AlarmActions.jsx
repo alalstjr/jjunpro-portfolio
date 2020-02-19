@@ -1,16 +1,16 @@
 import axios from "axios";
-import { SERVER_URL } from "../routes";
-import { GET_ALARM_LIST, DELETE_ALARM } from "./types";
+import {SERVER_URL} from "../routes";
+import {GET_ALARM_LIST, DELETE_ALARM} from "./types";
 
 /****************************************
-    GET Alarm List DATA
-****************************************/
-export const getAlarmList = () =>  async dispatch => {
+ GET Alarm List DATA
+ ****************************************/
+export const getAlarmList = () => async dispatch => {
     try {
         axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
         const res = await axios.get(`${SERVER_URL}/api/alarm`);
 
-        switch(res.status) {
+        switch (res.status) {
             case 200 :
                 dispatch({
                     type: GET_ALARM_LIST,
@@ -21,20 +21,20 @@ export const getAlarmList = () =>  async dispatch => {
             default :
                 alert("잘못된 접근입니다.");
         }
-    } catch(error) {
+    } catch (error) {
         alert(error.response.data.error);
     }
 }
 
 /****************************************
-    DELETE Alarm DATA
-****************************************/
+ DELETE Alarm DATA
+ ****************************************/
 export const deleteAlarmId = (id) => async dispatch => {
     try {
         axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
         const res = await axios.delete(`${SERVER_URL}/api/alarm/${id}`);
 
-        switch(res.status) {
+        switch (res.status) {
             case 200 :
                 dispatch({
                     type: DELETE_ALARM,
@@ -45,7 +45,7 @@ export const deleteAlarmId = (id) => async dispatch => {
             default :
                 alert("잘못된 접근입니다.");
         }
-    } catch(error) {
+    } catch (error) {
         alert(error.response.data.error);
     }
 }

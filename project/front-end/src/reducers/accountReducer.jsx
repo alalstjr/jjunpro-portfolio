@@ -16,9 +16,9 @@ const initialState = {
     logged: false
 };
 
-export default function(state=initialState, action) {
-    
-    switch(action.type) {
+export default function (state = initialState, action) {
+
+    switch (action.type) {
 
         case MODAL_ACCOUNT:
             return {

@@ -1,22 +1,22 @@
 import $script from 'scriptjs'
-import { Item, ItemUniName, ItemUniCount, Pagination } from '../components/university/style'
+import {Item, ItemUniName, ItemUniCount, Pagination} from '../components/university/style'
 import markerIcon from '../static/images/kakao/marker.png';
-import { async } from 'q';
+import {async} from 'q';
 
 const API_KEY = "e4886ec63d8dacf6d7f11ab426759a84";
-const KAKAO_URL =  `http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${API_KEY}&libraries=services`;
+const KAKAO_URL = `http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${API_KEY}&libraries=services`;
 
 class KakaoMapService {
 
     /****************************************
-        변수
-    ****************************************/
-    markers          = [];
-    thatThis         = null;
-    latLng           = null;
-    openModal        = null;
+     변수
+     ****************************************/
+    markers = [];
+    thatThis = null;
+    latLng = null;
+    openModal = null;
     getUniCountStoId = null;
-    hendleContain    = null;
+    hendleContain = null;
 
     constructor(
         thatThis,
@@ -25,17 +25,17 @@ class KakaoMapService {
         getUniCountStoId,
         hendleContain
     ) {
-        this.thatThis         = thatThis
-        this.latLng           = latLng
-        this.openModal        = openModal
+        this.thatThis = thatThis
+        this.latLng = latLng
+        this.openModal = openModal
         this.getUniCountStoId = getUniCountStoId
-        this.hendleContain    = hendleContain
+        this.hendleContain = hendleContain
 
         // kakao 콜백함수에 전달해주는 변수
         const classThis = this;
 
         $script(KAKAO_URL, () => {
-            /*global kakao*/ 
+            /*global kakao*/
             kakao.maps.load(function () {
                 // v3가 모두 로드된 후, 이 콜백 함수가 실행됩니다.
                 thatThis.kakao = kakao;
@@ -45,7 +45,7 @@ class KakaoMapService {
                 });
 
                 thatThis.infowindow = new kakao.maps.InfoWindow({
-                    zIndex:1
+                    zIndex: 1
                 });
 
                 thatThis.customOverlay = new kakao.maps.CustomOverlay({
@@ -57,18 +57,18 @@ class KakaoMapService {
                     return new thatThis.kakao.maps.LatLng(y, x);
                 };
 
-                thatThis.latLng = (x, y) => { 
+                thatThis.latLng = (x, y) => {
                     return new thatThis.kakao.maps.LatLng(x, y);
                 }
-                
+
                 // classThis.categorySearch();
             });
         });
     }
 
     /****************************************
-        키워드 검색을 요청하는 함수입니다.
-    ****************************************/
+     키워드 검색을 요청하는 함수입니다.
+     ****************************************/
     searchPlaces = () => {
         let places = new kakao.maps.services.Places();
 
@@ -81,16 +81,16 @@ class KakaoMapService {
 
         // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
         // places.keywordSearch( keyword, this.searchPlacesCB); 
-        places.keywordSearch( keyword, this.searchPlacesCB, {
-            category_group_code :"FD6",
+        places.keywordSearch(keyword, this.searchPlacesCB, {
+            category_group_code: "FD6",
             radius: 500
-        }); 
+        });
         return false;
-    } 
+    }
 
     /****************************************
-        장소검색이 완료됐을 때 호출되는 콜백함수 입니다.
-    ****************************************/
+     장소검색이 완료됐을 때 호출되는 콜백함수 입니다.
+     ****************************************/
     searchPlacesCB = (data, status, pagination) => {
         if (status === kakao.maps.services.Status.OK) {
             // console.log(data)
@@ -100,7 +100,7 @@ class KakaoMapService {
             // 검색 목록과 (마커, 오버레이)를 표출합니다
             this.thatThis.customOverlay.setMap(null);
             this.displayPlaces(data);
-            
+
             // 페이지 번호를 표출합니다
             this.displayPagination(pagination);
 
@@ -118,22 +118,22 @@ class KakaoMapService {
     }
 
     /****************************************
-        검색 결과 목록과 마커를 표출하는 함수입니다.
-    ****************************************/
+     검색 결과 목록과 마커를 표출하는 함수입니다.
+     ****************************************/
     displayPlaces = async (places) => {
 
         // 좌측 리스트
         let listEl = document.getElementById('universityList');
         let fragment = document.createDocumentFragment();
         let bounds = new kakao.maps.LatLngBounds();
-        
+
         // 검색 결과 목록에 추가된 항목들을 제거합니다
         this.removeAllChildNods(listEl);
 
         // 지도에 표시되고 있는 마커를 제거합니다
         this.removeMarker();
-        
-        for ( let i=0; i<places.length; i++ ) {
+
+        for (let i = 0; i < places.length; i++) {
 
             // 마커를 생성하고 지도에 표시합니다
             let placePosition = new kakao.maps.LatLng(places[i].y, places[i].x);
@@ -160,44 +160,44 @@ class KakaoMapService {
     }
 
     /****************************************
-        인포윈도우 커스텀 오버레이 생성
-    ****************************************/
+     인포윈도우 커스텀 오버레이 생성
+     ****************************************/
     setOverInfo = (marker, store, placePosition, itemEl) => {
         // kakao 콜백함수에 전달해주는 변수
         const classThis = this;
         const thatThis = this.thatThis;
 
         // 인포윈도우
-        kakao.maps.event.addListener(marker, 'mouseover', function() {
+        kakao.maps.event.addListener(marker, 'mouseover', function () {
             thatThis.infowindow.close();
-            classThis.displayInfowindow( marker, store);
+            classThis.displayInfowindow(marker, store);
         });
-        kakao.maps.event.addListener(marker, 'mouseout', function() {
+        kakao.maps.event.addListener(marker, 'mouseout', function () {
             thatThis.infowindow.close();
         });
 
         // 커스텀 오버레이
-        kakao.maps.event.addListener(marker, 'click', function() {
+        kakao.maps.event.addListener(marker, 'click', function () {
             thatThis.infowindow.close();
             classThis.displayOverlay(placePosition, store);
         });
 
-        itemEl.onmouseover =  function () {
+        itemEl.onmouseover = function () {
             classThis.displayInfowindow(marker, store);
         };
-        itemEl.onclick =  function () {
+        itemEl.onclick = function () {
             thatThis.infowindow.close();
             classThis.displayOverlay(placePosition, store);
         };
 
-        itemEl.onmouseout =  function () {
+        itemEl.onmouseout = function () {
             thatThis.infowindow.close();
         };
     }
 
     /****************************************
-        검색결과 항목을 Element로 반환하는 함수입니다.
-    ****************************************/
+     검색결과 항목을 Element로 반환하는 함수입니다.
+     ****************************************/
     getListItem = async (index, places) => {
 
         let pugjjig = new Object;
@@ -207,7 +207,7 @@ class KakaoMapService {
         let item = `
             <span class="${ItemUniName.componentStyle.componentId} ${ItemUniName.componentStyle.lastClassName}">${places.place_name}</span>
             <span class="${ItemUniCount.componentStyle.componentId} ${ItemUniCount.componentStyle.lastClassName}">리뷰 ${pugjjig.count}개</span>
-        `;       
+        `;
 
         el.innerHTML = item;
         el.className = `${Item.componentStyle.componentId} ${Item.componentStyle.lastClassName}`;
@@ -216,18 +216,18 @@ class KakaoMapService {
     }
 
     /****************************************
-        마커를 생성하고 지도 위에 마커를 표시하는 함수입니다.
-    ****************************************/
+     마커를 생성하고 지도 위에 마커를 표시하는 함수입니다.
+     ****************************************/
     addMarker = (position, idx, title) => {
         let imageSrc = markerIcon, // 마커 이미지 url, 스프라이트 이미지를 씁니다
             imageSize = new kakao.maps.Size(38, 38),  // 마커 이미지의 크기
-            imgOptions =  {
+            imgOptions = {
                 offset: new kakao.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
             },
             markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
-                marker = new kakao.maps.Marker({
+            marker = new kakao.maps.Marker({
                 position: position, // 마커의 위치
-                image: markerImage 
+                image: markerImage
             });
 
         marker.setMap(this.thatThis.map); // 지도 위에 마커를 표출합니다
@@ -238,38 +238,38 @@ class KakaoMapService {
 
 
     /****************************************
-        지도 위에 표시되고 있는 마커를 모두 제거합니다.
-    ****************************************/
+     지도 위에 표시되고 있는 마커를 모두 제거합니다.
+     ****************************************/
     removeMarker = () => {
-        for ( let i = 0; i < this.markers.length; i++ ) {
+        for (let i = 0; i < this.markers.length; i++) {
             this.markers[i].setMap(null);
-        }   
+        }
         this.markers = [];
     }
 
     /****************************************
-        검색결과 목록 하단에 페이지번호를 표시는 함수입니다.
-    ****************************************/
+     검색결과 목록 하단에 페이지번호를 표시는 함수입니다.
+     ****************************************/
     displayPagination = (pagination) => {
         let paginationEl = document.getElementsByClassName(Pagination.componentStyle.componentId).item(0);
         let fragment = document.createDocumentFragment();
-        let i; 
+        let i;
 
         // 기존에 추가된 페이지번호를 삭제합니다
         while (paginationEl.hasChildNodes()) {
-            paginationEl.removeChild (paginationEl.lastChild);
+            paginationEl.removeChild(paginationEl.lastChild);
         }
 
-        for (i=1; i<=pagination.last; i++) {
+        for (i = 1; i <= pagination.last; i++) {
             let el = document.createElement('button');
             el.type = "button";
             el.innerHTML = i;
 
-            if (i===pagination.current) {
+            if (i === pagination.current) {
                 el.id = 'on';
             } else {
-                el.onclick = (function(i) {
-                    return function() {
+                el.onclick = (function (i) {
+                    return function () {
                         pagination.gotoPage(i);
                     }
                 })(i);
@@ -281,9 +281,9 @@ class KakaoMapService {
     }
 
     /****************************************
-        검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다.
-        인포윈도우에 장소명을 표시합니다.
-    ****************************************/
+     검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다.
+     인포윈도우에 장소명을 표시합니다.
+     ****************************************/
     displayInfowindow = (marker, title) => {
         // kakao 콜백함수에 전달해주는 변수
         const thatThis = this.thatThis;
@@ -293,14 +293,14 @@ class KakaoMapService {
                 ${title.place_name}
             </div>
         `;
-        
+
         thatThis.infowindow.setContent(content);
         thatThis.infowindow.open(thatThis.map, marker);
     }
 
     /****************************************
-        커스텀 오버레이를 생성합니다
-    ****************************************/
+     커스텀 오버레이를 생성합니다
+     ****************************************/
     displayOverlay = async (placePosition, store) => {
         // kakao 콜백함수에 전달해주는 변수
         const classThis = this;
@@ -311,53 +311,53 @@ class KakaoMapService {
         let pugjjig = new Object;
         pugjjig = await this.getUniCountStoId(store.id);
 
-        let overlayWarp = document.createElement("div"); 
+        let overlayWarp = document.createElement("div");
         overlayWarp.setAttribute("style", "padding:10px 15px;z-index:3;background-color: #fff;border: 1px solid #d11d33;width: 300px;");
 
-        let overlayTitle = document.createElement("div"); 
-        let overlayTitleText = document.createTextNode(store.place_name); 
+        let overlayTitle = document.createElement("div");
+        let overlayTitleText = document.createTextNode(store.place_name);
         overlayTitle.appendChild(overlayTitleText);
         overlayTitle.setAttribute("style", "font-weight: 500;font-size: 16px;margin-bottom: 3px;");
 
-        let overlayClose = document.createElement("button"); 
-        let overlayCloseText = document.createTextNode(`X`); 
+        let overlayClose = document.createElement("button");
+        let overlayCloseText = document.createTextNode(`X`);
         overlayClose.appendChild(overlayCloseText);
         overlayClose.setAttribute("style", "color: #000;position: absolute;right: 16px;top: 6px;font-size: 16px;font-weight: 400;");
-        overlayClose.addEventListener('click', function(){
+        overlayClose.addEventListener('click', function () {
             this.parentNode.setAttribute("style", "display: none");
         });
 
-        let overlayReview = document.createElement("button"); 
+        let overlayReview = document.createElement("button");
         overlayReview.type = "button";
-        let overlayReviewText = document.createTextNode(`리뷰 ${pugjjig.count}개 리뷰보기`); 
+        let overlayReviewText = document.createTextNode(`리뷰 ${pugjjig.count}개 리뷰보기`);
         overlayReview.appendChild(overlayReviewText);
         overlayReview.setAttribute("style", "color: #d11d33;font-weight: 400; margin-bottom: 4px;");
 
-        overlayReview.addEventListener('click', function(){
+        overlayReview.addEventListener('click', function () {
             classThis.openModal("listModalState", store.id, store.place_name, store.address_name, store.place_url);
         });
 
-        let overlayAddr = document.createElement("div"); 
-        let overlayAddrText = document.createTextNode(`${store.address_name}`); 
+        let overlayAddr = document.createElement("div");
+        let overlayAddrText = document.createTextNode(`${store.address_name}`);
         overlayAddr.appendChild(overlayAddrText);
         overlayAddr.setAttribute("style", "color: #000;");
-        
+
         let overlayPhone = document.createElement("a");
         overlayPhone.href = `tel: ${store.phone}`;
         overlayPhone.target = `_blank`;
-        let overlayPhoneText = document.createTextNode(`${store.phone}`); 
+        let overlayPhoneText = document.createTextNode(`${store.phone}`);
         overlayPhone.appendChild(overlayPhoneText);
         overlayPhone.setAttribute("style", "color: #288756;");
 
-        let overlayInfo = document.createElement("a"); 
+        let overlayInfo = document.createElement("a");
         overlayInfo.href = `${store.place_url}`;
         overlayInfo.target = `_blank`;
-        let overlayInfoText = document.createTextNode(`상세정보`); 
+        let overlayInfoText = document.createTextNode(`상세정보`);
         overlayInfo.appendChild(overlayInfoText);
         overlayInfo.setAttribute("style", "color: #3d75cc;margin-left: 5px;");
 
-        let overlayWrite = document.createElement("button"); 
-        let overlayWritewText = document.createTextNode("리뷰 작성하기"); 
+        let overlayWrite = document.createElement("button");
+        let overlayWritewText = document.createTextNode("리뷰 작성하기");
         overlayWrite.appendChild(overlayWritewText);
         overlayWrite.setAttribute("style", "width: 100%;display: block;background-color: #d11d33;color: #fff;padding: 3px 0;border-radius: 3px;margin-top: 10px;");
 
@@ -368,8 +368,8 @@ class KakaoMapService {
         overlayWarp.appendChild(overlayPhone);
         overlayWarp.appendChild(overlayInfo);
         overlayWarp.appendChild(overlayWrite);
-        
-        overlayWrite.addEventListener('click', function(){
+
+        overlayWrite.addEventListener('click', function () {
             classThis.storeSet(store.id, store.place_name, store.address_name, store.place_url);
         });
 
@@ -388,32 +388,32 @@ class KakaoMapService {
     }
 
     /****************************************
-        검색결과 목록의 자식 Element를 제거하는 함수입니다.
-    ****************************************/
+     검색결과 목록의 자식 Element를 제거하는 함수입니다.
+     ****************************************/
     removeAllChildNods = (el) => {
         while (el.hasChildNodes()) {
-            el.removeChild (el.lastChild);
+            el.removeChild(el.lastChild);
         }
     }
 
     /*-map review-*/
 
     /****************************************
-        카테고리 검색
-    ****************************************/
-    categorySearch = (x, y) => {       
+     카테고리 검색
+     ****************************************/
+    categorySearch = (x, y) => {
         this.searchLoading("음식점을 찾고있습니다.");
 
         // defaultAddr 변수로 대학교 위치를 입력받아 근처 맛집을 탐색
         let defaultAddr = this.thatThis.defaultAddr(x, y);
 
         this.thatThis.map.setCenter(defaultAddr);
-        
+
         // 장소 검색 객체를 생성합니다
-        var places = new kakao.maps.services.Places(this.thatThis.map); 
+        var places = new kakao.maps.services.Places(this.thatThis.map);
         // 카테고리로 은행을 검색합니다
         places.categorySearch('FD6', this.placesSearchCB, {
-            useMapBounds: true, 
+            useMapBounds: true,
             useMapCenter: true,
             radius: 500
         });
@@ -437,8 +437,8 @@ class KakaoMapService {
             // 지도에 표시되고 있는 마커를 제거합니다
             this.removeMarker();
 
-            for (var i=0; i<places.length; i++) {
-                
+            for (var i = 0; i < places.length; i++) {
+
                 // 마커를 생성하고 지도에 표시합니다
                 let placePosition = this.thatThis.latLng(places[i].y, places[i].x);
                 let marker = this.addMarker(placePosition, i);
@@ -450,7 +450,7 @@ class KakaoMapService {
                 this.setOverInfo(marker, places[i], placePosition, itemEl);
 
                 fragment.appendChild(itemEl);
-            }       
+            }
 
             // 검색결과 항목들을 검색결과 목록 Elemnet에 추가합니다
             listEl.appendChild(fragment);
@@ -464,22 +464,22 @@ class KakaoMapService {
     }
 
     /****************************************
-        검색 호출동안 로딩 표시
-    ****************************************/
-   searchLoading = (text) => {
+     검색 호출동안 로딩 표시
+     ****************************************/
+    searchLoading = (text) => {
         // 검색 loading 표시
         let listEl = document.getElementById('universityList');
         this.removeAllChildNods(listEl);
         let loading = document.createElement("div");
-        let loadingText = document.createTextNode(text); 
+        let loadingText = document.createTextNode(text);
         loading.appendChild(loadingText);
         loading.setAttribute("style", "text-align: center;padding: 20px 0;background: #fff;z-index: 3;position: relative;");
         listEl.appendChild(loading);
-   }
+    }
 
     /****************************************
-        사용자 설정 검색을 요청하는 함수입니다.
-    ****************************************/
+     사용자 설정 검색을 요청하는 함수입니다.
+     ****************************************/
     searchPlacesSetting = (x, y, radius, keyword) => {
         this.searchLoading("음식점을 찾고있습니다.");
 
@@ -500,16 +500,16 @@ class KakaoMapService {
 
         // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
         // defaultAddr 값은 필수입니다. 검색 거리에 기준점이 됩니다.
-        places.keywordSearch( keyword, this.searchPlacesCB, {
-            category_group_code : cate,
+        places.keywordSearch(keyword, this.searchPlacesCB, {
+            category_group_code: cate,
             location: defaultAddr,
-            useMapBounds: true, 
+            useMapBounds: true,
             useMapCenter: true,
-            radius: radius*1
-        }); 
+            radius: radius * 1
+        });
 
         return false;
-    } 
+    }
 }
 
 export default KakaoMapService;

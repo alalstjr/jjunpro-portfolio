@@ -15,21 +15,21 @@ import {
 
 const initialState = {
     uni_count: {},
-    temp_pugjjig_list : [],
-    pugjjig_list : {},
-    pugjjig_like : {},
-    pugjjig_view : {},
-    pugjjig_count : {},
+    temp_pugjjig_list: [],
+    pugjjig_list: {},
+    pugjjig_like: {},
+    pugjjig_view: {},
+    pugjjig_count: {},
     pugjjig_university: "",
-    pugjjig_delete : 0,
+    pugjjig_delete: 0,
     pugjjig_comment: {},
     pugjjig_comment_list: {},
-    pugjjig_comment_delete : 0,
+    pugjjig_comment_delete: 0,
     file_progress: ""
 };
 
-export default function(state=initialState, action) {
-    switch(action.type) {
+export default function (state = initialState, action) {
+    switch (action.type) {
 
         case GET_UNIVERSITY_COUNT:
             return {
@@ -68,7 +68,7 @@ export default function(state=initialState, action) {
                     data: action.payload
                 }
             };
-            
+
         case GET_PUGJJIG_COUNT:
             return {
                 ...state,

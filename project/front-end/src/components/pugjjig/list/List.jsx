@@ -1,11 +1,11 @@
-import React, { Component, Fragment } from "react";
+import React, {Component, Fragment} from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { USER_LONG_ID } from "../../../routes";
+import {connect} from "react-redux";
+import {USER_LONG_ID} from "../../../routes";
 
-import { 
+import {
     tempUniversityList,
-    deleteUniversityuniId, 
+    deleteUniversityuniId,
     getUniListStoreId,
     getUniListUniLike,
     getUniListUserId,
@@ -22,14 +22,14 @@ import InfiniteScroll from "react-infinite-scroller";
 import ItemEditModal from "./item/ItemEditModal";
 import InsertModal from "../modal/InsertModal";
 
-import { NotPost } from "../../../style/globalStyles";
-import { PugjjigItemWrap } from "../style";
+import {NotPost} from "../../../style/globalStyles";
+import {PugjjigItemWrap} from "../style";
 
 class List extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
-    
+
         this.state = {
             insertModalState: false,
             selectModalState: false,
@@ -57,7 +57,7 @@ class List extends Component {
             ifCateA,
             ifCateB
         };
-        
+
         let result = true;
         tempUniversityList(result);
 
@@ -68,7 +68,7 @@ class List extends Component {
     componentWillReceiveProps(nextProps) {
 
         // Props Init
-        const { 
+        const {
             keyword,
             pugjjig_list,
             pugjjig_delete,
@@ -76,27 +76,27 @@ class List extends Component {
             reSearch
         } = this.props;
 
-        if(nextProps.pugjjig_list !== pugjjig_list) {
+        if (nextProps.pugjjig_list !== pugjjig_list) {
             this.handleUpdate(nextProps.pugjjig_list);
         }
 
-        if(nextProps.pugjjig_delete !== pugjjig_delete) {
+        if (nextProps.pugjjig_delete !== pugjjig_delete) {
             this.handleDeleteUpdate(nextProps.pugjjig_delete);
         }
-        
+
         // keyword 달라지거나 카테고리 검색일경우 새로고침
-        if(nextProps.keyword !== keyword || nextProps.reSearch !== reSearch) {
+        if (nextProps.keyword !== keyword || nextProps.reSearch !== reSearch) {
             // Search DTO 생성
             const searchDTO = {
                 keyword: nextProps.inputKeyword,
-                classification:nextProps.classification,
+                classification: nextProps.classification,
                 offsetCount: 0,
                 ifCateA: nextProps.ifCateA,
                 ifCateB: nextProps.ifCateB
             };
 
             tempUniversityList(true);
-            
+
             this.handleAction(searchDTO);
         }
     }
@@ -111,9 +111,9 @@ class List extends Component {
             getUniListSearch,
             getUniversityCreatedDate
         } = this.props;
-        
+
         // PugjjigSearchProvider 혹은 검색되는 대상에서 받아온 분류로 검색후 DB 검색
-        switch(searchDTO.classification) {
+        switch (searchDTO.classification) {
             case "storeId" :
                 getUniListStoreId(searchDTO);
                 break;
@@ -152,19 +152,19 @@ class List extends Component {
     }
 
     handleLikeUpdate = (preData, postData) => {
-        
+
         preData.map(preData => {
             // id 가 일치하면 변경되는 값만 찾아서 변경합니다.
-            if(preData.id === postData.id) {
-                preData.uniLike      = postData.uniLike;
+            if (preData.id === postData.id) {
+                preData.uniLike = postData.uniLike;
                 preData.uniLikeState = postData.uniLikeState;
             }
         });
-    } 
+    }
 
     handleLoad = (offsetCount) => {
         // Props Init
-        const { 
+        const {
             // search value
             keyword,
             classification,
@@ -181,14 +181,14 @@ class List extends Component {
             ifCateA,
             ifCateB
         };
-        
+
         // best or 최근글 불러오기는 제외
-        if(classification === "best" || classification === "createdDate") {
+        if (classification === "best" || classification === "createdDate") {
             return false;
         }
 
-        if(pugjjig_list.data !== undefined) {
-            if(pugjjig_list.data.length <= 0) {
+        if (pugjjig_list.data !== undefined) {
+            if (pugjjig_list.data.length <= 0) {
                 return false;
             }
         }
@@ -198,11 +198,11 @@ class List extends Component {
 
     handleUpdate = (postData) => {
 
-        const { 
-            tempUniversityList, 
-            temp_pugjjig_list 
+        const {
+            tempUniversityList,
+            temp_pugjjig_list
         } = this.props;
-        
+
         tempUniversityList(false, temp_pugjjig_list, postData.data);
     }
 
@@ -211,19 +211,19 @@ class List extends Component {
      */
     handleDelete = () => {
         // Props Init
-        const { deleteUniversityuniId } = this.props;
-        
+        const {deleteUniversityuniId} = this.props;
+
         // State Init
-        const { editPugjjig } = this.state;
+        const {editPugjjig} = this.state;
 
         deleteUniversityuniId(editPugjjig.id);
     }
 
     handleDeleteUpdate = (postPugjjig) => {
         // State Init
-        const { temp_pugjjig_list, tempUniversityListUpdate } = this.props;
+        const {temp_pugjjig_list, tempUniversityListUpdate} = this.props;
         let tempList = temp_pugjjig_list.filter(pugjjig => pugjjig.id !== postPugjjig);
-        
+
         tempUniversityListUpdate(tempList);
         this.closeModal("selectModalState");
     }
@@ -236,7 +236,7 @@ class List extends Component {
     openModal = (target, pugjjig) => {
 
         // 클릭한 Item의 정보를 담습니다.
-        if(pugjjig) {
+        if (pugjjig) {
             // 클릭한 DATA의 정보가 로그인한 유저의 DATA인지 확인합니다.
             let edit = pugjjig.account_id === USER_LONG_ID() ? true : false;
 
@@ -260,7 +260,7 @@ class List extends Component {
 
     render() {
         // Props Init
-        const { 
+        const {
             temp_pugjjig_list,
             UpdateUniLikeUniId,
             pugjjig_like
@@ -277,26 +277,26 @@ class List extends Component {
         // Variables Init
         let pugjjigContent;
         let pugjjigList = [];
-        
+
         // pugjjigList
         const pugjjigGet = (pugjjig) => {
-            if(pugjjig !== undefined && pugjjig.length > 0) {
+            if (pugjjig !== undefined && pugjjig.length > 0) {
                 const data = pugjjig.map((pugjjig, index) => (
-                    <Item 
-                        key                = {index}
-                        pugjjig            = {pugjjig}
-                        UpdateUniLikeUniId = {UpdateUniLikeUniId}
-                        selectModalState   = {selectModalState}
-                        openModal          = {this.openModal}
+                    <Item
+                        key={index}
+                        pugjjig={pugjjig}
+                        UpdateUniLikeUniId={UpdateUniLikeUniId}
+                        selectModalState={selectModalState}
+                        openModal={this.openModal}
                     />
                 ));
 
-                for(let i = 0; i < data.length; i++) {
+                for (let i = 0; i < data.length; i++) {
                     pugjjigList.push(data[i]);
                 }
-                
+
                 // 푹찍 Like 클릭시 Re rendering 여부 체크
-                if(pugjjig_like.data !== undefined) {
+                if (pugjjig_like.data !== undefined) {
                     this.handleLikeUpdate(pugjjig, pugjjig_like.data);
                 }
 
@@ -319,34 +319,34 @@ class List extends Component {
             <PugjjigItemWrap>
                 {
                     temp_pugjjig_list.length > 0 ?
-                    <InfiniteScroll
-                    pageStart   = {0}
-                    loadMore    = {this.handleLoad}
-                    hasMore     = {true}
-                    initialLoad = {false}
-                    useWindow   = {true}
-                    threshold   = {500}
-                    >
-                        {pugjjigContent}
-                    </InfiniteScroll>
-                    :
-                    <NotPost>리뷰가 존재하지 않습니다.</NotPost>
+                        <InfiniteScroll
+                            pageStart={0}
+                            loadMore={this.handleLoad}
+                            hasMore={true}
+                            initialLoad={false}
+                            useWindow={true}
+                            threshold={500}
+                        >
+                            {pugjjigContent}
+                        </InfiniteScroll>
+                        :
+                        <NotPost>리뷰가 존재하지 않습니다.</NotPost>
                 }
                 {/* Item Edit Select modal */}
                 <ItemEditModal
-                    modalState   = {selectModalState}
-                    closeModal   = {this.closeModal}
-                    openModal    = {this.openModal}
-                    handleDelete = {this.handleDelete}
-                    edit         = {edit}
+                    modalState={selectModalState}
+                    closeModal={this.closeModal}
+                    openModal={this.openModal}
+                    handleDelete={this.handleDelete}
+                    edit={edit}
                 />
                 {/* Edit Modal */}
                 <InsertModal
-                    modalState   = {insertModalState}
-                    closeModal   = {this.closeModal}
-                    stoId        = {null}
-                    stoAddress   = {null}
-                    editPugjjig  = {editPugjjig}
+                    modalState={insertModalState}
+                    closeModal={this.closeModal}
+                    stoId={null}
+                    stoAddress={null}
+                    editPugjjig={editPugjjig}
                 />
             </PugjjigItemWrap>
         )
@@ -370,7 +370,7 @@ List.propTypes = {
     error: PropTypes.object.isRequired,
     pugjjig_delete: PropTypes.number.isRequired
 }
-  
+
 const mapStateToProps = state => ({
     error: state.errors,
     temp_pugjjig_list: state.pugjjig.temp_pugjjig_list,
@@ -378,10 +378,10 @@ const mapStateToProps = state => ({
     pugjjig_like: state.pugjjig.pugjjig_like,
     pugjjig_delete: state.pugjjig.pugjjig_delete
 });
-  
+
 export default connect(
-    mapStateToProps, 
-    { 
+    mapStateToProps,
+    {
         tempUniversityList,
         getUniListStoreId,
         getUniListUniLike,
@@ -393,4 +393,4 @@ export default connect(
         getUniversityCreatedDate,
         tempUniversityListUpdate
     }
-  )(List);
+)(List);

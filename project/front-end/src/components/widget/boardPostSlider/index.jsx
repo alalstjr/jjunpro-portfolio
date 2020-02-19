@@ -1,6 +1,6 @@
-import React, { Component, Fragment } from "react";
-import { injectIntl } from "react-intl";
-import { connect } from "react-redux";
+import React, {Component, Fragment} from "react";
+import {injectIntl} from "react-intl";
+import {connect} from "react-redux";
 import PropTypes from "prop-types";
 
 import Slider from "react-slick";
@@ -8,21 +8,21 @@ import Slider from "react-slick";
 import "../../../details/css/slickSlider/slick.css";
 import "../../../details/css/slickSlider/slick-theme.css";
 
-import { NoSlider, SliderGap } from "./style";
+import {NoSlider, SliderGap} from "./style";
 
-import { getBoardTasks } from "../../../actions/boardTaskActions";
+import {getBoardTasks} from "../../../actions/boardTaskActions";
 import Item from "./item";
-import { DataNone } from "../../../style/globalStyles";
+import {DataNone} from "../../../style/globalStyles";
 
 class BoardPostSlider extends Component {
 
-    componentDidMount(){
+    componentDidMount() {
         this.props.getBoardTasks();
     }
 
     render() {
         // props Init
-        const { board_tasks } = this.props.board_tasks;
+        const {board_tasks} = this.props.board_tasks;
 
         // Variables Init
         let BoardContent;
@@ -40,7 +40,7 @@ class BoardPostSlider extends Component {
 
         // Board Get List
         const BoardGetList = board_tasks => {
-            if(board_tasks.length > 0) {
+            if (board_tasks.length > 0) {
                 const tasks = board_tasks.map(board_task => (
                     <Item
                         key={board_task.num}
@@ -48,7 +48,7 @@ class BoardPostSlider extends Component {
                     />
                 ));
 
-                for(let i = 0; i < tasks.length; i++) {
+                for (let i = 0; i < tasks.length; i++) {
                     items.push(tasks[i]);
                 }
 
@@ -66,14 +66,14 @@ class BoardPostSlider extends Component {
                         </NoSlider>
                     </SliderGap>
                 );
-                
+
                 return (
                     <Fragment>
                         {board_tasks.length > 5 ? SliderItem : noSliderItem}
                     </Fragment>
                 );
             } else {
-                return(
+                return (
                     <DataNone>
                         게시글이 존재하지 않습니다.
                     </DataNone>
@@ -84,12 +84,12 @@ class BoardPostSlider extends Component {
         // Board Get List View
         BoardContent = BoardGetList(board_tasks);
 
-        return(
+        return (
             <Fragment>
                 {BoardContent}
             </Fragment>
         );
-  }
+    }
 }
 
 BoardPostSlider.propTypes = {
@@ -103,5 +103,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { getBoardTasks }  
+    {getBoardTasks}
 )(injectIntl(BoardPostSlider));

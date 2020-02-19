@@ -1,13 +1,13 @@
-import React, { Fragment } from "react";
-import { Link } from "react-router-dom";
+import React, {Fragment} from "react";
+import {Link} from "react-router-dom";
 import ImageSlide from "../../../widget/mainTitleSlide";
-import { SERVER_FILE_URL } from "../../../../routes";
+import {SERVER_FILE_URL} from "../../../../routes";
 
 import {
     ProfileIamge,
     FlexBottom, NoneImg
 } from "../../../../style/globalStyles";
-import { 
+import {
     PugjjigItem,
     ItemHead,
     ItemRight,
@@ -46,11 +46,11 @@ const Item = ({pugjjig, UpdateUniLikeUniId, openModal}) => (
             <ItemUserPhoto>
                 {
                     pugjjig.photo === null ?
-                    <SVG name={"user"} width="38px" height="38px" color={"#E71D36"} />
-                    : 
-                    <ProfileIamge
-                        image = {`${SERVER_FILE_URL}${pugjjig.photo.fileThumbnail}`}
-                    />
+                        <SVG name={"user"} width="38px" height="38px" color={"#E71D36"}/>
+                        :
+                        <ProfileIamge
+                            image={`${SERVER_FILE_URL}${pugjjig.photo.fileThumbnail}`}
+                        />
                 }
             </ItemUserPhoto>
             <ItemRight>
@@ -62,84 +62,84 @@ const Item = ({pugjjig, UpdateUniLikeUniId, openModal}) => (
                 <ItemUserInfo>
                     {
                         (pugjjig.account_urlList !== null && pugjjig.account_urlList.length > 0) ?
-                        pugjjig.account_urlList.map((url, index) => (
-                            <a key={index} href={url} target="_blank">
-                                {
-                                    url.indexOf("instagram") !== -1 ? 
-                                    <SVGInstar width="14px" height="14px"/>
-                                    :
-                                    url.indexOf("facebook") !== -1 ? 
-                                    <SVGFacebook width="14px" height="14px"/>
-                                    :
-                                    url.indexOf("youtube") !== -1 ? 
-                                    <SVGYoutube width="14px" height="14px"/>
-                                    :
-                                    <SVGLink width="14px" height="14px"/>
-                                }
-                            </a>
-                        ))
-                        :
-                        "회원"
+                            pugjjig.account_urlList.map((url, index) => (
+                                <a key={index} href={url} target="_blank">
+                                    {
+                                        url.indexOf("instagram") !== -1 ?
+                                            <SVGInstar width="14px" height="14px"/>
+                                            :
+                                            url.indexOf("facebook") !== -1 ?
+                                                <SVGFacebook width="14px" height="14px"/>
+                                                :
+                                                url.indexOf("youtube") !== -1 ?
+                                                    <SVGYoutube width="14px" height="14px"/>
+                                                    :
+                                                    <SVGLink width="14px" height="14px"/>
+                                    }
+                                </a>
+                            ))
+                            :
+                            "회원"
                     }
                 </ItemUserInfo>
             </ItemRight>
             <ItemStar>
-            {
-                pugjjig.uniStar === 1 ?
-                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                :
-                pugjjig.uniStar === 2 ?
-                <Fragment>
-                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                </Fragment>
-                :
-                pugjjig.uniStar === 3 ?
-                <Fragment>
-                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                </Fragment>
-                :
-                pugjjig.uniStar === 4 ?
-                <Fragment>
-                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                </Fragment>
-                :
-                <Fragment>
-                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"} />
-                </Fragment>
-            }
+                {
+                    pugjjig.uniStar === 1 ?
+                        <SVG name={"star"} width="14px" height="14px" color={"#ffd700"}/>
+                        :
+                        pugjjig.uniStar === 2 ?
+                            <Fragment>
+                                <SVG name={"star"} width="14px" height="14px" color={"#ffd700"}/>
+                                <SVG name={"star"} width="14px" height="14px" color={"#ffd700"}/>
+                            </Fragment>
+                            :
+                            pugjjig.uniStar === 3 ?
+                                <Fragment>
+                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"}/>
+                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"}/>
+                                    <SVG name={"star"} width="14px" height="14px" color={"#ffd700"}/>
+                                </Fragment>
+                                :
+                                pugjjig.uniStar === 4 ?
+                                    <Fragment>
+                                        <SVG name={"star"} width="14px" height="14px" color={"#ffd700"}/>
+                                        <SVG name={"star"} width="14px" height="14px" color={"#ffd700"}/>
+                                        <SVG name={"star"} width="14px" height="14px" color={"#ffd700"}/>
+                                        <SVG name={"star"} width="14px" height="14px" color={"#ffd700"}/>
+                                    </Fragment>
+                                    :
+                                    <Fragment>
+                                        <SVG name={"star"} width="14px" height="14px" color={"#ffd700"}/>
+                                        <SVG name={"star"} width="14px" height="14px" color={"#ffd700"}/>
+                                        <SVG name={"star"} width="14px" height="14px" color={"#ffd700"}/>
+                                        <SVG name={"star"} width="14px" height="14px" color={"#ffd700"}/>
+                                        <SVG name={"star"} width="14px" height="14px" color={"#ffd700"}/>
+                                    </Fragment>
+                }
                 <ItemOption>{pugjjig.uniAtmosphere}</ItemOption>
                 <ItemOption>{pugjjig.uniPrice}</ItemOption>
             </ItemStar>
         </ItemHead>
-            <Link to={`/pugjjig/${pugjjig.id}`} target="_blank">
-                <ItemSubject>{pugjjig.uniSubject}</ItemSubject>
-                <ItemContent>
-                        {pugjjig.uniContent}
-                </ItemContent>
-            </Link>
+        <Link to={`/pugjjig/${pugjjig.id}`} target="_blank">
+            <ItemSubject>{pugjjig.uniSubject}</ItemSubject>
+            <ItemContent>
+                {pugjjig.uniContent}
+            </ItemContent>
+        </Link>
         <ItemImgBox>
             {
                 pugjjig.files.length === 0 ?
-                <NoneImg 
-                    src={`/search/food-03.jpg`}
-                    alt="음식점 사진"
-                />
-                :
-                <ImageSlide
-                    slideShow = {1}
-                    images = {pugjjig.files}
-                    thumbnail = {true}
-                />
+                    <NoneImg
+                        src={`/search/food-03.jpg`}
+                        alt="음식점 사진"
+                    />
+                    :
+                    <ImageSlide
+                        slideShow={1}
+                        images={pugjjig.files}
+                        thumbnail={true}
+                    />
             }
         </ItemImgBox>
         <FlexBottom>
@@ -150,21 +150,21 @@ const Item = ({pugjjig, UpdateUniLikeUniId, openModal}) => (
                         <Fragment>
                             {
                                 pugjjig.uniName !== "" ?
-                                <Link to={`/pugjjig/uniSearch/${pugjjig.uniName}`}>
-                                    <span>{pugjjig.uniName}</span> 
-                                </Link>
-                                :
-                                null
+                                    <Link to={`/pugjjig/uniSearch/${pugjjig.uniName}`}>
+                                        <span>{pugjjig.uniName}</span>
+                                    </Link>
+                                    :
+                                    null
                             }
                             <Link to={`/pugjjig/stoSearch/${pugjjig.storePublic.stoName}`}>
-                                <span>{pugjjig.storePublic.stoName}</span> 
+                                <span>{pugjjig.storePublic.stoName}</span>
                             </Link>
-                            <a href = {`${pugjjig.storePublic.stoUrl}`} target="_blank">
+                            <a href={`${pugjjig.storePublic.stoUrl}`} target="_blank">
                                 {pugjjig.storePublic.stoAddress}
                             </a>
                         </Fragment>
-                    :
-                    null
+                        :
+                        null
                 }
             </ItemLocalWrap>
             <ItemTagWrap>
@@ -175,8 +175,8 @@ const Item = ({pugjjig, UpdateUniLikeUniId, openModal}) => (
                                 <Link to={`/pugjjig/tagSearch/${tag}`}>#{tag}</Link>
                             </ItemTag>
                         ))
-                    :
-                    null
+                        :
+                        null
                 }
             </ItemTagWrap>
             <ItemDetailWrap>
@@ -194,10 +194,10 @@ const Item = ({pugjjig, UpdateUniLikeUniId, openModal}) => (
                 <ItemState>
                     <ItemLikeBtn onClick={() => UpdateUniLikeUniId(pugjjig.id)}>
                         {
-                            pugjjig.uniLikeState == true ?  
-                            <SVG name={"heartCk"} width="14px" height="14px" color={"#d11d33"} />
-                            :
-                            <SVG name={"heart"} width="14px" height="14px" color={"#dddddd"} />
+                            pugjjig.uniLikeState == true ?
+                                <SVG name={"heartCk"} width="14px" height="14px" color={"#d11d33"}/>
+                                :
+                                <SVG name={"heart"} width="14px" height="14px" color={"#dddddd"}/>
                         }
                         <ItemLikeText>
                             좋아요
@@ -205,16 +205,16 @@ const Item = ({pugjjig, UpdateUniLikeUniId, openModal}) => (
                     </ItemLikeBtn>
 
                     <ItemLikeBtn>
-                            <SVG name={"comment"} width="14px" height="14px" color={"#dddddd"} />
-                            <ItemLikeText>
-                                <Link to={`/pugjjig/${pugjjig.id}`} target="_blank">
-                                    댓글
-                                </Link>
-                            </ItemLikeText>
+                        <SVG name={"comment"} width="14px" height="14px" color={"#dddddd"}/>
+                        <ItemLikeText>
+                            <Link to={`/pugjjig/${pugjjig.id}`} target="_blank">
+                                댓글
+                            </Link>
+                        </ItemLikeText>
                     </ItemLikeBtn>
 
-                    <ItemEditBtn onClick = {() => openModal("selectModalState", pugjjig)} >
-                        <SVGEdit width="16px" height="16px" color={"#333333"} />
+                    <ItemEditBtn onClick={() => openModal("selectModalState", pugjjig)}>
+                        <SVGEdit width="16px" height="16px" color={"#333333"}/>
                     </ItemEditBtn>
                 </ItemState>
             </ItemBottom>

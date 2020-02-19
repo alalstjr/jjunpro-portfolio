@@ -7,9 +7,9 @@ const initialState = {
     alarm: {}
 };
 
-export default function(state=initialState, action) {
-    
-    switch(action.type) {
+export default function (state = initialState, action) {
+
+    switch (action.type) {
 
         case GET_ALARM_LIST:
             return {

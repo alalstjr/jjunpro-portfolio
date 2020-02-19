@@ -1,6 +1,6 @@
-import React, { Component } from "react"
-import { NormalHeaderWrap } from "../style"
-import { Link } from "react-router-dom"
+import React, {Component} from "react"
+import {NormalHeaderWrap} from "../style"
+import {Link} from "react-router-dom"
 
 class NormalHeader extends Component {
     render() {

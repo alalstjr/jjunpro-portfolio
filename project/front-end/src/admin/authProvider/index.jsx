@@ -1,10 +1,10 @@
-import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'react-admin';
+import {AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK} from 'react-admin';
 
-import { adminAccountLogin, adminAccountCheck } from '../../actions/accountActions';
+import {adminAccountLogin, adminAccountCheck} from '../../actions/accountActions';
 
 export default async (type, params) => {
-    switch(type) {
-        case AUTH_LOGIN: 
+    switch (type) {
+        case AUTH_LOGIN:
             // called when the user attempts to log in
             // 사용자가 로그인을 시도 할 때 호출
             // accept all username/password combinations
@@ -12,30 +12,30 @@ export default async (type, params) => {
             // const { username, password } = params;
 
             const param = {
-                userId : params.username,
-                password : params.password
+                userId: params.username,
+                password: params.password
             };
 
             return adminAccountLogin(param);
-        break
-        
+            break
+
         case AUTH_LOGOUT:
             // called when the user clicks on the logout button
             // 사용자가 로그 아웃 버튼을 클릭하면 호출
             localStorage.removeItem('userInfo');
             return Promise.resolve();
-        break
+            break
 
         case AUTH_ERROR:
             // called when the API returns an error
             // API가 오류를 반환하면 호출
-            const { status } = params;
+            const {status} = params;
             if (status === 401 || status === 403) {
                 localStorage.removeItem('userInfo');
                 return Promise.reject("");
             }
             return Promise.resolve();
-        break
+            break
 
         case AUTH_CHECK:
             // called when the user navigates to a new location
@@ -44,7 +44,7 @@ export default async (type, params) => {
             return adminAccountCheck();
             // return adminAccountCheck() ? Promise.resolve() : Promise.reject()
 
-        break
+            break
     }
     return Promise.reject('Unknown method')
 }

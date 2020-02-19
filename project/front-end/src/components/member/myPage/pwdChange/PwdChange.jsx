@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React, {Component} from "react"
 
 import {
     Form,
@@ -13,7 +13,7 @@ import {
 } from "../../style"
 
 class PwdChange extends Component {
- 
+
     constructor() {
         super();
 
@@ -28,7 +28,7 @@ class PwdChange extends Component {
 
     componentDidMount() {
         // Props Init
-        const { account_get } = this.props;
+        const {account_get} = this.props;
 
         this.setState({
             id: account_get.id
@@ -37,16 +37,16 @@ class PwdChange extends Component {
 
     componentWillReceiveProps(nextProps) {
         // 로그인한 유저의 정보를 DTO에 담습니다.
-        if(nextProps.account_get.data !== undefined){
+        if (nextProps.account_get.data !== undefined) {
             let account = nextProps.account_get.data;
-            
+
             this.setState({
                 id: account.id
             });
         }
 
         // 비밀번호 변경에 성공하면 초기화
-        if(nextProps.account_create.data === true) {
+        if (nextProps.account_create.data === true) {
             this.setState({
                 oldPassword: "",
                 password: "",
@@ -67,10 +67,10 @@ class PwdChange extends Component {
         e.preventDefault();
 
         // Props Init
-        const { warningSet } = this.props;
+        const {warningSet} = this.props;
 
         // State Init
-        const { 
+        const {
             id,
             oldPassword,
             password,
@@ -85,25 +85,25 @@ class PwdChange extends Component {
             passwordRe
         };
 
-        if(account.id === undefined) {
+        if (account.id === undefined) {
             account.id = this.props.account_get.data.id;
         }
 
         // {Client} 유효성 검사 출력 코드입니다.
-        if(!account.id) {
+        if (!account.id) {
             warningSet(true, "잘못된 접근입니다.");
             console.log("UUID 값이 존재하지 않습니다.");
             return false;
         }
-        if(!account.oldPassword) {
+        if (!account.oldPassword) {
             warningSet(true, "이전 비밀번호는 필수로 작성해야 합니다.");
             return false;
         }
-        if(!account.password) {
+        if (!account.password) {
             warningSet(true, "새로운 비밀번호는 필수로 작성해야 합니다.");
             return false;
         }
-        if(!account.passwordRe) {
+        if (!account.passwordRe) {
             warningSet(true, "새로운 비밀번호를 다시한번 작성해 주세요.");
             return false;
         }
@@ -114,7 +114,7 @@ class PwdChange extends Component {
     render() {
 
         // State Init
-        const { 
+        const {
             oldPassword,
             password,
             passwordRe
@@ -126,7 +126,7 @@ class PwdChange extends Component {
                     <GroupBox>
                         <ProfileLabel>이전 비밀번호</ProfileLabel>
                         <ProfileInput>
-                            <InputClean                                    
+                            <InputClean
                                 id="oldPassword"
                                 name="oldPassword"
                                 type="password"
@@ -138,7 +138,7 @@ class PwdChange extends Component {
                     <GroupBox>
                         <ProfileLabel>새로운 비밀번호</ProfileLabel>
                         <ProfileInput>
-                            <InputClean                                    
+                            <InputClean
                                 id="password"
                                 name="password"
                                 type="password"
@@ -150,7 +150,7 @@ class PwdChange extends Component {
                     <GroupBox>
                         <ProfileLabel>새로운 비밀번호 확인</ProfileLabel>
                         <ProfileInput>
-                            <InputClean                                    
+                            <InputClean
                                 id="passwordRe"
                                 name="passwordRe"
                                 type="password"

@@ -1,5 +1,5 @@
-import styled, { css } from "styled-components"
-import { ClearFix, InitTransition, FlexInit, CookieFontB, CookieFontR } from "../../style/globalStyles"
+import styled, {css} from "styled-components"
+import {ClearFix, InitTransition, FlexInit, CookieFontB, CookieFontR} from "../../style/globalStyles"
 
 const PC_S = 1200;
 const TABLET = 991;
@@ -8,8 +8,8 @@ const MOBILE_M = 640;
 const MOBILE_S = 480;
 
 /*******************
-    List Style
-********************/
+ List Style
+ ********************/
 export const ListWrap = styled.div`
     ${InitTransition}
     overflow-y: scroll;
@@ -22,7 +22,7 @@ export const ListWrap = styled.div`
     }
 
     ${
-        props => props.searchState !== true ?
+    props => props.searchState !== true ?
         `
             &:after {
                 display: block;
@@ -39,10 +39,10 @@ export const ListWrap = styled.div`
         `
         :
         null
-    }
+}
 
     ${
-        props => props.initSearch === true ?
+    props => props.initSearch === true ?
         `
             left: 50%;
             padding-top: 31rem;
@@ -66,9 +66,9 @@ export const ListWrap = styled.div`
                 padding-top: 23rem;
             }
         `
-    }
+}
     ${
-        props => props.mobile === true ?
+    props => props.mobile === true ?
         `
             @media only screen and (max-width: ${MOBILE_S}px) {
                 left: -100%;
@@ -80,7 +80,7 @@ export const ListWrap = styled.div`
                 left: 0;
             }
         `
-    }
+}
 
     @media only screen and (max-width: ${MOBILE_S}px) {    
         transition: none;
@@ -114,8 +114,8 @@ export const Pagination = styled.div`
 `;
 
 /*******************
-    Item Style
-********************/
+ Item Style
+ ********************/
 export const Item = styled.button.attrs({
     type: "button"
 })`
@@ -159,8 +159,8 @@ export const ItemUniCount = styled.span`
 `;
 
 /*******************
-    Search Style
-********************/
+ Search Style
+ ********************/
 export const SearchWrap = styled.div`
     padding: 0 0.3125rem;
     position: relative;
@@ -237,20 +237,20 @@ export const SwitchWrap = styled.div`
     margin-bottom: 0.625rem;
 
     ${
-        props => props.storeState === 3 ?
+    props => props.storeState === 3 ?
         `> button:nth-child(3) {
             color: #fff
         }`
         :
         props => props.storeState === 2 ?
-        `> button:nth-child(2) {
+            `> button:nth-child(2) {
             color: #fff
         }`
-        :
-        `> button:nth-child(1) {
+            :
+            `> button:nth-child(1) {
             color: #fff
         }`
-    }
+}
 
     &:before {
         display: block;
@@ -264,21 +264,21 @@ export const SwitchWrap = styled.div`
         border-radius: 0.25rem;
 
         left: ${
-            props => props.storeState !== false ?
-            "33.333%"
-            :
-            "0"
-        };
+    props => props.storeState !== false ?
+        "33.333%"
+        :
+        "0"
+};
 
         left: ${
-            props => props.storeState === 3 ?
-            `66.666%`
-            :
-            props => props.storeState === 2 ?
+    props => props.storeState === 3 ?
+        `66.666%`
+        :
+        props => props.storeState === 2 ?
             `33.333%`
             :
             `0`
-        }
+}
     }
 `;
 export const SwitchBtn = styled.button.attrs({
@@ -305,7 +305,7 @@ export const SwitchBtn = styled.button.attrs({
     }
 
     ${
-        props => props.initSearch === true ?
+    props => props.initSearch === true ?
         `&:hover > svg {
             left: 1.4rem;
             
@@ -315,7 +315,7 @@ export const SwitchBtn = styled.button.attrs({
         }`
         :
         "&:hover > svg {visibility: hidden;opacity: 0;}"
-    }
+}
 `;
 export const SearchNotice = styled.div`
     text-align: center;
@@ -350,11 +350,11 @@ export const SearchSetWrapCSS = css`
 
     > div:first-child {
         ${
-            props => props.initSearch ? 
-            null
-            :
-            `display: none`
-        }
+    props => props.initSearch ?
+        null
+        :
+        `display: none`
+}
 
         max-width: 5rem;
         text-align: left;
@@ -391,16 +391,16 @@ export const SearchSetTimeWrap = styled.div`
 
     > div {
         ${
-            props => props.initSearch ? 
-            `
+    props => props.initSearch ?
+        `
                 flex-basis: 27%;
                 @media only screen and (max-width: ${MOBILE_S}px) {    
                     flex-basis: 25%;
                 }
             `
-            :
-            `flex-basis: 33.333%;`
-        }
+        :
+        `flex-basis: 33.333%;`
+}
     }
 `;
 export const SearchSetFoodWrap = styled.div`
@@ -408,16 +408,16 @@ export const SearchSetFoodWrap = styled.div`
 
     > div {
         ${
-            props => props.initSearch ? 
-            `
+    props => props.initSearch ?
+        `
                 flex-basis: 16.5%;
                 @media only screen and (max-width: ${MOBILE_S}px) {    
                     
                 }
             `
-            :
-            `flex-basis: 20%;`
-        }
+        :
+        `flex-basis: 20%;`
+}
     }
 `;
 
@@ -430,15 +430,15 @@ export const NoticeText = styled.div`
 `;
 
 /*******************
-    UserBox Style
-********************/
+ UserBox Style
+ ********************/
 export const UserBox = styled.div`
     ${InitTransition}
     background-color: #fff;
     position: relative;
     z-index: 1;
     ${
-        props => props.initSearch ? 
+    props => props.initSearch ?
         `
             padding-top: 5.625rem;
             @media only screen and (max-width: ${MOBILE_S}px) {    
@@ -447,7 +447,7 @@ export const UserBox = styled.div`
         `
         :
         `padding-top: 0;`
-    }
+}
 
     @media only screen and (max-width: ${MOBILE_S}px) {    
         padding-left: 0.625rem;

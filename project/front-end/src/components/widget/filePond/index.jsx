@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { FilePond, registerPlugin } from 'react-filepond';
+import React, {Component} from 'react'
+import {FilePond, registerPlugin} from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
 
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
@@ -8,21 +8,21 @@ import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
-const FilePondBox = ({ fileState }) => {
+const FilePondBox = ({fileState}) => {
     return (
         <div>
             <FilePond
                 allowMultiple={true}
                 name="files"
-                onupdatefiles = {
+                onupdatefiles={
                     fileItems => {
                         fileState(fileItems);
                     }
                 }
-                server = {
+                server={
                     {
                         url: 'http://localhost:8080/uploadMultipleFiles',
-                        process: { 
+                        process: {
                             onload: (response) => fileState(JSON.parse(response))
                         }
                     }

@@ -1,5 +1,5 @@
-import styled, { css } from "styled-components"
-import { ClearFix, InitTransition, CookieFontB, CommonSpace } from "../../style/globalStyles"
+import styled, {css} from "styled-components"
+import {ClearFix, InitTransition, CookieFontB, CommonSpace} from "../../style/globalStyles"
 
 const PC_S = 1200;
 const TABLET = 991;
@@ -8,8 +8,8 @@ const MOBILE_M = 640;
 const MOBILE_S = 480;
 
 /*******************
-    Login Style
-********************/
+ Login Style
+ ********************/
 export const LoginWrap = styled.div`
     max-width: 18.75rem;
     margin: 0 auto;
@@ -30,11 +30,11 @@ export const LoginLogo = styled.h1`
     color: ${props => props.theme.themeColorHover};
 
     ${
-        props => props.initSearch ?
+    props => props.initSearch ?
         "font-size: 2.813rem;"
         :
         "font-size: 1.563rem;"
-    }
+}
 `;
 export const LoginBtnCss = css`
     display: block;
@@ -67,8 +67,8 @@ export const SignUpBtn = styled.button`
 `;
 
 /*******************
-    Login Modal Style
-********************/
+ Login Modal Style
+ ********************/
 export const ModalOverlay = styled.div`
     position: fixed;
     top: 0;
@@ -152,8 +152,8 @@ export const Content = styled.div`
 `;
 
 /*******************
-    MyPage Style
-********************/
+ MyPage Style
+ ********************/
 export const MyPageWrap = styled.div`
     ${CommonSpace}
 
@@ -223,17 +223,17 @@ export const MyPageList = styled.li`
     transition: 0.4s all ease;
 
     ${
-        props => props.active === "likeRecord" ?
+    props => props.active === "likeRecord" ?
         `:nth-child(4)`
         :
         props => props.active === "repository" ?
-        `:nth-child(3)`
-        :
-        props => props.active === "password" ?
-        `:nth-child(2)`
-        :
-        `:nth-child(1)`
-    } { 
+            `:nth-child(3)`
+            :
+            props => props.active === "password" ?
+                `:nth-child(2)`
+                :
+                `:nth-child(1)`
+} { 
         border-color: ${props => props.theme.themeColor};
         color: ${props => props.theme.themeColor};
         font-weight: 600;
@@ -385,8 +385,8 @@ export const ProfileId = styled.div`
 `;
 
 /*******************
-    ActivityRecord Style
-********************/
+ ActivityRecord Style
+ ********************/
 export const ActivityRecordWrap = styled.ul`
     height: 80vh;
     background-color: ${props => props.theme.backgroundColor};
