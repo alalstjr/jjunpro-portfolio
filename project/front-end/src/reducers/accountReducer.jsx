@@ -52,7 +52,7 @@ export default function (state = initialState, action) {
                 user_info: {
                     data: {
                         token: action.payload.token,
-                        userId: action.payload.id,
+                        username: action.payload.id,
                         username: action.payload.username
                     }
                 }
@@ -65,7 +65,7 @@ export default function (state = initialState, action) {
                 user_info: {
                     data: {
                         token: action.payload.token,
-                        userId: action.payload.id,
+                        username: action.payload.id,
                         username: action.payload.username
                     }
                 }

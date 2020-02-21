@@ -26,7 +26,7 @@ class LoginModal extends Component {
         super(props);
 
         this.state = {
-            userId: "",
+            username: "",
             password: ""
         }
     }
@@ -45,7 +45,7 @@ class LoginModal extends Component {
         // {Server} 유효성 검사 출력 코드입니다.
         if (nextProps.error.data !== error.data) {
             if (nextProps.error.data.AuthenticationError) {
-                warningSet("userId", true, nextProps.error.data.AuthenticationError);
+                warningSet("username", true, nextProps.error.data.AuthenticationError);
             }
         }
 
@@ -69,19 +69,19 @@ class LoginModal extends Component {
 
         // State Init
         const {
-            userId,
+            username,
             password
         } = this.state;
 
         // Value Init
         const account = {
-            userId,
+            username,
             password
         };
 
         // {Client} 유효성 검사 출력 코드입니다.
-        if (!account.userId) {
-            this.props.warningSet("userId", true, "아이디는 필수로 작성해야 합니다.");
+        if (!account.username) {
+            this.props.warningSet("username", true, "아이디는 필수로 작성해야 합니다.");
             return false;
         }
         if (!account.password) {
@@ -105,7 +105,7 @@ class LoginModal extends Component {
 
         // State Init
         const {
-            userId,
+            username,
             password
         } = this.state;
 
@@ -130,20 +130,20 @@ class LoginModal extends Component {
                                         <FormGroup>
                                             <Formlabel>아이디</Formlabel>
                                             <InputClean
-                                                id="userId"
-                                                name="userId"
+                                                id="username"
+                                                name="username"
                                                 type="text"
-                                                value={userId}
+                                                value={username}
                                                 onChange={this.onChange}
                                                 onKeyDown={initWarning}
                                             />
                                             {
                                                 // 아이디 입력 경고문
-                                                warning.userId ?
+                                                warning.username ?
                                                     <InputWarning
-                                                        active={warningText.userId}
+                                                        active={warningText.username}
                                                     >
-                                                        {warningText.userId}
+                                                        {warningText.username}
                                                     </InputWarning>
                                                     :
                                                     null

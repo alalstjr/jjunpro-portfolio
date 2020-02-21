@@ -330,45 +330,45 @@ export const getUniListUniLike = (searchDTO) => async dispatch => {
  GET University Count DATA StoreId
  ****************************************/
 export const getUniCountStoId = (keyword) => async dispatch => {
-    try {
-        // 유저 JWT Token정보
-        USER_AUTH();
+    // try {
+    //     // 유저 JWT Token정보
+    //     USER_AUTH();
 
-        const res = await axios.get(`${SERVER_URL}/api/store/count/${keyword}`)
+    //     const res = await axios.get(`${SERVER_URL}/api/store/count/${keyword}`)
 
-        switch (res.status) {
-            case 200 :
-                return res.data;
+    //     switch (res.status) {
+    //         case 200 :
+    //             return res.data;
 
-            default :
-                alert("잘못된 접근입니다.");
-        }
-    } catch (error) {
-        alert(error.response.data.error);
-    }
+    //         default :
+    //             alert("잘못된 접근입니다.");
+    //     }
+    // } catch (error) {
+    //     alert(error.response.data.error);
+    // }
 }
 
 /****************************************
  GET University Count DATA UniId
  ****************************************/
 export const getUniCountUniId = (uniName) => async dispatch => {
-    try {
-        const res = await axios.get(`${SERVER_URL}/api/university/count/${uniName}`)
+    // try {
+    //     const res = await axios.get(`${SERVER_URL}/api/university/count/${uniName}`)
 
-        switch (res.status) {
-            case 200 :
-                dispatch({
-                    type: GET_UNIVERSITY_COUNT,
-                    payload: res.data
-                });
-                break;
+    //     switch (res.status) {
+    //         case 200 :
+    //             dispatch({
+    //                 type: GET_UNIVERSITY_COUNT,
+    //                 payload: res.data
+    //             });
+    //             break;
 
-            default :
-                alert("잘못된 접근입니다.");
-        }
-    } catch (error) {
-        alert(error.response.data.error);
-    }
+    //         default :
+    //             alert("잘못된 접근입니다.");
+    //     }
+    // } catch (error) {
+    //     alert(error.response.data.error);
+    // }
 }
 
 /****************************************

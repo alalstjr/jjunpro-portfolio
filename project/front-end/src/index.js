@@ -15,30 +15,18 @@ import theme from "./style/theme"
 import {AdminComponent} from './admin';
 
 ReactDOM.render(
-< Provider
-store = {store} >
-    < ThemeProvider
-theme = {theme} >
-    < React.Fragment >
-    < GlobalStyle / >
-    < Router >
-    {/* 일반페이지 */}
-    < Route
-path = "/"
-component = {App}
-/>
-{/* 관리자페이지 */
-}
-<
-Route
-exact
-path = "/admin"
-component = {AdminComponent}
-/>
-< /Router>
-< /React.Fragment> 
-< /ThemeProvider>
-< /Provider>,
-document.getElementById('root')
-)
-;
+    <Provider store={store}>
+        <ThemeProvider theme={theme}>
+            <React.Fragment>
+                <GlobalStyle />
+                <Router>
+                    {/* 일반페이지 */}
+                    <Route path="/" component={App} />
+                    {/* 관리자페이지 */}
+                    <Route exact path="/admin" component={AdminComponent} />
+                </Router>
+            </React.Fragment> 
+        </ThemeProvider>
+    </Provider>,
+    document.getElementById('root')
+);

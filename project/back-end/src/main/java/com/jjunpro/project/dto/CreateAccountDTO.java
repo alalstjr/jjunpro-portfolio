@@ -48,7 +48,7 @@ public class CreateAccountDTO {
 
     private String[] urlList;
 
-    private UserRole role;
+    private UserRole role = UserRole.USER;
 
     public Account toEntity() {
         return Account

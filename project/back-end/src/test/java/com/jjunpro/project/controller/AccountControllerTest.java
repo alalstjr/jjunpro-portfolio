@@ -13,6 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -40,9 +44,12 @@ public class AccountControllerTest {
     @Autowired
     AccountService accountService;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @Test
     public void createAccount() throws Exception {
-        String userJson = "{\"username\":\"jjunpro\", \"nickname\":\"nickname\", \"password\":\"1234\", \"passwordRe\":\"1234\", \"role\":\"USER\"}";
+        String userJson = "{\"username\":\"jjunpro\", \"nickname\":\"nickname\", \"password\":\"1234\", \"passwordRe\":\"1234\"}";
 
         mockMvc
                 .perform(post("/account")
@@ -56,17 +63,7 @@ public class AccountControllerTest {
 
     @Test
     public void updateAccount() throws Exception {
-        /* 새로운 유저를 생성 등록합니다. */
-        CreateAccountDTO dto = new CreateAccountDTO();
-        dto.setUsername("username");
-        dto.setNickname("nickname");
-        dto.setEmail("jjun-pro@naver.com");
-        dto.setPassword("1234");
-        dto.setPasswordRe("1234");
-        dto.setRole(UserRole.USER);
-        Account save = accountRepository.save(dto.toEntity());
-
-        log.info(save.toString());
+        getAccount();
 
         /* 새로 생성한 유저의 정보를 수정 합니다. */
         String userJson = "{\"id\":\"1\", \"nickname\":\"jjunpro\", \"email\":\"alalstjr@naver.com\"}";
@@ -86,5 +83,38 @@ public class AccountControllerTest {
         /* 정보를 수정한 유저의 값을 조회합니다. 검증 */
         Optional<Account> byId = accountRepository.findById(1L);
         byId.ifPresent(account -> log.info(account.toString()));
+    }
+
+    @Test
+    public void loginForm() throws Exception {
+        getAccount();
+
+        mockMvc
+                .perform(post("/signin")
+                        .param(
+                                "username",
+                                "username"
+                        )
+                        .param(
+                                "password",
+                                "1234"
+                        )
+                        .with(csrf()))
+                .andDo(print());
+    }
+
+    /* 새로운 유저를 생성 등록합니다. */
+    private void getAccount() {
+        CreateAccountDTO dto = new CreateAccountDTO();
+        dto.setUsername("username");
+        dto.setNickname("nickname");
+        dto.setEmail("jjun-pro@naver.com");
+        dto.setPassword("1234");
+        dto.setPasswordRe("1234");
+        dto.setRole(UserRole.USER);
+        dto.encodePassword(passwordEncoder);
+        Account save = accountRepository.save(dto.toEntity());
+
+        log.info(save.toString());
     }
 }

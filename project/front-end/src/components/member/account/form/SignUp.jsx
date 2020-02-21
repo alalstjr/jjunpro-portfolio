@@ -23,7 +23,7 @@ class SignUp extends Component {
 
         this.state = {
             // Input Value
-            userId: "",
+            username: "",
             nickname: "",
             password: "",
             passwordRe: "",
@@ -46,8 +46,8 @@ class SignUp extends Component {
 
         // {Server} 유효성 검사 출력 코드입니다.
         if (nextProps.error.data !== error.data) {
-            if (nextProps.error.data.userId) {
-                warningSet("userId", true, nextProps.error.data.userId);
+            if (nextProps.error.data.username) {
+                warningSet("username", true, nextProps.error.data.username);
             }
             if (nextProps.error.data.nickname) {
                 warningSet("nickname", true, nextProps.error.data.nickname);
@@ -86,7 +86,7 @@ class SignUp extends Component {
 
         // State Init
         const {
-            userId,
+            username,
             nickname,
             password,
             passwordRe,
@@ -96,7 +96,7 @@ class SignUp extends Component {
 
         // Value Init
         const account = {
-            userId,
+            username,
             nickname,
             password,
             passwordRe,
@@ -105,8 +105,8 @@ class SignUp extends Component {
         };
 
         // {Client} 유효성 검사 출력 코드입니다.
-        if (!account.userId) {
-            warningSet("userId", true, "아이디는 필수로 작성해야 합니다.");
+        if (!account.username) {
+            warningSet("username", true, "아이디는 필수로 작성해야 합니다.");
             return false;
         }
         if (!account.nickname) {
@@ -140,7 +140,7 @@ class SignUp extends Component {
 
         // State Init
         const {
-            userId,
+            username,
             nickname,
             password,
             passwordRe,
@@ -153,20 +153,20 @@ class SignUp extends Component {
                     <FormGroup>
                         <Formlabel>아이디</Formlabel>
                         <InputClean
-                            id="userId"
-                            name="userId"
+                            id="username"
+                            name="username"
                             type="text"
-                            value={userId}
+                            value={username}
                             onChange={this.onChange}
                             onKeyDown={initWarning}
                             placeholder="영문 4글자이상 입력가능합니다."
                         />
                         {
-                            warning.userId ?
+                            warning.username ?
                                 <InputWarning
-                                    active={warningText.userId}
+                                    active={warningText.username}
                                 >
-                                    {warningText.userId}
+                                    {warningText.username}
                                 </InputWarning>
                                 :
                                 null

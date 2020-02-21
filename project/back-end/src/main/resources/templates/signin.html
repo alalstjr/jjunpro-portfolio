@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Signin</title>
+</head>
+<body>
+    <!--  thymeleaf, JSP 를 사용하면 자동으로 CSRF 값을 자동으로 넣어줍니다. -->
+    <div th:if="${param.error}">
+        login error!!
+    </div>
+    <form
+            action="/signin"
+            th:action="@{/signin}"
+            method="post"
+    >
+        <p>Username: <input type="text" name="username"></p>
+        <p>Password: <input type="text" name="password"></p>
+        <p>Remember: <input type="checkbox" name="remember-me"></p>
+        <p><button type="submit">SignIn</button></p>
+    </form>
+</body>
+</html>

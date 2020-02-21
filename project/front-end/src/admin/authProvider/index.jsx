@@ -12,7 +12,7 @@ export default async (type, params) => {
             // const { username, password } = params;
 
             const param = {
-                userId: params.username,
+                username: params.username,
                 password: params.password
             };
 

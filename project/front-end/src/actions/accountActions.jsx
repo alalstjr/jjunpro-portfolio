@@ -44,10 +44,11 @@ export const modalAccount = (modal, state) => async dispatch => {
  INSERT Account DATA
  ****************************************/
 export const insertAccount = (account) => async dispatch => {
+
     try {
         // 유저가 로그인 상태가 아니라면
         if (!localStorage.getItem("userInfo")) {
-            const res = await axios.post(`${SERVER_URL}/api/account`, account);
+            const res = await axios.post(`${SERVER_URL}/account`, account);
 
             switch (res.status) {
                 case 201 :
@@ -87,40 +88,45 @@ export const insertAccount = (account) => async dispatch => {
  ****************************************/
 export const loginAccount = (account) => async dispatch => {
     try {
-        const res = await axios.post(`${SERVER_URL}/api/account/login`, account)
+        
+        const res = await axios.post(`${SERVER_URL}/account/signin?password=qweqwe&username=qweqwe`)
+
         switch (res.status) {
             case 200 :
-                const id = res.data.id;
-                const token = res.data.token;
-                const userId = res.data.userId;
-                const nickname = res.data.nickname;
+                console.log(res);
+                console.log(getCookie("JSESSIONID"))
+                await axios.get(`${SERVER_URL}/account/check`)
+                // const id = res.data.id;
+                // const token = res.data.token;
+                // const username = res.data.username;
+                // const nickname = res.data.nickname;
 
-                if (token) {
-                    /*
-                    *  사용자가 서버에 서 로그인 인증을 받았을경우 localStorage에 Token을 저장합니다.
-                    */
-                    const userInfo = JSON.stringify({
-                        id,
-                        token,
-                        userId,
-                        nickname
-                    });
-                    localStorage.setItem("userInfo", userInfo);
+                // if (token) {
+                //     /*
+                //     *  사용자가 서버에 서 로그인 인증을 받았을경우 localStorage에 Token을 저장합니다.
+                //     */
+                //     const userInfo = JSON.stringify({
+                //         id,
+                //         token,
+                //         username,
+                //         nickname
+                //     });
+                //     localStorage.setItem("userInfo", userInfo);
 
-                    /*
-                    *  action type은 CHECK_USER_SUCCESS 으로 보냅니다.
-                    *  redux 를 통해서 유저 인증 상태를 프론트에 기록합니다. 
-                    */
-                    dispatch({
-                        type: CHECK_USER_SUCCESS,
-                        payload: {
-                            id: res.data.id,
-                            token: res.data.token,
-                            userId: res.data.userId,
-                            nickname: res.data.nickname,
-                        }
-                    });
-                }
+                //     /*
+                //     *  action type은 CHECK_USER_SUCCESS 으로 보냅니다.
+                //     *  redux 를 통해서 유저 인증 상태를 프론트에 기록합니다. 
+                //     */
+                //     dispatch({
+                //         type: CHECK_USER_SUCCESS,
+                //         payload: {
+                //             id: res.data.id,
+                //             token: res.data.token,
+                //             username: res.data.username,
+                //             nickname: res.data.nickname,
+                //         }
+                //     });
+                // }
                 break;
 
             default :
@@ -137,6 +143,20 @@ export const loginAccount = (account) => async dispatch => {
             payload: error
         });
     }
+}
+
+function getCookie(c_name) {
+	var i,x,y,ARRcookies=document.cookie.split(";");
+	for (i=0;i<ARRcookies.length;i++)
+	{
+	  x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+	  y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+	  x=x.replace(/^\s+|\s+$/g,"");
+	  if (x==c_name)
+		{
+		return unescape(y);
+		}
+	  }
 }
 
 /****************************************
@@ -164,7 +184,7 @@ export const accountLoginCheck = () => dispatch => {
             type: CHECK_USER,
             payload: {
                 token: userInfo.token,
-                userId: userInfo.userId,
+                username: userInfo.username,
                 username: userInfo.username,
             }
         });
@@ -330,20 +350,20 @@ export const adminAccountCheck = async () => {
 export const adminAccountLogin = async (account) => {
     return await axios.post("http://localhost:8080/api/account/login", account)
         .then(res => {
-            const token = res.data.token;
-            const userId = res.data.userId;
-            const username = res.data.username;
+            // const token = res.data.token;
+            // const username = res.data.username;
+            // const username = res.data.username;
 
-            if (token) {
-                const userInfo = JSON.stringify({
-                    token,
-                    userId,
-                    username
-                });
-                localStorage.setItem('userInfo', userInfo);
-            } else {
-                return Promise.reject("잘못된 상태 입니다.");
-            }
+            // if (token) {
+            //     const userInfo = JSON.stringify({
+            //         token,
+            //         username,
+            //         username
+            //     });
+            //     localStorage.setItem('userInfo', userInfo);
+            // } else {
+            //     return Promise.reject("잘못된 상태 입니다.");
+            // }
         }, (error) => {
             console.log(error);
             return Promise.reject("정보가 틀립니다.");

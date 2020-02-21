@@ -20,7 +20,7 @@ class AccountProvider extends Component {
 
         this.state = {
             warning: {
-                userId: false,
+                username: false,
                 nickname: false,
                 password: false,
                 passwordRe: false,
@@ -28,7 +28,7 @@ class AccountProvider extends Component {
                 success: false
             },
             warningText: {
-                userId: "",
+                username: "",
                 nickname: "",
                 password: "",
                 passwordRe: "",
@@ -56,7 +56,7 @@ class AccountProvider extends Component {
     }
 
     closeModal = () => {
-        const {modalAccount} = this.props;
+        const {modalAccount} = this.props
 
         this.initWarning();
         modalAccount(false);
@@ -69,7 +69,7 @@ class AccountProvider extends Component {
         this.setState(prevState => ({
             warning: {
                 ...prevState.warning,
-                userId: false,
+                username: false,
                 nickname: false,
                 password: false,
                 passwordRe: false,
@@ -111,15 +111,15 @@ class AccountProvider extends Component {
         message = (message === undefined) ? "" : message;
 
         switch (target) {
-            case "userId" :
+            case "username" :
                 this.setState(prevState => ({
                     warning: {
                         ...prevState.warning,
-                        userId: state
+                        username: state
                     },
                     warningText: {
                         ...prevState.warningText,
-                        userId: message
+                        username: message
                     }
                 }));
                 break;
