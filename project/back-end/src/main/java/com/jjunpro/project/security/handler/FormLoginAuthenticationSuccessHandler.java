@@ -1,10 +1,14 @@
 package com.jjunpro.project.security.handler;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jjunpro.project.context.AccountContext;
+import com.jjunpro.project.dto.JWTokenDTO;
 import com.jjunpro.project.security.jwt.JwtFactory;
 import com.jjunpro.project.security.token.PostAuthorizationToken;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -19,28 +23,46 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class FormLoginAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final JwtFactory   factory;
+    private final JwtFactory factory;
     private final ObjectMapper objectMapper;
 
     @Override
     public void onAuthenticationSuccess(
             HttpServletRequest request,
             HttpServletResponse response,
-            FilterChain chain,
             Authentication authentication
     ) throws IOException, ServletException {
-        PostAuthorizationToken token   = (PostAuthorizationToken) authentication;
-        AccountContext         context = (AccountContext) token.getPrincipal();
+        PostAuthorizationToken postAuthorizationToken = (PostAuthorizationToken) authentication;
+        AccountContext         context                = (AccountContext) postAuthorizationToken.getPrincipal();
 
-        String tokenString = factory.generateToken(context);
+        String jwtoken = factory.generateToken(context);
+
+        /* 응답으로 보내는 유저 정보를 담은 JWT DTO 를 생성합니다. */
+        JWTokenDTO jwTokenDTO = new JWTokenDTO(
+                context
+                        .getAccount()
+                        .getId(),
+                jwtoken,
+                context.getUsername(),
+                context
+                        .getAccount()
+                        .getNickname()
+        );
+
+        processRespone(
+                response,
+                jwTokenDTO
+        );
     }
 
-    @Override
-    public void onAuthenticationSuccess(
-            HttpServletRequest request,
+    private void processRespone(
             HttpServletResponse response,
-            Authentication authentication
-    ) throws IOException, ServletException {
-
+            JWTokenDTO dto
+    ) throws JsonProcessingException, IOException {
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setStatus(HttpStatus.OK.value());
+        response
+                .getWriter()
+                .write(objectMapper.writeValueAsString(dto));
     }
 }

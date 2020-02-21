@@ -49,7 +49,7 @@ public class AccountControllerTest {
 
     @Test
     public void createAccount() throws Exception {
-        String userJson = "{\"username\":\"jjunpro\", \"nickname\":\"nickname\", \"password\":\"1234\", \"passwordRe\":\"1234\"}";
+        String userJson = "{\"username\":\"username\", \"nickname\":\"nickname\", \"password\":\"1234\", \"passwordRe\":\"1234\"}";
 
         mockMvc
                 .perform(post("/account")
@@ -63,10 +63,10 @@ public class AccountControllerTest {
 
     @Test
     public void updateAccount() throws Exception {
-        getAccount();
-
         /* 새로 생성한 유저의 정보를 수정 합니다. */
-        String userJson = "{\"id\":\"1\", \"nickname\":\"jjunpro\", \"email\":\"alalstjr@naver.com\"}";
+        String userJson = "{\"id\":\"1\", \"nickname\":\"username\", \"email\":\"alalstjr@naver.com\"}";
+
+        setAccount();
 
         mockMvc
                 .perform(post("/account/1")
@@ -87,7 +87,7 @@ public class AccountControllerTest {
 
     @Test
     public void loginForm() throws Exception {
-        getAccount();
+        setAccount();
 
         mockMvc
                 .perform(post("/signin")
@@ -103,8 +103,23 @@ public class AccountControllerTest {
                 .andDo(print());
     }
 
+    @Test
+    public void jwtLoginForm() throws Exception {
+        String userJson = "{\"username\":\"username\", \"password\":\"1234\"}";
+
+        setAccount();
+
+        mockMvc
+                .perform(post("/signin")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(userJson))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
     /* 새로운 유저를 생성 등록합니다. */
-    private void getAccount() {
+    private void setAccount() {
         CreateAccountDTO dto = new CreateAccountDTO();
         dto.setUsername("username");
         dto.setNickname("nickname");

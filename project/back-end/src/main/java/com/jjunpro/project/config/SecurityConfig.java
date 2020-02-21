@@ -4,11 +4,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jjunpro.project.security.filter.FormLoginFilter;
 import com.jjunpro.project.security.handler.FormLoginAuthenticationFailuerHandler;
 import com.jjunpro.project.security.handler.FormLoginAuthenticationSuccessHandler;
+import com.jjunpro.project.security.provider.FormLoginAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -16,8 +21,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     /* FormLoginFilter 검증에 필요한 객체 */
     private final ObjectMapper                          objectMapper;
-    private final FormLoginAuthenticationSuccessHandler successHandler;
-    private final FormLoginAuthenticationFailuerHandler failureHandler;
+    private final FormLoginAuthenticationProvider       formLoginProvider;
+    private final FormLoginAuthenticationSuccessHandler formLoginSuccessHandler;
+    private final FormLoginAuthenticationFailuerHandler formLoginFailuerHandler;
+
+    /*
+     * AuthenticationManager 주입받아서 사용하려면
+     * authenticationManagerBean() Override 해서 Bean 으로 직접 주입해줘야 합니다.
+     *  */
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    /*
+     * 인증이 이루어지는 Provider 설정
+     * */
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(this.formLoginProvider);
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -56,16 +80,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .logout()
                 .disable();
+
+        /* UsernamePasswordAuthenticationFilter 이전에 FormLoginFilter 를 등록합니다. */
+        http.addFilterBefore(
+                formLoginFilter(),
+                UsernamePasswordAuthenticationFilter.class
+        );
     }
 
     private FormLoginFilter formLoginFilter() throws Exception {
         FormLoginFilter filter = new FormLoginFilter(
-                "/account/login",
+                "/signin",
                 objectMapper,
-                successHandler,
-                failureHandler
+                formLoginSuccessHandler,
+                formLoginFailuerHandler
         );
 
+        /* FormLoginFilter 를 Filter 에 등록하여 인증을 하도록 설정합니다. */
         filter.setAuthenticationManager(super.authenticationManagerBean());
 
         return filter;

@@ -17,6 +17,7 @@ public class JwtFactory {
 
     public String generateToken(AccountContext account) {
         String token = null;
+
         try {
             token = JWT
                     .create()
