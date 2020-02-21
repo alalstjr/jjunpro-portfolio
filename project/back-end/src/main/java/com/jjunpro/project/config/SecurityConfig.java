@@ -1,10 +1,14 @@
 package com.jjunpro.project.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jjunpro.project.security.filter.FormLoginFilter;
+import com.jjunpro.project.security.common.FilterSkipMatcher;
+import com.jjunpro.project.security.filter.FormLoginAuthenticationFilter;
+import com.jjunpro.project.security.filter.JwtAuthenticationFilter;
 import com.jjunpro.project.security.handler.FormLoginAuthenticationFailuerHandler;
 import com.jjunpro.project.security.handler.FormLoginAuthenticationSuccessHandler;
+import com.jjunpro.project.security.jwt.HeaderTokenExtractor;
 import com.jjunpro.project.security.provider.FormLoginAuthenticationProvider;
+import com.jjunpro.project.security.provider.JWTAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,17 +17,25 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     /* FormLoginFilter 검증에 필요한 객체 */
-    private final ObjectMapper                          objectMapper;
+    private final ObjectMapper objectMapper;
+
     private final FormLoginAuthenticationProvider       formLoginProvider;
     private final FormLoginAuthenticationSuccessHandler formLoginSuccessHandler;
     private final FormLoginAuthenticationFailuerHandler formLoginFailuerHandler;
+
+    private final JWTAuthenticationProvider jwtProvider;
+    private final HeaderTokenExtractor      headerTokenExtractor;
 
     /*
      * AuthenticationManager 주입받아서 사용하려면
@@ -40,11 +52,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(this.formLoginProvider);
+        auth
+                .authenticationProvider(this.formLoginProvider)
+                .authenticationProvider(this.jwtProvider);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.cors();
+
         /* 권한 요청없이 접근 가능한 설정 */
         http
                 .authorizeRequests()
@@ -59,12 +75,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .mvcMatchers(
                         HttpMethod.POST,
-                        "/account/**"
+                        "/account/check"
                 )
                 .hasRole("USER");
 
-        http.cors();
-
+        /* 서버에서 인증은 JWT로 인증하기 때문에 Session의 생성을 막습니다. */
+        http
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         /**
          * REST 서버설정 (불필요한 Filter 제거)
@@ -81,15 +99,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .disable();
 
-        /* UsernamePasswordAuthenticationFilter 이전에 FormLoginFilter 를 등록합니다. */
-        http.addFilterBefore(
-                formLoginFilter(),
-                UsernamePasswordAuthenticationFilter.class
-        );
+        /**
+         * UsernamePasswordAuthenticationFilter 이전에 FormLoginFilter, JwtFilter 를 등록합니다.
+         * FormLoginFilter : 로그인 인증을 실시합니다.
+         * JwtFilter       : 서버에 접근시 JWT 확인 후 인증을 실시합니다.
+         * */
+        http
+                .addFilterBefore(
+                        formLoginFilter(),
+                        UsernamePasswordAuthenticationFilter.class
+                )
+                .addFilterBefore(
+                        jwtFilter(),
+                        UsernamePasswordAuthenticationFilter.class
+                );
     }
 
-    private FormLoginFilter formLoginFilter() throws Exception {
-        FormLoginFilter filter = new FormLoginFilter(
+    private FormLoginAuthenticationFilter formLoginFilter() throws Exception {
+        FormLoginAuthenticationFilter filter = new FormLoginAuthenticationFilter(
                 "/signin",
                 objectMapper,
                 formLoginSuccessHandler,
@@ -97,6 +124,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         );
 
         /* FormLoginFilter 를 Filter 에 등록하여 인증을 하도록 설정합니다. */
+        filter.setAuthenticationManager(super.authenticationManagerBean());
+
+        return filter;
+    }
+
+    private JwtAuthenticationFilter jwtFilter() throws Exception {
+        List<String> skipPath = new ArrayList<>();
+
+        skipPath.add("POST,/account");
+
+        FilterSkipMatcher matcher = new FilterSkipMatcher(
+                skipPath,
+                "/**"
+        );
+
+        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(
+                matcher,
+                headerTokenExtractor
+        );
         filter.setAuthenticationManager(super.authenticationManagerBean());
 
         return filter;

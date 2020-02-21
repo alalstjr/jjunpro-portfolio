@@ -23,13 +23,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 
-public class FormLoginFilter extends AbstractAuthenticationProcessingFilter {
+public class FormLoginAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     private ObjectMapper                 objectMapper;
     private AuthenticationSuccessHandler successHandler;
     private AuthenticationFailureHandler failureHandler;
 
-    public FormLoginFilter(
+    public FormLoginAuthenticationFilter(
             String defaultFilterProcessesUrl,
             ObjectMapper objectMapper,
             AuthenticationSuccessHandler successHandler,
@@ -60,7 +60,7 @@ public class FormLoginFilter extends AbstractAuthenticationProcessingFilter {
         }
 
         // 사용자입력값이 존재하는지 검증 후 인증전 객체 Token 생성
-        PreAuthorizationToken token = new PreAuthorizationToken(loginDTO);
+        PreAuthorizationToken preAuthorizationToken = new PreAuthorizationToken(loginDTO);
 
         /*
          * UsernamePasswordAuthenticationToken 이 최종적으로 Authentication.interface 를 상속받고 있으므로
@@ -68,10 +68,12 @@ public class FormLoginFilter extends AbstractAuthenticationProcessingFilter {
          *
          * PreAuthorizationToken.class Authentication 정보를 가지고
          * AuthenticationManager 전달하여 인증을 시도합니다.
+         *
+         * PreAuthorizationToken 객체를 전달받은 Provider 를 찾아서 실행합니다.
          * */
         return super
                 .getAuthenticationManager()
-                .authenticate(token);
+                .authenticate(preAuthorizationToken);
     }
 
     @Override

@@ -35,7 +35,7 @@ public class JwtFactory {
                                     .getNickname()
                     )
                     .withClaim(
-                            "USER_ROLE",
+                            "ROLE",
                             account
                                     .getAccount()
                                     .getRole()

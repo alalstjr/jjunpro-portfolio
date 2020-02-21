@@ -75,11 +75,6 @@ public class AccountController {
         );
     }
 
-    @GetMapping("/signin")
-    public String loginForm() {
-        return "signin";
-    }
-
     @GetMapping("/check")
     public String check() {
         Authentication authentication = SecurityContextHolder

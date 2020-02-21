@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpSession;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -25,6 +22,7 @@ import java.util.Optional;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -114,6 +112,23 @@ public class AccountControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(userJson))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    public void check() throws Exception {
+        String accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiVVNFUiIsIk5JQ0tOQU1FIjoibmlja25hbWUiLCJpc3MiOiJqanVucHJvIiwiVVNFUk5BTUUiOiJ1c2VybmFtZSIsIkVYUCI6MTU4MzE3MDAwNX0.VKRR-39AqUqedp6JZgYH0bguSN6vyzStShxKt_kRoeA";
+
+        setAccount();
+
+        mockMvc
+                .perform(get("/account/check")
+                        .header(
+                                "Authorization",
+                                "Bearer " + accessToken
+                        )
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
