@@ -1,7 +1,7 @@
 package com.jjunpro.project.annotation;
 
 import com.jjunpro.project.domain.Account;
-import com.jjunpro.project.util.AccountUtill;
+import com.jjunpro.project.util.AccountUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.security.core.context.SecurityContext;
@@ -26,7 +26,7 @@ public class UserDataMatchValidator implements ConstraintValidator<UserDataMatch
     private String _domain;
 
     private final SecurityContext securityContext = SecurityContextHolder.getContext();
-    private final AccountUtill    accountUtill;
+    private final AccountUtil     accountUtill;
 
     @Override
     public void initialize(UserDataMatch constraintAnnotation) {

@@ -17,7 +17,7 @@ import static java.lang.annotation.ElementType.TYPE;
  * Domain 이름은 소문자로 통일 입력합니다.
  * 만약 Domain 정보를 추가하려면 AccountUtill.class -> switch 문에 추가하면 됩니다.
  *
- * @see com.backend.project.util.AccountUtill
+ * @see com.jjunpro.project.util.AccountUtil
  */
 @Documented
 @Target({ TYPE, ANNOTATION_TYPE })

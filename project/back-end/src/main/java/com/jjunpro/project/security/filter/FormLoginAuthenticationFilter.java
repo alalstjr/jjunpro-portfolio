@@ -2,19 +2,12 @@ package com.jjunpro.project.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jjunpro.project.dto.FormLoginDTO;
-import com.jjunpro.project.security.handler.FormLoginAuthenticationFailuerHandler;
-import com.jjunpro.project.security.handler.FormLoginAuthenticationSuccessHandler;
 import com.jjunpro.project.security.token.PreAuthorizationToken;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.util.matcher.RequestMatcher;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

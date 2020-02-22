@@ -2,8 +2,7 @@ package com.jjunpro.project.annotation;
 
 import com.jjunpro.project.domain.Account;
 import com.jjunpro.project.repository.AccountRepository;
-import com.jjunpro.project.service.AccountService;
-import com.jjunpro.project.util.AccountUtill;
+import com.jjunpro.project.util.AccountUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +17,7 @@ public class EmailmatchValidator implements ConstraintValidator<EmailMatch, Stri
     private String _message;
 
     private final AccountRepository accountRepository;
-    private final AccountUtill      accountUtill;
+    private final AccountUtil       accountUtill;
     private final SecurityContext   securityContext = SecurityContextHolder.getContext();
 
     @Override

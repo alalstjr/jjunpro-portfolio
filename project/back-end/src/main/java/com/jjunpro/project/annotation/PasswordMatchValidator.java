@@ -1,12 +1,11 @@
 package com.jjunpro.project.annotation;
 
 import com.jjunpro.project.domain.Account;
-import com.jjunpro.project.util.AccountUtill;
+import com.jjunpro.project.util.AccountUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.ConstraintValidator;
@@ -30,7 +29,7 @@ public class PasswordMatchValidator implements ConstraintValidator<PasswordMatch
     private boolean _encoder;
 
     private final PasswordEncoder passwordEncoder;
-    private final AccountUtill    accountUtill;
+    private final AccountUtil     accountUtill;
     private final SecurityContext securityContext = SecurityContextHolder.getContext();
 
     /*

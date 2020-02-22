@@ -74,8 +74,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .mvcMatchers(
+                        HttpMethod.GET,
+                        "/account/check", "/university"
+                )
+                .hasRole("USER");
+
+        http
+                .authorizeRequests()
+                .mvcMatchers(
                         HttpMethod.POST,
-                        "/account/check"
+                        "/university", "/university/*"
                 )
                 .hasRole("USER");
 

@@ -1,7 +1,9 @@
 package com.jjunpro.project.util;
 
 import com.jjunpro.project.domain.Account;
+import com.jjunpro.project.domain.University;
 import com.jjunpro.project.repository.AccountRepository;
+import com.jjunpro.project.repository.UniversityRepository;
 import com.jjunpro.project.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -12,9 +14,10 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class AccountUtill {
+public class AccountUtil {
 
-    private final AccountRepository accountRepository;
+    private final AccountRepository    accountRepository;
+    private final UniversityRepository universityRepository;
 
     /**
      * 유저 정보를 { DB 에서 } 가져옵니다.
@@ -49,16 +52,16 @@ public class AccountUtill {
                 }
                 break;
 
-/*            case "university":
-                Optional<University> uniDataDB = universityService.findById(id);
-                if (uniDataDB != null && uniDataDB.isPresent()) {
+            case "university":
+                Optional<University> uniDataDB = universityRepository.findById(id);
+                if (uniDataDB.isPresent()) {
                     data = uniDataDB
                             .get()
                             .getAccount()
                             .getId();
                 }
                 break;
-
+/*
             case "comment":
                 Optional<Comment> commentDataDB = commentService.findById(id);
                 if (commentDataDB != null && commentDataDB.isPresent()) {

@@ -1,7 +1,7 @@
 package com.jjunpro.project.annotation;
 
 import com.jjunpro.project.domain.Account;
-import com.jjunpro.project.util.AccountUtill;
+import com.jjunpro.project.util.AccountUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,7 +23,7 @@ public class UserExistenceValidator implements ConstraintValidator<UserExistence
     private       String          _message;
     private       String          _id;
     private final SecurityContext securityContext = SecurityContextHolder.getContext();
-    private final AccountUtill    accountUtill;
+    private final AccountUtil     accountUtill;
 
     @Override
     public void initialize(UserExistence constraintAnnotation) {

@@ -29,8 +29,8 @@ public class Account extends BaseEntity {
 
     private String[] urlList;
 
-    //@OneToOne
-    //private File photo;
+    @OneToOne
+    private File photo;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
@@ -45,8 +45,8 @@ public class Account extends BaseEntity {
             String myUniversity,
             String email,
             String[] urlList,
-            UserRole role
-            //File photo
+            UserRole role,
+            File photo
     ) {
         this.id = id;
         this.username = username;
@@ -56,7 +56,7 @@ public class Account extends BaseEntity {
         this.email = email;
         this.urlList = urlList;
         this.role = role;
-        //this.photo = photo;
+        this.photo = photo;
     }
 
     @Override

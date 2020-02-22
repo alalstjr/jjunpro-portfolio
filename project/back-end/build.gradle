@@ -1,7 +1,10 @@
 plugins {
-	id 'org.springframework.boot' version '2.2.4.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-	id 'java'
+    id 'org.springframework.boot' version '2.2.4.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java'
+
+	/* QueryDSL Setting */
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 group = 'com.jjunpro'
@@ -9,36 +12,76 @@ version = '0.0.0'
 sourceCompatibility = '11'
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'org.postgresql:postgresql'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
-	testImplementation 'org.springframework.security:spring-security-test'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'org.postgresql:postgresql'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'org.springframework.security:spring-security-test'
 
-	implementation 'junit:junit:4.12'
-	implementation 'commons-beanutils:commons-beanutils:1.9.4'
+    implementation 'junit:junit:4.12'
+    implementation 'commons-beanutils:commons-beanutils:1.9.4'
 
-	// JWT
-	compile group: 'com.auth0', name: 'java-jwt', version: '3.1.0'
+    /* 구글 클라우드 store api */
+    compile group: 'com.google.cloud', name: 'google-cloud-storage', version: '1.100.0'
+
+    /* JWT */
+    compile group: 'com.auth0', name: 'java-jwt', version: '3.1.0'
+
+	/* QueryDSL Setting */
+    compile("com.querydsl:querydsl-jpa")
+    compile("com.querydsl:querydsl-apt")
+
+    /* joda-time */
+    compile group: 'joda-time', name: 'joda-time', version: '2.9.9'
+
+    /* Custom Libs dir Setting */
+    compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
+}
+
+/**
+ * QueryDSL Setting
+ * */
+def querydslSrcDir = 'src/main/generated'
+
+querydsl {
+    library = "com.querydsl:querydsl-apt"
+    jpa = true
+    querydslSourcesDir = querydslSrcDir
+}
+
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
+}
+
+configurations {
+    querydsl.extendsFrom compileClasspath
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java', querydslSrcDir]
+        }
+    }
 }

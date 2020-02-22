@@ -1,10 +1,9 @@
 package com.jjunpro.project.controller;
 
 import com.jjunpro.project.domain.Account;
-import com.jjunpro.project.dto.CreateAccountDTO;
-import com.jjunpro.project.enums.UserRole;
 import com.jjunpro.project.repository.AccountRepository;
 import com.jjunpro.project.service.AccountService;
+import com.jjunpro.project.util.AccountUtilTest;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -43,7 +41,7 @@ public class AccountControllerTest {
     AccountService accountService;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    AccountUtilTest accountUtil;
 
     @Test
     public void createAccount() throws Exception {
@@ -64,7 +62,7 @@ public class AccountControllerTest {
         /* 새로 생성한 유저의 정보를 수정 합니다. */
         String userJson = "{\"id\":\"1\", \"nickname\":\"username\", \"email\":\"alalstjr@naver.com\"}";
 
-        setAccount();
+        accountUtil.setAccount();
 
         mockMvc
                 .perform(post("/account/1")
@@ -85,7 +83,7 @@ public class AccountControllerTest {
 
     @Test
     public void loginForm() throws Exception {
-        setAccount();
+        accountUtil.setAccount();
 
         mockMvc
                 .perform(post("/signin")
@@ -105,7 +103,7 @@ public class AccountControllerTest {
     public void jwtLoginForm() throws Exception {
         String userJson = "{\"username\":\"username\", \"password\":\"1234\"}";
 
-        setAccount();
+        accountUtil.setAccount();
 
         mockMvc
                 .perform(post("/signin")
@@ -118,9 +116,9 @@ public class AccountControllerTest {
 
     @Test
     public void check() throws Exception {
-        String accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiVVNFUiIsIk5JQ0tOQU1FIjoibmlja25hbWUiLCJpc3MiOiJqanVucHJvIiwiVVNFUk5BTUUiOiJ1c2VybmFtZSIsIkVYUCI6MTU4MzE3MDAwNX0.VKRR-39AqUqedp6JZgYH0bguSN6vyzStShxKt_kRoeA";
+        String accessToken = accountUtil.getJwtoken();
 
-        setAccount();
+        accountUtil.setAccount();
 
         mockMvc
                 .perform(get("/account/check")
@@ -131,20 +129,5 @@ public class AccountControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
-    }
-
-    /* 새로운 유저를 생성 등록합니다. */
-    private void setAccount() {
-        CreateAccountDTO dto = new CreateAccountDTO();
-        dto.setUsername("username");
-        dto.setNickname("nickname");
-        dto.setEmail("jjun-pro@naver.com");
-        dto.setPassword("1234");
-        dto.setPasswordRe("1234");
-        dto.setRole(UserRole.USER);
-        dto.encodePassword(passwordEncoder);
-        Account save = accountRepository.save(dto.toEntity());
-
-        log.info(save.toString());
     }
 }
