@@ -75,7 +75,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .mvcMatchers(
                         HttpMethod.GET,
-                        "/account/check", "/university"
+                        "/account/check"
                 )
                 .hasRole("USER");
 
@@ -83,7 +83,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .mvcMatchers(
                         HttpMethod.POST,
-                        "/university", "/university/*"
+                        "/university",
+                        "/university/*",
+                        "/university/like/*",
+                        "/account/password/*"
                 )
                 .hasRole("USER");
 
@@ -141,6 +144,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         List<String> skipPath = new ArrayList<>();
 
         skipPath.add("POST,/account");
+        skipPath.add("GET,/account/*");
+
+        skipPath.add("GET,/university/*");
+        skipPath.add("GET,/university/search");
+        skipPath.add("GET,/university/count/*");
 
         FilterSkipMatcher matcher = new FilterSkipMatcher(
                 skipPath,

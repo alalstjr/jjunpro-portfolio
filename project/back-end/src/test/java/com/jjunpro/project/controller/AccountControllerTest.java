@@ -1,5 +1,6 @@
 package com.jjunpro.project.controller;
 
+import com.jjunpro.project.context.AccountContext;
 import com.jjunpro.project.domain.Account;
 import com.jjunpro.project.repository.AccountRepository;
 import com.jjunpro.project.service.AccountService;
@@ -17,11 +18,13 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -128,6 +131,49 @@ public class AccountControllerTest {
                         )
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    public void accountPwdUpdate() throws Exception {
+        String accessToken = accountUtil.getJwtoken();
+
+        accountUtil.setAccount();
+
+        AccountContext userDetails = (AccountContext) accountService.loadUserByUsername("username");
+        String userId = userDetails
+                .getAccount()
+                .getId()
+                .toString();
+
+        String userJson = "{\"id\":" + userId + ", \"password\":\"update\", \"passwordRe\":\"update\", \"oldPassword\":\"1234\"}";
+
+        mockMvc
+                .perform(post("/account/password/" + userDetails
+                        .getAccount()
+                        .getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .header(
+                                "Authorization",
+                                "Bearer " + accessToken
+                        )
+                        .content(userJson))
+                .andExpect(status().isOk())
+                .andExpect(content().string("1"))
+                .andDo(print());
+    }
+
+    @Test
+    public void getPublicAccount() throws Exception {
+        accountUtil.setAccount();
+
+        AccountContext userDetails = (AccountContext) accountService.loadUserByUsername("username");
+
+        mockMvc
+                .perform(get("/account/" + userDetails.getUsername()))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString(userDetails.getUsername())))
                 .andDo(print());
     }
 }

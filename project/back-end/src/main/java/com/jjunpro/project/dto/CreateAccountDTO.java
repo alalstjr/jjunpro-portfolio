@@ -2,6 +2,7 @@ package com.jjunpro.project.dto;
 
 import com.jjunpro.project.annotation.*;
 import com.jjunpro.project.domain.Account;
+import com.jjunpro.project.domain.University;
 import com.jjunpro.project.enums.UserRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -40,7 +42,7 @@ public class CreateAccountDTO {
 
     private String myUniversity;
 
-    //private Set<University> university;
+    private Set<University> university;
 
     @Email
     @EmailMatch

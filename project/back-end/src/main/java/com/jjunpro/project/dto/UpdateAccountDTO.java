@@ -5,6 +5,7 @@ import com.jjunpro.project.annotation.NickNameMatch;
 import com.jjunpro.project.annotation.UserDataMatch;
 import com.jjunpro.project.annotation.WordFilter;
 import com.jjunpro.project.domain.Account;
+import com.jjunpro.project.domain.File;
 import com.jjunpro.project.enums.UserRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,7 +40,7 @@ public class UpdateAccountDTO {
     private String[] urlList;
 
     // 서버에 저장된 File 의 정보 file -> fileData 순으로 엔티티에 변환되어 저장
-    //private File fileData;
+    private File fileData;
 
     // 클라이언트에서 받은 File
     private MultipartFile file;
@@ -60,7 +61,7 @@ public class UpdateAccountDTO {
                 .nickname(nickname)
                 .email(email)
                 .urlList(urlList)
-                //.photo(fileData)
+                .photo(fileData)
                 .username(username)
                 .password(password)
                 .myUniversity(myUniversity)

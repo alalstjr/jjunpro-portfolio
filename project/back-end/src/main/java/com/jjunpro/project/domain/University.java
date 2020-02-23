@@ -6,10 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -38,22 +35,36 @@ public class University extends BaseEntity {
     private Integer uniStar;
 
     @Column(nullable = false)
-    private String uniIp;
+    private String ip;
 
     @ManyToOne
     private Account account;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Account> uniLike = new HashSet<>();
 
     @ManyToMany
     private List<File> files;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Comment> comments = new HashSet<>();
 
     @Builder
-    public University(Long id, String uniSubject, String uniContent, String uniName, String uniTag, Integer uniStar, Set<Account> uniLike, String uniIp, Account account, List<File> files, Set<Comment> comments, String uniAtmosphere, String uniPrice) {
+    public University(
+            Long id,
+            String uniSubject,
+            String uniContent,
+            String uniName,
+            String uniTag,
+            Integer uniStar,
+            Set<Account> uniLike,
+            String ip,
+            Account account,
+            List<File> files,
+            Set<Comment> comments,
+            String uniAtmosphere,
+            String uniPrice
+    ) {
         this.id = id;
         this.uniSubject = uniSubject;
         this.uniContent = uniContent;
@@ -61,7 +72,7 @@ public class University extends BaseEntity {
         this.uniTag = uniTag;
         this.uniStar = uniStar;
         this.uniLike = uniLike;
-        this.uniIp = uniIp;
+        this.ip = ip;
         this.account = account;
         this.files = files;
         this.comments = comments;
@@ -71,6 +82,6 @@ public class University extends BaseEntity {
 
     @Override
     public String toString() {
-        return "University{" + "uniSubject='" + uniSubject + '\'' + ", uniContent='" + uniContent + '\'' + ", uniAtmosphere='" + uniAtmosphere + '\'' + ", uniPrice='" + uniPrice + '\'' + ", uniName='" + uniName + '\'' + ", uniTag='" + uniTag + '\'' + ", uniStar=" + uniStar + ", uniIp='" + uniIp + '\'' + ", account=" + account + '}';
+        return "University{" + "uniSubject='" + uniSubject + '\'' + ", uniContent='" + uniContent + '\'' + ", uniAtmosphere='" + uniAtmosphere + '\'' + ", uniPrice='" + uniPrice + '\'' + ", uniName='" + uniName + '\'' + ", uniTag='" + uniTag + '\'' + ", uniStar=" + uniStar + ", ip='" + ip + '\'' + ", account=" + account + '}';
     }
 }

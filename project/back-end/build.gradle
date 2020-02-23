@@ -63,6 +63,7 @@ test {
  * QueryDSL Setting
  * */
 def querydslSrcDir = 'src/main/generated'
+// def querydslSrcDir = 'src/main/java/com/jjunpro/project/generated' // QClass 생성 위치
 
 querydsl {
     library = "com.querydsl:querydsl-apt"

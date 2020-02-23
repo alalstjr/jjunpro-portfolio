@@ -4,6 +4,8 @@ import com.jjunpro.project.context.AccountContext;
 import com.jjunpro.project.domain.Account;
 import com.jjunpro.project.dto.CreateAccountDTO;
 import com.jjunpro.project.dto.UpdateAccountDTO;
+import com.jjunpro.project.dto.UpdateAccountPwdDTO;
+import com.jjunpro.project.projection.AccountPublic;
 import com.jjunpro.project.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
@@ -61,5 +63,22 @@ public class AccountServiceImpl implements AccountService, UserDetailsService {
          * @see User
          * */
         return new AccountContext(account.get());
+    }
+
+    @Override
+    public Optional<Account> findById(Long id) {
+        return accountRepository.findById(id);
+    }
+
+    @Override
+    public Long updatePassword(UpdateAccountPwdDTO dto) {
+        dto.encodePassword(passwordEncoder);
+
+        return accountRepository.updatePassword(dto);
+    }
+
+    @Override
+    public AccountPublic findOnePublicAccount(String username) {
+        return accountRepository.findOnePublicAccount(username);
     }
 }

@@ -1,7 +1,6 @@
 package com.jjunpro.project.repository;
 
 import com.jjunpro.project.domain.QStore;
-import com.jjunpro.project.domain.QUniversity;
 import com.jjunpro.project.projection.StorePublic;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;

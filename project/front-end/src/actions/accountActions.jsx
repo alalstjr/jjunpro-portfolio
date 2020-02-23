@@ -196,7 +196,7 @@ export const accountLoginCheck = () => dispatch => {
  ****************************************/
 export const getAccountUserId = () => async dispatch => {
     try {
-        const res = await axios.get(`${SERVER_URL}/api/account/public/${USER_ID()}`)
+        const res = await axios.get(`${SERVER_URL}/account/${USER_ID()}`)
 
         switch (res.status) {
             case 200 :

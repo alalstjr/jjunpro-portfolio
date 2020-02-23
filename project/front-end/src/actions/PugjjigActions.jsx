@@ -301,10 +301,11 @@ export const getUniListUniLike = (searchDTO) => async dispatch => {
         searchDTO.keyword = (searchDTO.keyword === undefined || searchDTO.keyword === null) ? USER_ID() : searchDTO.keyword;
 
         searchDTO.keyword = (searchDTO.keyword === "") ? "all" : searchDTO.keyword;
+        const category = `category=like`;
         const offset = `offsetCount=${searchDTO.offsetCount}`;
         const cate = `ifCateA=${searchDTO.ifCateA}&ifCateB=${searchDTO.ifCateB}`;
-        const params = `${offset}&${cate}`;
-        const res = await axios.get(`${SERVER_URL}/api/university/pugjjigLikes/${searchDTO.keyword}?${params}`);
+        const params = `${category}&${searchDTO.keyword}&${offset}&${cate}`;
+        const res = await axios.get(`${SERVER_URL}/university/search?${params}`);
 
         switch (res.status) {
             case 200 :

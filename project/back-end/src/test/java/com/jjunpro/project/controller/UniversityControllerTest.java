@@ -2,11 +2,12 @@ package com.jjunpro.project.controller;
 
 import com.jjunpro.project.context.AccountContext;
 import com.jjunpro.project.domain.University;
-import com.jjunpro.project.dto.UniversityDTO;
+import com.jjunpro.project.projection.UniversityPublic;
 import com.jjunpro.project.repository.UniversityRepository;
 import com.jjunpro.project.service.AccountService;
 import com.jjunpro.project.service.UniversityService;
 import com.jjunpro.project.util.AccountUtilTest;
+import com.jjunpro.project.util.UniversityUtilTest;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -20,9 +21,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -46,6 +48,9 @@ public class UniversityControllerTest {
 
     @Autowired
     AccountUtilTest accountUtil;
+
+    @Autowired
+    UniversityUtilTest universityUtil;
 
     @Test
     public void insertUniversity() throws Exception {
@@ -71,6 +76,22 @@ public class UniversityControllerTest {
                         .param(
                                 "uniName",
                                 "uniName"
+                        )
+                        .param(
+                                "stoId",
+                                "stoId"
+                        )
+                        .param(
+                                "stoName",
+                                "stoName"
+                        )
+                        .param(
+                                "stoAddress",
+                                "stoAddress"
+                        )
+                        .param(
+                                "stoUrl",
+                                "stoUrl"
                         ))
                 .andExpect(status().isCreated())
                 .andDo(print());
@@ -84,23 +105,23 @@ public class UniversityControllerTest {
         accountUtil.setAccount();
 
         /* 다른 유저를 생성합니다. */
-        accountUtil.setAccount("jjunpro","jjunnick", "por@naver.com");
+        accountUtil.setAccount(
+                "jjunpro",
+                "jjunnick",
+                "por@naver.com"
+        );
 
         AccountContext userDetails = (AccountContext) accountService.loadUserByUsername("username");
-        log.info("get default user -> " + userDetails.getAccount().toString());
+        log.info("일반 유저 -> " + userDetails
+                .getAccount()
+                .toString());
 
-        /* 임시 게시글을 하나 생성합니다. */
-        UniversityDTO dto = new UniversityDTO();
-        dto.setAccount(userDetails.getAccount());
-        dto.setUniSubject("subject");
-        dto.setUniContent("content");
-        dto.setUniName("uniName");
-        dto.setUniIp("0.0.0.0");
-        University university = universityService.createUniversity(dto);
-        log.info("get default university -> " + university.getAccount());
+        UniversityPublic university = universityUtil.getUniversityPublic(userDetails);
 
         mockMvc
-                .perform(post("/university/" + university.getId())
+                .perform(post("/university/" + university
+                        .getId()
+                        .toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .header(
@@ -109,7 +130,9 @@ public class UniversityControllerTest {
                         )
                         .param(
                                 "id",
-                                university.getId().toString()
+                                university
+                                        .getId()
+                                        .toString()
                         )
                         .param(
                                 "uniSubject",
@@ -123,11 +146,168 @@ public class UniversityControllerTest {
                                 "uniName",
                                 "uniName"
                         ))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andDo(print());
 
         Optional<University> byId = universityRepository.findById(university.getId());
-        log.info("get update university -> " + byId.get().toString());
+        log.info("수정된 university -> " + byId
+                .get()
+                .toString());
+    }
 
+    @Test
+    void UpdateUniLikeUniId() throws Exception {
+        String accessToken = accountUtil.getJwtoken();
+
+        /* 일반 유저를 생성합니다. */
+        accountUtil.setAccount();
+
+        AccountContext userDetails = (AccountContext) accountService.loadUserByUsername("username");
+        log.info("일반 유저 -> " + userDetails
+                .getAccount()
+                .toString());
+
+        UniversityPublic university = universityUtil.getUniversityPublic(userDetails);
+        log.info("좋아요를 체크 전 university -> " + university
+                .getUniLike()
+                .toString());
+
+        mockMvc
+                .perform(post("/university/like/" + university.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .header(
+                                "Authorization",
+                                "Bearer " + accessToken
+                        ))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+        /* 좋아요를 체크 후 university */
+        Optional<University> byId = universityRepository.findById(university.getId());
+        log.info("좋아요를 체크 후 university -> " + byId
+                .get()
+                .getUniLike()
+                .toString());
+    }
+
+    @Test
+    public void getUniList() throws Exception {
+        /* 일반 유저를 생성합니다. */
+        accountUtil.setAccount();
+
+        AccountContext userDetails = (AccountContext) accountService.loadUserByUsername("username");
+
+        UniversityPublic university = universityUtil.getUniversityPublic(userDetails);
+        log.info("게시글 작성 확인 -> " + universityService
+                .findById(university.getId())
+                .get()
+                .toString());
+
+        mockMvc
+                .perform(get("/university/search")
+                        .param(
+                                "category",
+                                "nickname"
+                        )
+                        .param(
+                                "keyword",
+                                "nickname"
+                        )
+                        .param(
+                                "offsetCount",
+                                "0"
+                        )
+                        .param(
+                                "ifCateA",
+                                "all"
+                        )
+                        .param(
+                                "ifCateB",
+                                "all"
+                        ))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    public void getUniversityCreatedDate() throws Exception {
+        /* 일반 유저를 생성합니다. */
+        accountUtil.setAccount();
+
+        AccountContext userDetails = (AccountContext) accountService.loadUserByUsername("username");
+
+        /* 게시글 2개를 생성합니다. */
+        universityUtil.getUniversityPublic(userDetails);
+        universityUtil.getUniversityPublic(userDetails);
+
+        mockMvc
+                .perform(get("/university"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("id")))
+                .andDo(print());
+    }
+
+    @Test
+    public void getUniversityUniId() throws Exception {
+        /* 일반 유저를 생성합니다. */
+        accountUtil.setAccount();
+
+        AccountContext userDetails = (AccountContext) accountService.loadUserByUsername("username");
+
+        /* 게시글을 생성합니다. */
+        UniversityPublic university = universityUtil.getUniversityPublic(userDetails);
+
+        mockMvc
+                .perform(get("/university/" + university.getId()))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("id")))
+                .andDo(print());
+    }
+
+    @Test
+    public void getUniCountUniId() throws Exception {
+        /* 일반 유저를 생성합니다. */
+        accountUtil.setAccount();
+
+        AccountContext userDetails = (AccountContext) accountService.loadUserByUsername("username");
+
+        /* 게시글을 생성합니다. */
+        UniversityPublic university = universityUtil.getUniversityPublic(userDetails);
+
+        mockMvc
+                .perform(get("/university/count/" + university.getUniName()))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("uniName")))
+                .andDo(print());
+    }
+
+    @Test
+    public void deleteUniversityuniId() throws Exception {
+        String accessToken = accountUtil.getJwtoken();
+
+        /* 일반 유저를 생성합니다. */
+        accountUtil.setAccount();
+
+        AccountContext userDetails = (AccountContext) accountService.loadUserByUsername("username");
+
+        /* 게시글을 생성합니다. */
+        UniversityPublic university = universityUtil.getUniversityPublic(userDetails);
+
+        mockMvc
+                .perform(delete("/university/" + university.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .header(
+                                "Authorization",
+                                "Bearer " + accessToken
+                        ))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("success")))
+                .andDo(print());
+
+        if(universityRepository.findById(university.getId()).isEmpty()) {
+            log.info("임시 게시글 삭제완료");
+        }
     }
 }

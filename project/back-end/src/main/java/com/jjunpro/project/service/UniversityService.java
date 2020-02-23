@@ -2,8 +2,13 @@ package com.jjunpro.project.service;
 
 import com.jjunpro.project.domain.Account;
 import com.jjunpro.project.domain.University;
+import com.jjunpro.project.dto.SearchDTO;
 import com.jjunpro.project.dto.UniversityDTO;
+import com.jjunpro.project.dto.UpdateUniLikeDTO;
 import com.jjunpro.project.projection.UniversityPublic;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * UniversityPublic saveOrUpdate() :
@@ -20,5 +25,26 @@ public interface UniversityService {
 
     UniversityPublic updateUniversity(UniversityDTO dto);
 
-    UniversityPublic findByPublicId(Long id, Account account);
+    UpdateUniLikeDTO updateUniversityLike(
+            Long id,
+            Account account
+    );
+
+    UniversityPublic findByPublicId(
+            Long id,
+            Account account
+    );
+
+    Optional<University> findById(Long id);
+
+    List<UniversityPublic> findByUniversityListWhereSearchDto(SearchDTO searchDTO);
+
+    List<UniversityPublic> findByOrderByCreatedDateDesc(Account account);
+
+    Long findByIdUniCount(String uniName);
+
+    void deleteData(
+            Long id,
+            Account accountData
+    );
 }

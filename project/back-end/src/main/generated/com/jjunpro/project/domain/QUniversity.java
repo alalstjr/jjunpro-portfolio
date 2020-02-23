@@ -39,6 +39,8 @@ public class QUniversity extends EntityPathBase<University> {
     //inherited
     public final NumberPath<Long> id = _super.id;
 
+    public final StringPath ip = createString("ip");
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
 
@@ -48,8 +50,6 @@ public class QUniversity extends EntityPathBase<University> {
     public final StringPath uniAtmosphere = createString("uniAtmosphere");
 
     public final StringPath uniContent = createString("uniContent");
-
-    public final StringPath uniIp = createString("uniIp");
 
     public final SetPath<Account, QAccount> uniLike = this.<Account, QAccount>createSet("uniLike", Account.class, QAccount.class, PathInits.DIRECT2);
 

@@ -1,23 +1,33 @@
 package com.jjunpro.project.repository;
 
-import com.jjunpro.project.domain.Account;
-import com.jjunpro.project.domain.QUniversity;
-import com.jjunpro.project.domain.University;
+import com.jjunpro.project.domain.*;
+import com.jjunpro.project.dto.SearchDTO;
 import com.jjunpro.project.projection.UniversityPublic;
 import com.jjunpro.project.service.StoreService;
+import com.jjunpro.project.util.QueryDslUtil;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import static com.querydsl.core.group.GroupBy.groupBy;
+import static com.querydsl.core.group.GroupBy.list;
 
 @RequiredArgsConstructor
 public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
 
     private QUniversity qUniversity = QUniversity.university;
+    private QAccount    qAccount    = QAccount.account;
+    private QStore      qStore      = QStore.store;
 
     private final JPAQueryFactory queryFactory;
     private final StoreService    storeService;
+    private final QueryDslUtil    queryDslUtil;
 
     @Override
     public UniversityPublic findByPublicId(
@@ -35,6 +45,59 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                 uniData,
                 account
         );
+    }
+
+    @Override
+    public List<UniversityPublic> findByUniversityListWhereSearchDto(SearchDTO searchDTO) {
+        Map<University, List<Account>> transform = queryFactory
+                .from(qUniversity)
+                .leftJoin(
+                        qUniversity.uniLike,
+                        qAccount
+                )
+                .where(qUniversity.publicStatus
+                        .eq(true)
+                        .and(qUniversity.controlStatus.eq(false))
+                        .and(queryDslUtil.getSearchKeyword(searchDTO))
+                        .and(queryDslUtil.getSearchCate(searchDTO)))
+                .orderBy(queryDslUtil.getSearchOrderBy(searchDTO))
+                .offset(8 * searchDTO.getOffsetCount())
+                .limit(8)
+                .transform(groupBy(qUniversity).as(list(qAccount)));
+
+        return getUniversityPublicList(
+                transform,
+                searchDTO.getAccount()
+        );
+    }
+
+    @Override
+    public List<UniversityPublic> findByOrderByCreatedDateDesc(Account account) {
+        Map<University, List<Account>> transform = queryFactory
+                .from(qUniversity)
+                .leftJoin(
+                        qUniversity.uniLike,
+                        qAccount
+                )
+                .where(qUniversity.publicStatus
+                        .eq(true)
+                        .and(qUniversity.controlStatus.eq(false)))
+                .orderBy(qUniversity.createdDate.desc())
+                .limit(9)
+                .transform(groupBy(qUniversity).as(list(qAccount)));
+
+        return getUniversityPublicList(
+                transform,
+                account
+        );
+    }
+
+    @Override
+    public Long findByIdUniCount(String uniName) {
+        return queryFactory
+                .selectFrom(qUniversity)
+                .where(qUniversity.uniName.eq(uniName))
+                .fetchCount();
     }
 
     private UniversityPublic getUniversityPublic(
@@ -74,5 +137,98 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                         .getComments()
                         .size()
         );
+    }
+
+    @Override
+    @Transactional
+    public void deleteData(
+            Long id,
+            Account accountData
+    ) {
+        /* qStore 삭제 */
+        queryFactory
+                .delete(qStore)
+                .where(qStore.stoUniList.any().id.eq(id))
+                .execute();
+
+        /* University 삭제 */
+        queryFactory
+                .delete(qUniversity)
+                .where(qUniversity.id
+                        .eq(id)
+                        .and(qUniversity.account.eq(accountData)))
+                .execute();
+    }
+
+    private List<UniversityPublic> getUniversityPublicList(
+            Map<University, List<Account>> transform,
+            Account account
+    ) {
+        return transform
+                .entrySet()
+                .stream()
+                .map(u -> new UniversityPublic(
+                        u
+                                .getKey()
+                                .getId(),
+                        u
+                                .getKey()
+                                .getUniSubject(),
+                        u
+                                .getKey()
+                                .getUniAtmosphere(),
+                        u
+                                .getKey()
+                                .getUniPrice(),
+                        u
+                                .getKey()
+                                .getUniContent(),
+                        u
+                                .getKey()
+                                .getUniName(),
+                        u
+                                .getKey()
+                                .getUniTag(),
+                        u
+                                .getKey()
+                                .getUniStar(),
+                        u
+                                .getKey()
+                                .getModifiedDate(),
+                        u
+                                .getKey()
+                                .getAccount()
+                                .getId(),
+                        u
+                                .getKey()
+                                .getAccount()
+                                .getNickname(),
+                        u
+                                .getKey()
+                                .getAccount()
+                                .getUrlList(),
+                        u
+                                .getValue()
+                                .size(),
+                        u
+                                .getKey()
+                                .getUniLike()
+                                .contains(account),
+                        u
+                                .getKey()
+                                .getFiles(),
+                        u
+                                .getKey()
+                                .getAccount()
+                                .getPhoto(),
+                        storeService.findByStoreOne(u
+                                .getKey()
+                                .getId()),
+                        u
+                                .getKey()
+                                .getComments()
+                                .size()
+                ))
+                .collect(Collectors.toList());
     }
 }

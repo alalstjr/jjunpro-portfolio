@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,7 +29,7 @@ public class Store extends BaseEntity {
     @Column(nullable = false)
     private String stoUrl;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<University> stoUniList = new HashSet<>();
 
     @Builder
