@@ -89,44 +89,41 @@ export const insertAccount = (account) => async dispatch => {
 export const loginAccount = (account) => async dispatch => {
     try {
         
-        const res = await axios.post(`${SERVER_URL}/account/signin?password=qweqwe&username=qweqwe`)
+        const res = await axios.post(`${SERVER_URL}/signin`, account);
 
         switch (res.status) {
             case 200 :
-                console.log(res);
-                console.log(getCookie("JSESSIONID"))
-                await axios.get(`${SERVER_URL}/account/check`)
-                // const id = res.data.id;
-                // const token = res.data.token;
-                // const username = res.data.username;
-                // const nickname = res.data.nickname;
+                const id = res.data.id;
+                const token = res.data.token;
+                const username = res.data.username;
+                const nickname = res.data.nickname;
 
-                // if (token) {
-                //     /*
-                //     *  사용자가 서버에 서 로그인 인증을 받았을경우 localStorage에 Token을 저장합니다.
-                //     */
-                //     const userInfo = JSON.stringify({
-                //         id,
-                //         token,
-                //         username,
-                //         nickname
-                //     });
-                //     localStorage.setItem("userInfo", userInfo);
+                if (token) {
+                    /*
+                    *  사용자가 서버에 서 로그인 인증을 받았을경우 localStorage에 Token을 저장합니다.
+                    */
+                    const userInfo = JSON.stringify({
+                        id,
+                        token,
+                        username,
+                        nickname
+                    });
+                    localStorage.setItem("userInfo", userInfo);
 
-                //     /*
-                //     *  action type은 CHECK_USER_SUCCESS 으로 보냅니다.
-                //     *  redux 를 통해서 유저 인증 상태를 프론트에 기록합니다. 
-                //     */
-                //     dispatch({
-                //         type: CHECK_USER_SUCCESS,
-                //         payload: {
-                //             id: res.data.id,
-                //             token: res.data.token,
-                //             username: res.data.username,
-                //             nickname: res.data.nickname,
-                //         }
-                //     });
-                // }
+                    /*
+                    *  action type은 CHECK_USER_SUCCESS 으로 보냅니다.
+                    *  redux 를 통해서 유저 인증 상태를 프론트에 기록합니다. 
+                    */
+                    dispatch({
+                        type: CHECK_USER_SUCCESS,
+                        payload: {
+                            id: res.data.id,
+                            token: res.data.token,
+                            username: res.data.username,
+                            nickname: res.data.nickname,
+                        }
+                    });
+                }
                 break;
 
             default :

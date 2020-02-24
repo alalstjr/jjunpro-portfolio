@@ -75,7 +75,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .mvcMatchers(
                         HttpMethod.GET,
-                        "/account/check"
+                        "/account/check",
+                        "/alarm"
                 )
                 .hasRole("USER");
 
@@ -86,8 +87,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/university",
                         "/university/*",
                         "/university/like/*",
-                        "/account/password/*"
+                        "/account/password/*",
+                        "/comment"
                 )
+                .hasRole("USER");
+
+        http
+                .authorizeRequests()
+                .mvcMatchers(HttpMethod.DELETE,
+                        "/comment/*",
+                        "/alarm/*")
                 .hasRole("USER");
 
         /* 서버에서 인증은 JWT로 인증하기 때문에 Session의 생성을 막습니다. */
@@ -143,12 +152,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtAuthenticationFilter jwtFilter() throws Exception {
         List<String> skipPath = new ArrayList<>();
 
+        skipPath.add("POST,/signin");
+
         skipPath.add("POST,/account");
         skipPath.add("GET,/account/*");
 
         skipPath.add("GET,/university/*");
         skipPath.add("GET,/university/search");
         skipPath.add("GET,/university/count/*");
+
+        skipPath.add("GET,/comment/*");
+
+        skipPath.add("GET,/store/**");
 
         FilterSkipMatcher matcher = new FilterSkipMatcher(
                 skipPath,

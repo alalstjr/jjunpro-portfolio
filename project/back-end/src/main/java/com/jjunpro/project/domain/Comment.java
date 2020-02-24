@@ -36,4 +36,9 @@ public class Comment extends BaseEntity {
         this.account = account;
         this.university = university;
     }
+
+    @Override
+    public String toString() {
+        return "Comment{" + "content='" + content + '\'' + ", ip='" + ip + '\'' + ", account=" + account + ", university=" + university + '}';
+    }
 }

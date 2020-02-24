@@ -5,6 +5,7 @@ import com.jjunpro.project.domain.Account;
 import com.jjunpro.project.domain.Comment;
 import com.jjunpro.project.domain.University;
 import com.jjunpro.project.util.AccountUtil;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -35,17 +36,6 @@ public class CreateCommentDTO {
 
     private University university;
 
-    public Comment toEntity() {
-        return Comment
-                .builder()
-                .id(id)
-                .content(content)
-                .ip(ip)
-                .account(account)
-                .university(university)
-                .build();
-    }
-
     /* User Ip and User Account 기본값을 설정합니다. */
     public void defaultSetting(
             String userIp,
@@ -57,5 +47,33 @@ public class CreateCommentDTO {
 
         accountData.ifPresent(value -> this.account = value);
         this.ip = userIp;
+    }
+
+    public Comment toEntity() {
+        return Comment
+                .builder()
+                .id(id)
+                .content(content)
+                .ip(ip)
+                .account(account)
+                .university(university)
+                .build();
+    }
+
+    @Builder
+    public CreateCommentDTO(
+            Long id,
+            Long uniId,
+            String ip,
+            String content,
+            Account account,
+            University university
+    ) {
+        this.id = id;
+        this.uniId = uniId;
+        this.ip = ip;
+        this.content = content;
+        this.account = account;
+        this.university = university;
     }
 }

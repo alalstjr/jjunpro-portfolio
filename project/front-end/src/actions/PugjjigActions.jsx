@@ -165,6 +165,13 @@ export const getUniListSearch = (searchDTO) => async dispatch => {
         const params = `${classification}&${offset}&${cate}`;
         const res = await axios.get(`${SERVER_URL}/api/university/search/${searchDTO.keyword}?${params}`);
 
+        // searchDTO.keyword = (searchDTO.keyword === "") ? "all" : searchDTO.keyword;
+        // const category = `category=like`;
+        // const offset = `offsetCount=${searchDTO.offsetCount}`;
+        // const cate = `ifCateA=${searchDTO.ifCateA}&ifCateB=${searchDTO.ifCateB}`;
+        // const params = `${category}&${searchDTO.keyword}&${offset}&${cate}`;
+        // const res = await axios.get(`${SERVER_URL}/university/search?${params}`);
+
         switch (res.status) {
             case 200 :
                 dispatch({
@@ -353,23 +360,23 @@ export const getUniCountStoId = (keyword) => async dispatch => {
  GET University Count DATA UniId
  ****************************************/
 export const getUniCountUniId = (uniName) => async dispatch => {
-    // try {
-    //     const res = await axios.get(`${SERVER_URL}/api/university/count/${uniName}`)
+    try {
+        const res = await axios.get(`${SERVER_URL}/university/count/${uniName}`)
 
-    //     switch (res.status) {
-    //         case 200 :
-    //             dispatch({
-    //                 type: GET_UNIVERSITY_COUNT,
-    //                 payload: res.data
-    //             });
-    //             break;
+        switch (res.status) {
+            case 200 :
+                dispatch({
+                    type: GET_UNIVERSITY_COUNT,
+                    payload: res.data
+                });
+                break;
 
-    //         default :
-    //             alert("잘못된 접근입니다.");
-    //     }
-    // } catch (error) {
-    //     alert(error.response.data.error);
-    // }
+            default :
+                alert("잘못된 접근입니다.");
+        }
+    } catch (error) {
+        alert(error.response.data.error);
+    }
 }
 
 /****************************************
