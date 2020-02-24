@@ -8,7 +8,7 @@ import {GET_ALARM_LIST, DELETE_ALARM} from "./types";
 export const getAlarmList = () => async dispatch => {
     try {
         axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
-        const res = await axios.get(`${SERVER_URL}/api/alarm`);
+        const res = await axios.get(`${SERVER_URL}/alarm`);
 
         switch (res.status) {
             case 200 :
@@ -32,7 +32,7 @@ export const getAlarmList = () => async dispatch => {
 export const deleteAlarmId = (id) => async dispatch => {
     try {
         axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
-        const res = await axios.delete(`${SERVER_URL}/api/alarm/${id}`);
+        const res = await axios.delete(`${SERVER_URL}/alarm/${id}`);
 
         switch (res.status) {
             case 200 :

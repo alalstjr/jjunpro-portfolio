@@ -5,6 +5,7 @@ import com.jjunpro.project.domain.Comment;
 import com.jjunpro.project.domain.University;
 import com.jjunpro.project.dto.AlarmDTO;
 import com.jjunpro.project.dto.CreateCommentDTO;
+import com.jjunpro.project.enums.AlarmType;
 import com.jjunpro.project.projection.CommentPublic;
 import com.jjunpro.project.repository.AlarmRepository;
 import com.jjunpro.project.repository.CommentRepository;
@@ -51,17 +52,21 @@ public class CommentServiceImpl implements CommentService {
                     .getId()
                     .equals(uniData
                             .getAccount()
-                            .getId()) )) {
-                AlarmDTO alearmDTO = new AlarmDTO();
-                alearmDTO.setUserId(uniData
-                        .getAccount()
-                        .getId());
-                alearmDTO.setDataId(uniData.getId());
-                alearmDTO.setDataContent(dto.getContent());
-                alearmDTO.setWriteId(dto
-                        .getAccount()
-                        .getUsername());
-                alearmDTO.setDataType("Comment");
+                            .getId())
+            )) {
+                AlarmDTO alearmDTO = AlarmDTO
+                        .builder()
+                        .userId(uniData
+                                .getAccount()
+                                .getId())
+                        .dataId(uniData.getId())
+                        .dataContent(dto.getContent())
+                        .writeId(dto
+                                .getAccount()
+                                .getUsername())
+                        .dataType(AlarmType.NOTICE)
+                        .build();
+
                 alarmRepository.save(alearmDTO.toEntity());
             }
         }

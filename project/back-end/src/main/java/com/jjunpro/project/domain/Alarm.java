@@ -1,5 +1,6 @@
 package com.jjunpro.project.domain;
 
+import com.jjunpro.project.enums.AlarmType;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,6 +9,8 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 @Getter
 @Entity
@@ -21,7 +24,8 @@ public class Alarm extends BaseEntity {
     private Long dataId;
 
     @Column(nullable = false)
-    private String dataType;
+    @Enumerated(value = EnumType.STRING)
+    private AlarmType dataType;
 
     @Type(type = "text")
     private String dataContent;
@@ -29,7 +33,7 @@ public class Alarm extends BaseEntity {
     private String writeId;
 
     @Builder
-    private Alarm(Long userId, Long dataId, String dataType, String dataContent, String writeId) {
+    private Alarm(Long userId, Long dataId, AlarmType dataType, String dataContent, String writeId) {
         this.userId = userId;
         this.dataId = dataId;
         this.dataType = dataType;

@@ -28,7 +28,7 @@ export const AUTH_UPDATE = () => {
 }
 export const USER_ID = () => {
     if (localStorage.getItem("userInfo")) {
-        return JSON.parse(localStorage.getItem("userInfo")).userId;
+        return JSON.parse(localStorage.getItem("userInfo")).username;
     }
 }
 export const USER_LONG_ID = () => {

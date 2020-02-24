@@ -1,11 +1,9 @@
 package com.jjunpro.project.dto;
 
-import com.jjunpro.project.annotation.EmailMatch;
-import com.jjunpro.project.annotation.NickNameMatch;
-import com.jjunpro.project.annotation.UserDataMatch;
-import com.jjunpro.project.annotation.WordFilter;
+import com.jjunpro.project.annotation.*;
 import com.jjunpro.project.domain.Account;
 import com.jjunpro.project.domain.File;
+import com.jjunpro.project.enums.ColumnType;
 import com.jjunpro.project.enums.UserRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,12 +26,12 @@ public class UpdateAccountDTO {
     @Size(min = 3, max = 10, message = "최소 3글자 이상 10글자 이하로 작성해야 합니다.")
     @Pattern(regexp = "^[0-9a-zA-Z가-힣]*$", message = "닉네임은 한글 영문 숫자만 입력 가능합니다.")
     @NotBlank(message = "닉네임을 작성해 주세요.")
+    @DataMatch(message = "이미 존재하는 닉네임 입니다.", column = ColumnType.NICKNAME)
     @WordFilter
-    @NickNameMatch
     private String nickname;
 
     @Email
-    @EmailMatch
+    @DataMatch(message = "이미 존재하는 이메일 입니다.", column = ColumnType.EMAIL)
     private String email;
 
     @Size(max = 3, message = "태그는 3개만 입력 가능합니다.")

@@ -59,7 +59,7 @@ public class AccountController {
     @PostMapping("/{id}")
     public ResponseEntity<?> updateAccount(
             @Valid
-            @RequestBody
+            @ModelAttribute
                     UpdateAccountDTO dto,
             BindingResult bindingResult
     ) throws BindException {

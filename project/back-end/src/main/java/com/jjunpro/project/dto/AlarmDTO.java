@@ -3,9 +3,14 @@ package com.jjunpro.project.dto;
 import com.jjunpro.project.annotation.UserDataMatch;
 import com.jjunpro.project.annotation.UserExistence;
 import com.jjunpro.project.domain.Alarm;
+import com.jjunpro.project.enums.AlarmType;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 @Getter
 @Setter
@@ -20,7 +25,7 @@ public class AlarmDTO {
 
     private Long dataId;
 
-    private String dataType;
+    private AlarmType dataType;
 
     private String dataContent;
 
@@ -40,5 +45,22 @@ public class AlarmDTO {
                 .dataContent(dataContent)
                 .writeId(writeId)
                 .build();
+    }
+
+    @Builder
+    public AlarmDTO(
+            Long id,
+            Long userId,
+            Long dataId,
+            AlarmType dataType,
+            String dataContent,
+            String writeId
+    ) {
+        this.id = id;
+        this.userId = userId;
+        this.dataId = dataId;
+        this.dataType = dataType;
+        this.dataContent = dataContent;
+        this.writeId = writeId;
     }
 }

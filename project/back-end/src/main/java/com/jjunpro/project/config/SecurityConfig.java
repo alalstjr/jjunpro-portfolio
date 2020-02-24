@@ -19,6 +19,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +48,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    /*
+     * JWT Filter CORS 설정
+     * */
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedMethod("*");
+        configuration.addAllowedOrigin("*");
+        configuration.addAllowedHeader("*");
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+
+        configuration.addExposedHeader("WWW-Authenticate");
+        configuration.addExposedHeader("Access-Control-Allow-Origin");
+        configuration.addExposedHeader("Access-Control-Allow-Headers");
+
+        configuration.addExposedHeader("X-Total-Count");
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration(
+                "/**",
+                configuration
+        );
+        return source;
     }
 
     /*
@@ -84,19 +113,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .mvcMatchers(
                         HttpMethod.POST,
+                        "/account/*",
+                        "/account/password/*",
                         "/university",
                         "/university/*",
                         "/university/like/*",
-                        "/account/password/*",
                         "/comment"
                 )
                 .hasRole("USER");
 
         http
                 .authorizeRequests()
-                .mvcMatchers(HttpMethod.DELETE,
+                .mvcMatchers(
+                        HttpMethod.DELETE,
                         "/comment/*",
-                        "/alarm/*")
+                        "/alarm/*"
+                )
                 .hasRole("USER");
 
         /* 서버에서 인증은 JWT로 인증하기 때문에 Session의 생성을 막습니다. */

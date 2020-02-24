@@ -94,7 +94,7 @@ export const loginAccount = (account) => async dispatch => {
         switch (res.status) {
             case 200 :
                 const id = res.data.id;
-                const token = res.data.token;
+                const token = res.data.jwtoken;
                 const username = res.data.username;
                 const nickname = res.data.nickname;
 
@@ -118,7 +118,7 @@ export const loginAccount = (account) => async dispatch => {
                         type: CHECK_USER_SUCCESS,
                         payload: {
                             id: res.data.id,
-                            token: res.data.token,
+                            token: res.data.jwtoken,
                             username: res.data.username,
                             nickname: res.data.nickname,
                         }
@@ -140,20 +140,6 @@ export const loginAccount = (account) => async dispatch => {
             payload: error
         });
     }
-}
-
-function getCookie(c_name) {
-	var i,x,y,ARRcookies=document.cookie.split(";");
-	for (i=0;i<ARRcookies.length;i++)
-	{
-	  x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
-	  y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
-	  x=x.replace(/^\s+|\s+$/g,"");
-	  if (x==c_name)
-		{
-		return unescape(y);
-		}
-	  }
 }
 
 /****************************************
@@ -243,7 +229,7 @@ export const updateAccount = (account, files, history) => async dispatch => {
                 formData.append('file', files[0]);
             }
 
-            const res = await axios.post(`${SERVER_URL}/api/account/${account.id}`, formData, config)
+            const res = await axios.post(`${SERVER_URL}/account/${account.id}`, formData, config)
 
             switch (res.status) {
                 case 200 :
@@ -291,7 +277,7 @@ export const updateAccountPwdId = (account, history) => async dispatch => {
         if (localStorage.getItem("userInfo")) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
 
-            await axios.post(`${SERVER_URL}/api/account/password/${account.id}`, account)
+            await axios.post(`${SERVER_URL}/account/password/${account.id}`, account)
                 .then(res => {
                     switch (res.status) {
                         case 200 :
@@ -333,7 +319,7 @@ export const updateAccountPwdId = (account, history) => async dispatch => {
  */
 export const adminAccountCheck = async () => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
-    return await axios.post("http://localhost:8080/api/account/admin")
+    return await axios.post("http://localhost:8080/account/admin")
         .then(function () {
             return Promise.resolve();
         }).catch(function () {
@@ -345,7 +331,7 @@ export const adminAccountCheck = async () => {
  *  관리자 로그인
  */
 export const adminAccountLogin = async (account) => {
-    return await axios.post("http://localhost:8080/api/account/login", account)
+    return await axios.post("http://localhost:8080/account/login", account)
         .then(res => {
             // const token = res.data.token;
             // const username = res.data.username;

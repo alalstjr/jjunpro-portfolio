@@ -31,7 +31,7 @@ public class QAlarm extends EntityPathBase<Alarm> {
 
     public final NumberPath<Long> dataId = createNumber("dataId", Long.class);
 
-    public final StringPath dataType = createString("dataType");
+    public final EnumPath<com.jjunpro.project.enums.AlarmType> dataType = createEnum("dataType", com.jjunpro.project.enums.AlarmType.class);
 
     //inherited
     public final NumberPath<Long> id = _super.id;

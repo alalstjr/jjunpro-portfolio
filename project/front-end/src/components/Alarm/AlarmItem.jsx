@@ -24,7 +24,7 @@ class AlarmItem extends Component {
 
         const alarmType = (dataType) => {
             switch (dataType) {
-                case "Comment" :
+                case "COMMENT" :
                     return "댓글";
 
                 default:

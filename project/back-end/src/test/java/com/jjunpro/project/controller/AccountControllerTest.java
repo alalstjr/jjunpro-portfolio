@@ -62,8 +62,7 @@ public class AccountControllerTest {
 
     @Test
     public void updateAccount() throws Exception {
-        /* 새로 생성한 유저의 정보를 수정 합니다. */
-        String userJson = "{\"id\":\"1\", \"nickname\":\"username\", \"email\":\"alalstjr@naver.com\"}";
+        String accessToken = accountUtil.getJwtoken();
 
         accountUtil.setAccount();
 
@@ -71,11 +70,16 @@ public class AccountControllerTest {
                 .perform(post("/account/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(userJson)
+                        .header(
+                                "Authorization",
+                                "Bearer " + accessToken
+                        )
                         .with(csrf())
                         .with(user("username")
                                 .password("1234")
-                                .roles("USER")))
+                                .roles("USER"))
+                        .param("nickname",
+                                "update"))
                 .andExpect(status().isOk())
                 .andDo(print());
 
