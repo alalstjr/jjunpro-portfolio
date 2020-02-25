@@ -4,6 +4,7 @@ import com.jjunpro.project.annotation.*;
 import com.jjunpro.project.domain.Account;
 import com.jjunpro.project.domain.File;
 import com.jjunpro.project.enums.ColumnType;
+import com.jjunpro.project.enums.DomainType;
 import com.jjunpro.project.enums.UserRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,7 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @NoArgsConstructor
-@UserDataMatch(id = "id", domain = "account")
+@UserDataMatch(id = "id", domain = DomainType.ACCOUNT)
 public class UpdateAccountDTO {
 
     private Long id;

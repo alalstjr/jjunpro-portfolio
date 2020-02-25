@@ -53,6 +53,9 @@ dependencies {
 
     /* Custom Libs dir Setting */
     compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    /* 썸네일 제작 라이브러리 */
+    compile group: 'org.imgscalr', name: 'imgscalr-lib', version: '4.2'
 }
 
 test {

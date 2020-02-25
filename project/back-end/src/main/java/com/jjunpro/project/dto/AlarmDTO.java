@@ -4,6 +4,7 @@ import com.jjunpro.project.annotation.UserDataMatch;
 import com.jjunpro.project.annotation.UserExistence;
 import com.jjunpro.project.domain.Alarm;
 import com.jjunpro.project.enums.AlarmType;
+import com.jjunpro.project.enums.DomainType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ import javax.persistence.Enumerated;
 @Setter
 @NoArgsConstructor
 @UserExistence(id = "id")
-@UserDataMatch(id = "id", domain = "alarm")
+@UserDataMatch(id = "id", domain = DomainType.ALARM)
 public class AlarmDTO {
 
     private Long id;

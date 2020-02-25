@@ -1,12 +1,13 @@
 package com.jjunpro.project.annotation;
 
+import com.jjunpro.project.context.AccountContext;
 import com.jjunpro.project.domain.Account;
 import com.jjunpro.project.enums.ColumnType;
 import com.jjunpro.project.repository.AccountRepository;
-import com.jjunpro.project.util.AccountUtil;
+import com.jjunpro.project.service.AccountService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -19,8 +20,7 @@ public class DataMatchValidator implements ConstraintValidator<DataMatch, String
     private ColumnType _column;
 
     private final AccountRepository accountRepository;
-    private final AccountUtil       accountUtil;
-    private final SecurityContext   securityContext = SecurityContextHolder.getContext();
+    private final AccountService    accountService;
 
     /*
      * initialize() 메소드는 어노테이션으로 받은 값을 해당 필드에 초기화 선언을 합니다.
@@ -38,14 +38,22 @@ public class DataMatchValidator implements ConstraintValidator<DataMatch, String
     ) {
         boolean           result      = false;
         Optional<Account> byUserId;
-        Optional<Account> accountData = Optional.empty();
+        AccountContext    userDetails = null;
 
         /* 접근하는 사용자가 익명사용자인지 확인합니다. */
-        if (!securityContext
+        if (!SecurityContextHolder
+                .getContext()
                 .getAuthentication()
                 .getPrincipal()
                 .equals("anonymousUser")) {
-            accountData = accountUtil.accountInfo(securityContext.getAuthentication());
+
+            UserDetails principal = (UserDetails) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal();
+            String username = principal.getUsername();
+
+            userDetails = (AccountContext) accountService.loadUserByUsername(username);
         }
 
         /* { DATA UPDATE } 클라이언트 _column 정보와 { DATA DB } 정보와 동일하지 않다면 검증실패 */
@@ -54,13 +62,13 @@ public class DataMatchValidator implements ConstraintValidator<DataMatch, String
                 byUserId = accountRepository.findByNickname(value);
 
                 /* Account Update 경우 기본 정보를 그대로 저장하기 위한 조건문 */
-                if (accountData.isPresent()) {
+                if (userDetails != null) {
                     if (byUserId.isPresent()) {
                         if (!byUserId
                                 .get()
                                 .getNickname()
-                                .equals(accountData
-                                        .get()
+                                .equals(userDetails
+                                        .getAccount()
                                         .getNickname())) {
                             result = true;
                         }
@@ -80,12 +88,12 @@ public class DataMatchValidator implements ConstraintValidator<DataMatch, String
                 if (value != null && !value.isEmpty()) {
                     byUserId = accountRepository.findByEmail(value);
 
-                    if (byUserId.isPresent() && accountData.isPresent()) {
+                    if (byUserId.isPresent() && userDetails != null) {
                         if (!byUserId
                                 .get()
                                 .getEmail()
-                                .equals(accountData
-                                        .get()
+                                .equals(userDetails
+                                        .getAccount()
                                         .getEmail())) {
                             result = true;
                         }

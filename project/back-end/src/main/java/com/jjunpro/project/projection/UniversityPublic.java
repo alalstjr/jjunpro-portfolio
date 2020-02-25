@@ -13,8 +13,8 @@ public class UniversityPublic implements Comparable<UniversityPublic> {
 
     private Long          id;
     private String        uniSubject;
-    private String        uniAtmosphere;
-    private String        uniPrice;
+    private byte          uniAtmosphere;
+    private byte          uniPrice;
     private String        uniContent;
     private String        uniName;
     private String        uniTag;

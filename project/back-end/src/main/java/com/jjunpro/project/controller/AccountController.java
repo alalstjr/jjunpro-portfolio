@@ -56,7 +56,7 @@ public class AccountController {
     /**
      * UPDATE Account DATA
      */
-    @PostMapping("/{id}")
+    @PostMapping("/{dto}")
     public ResponseEntity<?> updateAccount(
             @Valid
             @ModelAttribute

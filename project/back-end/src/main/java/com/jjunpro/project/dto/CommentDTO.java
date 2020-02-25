@@ -2,6 +2,7 @@ package com.jjunpro.project.dto;
 
 import com.jjunpro.project.annotation.UserDataMatch;
 import com.jjunpro.project.annotation.UserExistence;
+import com.jjunpro.project.enums.DomainType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @UserExistence(id = "id")
-@UserDataMatch(id = "id", domain = "comment")
+@UserDataMatch(id = "id", domain = DomainType.COMMENT)
 public class CommentDTO {
 
     private Long id;

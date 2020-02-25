@@ -2,6 +2,7 @@ package com.jjunpro.project.dto;
 
 import com.jjunpro.project.annotation.PasswordMatch;
 import com.jjunpro.project.annotation.UserDataMatch;
+import com.jjunpro.project.enums.DomainType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Setter
 @NoArgsConstructor
-@UserDataMatch(id = "id", domain = "account")
+@UserDataMatch(id = "id", domain = DomainType.ACCOUNT)
 @PasswordMatch(password = "password", passwordRe = "passwordRe", oldPassword = "oldPassword", encoder = true)
 public class UpdateAccountPwdDTO {
 

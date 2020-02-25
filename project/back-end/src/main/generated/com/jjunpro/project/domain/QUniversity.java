@@ -47,7 +47,7 @@ public class QUniversity extends EntityPathBase<University> {
     //inherited
     public final BooleanPath publicStatus = _super.publicStatus;
 
-    public final StringPath uniAtmosphere = createString("uniAtmosphere");
+    public final NumberPath<Byte> uniAtmosphere = createNumber("uniAtmosphere", Byte.class);
 
     public final StringPath uniContent = createString("uniContent");
 
@@ -55,7 +55,7 @@ public class QUniversity extends EntityPathBase<University> {
 
     public final StringPath uniName = createString("uniName");
 
-    public final StringPath uniPrice = createString("uniPrice");
+    public final NumberPath<Byte> uniPrice = createNumber("uniPrice", Byte.class);
 
     public final NumberPath<Integer> uniStar = createNumber("uniStar", Integer.class);
 

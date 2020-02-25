@@ -51,8 +51,8 @@ class PugjjigWrite extends Component {
             stoUrl: null,
             // input value
             uniSubject: "",
-            uniAtmosphere: null,
-            uniPrice: null,
+            uniAtmosphere: 0,
+            uniPrice: 0,
             uniContent: "",
             uniName: "",
             uniTag: [],
@@ -408,10 +408,10 @@ class PugjjigWrite extends Component {
                                 value={uniAtmosphere}
                                 onChange={this.onChange}
                             >
-                                <option value="null">분위기 선택하기</option>
-                                <option value="조용한 분위기">조용한 분위기</option>
-                                <option value="고급스런 분위기">고급스런 분위기</option>
-                                <option value="활발한 분위기">활발한 분위기</option>
+                                <option value="0">분위기 선택하기</option>
+                                <option value="1">조용한 분위기</option>
+                                <option value="2">고급스런 분위기</option>
+                                <option value="3">활발한 분위기</option>
                             </SelectBox>
                             <SelectBox
                                 id="uniPrice"
@@ -419,12 +419,12 @@ class PugjjigWrite extends Component {
                                 value={uniPrice}
                                 onChange={this.onChange}
                             >
-                                <option value="null">가격대 선택하기</option>
-                                <option value="많이 비싸다">많이 비싸다</option>
-                                <option value="조금 비싸다">조금 비싸다</option>
-                                <option value="보통 가격대">보통 가격대</option>
-                                <option value="저렴하다">저렴하다</option>
-                                <option value="많이 저렴하다">많이 저렴하다</option>
+                                <option value="0">가격대 선택하기</option>
+                                <option value="1">많이 비싸다</option>
+                                <option value="2">조금 비싸다</option>
+                                <option value="3">보통 가격대</option>
+                                <option value="4">저렴하다</option>
+                                <option value="5">많이 저렴하다</option>
                             </SelectBox>
                         </OptionBox>
                     </FormGroup>

@@ -2,13 +2,14 @@ package com.jjunpro.project.dto;
 
 import com.jjunpro.project.annotation.UserDataMatch;
 import com.jjunpro.project.annotation.UserExistence;
+import com.jjunpro.project.enums.DomainType;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @UserExistence(id = "id")
-@UserDataMatch(id = "id", domain = "university")
+@UserDataMatch(id = "id", domain = DomainType.UNIVERSITY)
 public class UniversityValidDTO {
 
     private Long id;

@@ -16,7 +16,7 @@ class PugjjigSearchProvider extends Component {
         this.state = {
             reSearch: false,
             keyword: null,
-            classification: null,
+            category: null,
             offsetCount: 0,
             ifCateA: "all",  // like or comment 
             ifCateB: "all",   // photo or posts
@@ -33,7 +33,7 @@ class PugjjigSearchProvider extends Component {
         this.setState({
             keyword: match.params.id,
             inputKeyword: match.params.id,
-            classification: this.handleClassification(match.path)
+            category: this.handleCategory(match.path)
         });
     }
 
@@ -47,13 +47,13 @@ class PugjjigSearchProvider extends Component {
             this.setState({
                 keyword: nextProps.match.params.id,
                 inputKeyword: nextProps.match.params.id,
-                classification: this.handleClassification(nextProps.match.path)
+                category: this.handleCategory(nextProps.match.path)
             });
         }
     }
 
     // match path 를 조회하여 검색 대상의 분류를 구분합니다.
-    handleClassification = (target) => {
+    handleCategory = (target) => {
         if (target.indexOf("uniSearch") !== -1) {
             return "uniName";
         }
@@ -92,7 +92,7 @@ class PugjjigSearchProvider extends Component {
         // State Init
         const {
             keyword,
-            classification,
+            category,
             offsetCount,
             ifCateA,
             ifCateB,
@@ -101,7 +101,7 @@ class PugjjigSearchProvider extends Component {
         } = this.state;
 
         const handleTitle = () => {
-            switch (classification) {
+            switch (category) {
                 case "uniName" :
                     return "대학교 검색";
 
@@ -133,11 +133,11 @@ class PugjjigSearchProvider extends Component {
                         keyword={keyword}
                     />
                     {
-                        (keyword !== null && classification !== null) ?
+                        (keyword !== null && category !== null) ?
                             <List
                                 keyword={keyword}
                                 inputKeyword={inputKeyword}
-                                classification={classification}
+                                category={category}
                                 offsetCount={offsetCount}
                                 ifCateA={ifCateA}
                                 ifCateB={ifCateB}

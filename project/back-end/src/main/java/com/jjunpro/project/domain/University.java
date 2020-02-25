@@ -23,9 +23,9 @@ public class University extends BaseEntity {
     @Type(type = "text")
     private String uniContent;
 
-    private String uniAtmosphere;
+    private byte uniAtmosphere;
 
-    private String uniPrice;
+    private byte uniPrice;
 
     @Column(nullable = false)
     private String uniName;
@@ -62,8 +62,8 @@ public class University extends BaseEntity {
             Account account,
             List<File> files,
             Set<Comment> comments,
-            String uniAtmosphere,
-            String uniPrice
+            byte uniAtmosphere,
+            byte uniPrice
     ) {
         this.id = id;
         this.uniSubject = uniSubject;

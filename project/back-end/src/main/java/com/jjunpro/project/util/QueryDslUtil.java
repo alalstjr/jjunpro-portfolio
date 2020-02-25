@@ -3,6 +3,7 @@ package com.jjunpro.project.util;
 import com.jjunpro.project.domain.QStore;
 import com.jjunpro.project.domain.QUniversity;
 import com.jjunpro.project.dto.SearchDTO;
+import com.jjunpro.project.enums.ColumnType;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
@@ -19,27 +20,27 @@ public class QueryDslUtil {
      */
     public BooleanBuilder getSearchKeyword(SearchDTO searchDTO) {
         BooleanBuilder builder = new BooleanBuilder();
-        switch (searchDTO.getCategory()) {
-            case "username":
+
+        ColumnType columnType = ColumnType.getColumnType(searchDTO.getCategory());
+
+        switch (columnType) {
+            case USERNAME:
                 return builder.and(qUniversity.account.username.eq(searchDTO.getKeyword()));
 
-            case "nickname":
+            case NICKNAME:
                 return builder.and(qUniversity.account.nickname.eq(searchDTO.getKeyword()));
 
-            case "uniLike":
+            case UNILIKE:
                 return builder.and(qUniversity.uniLike.any().username.eq(searchDTO.getKeyword()));
 
-            case "uniName":
+            case UNINAME:
                 return builder.and(qUniversity.uniName.contains(searchDTO.getKeyword()));
 
-            case "stoId":
+            case STOID:
                 return builder.and(qStore.stoName.contains(searchDTO.getKeyword()));
 
-            case "uniTag":
+            case UNITAG:
                 return builder.and(qUniversity.uniTag.contains(searchDTO.getKeyword()));
-
-            case "userId":
-                return builder.and(qUniversity.account.username.contains(searchDTO.getKeyword()));
 
             default:
                 return builder.and(null);
@@ -51,11 +52,13 @@ public class QueryDslUtil {
      */
     public BooleanBuilder getSearchCate(SearchDTO searchDTO) {
         BooleanBuilder builder = new BooleanBuilder();
-        switch (searchDTO.getIfCateB()) {
-            case "posts":
+        ColumnType columnType = ColumnType.getColumnType(searchDTO.getIfCateB());
+
+        switch (columnType) {
+            case POSTS:
                 return builder.and(qUniversity.files.isEmpty());
 
-            case "photo":
+            case PHOTO:
                 return builder.and(qUniversity.files.isNotEmpty());
 
             default:
@@ -67,24 +70,24 @@ public class QueryDslUtil {
      * 특정 기준의 조건으로 정렬하여 탐색
      */
     public OrderSpecifier getSearchOrderBy(SearchDTO searchDTO) {
-        OrderSpecifier orderByData;
+        ColumnType columnType = ColumnType.getColumnType(searchDTO.getIfCateA());
 
         // 검색 대상 정렬 분류 동적 조건
-        switch (searchDTO.getIfCateA()) {
-            case "like":
-                return orderByData = new OrderSpecifier(
+        switch (columnType) {
+            case UNILIKE:
+                return new OrderSpecifier(
                         Order.DESC,
                         qUniversity.uniLike.size()
                 );
 
-            case "comment":
-                return orderByData = new OrderSpecifier(
+            case COMMENT:
+                return new OrderSpecifier(
                         Order.DESC,
                         qUniversity.comments.size()
                 );
 
             default:
-                return orderByData = new OrderSpecifier(
+                return new OrderSpecifier(
                         Order.DESC,
                         qUniversity.modifiedDate
                 );

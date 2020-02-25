@@ -2,6 +2,7 @@ import React, {Fragment} from "react";
 import {Link} from "react-router-dom";
 import ImageSlide from "../../../widget/mainTitleSlide";
 import {SERVER_FILE_URL} from "../../../../routes";
+import { setAtmosphere, setPrice } from "../../../../util/UniversityUtil";
 
 import {
     ProfileIamge,
@@ -117,8 +118,8 @@ const Item = ({pugjjig, UpdateUniLikeUniId, openModal}) => (
                                         <SVG name={"star"} width="14px" height="14px" color={"#ffd700"}/>
                                     </Fragment>
                 }
-                <ItemOption>{pugjjig.uniAtmosphere}</ItemOption>
-                <ItemOption>{pugjjig.uniPrice}</ItemOption>
+                <ItemOption>{setAtmosphere(pugjjig.uniAtmosphere)}</ItemOption>
+                <ItemOption>{setPrice(pugjjig.uniPrice)}</ItemOption>
             </ItemStar>
         </ItemHead>
         <Link to={`/pugjjig/${pugjjig.id}`} target="_blank">

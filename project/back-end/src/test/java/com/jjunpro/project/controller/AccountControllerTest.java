@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.containsString;
@@ -47,6 +48,7 @@ public class AccountControllerTest {
     AccountUtilTest accountUtil;
 
     @Test
+    @Transactional
     public void createAccount() throws Exception {
         String userJson = "{\"username\":\"username\", \"nickname\":\"nickname\", \"password\":\"1234\", \"passwordRe\":\"1234\"}";
 
@@ -61,6 +63,7 @@ public class AccountControllerTest {
     }
 
     @Test
+    @Transactional
     public void updateAccount() throws Exception {
         String accessToken = accountUtil.getJwtoken();
 
@@ -89,6 +92,7 @@ public class AccountControllerTest {
     }
 
     @Test
+    @Transactional
     public void loginForm() throws Exception {
         accountUtil.setAccount();
 
@@ -107,6 +111,7 @@ public class AccountControllerTest {
     }
 
     @Test
+    @Transactional
     public void jwtLoginForm() throws Exception {
         String userJson = "{\"username\":\"username\", \"password\":\"1234\"}";
 
@@ -122,6 +127,7 @@ public class AccountControllerTest {
     }
 
     @Test
+    @Transactional
     public void check() throws Exception {
         String accessToken = accountUtil.getJwtoken();
 
@@ -139,6 +145,7 @@ public class AccountControllerTest {
     }
 
     @Test
+    @Transactional
     public void accountPwdUpdate() throws Exception {
         String accessToken = accountUtil.getJwtoken();
 
@@ -169,6 +176,7 @@ public class AccountControllerTest {
     }
 
     @Test
+    @Transactional
     public void getPublicAccount() throws Exception {
         accountUtil.setAccount();
 

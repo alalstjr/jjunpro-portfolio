@@ -195,6 +195,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         skipPath.add("GET,/comment/*");
 
+        skipPath.add("GET,/store");
         skipPath.add("GET,/store/**");
 
         FilterSkipMatcher matcher = new FilterSkipMatcher(

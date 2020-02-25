@@ -208,7 +208,7 @@ class Profile extends Component {
                                 {
                                     account_get.data !== undefined ?
                                         <Fragment>
-                                            <ProfileId>{account_get.data.userId}</ProfileId>
+                                            <ProfileId>{account_get.data.username}</ProfileId>
                                             {
                                                 account_get.data.photo === null ?
                                                     <SVG name={"user"} width="38px" height="38px" color={"#E71D36"}/>

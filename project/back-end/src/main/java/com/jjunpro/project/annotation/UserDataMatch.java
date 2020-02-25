@@ -1,5 +1,7 @@
 package com.jjunpro.project.annotation;
 
+import com.jjunpro.project.enums.DomainType;
+
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.Documented;
@@ -28,7 +30,7 @@ public @interface UserDataMatch {
 
     String id();
 
-    String domain();
+    DomainType domain();
 
     Class<?>[] groups() default { };
 

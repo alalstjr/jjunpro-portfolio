@@ -89,7 +89,7 @@ export const insertUniversity = (pugjjig, files, history) => async dispatch => {
         // 유저 JWT Token정보
         axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`
 
-        const res = await axios.post(`${SERVER_URL}/api/university`, formData, config);
+        const res = await axios.post(`${SERVER_URL}/university`, formData, config);
 
         switch (res.status) {
             case 201 :
@@ -131,7 +131,7 @@ export const deleteUniversityuniId = (id) => async dispatch => {
     try {
         axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
 
-        const res = await axios.delete(`${SERVER_URL}/api/university/${id}`);
+        const res = await axios.delete(`${SERVER_URL}/university/${id}`);
 
         switch (res.status) {
             case 200 :
@@ -158,19 +158,12 @@ export const deleteUniversityuniId = (id) => async dispatch => {
  ****************************************/
 export const getUniListSearch = (searchDTO) => async dispatch => {
     try {
-        searchDTO.keyword = (searchDTO.keyword === "") ? "all" : searchDTO.keyword;
-        const classification = `classification=${searchDTO.classification}`;
+        const keyword = `keyword=${(searchDTO.keyword === "") ? "all" : searchDTO.keyword}`;
+        const category = `category=${searchDTO.category}`;
         const offset = `offsetCount=${searchDTO.offsetCount}`;
         const cate = `ifCateA=${searchDTO.ifCateA}&ifCateB=${searchDTO.ifCateB}`;
-        const params = `${classification}&${offset}&${cate}`;
-        const res = await axios.get(`${SERVER_URL}/api/university/search/${searchDTO.keyword}?${params}`);
-
-        // searchDTO.keyword = (searchDTO.keyword === "") ? "all" : searchDTO.keyword;
-        // const category = `category=like`;
-        // const offset = `offsetCount=${searchDTO.offsetCount}`;
-        // const cate = `ifCateA=${searchDTO.ifCateA}&ifCateB=${searchDTO.ifCateB}`;
-        // const params = `${category}&${searchDTO.keyword}&${offset}&${cate}`;
-        // const res = await axios.get(`${SERVER_URL}/university/search?${params}`);
+        const params = `${category}&${keyword}&${offset}&${cate}`;
+        const res = await axios.get(`${SERVER_URL}/university/search?${params}`);
 
         switch (res.status) {
             case 200 :
@@ -196,12 +189,10 @@ export const getUniListStoreId = (searchDTO) => async dispatch => {
         // 유저 JWT Token정보
         USER_AUTH();
 
-        searchDTO.keyword = (searchDTO.keyword === "") ? "all" : searchDTO.keyword;
-        const classification = `classification=${searchDTO.classification}`;
-        const offset = `offsetCount=${searchDTO.offsetCount}`;
-        const cate = `ifCateA=${searchDTO.ifCateA}&ifCateB=${searchDTO.ifCateB}`;
-        const params = `${classification}&${offset}&${cate}`;
-        const res = await axios.get(`${SERVER_URL}/api/store/${searchDTO.keyword}?${params}`);
+        // 검색 파라미터생성
+        const params = setSearchParam(searchDTO.keyword, searchDTO.category, searchDTO.offsetCount, searchDTO.ifCateA, searchDTO.ifCateB);
+        
+        const res = await axios.get(`${SERVER_URL}/store?${params}`);
 
         switch (res.status) {
             case 200 :
@@ -231,11 +222,10 @@ export const getUniListUserId = (searchDTO) => async dispatch => {
         // 유저 {아이디값,페이지} 의 전달이 없는 경우 기본값 설정
         searchDTO.keyword = (searchDTO.keyword === undefined || searchDTO.keyword === null) ? USER_ID() : searchDTO.keyword;
 
-        searchDTO.keyword = (searchDTO.keyword === "") ? "all" : searchDTO.keyword;
-        const offset = `offsetCount=${searchDTO.offsetCount}`;
-        const cate = `ifCateA=${searchDTO.ifCateA}&ifCateB=${searchDTO.ifCateB}`;
-        const params = `${offset}&${cate}`;
-        const res = await axios.get(`${SERVER_URL}/api/university/pugjjigs/userId/${searchDTO.keyword}?${params}`);
+        // 검색 파라미터생성
+        const params = setSearchParam(searchDTO.keyword, searchDTO.category, searchDTO.offsetCount, searchDTO.ifCateA, searchDTO.ifCateB);
+
+        const res = await axios.get(`${SERVER_URL}/university/search?${params}`);
 
         switch (res.status) {
             case 200 :
@@ -271,11 +261,10 @@ export const getUniListNickname = (searchDTO) => async dispatch => {
             return false;
         }
 
-        searchDTO.keyword = (searchDTO.keyword === "") ? "all" : searchDTO.keyword;
-        const offset = `offsetCount=${searchDTO.offsetCount}`;
-        const cate = `ifCateA=${searchDTO.ifCateA}&ifCateB=${searchDTO.ifCateB}`;
-        const params = `${offset}&${cate}`;
-        const res = await axios.get(`${SERVER_URL}/api/university/pugjjigs/nickname/${searchDTO.keyword}?${params}`);
+        // 검색 파라미터생성
+        const params = setSearchParam(searchDTO.keyword, searchDTO.category, searchDTO.offsetCount, searchDTO.ifCateA, searchDTO.ifCateB);
+
+        const res = await axios.get(`${SERVER_URL}/university/search?${params}`);
 
         switch (res.status) {
             case 200 :
@@ -307,11 +296,9 @@ export const getUniListUniLike = (searchDTO) => async dispatch => {
         // 유저 {아이디값,페이지} 의 전달이 없는 경우 기본값 설정
         searchDTO.keyword = (searchDTO.keyword === undefined || searchDTO.keyword === null) ? USER_ID() : searchDTO.keyword;
 
-        searchDTO.keyword = (searchDTO.keyword === "") ? "all" : searchDTO.keyword;
-        const category = `category=like`;
-        const offset = `offsetCount=${searchDTO.offsetCount}`;
-        const cate = `ifCateA=${searchDTO.ifCateA}&ifCateB=${searchDTO.ifCateB}`;
-        const params = `${category}&${searchDTO.keyword}&${offset}&${cate}`;
+        // 검색 파라미터생성
+        const params = setSearchParam(searchDTO.keyword, searchDTO.category, searchDTO.offsetCount, searchDTO.ifCateA, searchDTO.ifCateB);
+
         const res = await axios.get(`${SERVER_URL}/university/search?${params}`);
 
         switch (res.status) {
@@ -338,22 +325,22 @@ export const getUniListUniLike = (searchDTO) => async dispatch => {
  GET University Count DATA StoreId
  ****************************************/
 export const getUniCountStoId = (keyword) => async dispatch => {
-    // try {
-    //     // 유저 JWT Token정보
-    //     USER_AUTH();
+    try {
+        // 유저 JWT Token정보
+        USER_AUTH();
 
-    //     const res = await axios.get(`${SERVER_URL}/api/store/count/${keyword}`)
+        const res = await axios.get(`${SERVER_URL}/store/count/${keyword}`)
 
-    //     switch (res.status) {
-    //         case 200 :
-    //             return res.data;
+        switch (res.status) {
+            case 200 :
+                return res.data;
 
-    //         default :
-    //             alert("잘못된 접근입니다.");
-    //     }
-    // } catch (error) {
-    //     alert(error.response.data.error);
-    // }
+            default :
+                alert("잘못된 접근입니다.");
+        }
+    } catch (error) {
+        alert(error.response.data.error);
+    }
 }
 
 /****************************************
@@ -387,7 +374,7 @@ export const getUniversityUniId = (id, history) => async dispatch => {
         // 유저 JWT Token정보
         USER_AUTH();
 
-        const res = await axios.get(`${SERVER_URL}/api/university/${id}`);
+        const res = await axios.get(`${SERVER_URL}/university/${id}`);
 
         switch (res.status) {
             case 200 :
@@ -414,7 +401,7 @@ export const getUniversityMostLike = () => async dispatch => {
         // 유저 JWT Token정보
         USER_AUTH();
 
-        const res = await axios.get(`${SERVER_URL}/api/university/best`);
+        const res = await axios.get(`${SERVER_URL}/university/best`);
 
         switch (res.status) {
             case 200 :
@@ -440,7 +427,7 @@ export const getUniversityCreatedDate = () => async dispatch => {
         // 유저 JWT Token정보
         USER_AUTH();
 
-        const res = await axios.get(`${SERVER_URL}/api/university`);
+        const res = await axios.get(`${SERVER_URL}/university`);
 
         switch (res.status) {
             case 200 :
@@ -466,7 +453,7 @@ export const UpdateUniLikeUniId = (id, history) => async dispatch => {
         // 유저 JWT Token정보
         USER_AUTH();
 
-        const res = await axios.post(`${SERVER_URL}/api/university/like/${id}`);
+        const res = await axios.post(`${SERVER_URL}/university/like/${id}`);
 
         switch (res.status) {
             case 200 :
@@ -495,7 +482,7 @@ export const insertComment = (comment) => async dispatch => {
     try {
         axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
 
-        const res = await axios.post(`${SERVER_URL}/api/comment`, comment);
+        const res = await axios.post(`${SERVER_URL}/comment`, comment);
 
         switch (res.status) {
             case 201 :
@@ -524,7 +511,7 @@ export const deleteCommentId = (id) => async dispatch => {
     try {
         axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userInfo")).token}`;
 
-        const res = await axios.delete(`${SERVER_URL}/api/comment/${id}`);
+        const res = await axios.delete(`${SERVER_URL}/comment/${id}`);
 
         switch (res.status) {
             case 200 :
@@ -547,7 +534,7 @@ export const deleteCommentId = (id) => async dispatch => {
  ****************************************/
 export const getCommentListUniId = (id) => async dispatch => {
     try {
-        const res = await axios.get(`${SERVER_URL}/api/comment/${id}`);
+        const res = await axios.get(`${SERVER_URL}/comment/${id}`);
 
         switch (res.status) {
             case 200 :
@@ -563,4 +550,17 @@ export const getCommentListUniId = (id) => async dispatch => {
     } catch (error) {
         alert(error.response.data.error);
     }
+}
+
+/*
+ * SearchDTO 검색 파라미터를 설정해주는 메소드
+ */
+const setSearchParam = (keyword, category, offsetCount, ifCateA, ifCateB) => {
+    const setKeyword = `keyword=${(keyword === "") ? "all" : keyword}`;
+    const setCategory = `category=${category}`;
+    const setOffset = `offsetCount=${offsetCount}`;
+    const setCate = `ifCateA=${ifCateA}&ifCateB=${ifCateB}`;
+    const params = `${setCategory}&${setKeyword}&${setOffset}&${setCate}`;
+    
+    return params;
 }

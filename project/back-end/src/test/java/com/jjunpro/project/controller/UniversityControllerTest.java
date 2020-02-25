@@ -19,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.containsString;
@@ -53,6 +54,7 @@ public class UniversityControllerTest {
     UniversityUtilTest universityUtil;
 
     @Test
+    @Transactional
     public void insertUniversity() throws Exception {
         String accessToken = accountUtil.getJwtoken();
         accountUtil.setAccount();
@@ -98,6 +100,7 @@ public class UniversityControllerTest {
     }
 
     @Test
+    @Transactional
     public void updateUniversity() throws Exception {
         String accessToken = accountUtil.getJwtoken();
 
@@ -156,6 +159,7 @@ public class UniversityControllerTest {
     }
 
     @Test
+    @Transactional
     void UpdateUniLikeUniId() throws Exception {
         String accessToken = accountUtil.getJwtoken();
 
@@ -192,6 +196,7 @@ public class UniversityControllerTest {
     }
 
     @Test
+    @Transactional
     public void getUniList() throws Exception {
         /* 일반 유저를 생성합니다. */
         accountUtil.setAccount();
@@ -231,6 +236,7 @@ public class UniversityControllerTest {
     }
 
     @Test
+    @Transactional
     public void getUniversityCreatedDate() throws Exception {
         /* 일반 유저를 생성합니다. */
         accountUtil.setAccount();
@@ -249,6 +255,7 @@ public class UniversityControllerTest {
     }
 
     @Test
+    @Transactional
     public void getUniversityUniId() throws Exception {
         /* 일반 유저를 생성합니다. */
         accountUtil.setAccount();
@@ -266,6 +273,7 @@ public class UniversityControllerTest {
     }
 
     @Test
+    @Transactional
     public void getUniCountUniId() throws Exception {
         /* 일반 유저를 생성합니다. */
         accountUtil.setAccount();
@@ -283,6 +291,7 @@ public class UniversityControllerTest {
     }
 
     @Test
+    @Transactional
     public void deleteUniversityuniId() throws Exception {
         String accessToken = accountUtil.getJwtoken();
 

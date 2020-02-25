@@ -7,6 +7,7 @@ import com.jjunpro.project.domain.Account;
 import com.jjunpro.project.domain.Comment;
 import com.jjunpro.project.domain.File;
 import com.jjunpro.project.domain.University;
+import com.jjunpro.project.enums.DomainType;
 import com.jjunpro.project.util.AccountUtil;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +28,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@UserDataMatch(id = "id", domain = "university")
+@UserDataMatch(id = "id", domain = DomainType.UNIVERSITY)
 public class UniversityDTO {
 
     private Long id;
@@ -36,9 +37,9 @@ public class UniversityDTO {
     @NotBlank(message = "제목을 작성해 주세요.")
     private String uniSubject;
 
-    private String uniAtmosphere = null;
+    private byte uniAtmosphere = 0;
 
-    private String uniPrice = null;
+    private byte uniPrice = 0;
 
     @NotBlank(message = "내용을 작성해 주세요.")
     @Type(type = "text")

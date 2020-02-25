@@ -43,7 +43,7 @@ class List extends Component {
         // Props Init
         const {
             keyword,
-            classification,
+            category,
             ifCateA,
             ifCateB,
             tempUniversityList
@@ -52,7 +52,7 @@ class List extends Component {
         // Search DTO 생성
         const searchDTO = {
             keyword,
-            classification,
+            category,
             offsetCount: 0,
             ifCateA,
             ifCateB
@@ -89,7 +89,7 @@ class List extends Component {
             // Search DTO 생성
             const searchDTO = {
                 keyword: nextProps.inputKeyword,
-                classification: nextProps.classification,
+                category: nextProps.category,
                 offsetCount: 0,
                 ifCateA: nextProps.ifCateA,
                 ifCateB: nextProps.ifCateB
@@ -113,7 +113,7 @@ class List extends Component {
         } = this.props;
 
         // PugjjigSearchProvider 혹은 검색되는 대상에서 받아온 분류로 검색후 DB 검색
-        switch (searchDTO.classification) {
+        switch (searchDTO.category) {
             case "storeId" :
                 getUniListStoreId(searchDTO);
                 break;
@@ -122,7 +122,7 @@ class List extends Component {
                 getUniListUniLike(searchDTO);
                 break;
 
-            case "userId" :
+            case "username" :
                 getUniListUserId(searchDTO);
                 break;
 
@@ -167,7 +167,7 @@ class List extends Component {
         const {
             // search value
             keyword,
-            classification,
+            category,
             ifCateA,
             ifCateB,
             pugjjig_list
@@ -176,14 +176,14 @@ class List extends Component {
         // Search DTO 생성
         const searchDTO = {
             keyword,
-            classification,
+            category,
             offsetCount,
             ifCateA,
             ifCateB
         };
 
         // best or 최근글 불러오기는 제외
-        if (classification === "best" || classification === "createdDate") {
+        if (category === "best" || category === "createdDate") {
             return false;
         }
 

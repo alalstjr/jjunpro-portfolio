@@ -1,18 +1,23 @@
 package com.jjunpro.project.annotation;
 
+import com.jjunpro.project.context.AccountContext;
 import com.jjunpro.project.domain.Account;
 import com.jjunpro.project.domain.Alarm;
 import com.jjunpro.project.domain.Comment;
 import com.jjunpro.project.domain.University;
+import com.jjunpro.project.enums.DomainType;
 import com.jjunpro.project.repository.AccountRepository;
 import com.jjunpro.project.repository.AlarmRepository;
 import com.jjunpro.project.repository.CommentRepository;
 import com.jjunpro.project.repository.UniversityRepository;
+import com.jjunpro.project.service.AccountService;
 import com.jjunpro.project.util.AccountUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -28,13 +33,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserDataMatchValidator implements ConstraintValidator<UserDataMatch, Object> {
 
-    private String _message;
-    private String _id;
-    private String _domain;
+    private String     _message;
+    private String     _id;
+    private DomainType _domain;
 
-    private final SecurityContext securityContext = SecurityContextHolder.getContext();
-    private final AccountUtil     accountUtil;
-
+    private final AccountService       accountService;
     private final AccountRepository    accountRepository;
     private final UniversityRepository universityRepository;
     private final CommentRepository    commentRepository;
@@ -56,6 +59,14 @@ public class UserDataMatchValidator implements ConstraintValidator<UserDataMatch
         boolean valid   = true;
         String  idCheck = null;
 
+        UserDetails principal = (UserDetails) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+        String username = principal.getUsername();
+
+        AccountContext userDetails = (AccountContext) accountService.loadUserByUsername(username);
+
         try {
             idCheck = BeanUtils.getProperty(
                     value,
@@ -67,15 +78,11 @@ public class UserDataMatchValidator implements ConstraintValidator<UserDataMatch
         }
 
         if (idCheck != null && !idCheck.isEmpty()) {
-            Optional<Account> accountData = accountUtil.accountInfo(securityContext.getAuthentication());
-
-            if (accountData.isPresent()) {
-                valid = this.dbDataMatch(
-                        Long.parseLong(idCheck),
-                        accountData.get(),
-                        _domain
-                );
-            }
+            valid = this.dbDataMatch(
+                    Long.parseLong(idCheck),
+                    userDetails.getAccount(),
+                    _domain
+            );
         }
 
         if (!valid) {
@@ -96,13 +103,13 @@ public class UserDataMatchValidator implements ConstraintValidator<UserDataMatch
     public boolean dbDataMatch(
             Long id,
             Account accountData,
-            String checkDomain
+            DomainType domainType
     ) {
         Long data = null;
 
         // 해당 데이터의 작성자 {id} 값을 가져옵니다.
-        switch (checkDomain) {
-            case "account":
+        switch (domainType) {
+            case ACCOUNT:
                 Optional<Account> accountDataDB = accountRepository.findById(id);
                 if (accountDataDB.isPresent()) {
                     data = accountDataDB
@@ -111,7 +118,7 @@ public class UserDataMatchValidator implements ConstraintValidator<UserDataMatch
                 }
                 break;
 
-            case "university":
+            case UNIVERSITY:
                 Optional<University> uniDataDB = universityRepository.findById(id);
                 if (uniDataDB.isPresent()) {
                     data = uniDataDB
@@ -121,7 +128,7 @@ public class UserDataMatchValidator implements ConstraintValidator<UserDataMatch
                 }
                 break;
 
-            case "comment":
+            case COMMENT:
                 Optional<Comment> commentDataDB = commentRepository.findById(id);
                 if (commentDataDB.isPresent()) {
                     data = commentDataDB
@@ -131,7 +138,7 @@ public class UserDataMatchValidator implements ConstraintValidator<UserDataMatch
                 }
                 break;
 
-            case "alarm":
+            case ALARM:
                 Optional<Alarm> alarmDataDB = alarmRepository.findById(id);
                 if (alarmDataDB.isPresent()) {
                     data = alarmDataDB

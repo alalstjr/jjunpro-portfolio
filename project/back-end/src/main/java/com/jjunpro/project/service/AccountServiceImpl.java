@@ -66,6 +66,11 @@ public class AccountServiceImpl implements AccountService, UserDetailsService {
                     .getRole());
         }
 
+        /* 이메일 정보가 없는경우 NULL 저장 */
+        if(dto.getEmail().trim().length() == 0) {
+            dto.setEmail(null);
+        }
+
         return accountRepository.save(dto.toEntity());
     }
 

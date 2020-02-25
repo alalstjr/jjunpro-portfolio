@@ -7,7 +7,7 @@ class LikeRecord extends Component {
     render() {
         return (
             <ActivityRecordWrap>
-                <List classification={"uniLike"}/>
+                <List category={"uniLike"}/>
             </ActivityRecordWrap>
         );
     }

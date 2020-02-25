@@ -6,6 +6,7 @@ import com.jjunpro.project.exception.SimpleException;
 import com.jjunpro.project.repository.FileRepository;
 import lombok.RequiredArgsConstructor;
 import org.imagelib.ImageLib;
+import org.imgscalr.Scalr;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;

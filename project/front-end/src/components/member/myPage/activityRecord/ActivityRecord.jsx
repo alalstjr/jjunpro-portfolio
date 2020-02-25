@@ -7,7 +7,7 @@ class ActivityRecord extends Component {
     render() {
         return (
             <ActivityRecordWrap>
-                <List classification={"userId"}/>
+                <List category={"username"}/>
             </ActivityRecordWrap>
         );
     }

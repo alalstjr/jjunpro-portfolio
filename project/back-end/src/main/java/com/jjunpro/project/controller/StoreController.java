@@ -28,9 +28,9 @@ public class StoreController {
     /**
      * GET University List DATA StoreId
      */
-    @GetMapping("/{keyword}")
+    @GetMapping("")
     public ResponseEntity<?> getStoreIdUniList(
-            @PathVariable
+            @RequestParam
                     String keyword,
             @RequestParam("category")
                     String category,

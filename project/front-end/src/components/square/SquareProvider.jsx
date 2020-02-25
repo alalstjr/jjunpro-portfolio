@@ -35,7 +35,7 @@ class SquareProvider extends Component {
                             <Content>
                                 <List
                                     keyword={"null"}
-                                    classification={"createdDate"}
+                                    category={"createdDate"}
                                     offsetCount={null}
                                     ifCateA={null}
                                     ifCateB={null}

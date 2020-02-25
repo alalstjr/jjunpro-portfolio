@@ -18,6 +18,8 @@ import ItemEditModal from "../list/item/ItemEditModal";
 import InsertModal from "../modal/InsertModal";
 import CommentWrite from "../form/CommentWrite";
 
+import { setAtmosphere, setPrice } from "../../../util/UniversityUtil";
+
 import {
     ProfileIamge,
     NotPost,
@@ -351,8 +353,8 @@ class PugjjigView extends Component {
                                                                          color={"#ffd700"}/>
                                                                 </Fragment>
                                             }
-                                            <ItemOption>{pugjjig.uniAtmosphere}</ItemOption>
-                                            <ItemOption>{pugjjig.uniPrice}</ItemOption>
+                                            <ItemOption>{setAtmosphere(pugjjig.uniAtmosphere)}</ItemOption>
+                                            <ItemOption>{setPrice(pugjjig.uniPrice)}</ItemOption>
                                         </ItemStar>
                                     </ItemHead>
                                     <ItemSubject>{pugjjig.uniSubject}</ItemSubject>

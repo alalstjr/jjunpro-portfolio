@@ -5,6 +5,7 @@ import com.jjunpro.project.dto.FormLoginDTO;
 import com.jjunpro.project.security.token.PreAuthorizationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -89,6 +90,9 @@ public class FormLoginAuthenticationFilter extends AbstractAuthenticationProcess
             HttpServletResponse response,
             AuthenticationException failed
     ) throws IOException, ServletException {
+
+        SecurityContextHolder.clearContext();
+
         this.failureHandler.onAuthenticationFailure(
                 request,
                 response,
