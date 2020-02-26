@@ -106,6 +106,16 @@ public class DataMatchValidator implements ConstraintValidator<DataMatch, String
                 if (byUserId.isPresent()) {
                     result = true;
                 }
+
+            case STOID:
+                /* User Account 정보에 들어있는 Store 정보가 수정하려는 Store 정보와 일치하는지 체크합니다. */
+                if (userDetails != null && userDetails
+                        .getAccount()
+                        .getStore()
+                        .getStoId()
+                        .equals(value)) {
+                    result = true;
+                }
         }
 
         if (result) {

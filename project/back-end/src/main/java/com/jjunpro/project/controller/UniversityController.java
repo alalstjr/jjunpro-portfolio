@@ -9,6 +9,7 @@ import com.jjunpro.project.dto.UniversityValidDTO;
 import com.jjunpro.project.dto.UpdateUniLikeDTO;
 import com.jjunpro.project.exception.SimpleException;
 import com.jjunpro.project.projection.UniversityPublic;
+import com.jjunpro.project.service.CommentService;
 import com.jjunpro.project.service.FileStorageService;
 import com.jjunpro.project.service.UniversityService;
 import com.jjunpro.project.util.AccountUtil;
@@ -39,6 +40,7 @@ public class UniversityController {
     private final AccountUtil        accountUtil;
     private final UniversityService  universityService;
     private final FileStorageService fileStorageService;
+    private final CommentService     commentService;
 
     /**
      * INSERT University DATA
@@ -258,10 +260,7 @@ public class UniversityController {
             uniFiles.ifPresent(university -> fileStorageService.filesDelete(university.getFiles()));
 
             /* University 등록된 Comment 를 삭제합니다. */
-            //            commentService.deleteUniComment(
-            //                    id.getId(),
-            //                    accountData.get()
-            //            );
+            commentService.deleteData(id.getId(), accountData.get());
 
             /* University 를 삭제합니다. */
             universityService.deleteData(

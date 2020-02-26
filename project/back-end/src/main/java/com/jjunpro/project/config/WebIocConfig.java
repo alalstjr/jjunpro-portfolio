@@ -10,7 +10,7 @@ public class WebIocConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // Spring Security 5 권장하는 인코더
+        /* Spring Security 5 권장하는 인코더 */
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 }

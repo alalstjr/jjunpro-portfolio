@@ -115,6 +115,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         HttpMethod.POST,
                         "/account/*",
                         "/account/password/*",
+                        "/account/seller",
                         "/university",
                         "/university/*",
                         "/university/like/*",
@@ -197,6 +198,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         skipPath.add("GET,/store");
         skipPath.add("GET,/store/**");
+
+        skipPath.add("POST,/seller");
 
         FilterSkipMatcher matcher = new FilterSkipMatcher(
                 skipPath,

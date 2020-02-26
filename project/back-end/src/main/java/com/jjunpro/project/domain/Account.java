@@ -2,11 +2,9 @@ package com.jjunpro.project.domain;
 
 import com.jjunpro.project.enums.UserRole;
 import lombok.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.Arrays;
-import java.util.List;
 
 @Getter
 @Entity
@@ -30,6 +28,9 @@ public class Account extends BaseEntity {
     private String[] urlList;
 
     @OneToOne
+    private Store store;
+
+    @OneToOne
     private File photo;
 
     @Column(nullable = false)
@@ -45,9 +46,11 @@ public class Account extends BaseEntity {
             String myUniversity,
             String email,
             String[] urlList,
+            Store store,
             UserRole role,
             File photo
     ) {
+        this.store = store;
         this.id = id;
         this.username = username;
         this.password = password;

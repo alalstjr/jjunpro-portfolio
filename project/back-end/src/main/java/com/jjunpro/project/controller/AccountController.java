@@ -3,11 +3,13 @@ package com.jjunpro.project.controller;
 import com.jjunpro.project.domain.Account;
 import com.jjunpro.project.domain.File;
 import com.jjunpro.project.dto.CreateAccountDTO;
+import com.jjunpro.project.dto.SellerDTO;
 import com.jjunpro.project.dto.UpdateAccountDTO;
 import com.jjunpro.project.dto.UpdateAccountPwdDTO;
 import com.jjunpro.project.projection.AccountPublic;
 import com.jjunpro.project.service.AccountService;
 import com.jjunpro.project.service.FileStorageService;
+import com.jjunpro.project.util.AccountUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AccountController {
 
+    private final AccountUtil        accountUtil;
     private final AccountService     accountService;
     private final FileStorageService fileStorageService;
 
@@ -87,7 +90,8 @@ public class AccountController {
     public ResponseEntity<?> accountPwdUpdate(
             @Valid
             @RequestBody
-                    UpdateAccountPwdDTO dto, BindingResult bindingResult
+                    UpdateAccountPwdDTO dto,
+            BindingResult bindingResult
     ) throws BindException {
         /* 유효성 검사 후 최종 반환합니다. */
         if (bindingResult.hasErrors()) {
@@ -160,5 +164,28 @@ public class AccountController {
             );
             dto.setFileData(fileData);
         }
+    }
+
+    @PostMapping("/seller")
+    public ResponseEntity<Long> applySeller(
+            @Valid
+            @RequestBody
+                    SellerDTO dto,
+            BindingResult bindingResult,
+            Authentication authentication
+    ) throws BindException {
+        /* 유효성 검사 후 최종 반환합니다. */
+        if (bindingResult.hasErrors()) {
+            throw new BindException(bindingResult);
+        }
+
+        Optional<Account> account = accountUtil.accountInfo(authentication);
+        account.ifPresent(dto :: setAccount);
+
+        /* TEST 관리자의 체크없이 바로 권한 변경가능합니다. */
+        return new ResponseEntity<>(
+                accountService.updateAccountRoleSeller(dto),
+                HttpStatus.OK
+        );
     }
 }

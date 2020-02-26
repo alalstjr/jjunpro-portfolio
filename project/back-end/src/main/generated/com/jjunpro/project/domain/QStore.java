@@ -28,6 +28,8 @@ public class QStore extends EntityPathBase<Store> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
 
+    public final SetPath<FoodMenu, QFoodMenu> foodMenu = this.<FoodMenu, QFoodMenu>createSet("foodMenu", FoodMenu.class, QFoodMenu.class, PathInits.DIRECT2);
+
     //inherited
     public final NumberPath<Long> id = _super.id;
 

@@ -39,4 +39,9 @@ public class StoreDTO {
                 .stoUniList(stoUniList)
                 .build();
     }
+
+    @Override
+    public String toString() {
+        return "StoreDTO{" + "stoId='" + stoId + '\'' + ", stoName='" + stoName + '\'' + ", stoAddress='" + stoAddress + '\'' + ", stoUrl='" + stoUrl + '\'' + ", stoUniList=" + stoUniList + '}';
+    }
 }

@@ -1,8 +1,11 @@
 package com.jjunpro.project.repository;
 
+import com.jjunpro.project.domain.Account;
 import com.jjunpro.project.domain.QAccount;
 import com.jjunpro.project.domain.QFile;
+import com.jjunpro.project.domain.Store;
 import com.jjunpro.project.dto.UpdateAccountPwdDTO;
+import com.jjunpro.project.enums.UserRole;
 import com.jjunpro.project.projection.AccountPublic;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -53,5 +56,25 @@ public class AccountRepositoryImpl implements AccountRepositoryDSL {
                 )
                 .where(qAccount.username.eq(username))
                 .fetchOne();
+    }
+
+    @Override
+    @Transactional
+    public Long updateAccountRoleSeller(
+            Account account,
+            Store store
+    ) {
+        return queryFactory
+                .update(qAccount)
+                .where(qAccount.id.eq(account.getId()))
+                .set(
+                        qAccount.role,
+                        UserRole.SELLER
+                )
+                .set(
+                        qAccount.store,
+                        store
+                )
+                .execute();
     }
 }

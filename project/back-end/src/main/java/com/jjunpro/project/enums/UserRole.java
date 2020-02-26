@@ -3,7 +3,8 @@ package com.jjunpro.project.enums;
 public enum UserRole implements EnumModel {
 
     ADMIN("ROLE_ADMIN"),
-    USER("ROLE_USER");
+    USER("ROLE_USER"),
+    SELLER("ROLE_SELLER");
 
     private final String role_user;
 

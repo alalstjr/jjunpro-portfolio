@@ -51,6 +51,8 @@ public class QAccount extends EntityPathBase<Account> {
 
     public final EnumPath<com.jjunpro.project.enums.UserRole> role = createEnum("role", com.jjunpro.project.enums.UserRole.class);
 
+    public final QStore store;
+
     public final ArrayPath<String[], String> urlList = createArray("urlList", String[].class);
 
     public final StringPath username = createString("username");
@@ -74,6 +76,7 @@ public class QAccount extends EntityPathBase<Account> {
     public QAccount(Class<? extends Account> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.photo = inits.isInitialized("photo") ? new QFile(forProperty("photo")) : null;
+        this.store = inits.isInitialized("store") ? new QStore(forProperty("store")) : null;
     }
 
 }

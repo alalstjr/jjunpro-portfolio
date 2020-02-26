@@ -5,10 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,6 +29,9 @@ public class Store extends BaseEntity {
     @OneToMany(fetch = FetchType.EAGER)
     private Set<University> stoUniList = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.EAGER)
+    private Set<FoodMenu> foodMenu = new HashSet<>();
+
     @Builder
     public Store(String stoId, String stoName, String stoAddress, String stoUrl, Set<University> stoUniList) {
         this.stoId = stoId;
@@ -39,5 +39,10 @@ public class Store extends BaseEntity {
         this.stoAddress = stoAddress;
         this.stoUrl = stoUrl;
         this.stoUniList = stoUniList;
+    }
+
+    @Override
+    public String toString() {
+        return "Store{" + "stoId='" + stoId + '\'' + ", stoName='" + stoName + '\'' + ", stoAddress='" + stoAddress + '\'' + ", stoUrl='" + stoUrl + '\'' + ", stoUniList=" + stoUniList + ", foodMenu=" + foodMenu + '}';
     }
 }

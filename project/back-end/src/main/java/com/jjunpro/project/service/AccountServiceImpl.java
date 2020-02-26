@@ -2,14 +2,13 @@ package com.jjunpro.project.service;
 
 import com.jjunpro.project.context.AccountContext;
 import com.jjunpro.project.domain.Account;
-import com.jjunpro.project.dto.AlarmDTO;
-import com.jjunpro.project.dto.CreateAccountDTO;
-import com.jjunpro.project.dto.UpdateAccountDTO;
-import com.jjunpro.project.dto.UpdateAccountPwdDTO;
+import com.jjunpro.project.domain.Store;
+import com.jjunpro.project.dto.*;
 import com.jjunpro.project.enums.AlarmType;
 import com.jjunpro.project.projection.AccountPublic;
 import com.jjunpro.project.repository.AccountRepository;
 import com.jjunpro.project.repository.AlarmRepository;
+import com.jjunpro.project.util.StoreUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService, UserDetailsService {
 
+    private final StoreUtil         storeUtil;
     private final PasswordEncoder   passwordEncoder;
     private final AccountRepository accountRepository;
     private final AlarmRepository   alarmRepository;
@@ -67,7 +67,10 @@ public class AccountServiceImpl implements AccountService, UserDetailsService {
         }
 
         /* 이메일 정보가 없는경우 NULL 저장 */
-        if(dto.getEmail().trim().length() == 0) {
+        if (dto
+                .getEmail()
+                .trim()
+                .length() == 0) {
             dto.setEmail(null);
         }
 
@@ -111,5 +114,24 @@ public class AccountServiceImpl implements AccountService, UserDetailsService {
     @Override
     public AccountPublic findOnePublicAccount(String username) {
         return accountRepository.findOnePublicAccount(username);
+    }
+
+    @Override
+    public Long updateAccountRoleSeller(SellerDTO sellerDTO) {
+
+        /* Store 정보를 등록 */
+        StoreDTO storeDTO = new StoreDTO();
+        storeDTO.setStoId(sellerDTO.getStoId());
+
+        Store store = storeUtil.storeDataHandler(
+                sellerDTO.getStoId(),
+                sellerDTO.getStoName(),
+                sellerDTO.getStoAddress(),
+                sellerDTO.getStoUrl(),
+                null
+        );
+
+        /* 유저의 권한을 Seller, Store 변경 */
+        return accountRepository.updateAccountRoleSeller(sellerDTO.getAccount(), store);
     }
 }

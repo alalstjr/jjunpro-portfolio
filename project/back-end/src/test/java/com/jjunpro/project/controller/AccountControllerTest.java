@@ -2,7 +2,9 @@ package com.jjunpro.project.controller;
 
 import com.jjunpro.project.context.AccountContext;
 import com.jjunpro.project.domain.Account;
+import com.jjunpro.project.domain.Store;
 import com.jjunpro.project.repository.AccountRepository;
+import com.jjunpro.project.repository.StoreRepository;
 import com.jjunpro.project.service.AccountService;
 import com.jjunpro.project.util.AccountUtilTest;
 import org.junit.jupiter.api.Test;
@@ -40,6 +42,9 @@ public class AccountControllerTest {
 
     @Autowired
     AccountRepository accountRepository;
+
+    @Autowired
+    StoreRepository storeRepository;
 
     @Autowired
     AccountService accountService;
@@ -81,8 +86,10 @@ public class AccountControllerTest {
                         .with(user("username")
                                 .password("1234")
                                 .roles("USER"))
-                        .param("nickname",
-                                "update"))
+                        .param(
+                                "nickname",
+                                "update"
+                        ))
                 .andExpect(status().isOk())
                 .andDo(print());
 
@@ -187,5 +194,45 @@ public class AccountControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString(userDetails.getUsername())))
                 .andDo(print());
+    }
+
+    @Test
+    public void applySeller() throws Exception {
+        String accessToken = accountUtil.getJwtoken();
+
+        accountUtil.setAccount();
+
+        AccountContext userDetails = (AccountContext) accountService.loadUserByUsername("username");
+
+        String userJson = "{\"name\": \"name\", \"phoneNumber\":\"phoneNumber\", \"stoId\":\"stoId\", \"stoName\":\"stoName\", \"stoAddress\":\"stoAddress\", \"stoUrl\":\"stoUrl\"}";
+
+        mockMvc
+                .perform(post("/account/seller")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .header(
+                                "Authorization",
+                                "Bearer " + accessToken
+                        )
+                        .content(userJson))
+                .andExpect(status().isOk())
+                .andExpect(content().string("1"))
+                .andDo(print());
+
+        Optional<Account> byId = accountRepository.findById(userDetails
+                .getAccount()
+                .getId());
+
+        Optional<Store> byStoId = storeRepository.findByStoId("stoId");
+
+        log.info("수정된 상점 -> " + byStoId
+                .get()
+                .getStoName());
+        log.info("수정된 유저권한 -> " + byId
+                .get()
+                .getRole());
+        log.info("수정된 유저상점 -> " + byId
+                .get()
+                .getStore());
     }
 }
