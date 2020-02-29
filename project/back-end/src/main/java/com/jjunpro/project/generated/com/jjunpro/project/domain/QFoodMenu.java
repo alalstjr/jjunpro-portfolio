@@ -47,6 +47,8 @@ public class QFoodMenu extends EntityPathBase<FoodMenu> {
     //inherited
     public final BooleanPath publicStatus = _super.publicStatus;
 
+    public final QStore store;
+
     public final SetPath<SubMenu, QSubMenu> subMenus = this.<SubMenu, QSubMenu>createSet("subMenus", SubMenu.class, QSubMenu.class, PathInits.DIRECT2);
 
     public QFoodMenu(String variable) {
@@ -68,6 +70,7 @@ public class QFoodMenu extends EntityPathBase<FoodMenu> {
     public QFoodMenu(Class<? extends FoodMenu> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.photo = inits.isInitialized("photo") ? new QFile(forProperty("photo")) : null;
+        this.store = inits.isInitialized("store") ? new QStore(forProperty("store"), inits.get("store")) : null;
     }
 
 }

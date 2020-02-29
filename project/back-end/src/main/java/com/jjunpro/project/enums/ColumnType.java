@@ -14,7 +14,8 @@ public enum ColumnType implements EnumModel {
     UNITAG("uniTag"),
     POSTS("posts"),
     PHOTO("photo"),
-    COMMENT("comment");
+    COMMENT("comment"),
+    FOODMENU("foodmeny");
 
     public final String columnType;
 

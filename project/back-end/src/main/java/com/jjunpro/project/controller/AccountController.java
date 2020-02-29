@@ -7,6 +7,7 @@ import com.jjunpro.project.dto.SellerDTO;
 import com.jjunpro.project.dto.UpdateAccountDTO;
 import com.jjunpro.project.dto.UpdateAccountPwdDTO;
 import com.jjunpro.project.projection.AccountPublic;
+import com.jjunpro.project.repository.AccountRepository;
 import com.jjunpro.project.service.AccountService;
 import com.jjunpro.project.service.FileStorageService;
 import com.jjunpro.project.util.AccountUtil;
@@ -59,7 +60,7 @@ public class AccountController {
     /**
      * UPDATE Account DATA
      */
-    @PostMapping("/{dto}")
+    @PostMapping("/{id}")
     public ResponseEntity<?> updateAccount(
             @Valid
             @ModelAttribute
@@ -71,14 +72,42 @@ public class AccountController {
             throw new BindException(bindingResult);
         }
 
+        /*
+         * Account File Upload 과정설명 (PreFile = 이전파일, NewFile = 새로운파일)
+         * 1. NewFile DB 등록
+         * 2. Account DB 조회 PreFile 변수에 임시 저장
+         * 3. Account File 에 NewFile 저장
+         * 4. PreFile 변수로 파일 삭제
+         *
+         * 결론으 Account Table 내부에 PreFile 정보가 들어있으면 PreFile 삭제가 안되므로 NewFile 등록 후 삭제해야 합니다.
+         * NewFile 등록 이전에 PreFile 정보를 먼저 변수에 따로 저장해야 합니다.
+         * */
+        File prPhoto = null;
+
+        /* 새로 등록되는 파일 */
+        this.fileUpload(dto);
+
+        /* 이전에 업로드한 삭제 예정된 파일  */
+        if(dto.getFile() != null && !dto.getFile().isEmpty()) {
+            Optional<Account> accountData = accountService.findById(dto.getId());
+            if (accountData.isPresent()) {
+                prPhoto = accountData
+                        .get()
+                        .getPhoto();
+            }
+        }
+
         /* 유저의 정보를 DB 에 저장합니다. */
         Account account = accountService.updateAccount(dto);
 
-        this.fileUpload(dto);
+        /* 이전의 파일을 삭제합니다. */
+        if (prPhoto != null) {
+            fileStorageService.fileDelete(prPhoto);
+        }
 
         /* 업데이트 되는 유저의 정보를 DB 에 저장합니다. */
         return new ResponseEntity<>(
-                account.getId() != null,
+                account != null,
                 HttpStatus.OK
         );
     }
@@ -112,58 +141,10 @@ public class AccountController {
             @PathVariable
                     String username
     ) {
-        AccountPublic accountPublic = accountService.findOnePublicAccount(username);
-
         return new ResponseEntity<>(
-                accountPublic,
+                accountService.findOnePublicAccount(username),
                 HttpStatus.OK
         );
-    }
-
-    @GetMapping("/check")
-    public String check() {
-        Authentication authentication = SecurityContextHolder
-                .getContext()
-                .getAuthentication();
-
-        System.out.println(authentication.getPrincipal());
-
-        return "check";
-    }
-
-    private void fileUpload(UpdateAccountDTO dto) {
-        /* 파일을 전송받는경우와 안받는 경우 */
-        if (dto
-                .toEntity()
-                .getPhoto() != null) {
-            /* Account Info */
-            Optional<Account> accountData = accountService.findById(dto
-                    .toEntity()
-                    .getId());
-
-            if (accountData.isPresent()) {
-                File accountFile = accountData
-                        .get()
-                        .getPhoto();
-
-                /* 기존에 업로드된 파일이 존재할 경우 */
-                if (accountFile != null) {
-                    /* Account 저장된 File 삭제 */
-                    fileStorageService.fileDelete(accountFile);
-                }
-            }
-        }
-
-        /* 첨부파일이 존재하는 경우 파일 업로드 메소드입니다. */
-        if (dto.getFile() != null && !dto
-                .getFile()
-                .isEmpty()) {
-            File fileData = fileStorageService.uploadFile(
-                    dto.getFile(),
-                    "account"
-            );
-            dto.setFileData(fileData);
-        }
     }
 
     @PostMapping("/seller")
@@ -187,5 +168,18 @@ public class AccountController {
                 accountService.updateAccountRoleSeller(dto),
                 HttpStatus.OK
         );
+    }
+
+    private void fileUpload(UpdateAccountDTO dto) {
+        /* 파일을 전송받는경우와 안받는 경우 */
+        if (dto.getFile() != null) {
+            File fileData = fileStorageService.uploadFile(
+                    dto.getFile(),
+                    "account"
+            );
+
+            /* File <=> Account 양방향 관계설정 */
+            dto.setFileData(fileData);
+        }
     }
 }

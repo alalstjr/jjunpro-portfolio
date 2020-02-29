@@ -39,7 +39,8 @@ public class QFile extends EntityPathBase<File> {
 
     public final StringPath fileType = createString("fileType");
 
-    public final NumberPath<Long> id = createNumber("id", Long.class);
+    //inherited
+    public final NumberPath<Long> id = _super.id;
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;

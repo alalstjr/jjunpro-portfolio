@@ -2,14 +2,11 @@ package com.jjunpro.project.service;
 
 import com.jjunpro.project.domain.Account;
 import com.jjunpro.project.domain.File;
-import com.jjunpro.project.domain.Store;
 import com.jjunpro.project.domain.University;
 import com.jjunpro.project.dto.SearchDTO;
-import com.jjunpro.project.dto.StoreDTO;
 import com.jjunpro.project.dto.UniversityDTO;
 import com.jjunpro.project.dto.UpdateUniLikeDTO;
 import com.jjunpro.project.projection.UniversityPublic;
-import com.jjunpro.project.repository.StoreRepository;
 import com.jjunpro.project.repository.UniversityRepository;
 import com.jjunpro.project.util.StoreUtil;
 import lombok.RequiredArgsConstructor;
@@ -25,11 +22,9 @@ public class UniversityServiceImpl implements UniversityService {
 
     private final StoreUtil            storeUtil;
     private final UniversityRepository universityRepository;
-    private final StoreRepository      storeRepository;
 
     @Override
     public UniversityPublic createUniversity(UniversityDTO dto) {
-
         University universityData = universityRepository.save(dto.toEntity());
 
         /* Store 정보를 등록 */
@@ -51,24 +46,42 @@ public class UniversityServiceImpl implements UniversityService {
     public UniversityPublic updateUniversity(UniversityDTO dto) {
         if (dto.getId() != null) {
             /* { DATA DB } 값이 조회 */
-            Optional<University> updateDto = universityRepository.findById(dto.getId());
+            Optional<University> universityData = universityRepository.findById(dto.getId());
 
             /* { DATA DB } 조회한 값을 DTO 값에 UPDATE 수정 */
-            if (updateDto.isPresent()) {
-                dto.setId(updateDto
+            if (universityData.isPresent()) {
+                universityData
                         .get()
-                        .getId());
-                dto.setUniLike(updateDto
+                        .setUniStar(dto.getUniStar());
+                universityData
                         .get()
-                        .getUniLike());
-                dto.setUniName(updateDto
+                        .setUniSubject(dto.getUniSubject());
+                universityData
                         .get()
-                        .getUniName());
-                dto.setComments(updateDto
+                        .setUniAtmosphere(dto.getUniAtmosphere());
+                universityData
                         .get()
-                        .getComments());
+                        .setUniPrice(dto.getUniPrice());
+                universityData
+                        .get()
+                        .setUniName(dto.getUniName());
+                universityData
+                        .get()
+                        .setUniTag(dto.getUniTag());
+                universityData
+                        .get()
+                        .setUniContent(dto.getUniContent());
 
-                List<File> updateFile = updateDto
+                /* 업로드 되는 파일이 있는경우 수정 */
+                if (dto.getFileData() != null && !dto
+                        .getFileData()
+                        .isEmpty()) {
+                    universityData
+                            .get()
+                            .setFiles(dto.getFileData());
+                }
+
+                List<File> updateFile = universityData
                         .get()
                         .getFiles();
 
@@ -85,22 +98,21 @@ public class UniversityServiceImpl implements UniversityService {
 
                 /* UPDATE file 존재하는 경우와 아닌경우 */
                 if (dto.getFileData() == null) {
-                    dto.setFileData(updateFile);
+                    universityData
+                            .get()
+                            .setFiles(updateFile);
                 }
-                else {
-                    dto
-                            .getFileData()
-                            .addAll(updateFile);
-                }
+
+                return findByPublicId(
+                        universityRepository
+                                .save(universityData.get())
+                                .getId(),
+                        dto.getAccount()
+                );
             }
         }
 
-        University universityData = universityRepository.save(dto.toEntity());
-
-        return findByPublicId(
-                universityData.getId(),
-                dto.getAccount()
-        );
+        return null;
     }
 
     @Override
@@ -194,12 +206,9 @@ public class UniversityServiceImpl implements UniversityService {
 
     @Override
     public void deleteData(
-            Long id,
+            University university,
             Account accountData
     ) {
-        universityRepository.deleteData(
-                id,
-                accountData
-        );
+        universityRepository.delete(university);
     }
 }

@@ -26,23 +26,33 @@ public class Store extends BaseEntity {
     @Column(nullable = false)
     private String stoUrl;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private Set<University> stoUniList = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private Set<FoodMenu> foodMenu = new HashSet<>();
 
+    @OneToOne(mappedBy = "store")
+    private Account account;
+
     @Builder
-    public Store(String stoId, String stoName, String stoAddress, String stoUrl, Set<University> stoUniList) {
+    public Store(String stoId, String stoName, String stoAddress, String stoUrl) {
         this.stoId = stoId;
         this.stoName = stoName;
         this.stoAddress = stoAddress;
         this.stoUrl = stoUrl;
-        this.stoUniList = stoUniList;
     }
 
     @Override
     public String toString() {
         return "Store{" + "stoId='" + stoId + '\'' + ", stoName='" + stoName + '\'' + ", stoAddress='" + stoAddress + '\'' + ", stoUrl='" + stoUrl + '\'' + ", stoUniList=" + stoUniList + ", foodMenu=" + foodMenu + '}';
+    }
+
+    /* add */
+    public void addUniversity(University university) {
+        this
+                .getStoUniList()
+                .add(university);
+        university.setStore(this);
     }
 }

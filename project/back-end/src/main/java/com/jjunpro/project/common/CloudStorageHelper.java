@@ -1,14 +1,17 @@
 package com.jjunpro.project.common;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.Credentials;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.*;
+import com.google.cloud.storage.Acl.Role;
+import com.google.cloud.storage.Acl.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -16,13 +19,17 @@ import java.util.Collections;
 @Component
 public class CloudStorageHelper {
 
+    private Logger log = LoggerFactory.getLogger(this.getClass());
+
     private static Storage     storage = null;
     private static Credentials credentials;
 
     // [START init]
     static {
         try {
-            credentials = GoogleCredentials.fromStream(new FileInputStream("./src/main/java/com/jjunpro/project/common/spring-project-869b85004058.json"));
+            ClassPathResource resource = new ClassPathResource("google/google-aim-key.json");
+
+            credentials = GoogleCredentials.fromStream(resource.getInputStream());
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -68,9 +75,9 @@ public class CloudStorageHelper {
                         fileName
                 )
                         // Modify access list to allow all users with link to read file
-                        .setAcl(new ArrayList<>(Collections.singletonList(Acl.of(
-                                Acl.User.ofAllUsers(),
-                                Acl.Role.READER
+                        .setAcl(new ArrayList<>(Arrays.asList(Acl.of(
+                                User.ofAllUsers(),
+                                Role.READER
                         ))))
                         .build(),
                 os.toByteArray()
@@ -91,11 +98,11 @@ public class CloudStorageHelper {
         boolean deleted = storage.delete(blobId);
         if (deleted) {
             // the blob was deleted
-            System.out.println("OK");
+            log.info("File Delete Success! :" + blobName);
         }
         else {
             // the blob was not found
-            System.out.println("FAILE");
+            log.info("File Delete Faile! :" + blobName);
         }
     }
 }

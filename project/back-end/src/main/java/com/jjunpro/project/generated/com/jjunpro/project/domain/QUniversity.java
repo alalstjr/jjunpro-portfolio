@@ -47,6 +47,8 @@ public class QUniversity extends EntityPathBase<University> {
     //inherited
     public final BooleanPath publicStatus = _super.publicStatus;
 
+    public final QStore store;
+
     public final NumberPath<Byte> uniAtmosphere = createNumber("uniAtmosphere", Byte.class);
 
     public final StringPath uniContent = createString("uniContent");
@@ -82,6 +84,7 @@ public class QUniversity extends EntityPathBase<University> {
     public QUniversity(Class<? extends University> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.account = inits.isInitialized("account") ? new QAccount(forProperty("account"), inits.get("account")) : null;
+        this.store = inits.isInitialized("store") ? new QStore(forProperty("store"), inits.get("store")) : null;
     }
 
 }

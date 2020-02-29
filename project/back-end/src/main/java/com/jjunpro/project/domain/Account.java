@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Arrays;
 
+@Setter
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -27,15 +28,15 @@ public class Account extends BaseEntity {
 
     private String[] urlList;
 
-    @OneToOne
-    private Store store;
-
-    @OneToOne
-    private File photo;
-
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
+
+    @OneToOne
+    private Store store;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private File photo;
 
     @Builder
     public Account(

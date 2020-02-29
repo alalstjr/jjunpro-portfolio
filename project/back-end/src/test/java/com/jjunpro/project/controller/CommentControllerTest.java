@@ -21,8 +21,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.containsString;
@@ -34,6 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 public class CommentControllerTest {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
@@ -60,7 +61,6 @@ public class CommentControllerTest {
     UniversityUtilTest universityUtil;
 
     @Test
-    @Transactional
     public void insertComment() throws Exception {
         String accessToken = accountUtil.getJwtoken();
 
@@ -93,7 +93,6 @@ public class CommentControllerTest {
     }
 
     @Test
-    @Transactional
     public void getCommentListUniId() throws Exception {
         /* 일반 유저를 생성합니다. */
         accountUtil.setAccount();
@@ -131,7 +130,6 @@ public class CommentControllerTest {
     }
 
     @Test
-    @Transactional
     public void deleteCommentId() throws Exception {
         /* 일반 유저를 생성합니다. */
         accountUtil.setAccount();

@@ -4,7 +4,9 @@ import com.jjunpro.project.annotation.DataMatch;
 import com.jjunpro.project.annotation.SubMenuData;
 import com.jjunpro.project.domain.File;
 import com.jjunpro.project.domain.FoodMenu;
+import com.jjunpro.project.domain.Store;
 import com.jjunpro.project.domain.SubMenu;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -44,6 +46,29 @@ public class FoodMenuDTO {
     @SubMenuData
     private Set<SubMenu> subMenus = new HashSet<>();
 
+    private Store store;
+
+    @Builder
+    public FoodMenuDTO(
+            @NotBlank(message = "메뉴를 등록하려는 가게정보는 필수입니다.") String stoId,
+            @NotBlank(message = "음식이름을 작성해 주세요.") String name,
+            @NotBlank(message = "내용을 작성해 주세요.") String content,
+            @NotBlank(message = "가격을 작성해 주세요.") String price,
+            MultipartFile photo,
+            File fileData,
+            Set<SubMenu> subMenus,
+            Store store
+    ) {
+        this.stoId = stoId;
+        this.name = name;
+        this.content = content;
+        this.price = price;
+        this.photo = photo;
+        this.fileData = fileData;
+        this.subMenus = subMenus;
+        this.store = store;
+    }
+
     public FoodMenu toEntity() {
         return FoodMenu
                 .builder()
@@ -52,11 +77,12 @@ public class FoodMenuDTO {
                 .price(Integer.parseInt(price))
                 .photo(fileData)
                 .subMenus(subMenus)
+                .store(store)
                 .build();
     }
 
     @Override
     public String toString() {
-        return "FoodMenuDTO{" + "name='" + name + '\'' + ", content='" + content + '\'' + ", price=" + price + ", photo=" + photo + ", subMenus=" + subMenus + '}';
+        return "FoodMenuDTO{" + "stoId='" + stoId + '\'' + ", name='" + name + '\'' + ", content='" + content + '\'' + ", price='" + price + '\'' + ", photo=" + photo + ", fileData=" + fileData + ", subMenus=" + subMenus + ", store=" + store + '}';
     }
 }

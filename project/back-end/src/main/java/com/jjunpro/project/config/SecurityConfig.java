@@ -104,7 +104,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .mvcMatchers(
                         HttpMethod.GET,
-                        "/account/check",
                         "/alarm"
                 )
                 .hasRole("USER");
@@ -190,6 +189,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         skipPath.add("POST,/account");
         skipPath.add("GET,/account/*");
 
+        skipPath.add("GET,/university");
         skipPath.add("GET,/university/*");
         skipPath.add("GET,/university/search");
         skipPath.add("GET,/university/count/*");

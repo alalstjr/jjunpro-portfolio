@@ -2,6 +2,7 @@ package com.jjunpro.project.service;
 
 import com.jjunpro.project.context.AccountContext;
 import com.jjunpro.project.domain.Account;
+import com.jjunpro.project.domain.File;
 import com.jjunpro.project.domain.Store;
 import com.jjunpro.project.dto.*;
 import com.jjunpro.project.enums.AlarmType;
@@ -53,28 +54,40 @@ public class AccountServiceImpl implements AccountService, UserDetailsService {
 
     @Override
     public Account updateAccount(UpdateAccountDTO dto) {
-        Optional<Account> byId = accountRepository.findById(dto.getId());
-        if (byId.isPresent()) {
-            dto.setUsername(byId
+        Optional<Account> accountData = accountRepository.findById(dto.getId());
+
+        if (accountData.isPresent()) {
+            accountData
                     .get()
-                    .getUsername());
-            dto.setPassword(byId
+                    .setNickname(dto.getNickname());
+            accountData
                     .get()
-                    .getPassword());
-            dto.setRole(byId
-                    .get()
-                    .getRole());
+                    .setUrlList(dto.getUrlList());
+
+            /* 업로드 되는 파일이 있는경우 수정 */
+            if (dto.getFile() != null) {
+                accountData
+                        .get()
+                        .setPhoto(dto.getFileData());
+            }
+
+            /* 이메일 정보가 없는경우 NULL 저장 */
+            if (dto.getEmail() != null && dto
+                    .getEmail()
+                    .trim()
+                    .length() == 0) {
+                dto.setEmail(null);
+            }
+            else {
+                accountData
+                        .get()
+                        .setEmail(dto.getEmail());
+            }
+
+            return accountRepository.save(accountData.get());
         }
 
-        /* 이메일 정보가 없는경우 NULL 저장 */
-        if (dto
-                .getEmail()
-                .trim()
-                .length() == 0) {
-            dto.setEmail(null);
-        }
-
-        return accountRepository.save(dto.toEntity());
+        return null;
     }
 
     @Override
@@ -118,11 +131,7 @@ public class AccountServiceImpl implements AccountService, UserDetailsService {
 
     @Override
     public Long updateAccountRoleSeller(SellerDTO sellerDTO) {
-
         /* Store 정보를 등록 */
-        StoreDTO storeDTO = new StoreDTO();
-        storeDTO.setStoId(sellerDTO.getStoId());
-
         Store store = storeUtil.storeDataHandler(
                 sellerDTO.getStoId(),
                 sellerDTO.getStoName(),
@@ -131,7 +140,11 @@ public class AccountServiceImpl implements AccountService, UserDetailsService {
                 null
         );
 
+
         /* 유저의 권한을 Seller, Store 변경 */
-        return accountRepository.updateAccountRoleSeller(sellerDTO.getAccount(), store);
+        return accountRepository.updateAccountRoleSeller(
+                sellerDTO.getAccount(),
+                store
+        );
     }
 }

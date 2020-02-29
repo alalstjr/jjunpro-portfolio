@@ -76,7 +76,7 @@ public class QAccount extends EntityPathBase<Account> {
     public QAccount(Class<? extends Account> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.photo = inits.isInitialized("photo") ? new QFile(forProperty("photo")) : null;
-        this.store = inits.isInitialized("store") ? new QStore(forProperty("store")) : null;
+        this.store = inits.isInitialized("store") ? new QStore(forProperty("store"), inits.get("store")) : null;
     }
 
 }

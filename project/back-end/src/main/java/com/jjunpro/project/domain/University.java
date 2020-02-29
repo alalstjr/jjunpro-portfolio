@@ -1,9 +1,6 @@
 package com.jjunpro.project.domain;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -12,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class University extends BaseEntity {
@@ -40,13 +38,16 @@ public class University extends BaseEntity {
     @ManyToOne
     private Account account;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     private Set<Account> uniLike = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<File> files;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Store store;
+
+    @OneToMany(mappedBy = "university", cascade = CascadeType.ALL)
     private Set<Comment> comments = new HashSet<>();
 
     @Builder
@@ -83,5 +84,21 @@ public class University extends BaseEntity {
     @Override
     public String toString() {
         return "University{" + "uniSubject='" + uniSubject + '\'' + ", uniContent='" + uniContent + '\'' + ", uniAtmosphere='" + uniAtmosphere + '\'' + ", uniPrice='" + uniPrice + '\'' + ", uniName='" + uniName + '\'' + ", uniTag='" + uniTag + '\'' + ", uniStar=" + uniStar + ", ip='" + ip + '\'' + ", account=" + account + '}';
+    }
+
+    /* add */
+    public void addComment(Comment comment) {
+        this
+                .getComments()
+                .add(comment);
+        comment.setUniversity(this);
+    }
+
+    /* remove */
+    public void removeComment(Comment comment) {
+        this
+                .getComments()
+                .remove(comment);
+        comment.setUniversity(null);
     }
 }

@@ -44,7 +44,7 @@ public interface UniversityService {
     Long findByIdUniCount(String uniName);
 
     void deleteData(
-            Long id,
+            University university,
             Account accountData
     );
 }

@@ -26,7 +26,10 @@ public class FoodMenu extends BaseEntity {
     @OneToOne
     private File photo;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @ManyToOne
+    private Store store;
+
+    @OneToMany(mappedBy = "foodMenu", cascade = CascadeType.ALL)
     private Set<SubMenu> subMenus = new HashSet<>();
 
     @Builder
@@ -35,12 +38,14 @@ public class FoodMenu extends BaseEntity {
             String content,
             Integer price,
             File photo,
-            Set<SubMenu> subMenus
+            Set<SubMenu> subMenus,
+            Store store
     ) {
         this.name = name;
         this.content = content;
         this.price = price;
         this.photo = photo;
         this.subMenus = subMenus;
+        this.store = store;
     }
 }

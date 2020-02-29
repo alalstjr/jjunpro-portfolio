@@ -9,8 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
+@Transactional
 public class AccountUtilTest {
 
     private final String JWTOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiVVNFUiIsIk5JQ0tOQU1FIjoibmlja25hbWUiLCJpc3MiOiJqanVucHJvIiwiVVNFUk5BTUUiOiJ1c2VybmFtZSIsIkVYUCI6MTU4MzE3MDAwNX0.VKRR-39AqUqedp6JZgYH0bguSN6vyzStShxKt_kRoeA";

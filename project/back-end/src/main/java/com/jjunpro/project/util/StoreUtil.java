@@ -2,7 +2,6 @@ package com.jjunpro.project.util;
 
 import com.jjunpro.project.domain.Store;
 import com.jjunpro.project.domain.University;
-import com.jjunpro.project.dto.StoreDTO;
 import com.jjunpro.project.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -27,21 +26,16 @@ public class StoreUtil {
             String stoName,
             String stoAddress,
             String stoUrl,
-            University universityData
+            University university
     ) {
-        /* Store 정보를 등록 */
-        StoreDTO storeDTO = new StoreDTO();
-        storeDTO.setStoId(stoId);
-
-        Optional<Store> storeData = storeRepository.findByStoId(storeDTO.getStoId());
+        Optional<Store> storeData = storeRepository.findByStoId(stoId);
 
         if (storeData.isPresent()) {
             /* University 작성시 추가되는 정보 */
-            if (universityData != null) {
+            if (university != null) {
                 storeData
                         .get()
-                        .getStoUniList()
-                        .add(universityData);
+                        .addUniversity(university);
 
                 storeRepository.save(storeData.get());
             }
@@ -50,16 +44,18 @@ public class StoreUtil {
             }
         }
         else {
-            storeDTO.setStoName(stoName);
-            storeDTO.setStoAddress(stoAddress);
-            storeDTO.setStoUrl(stoUrl);
-            if (universityData != null) {
-                storeDTO
-                        .getStoUniList()
-                        .add(universityData);
+            /* Store 정보를 등록 */
+            Store store = new Store(
+                    stoId,
+                    stoName,
+                    stoAddress,
+                    stoUrl
+            );
+            if (university != null) {
+                store.addUniversity(university);
             }
 
-            return storeRepository.save(storeDTO.toEntity());
+            return storeRepository.save(store);
         }
 
         return null;

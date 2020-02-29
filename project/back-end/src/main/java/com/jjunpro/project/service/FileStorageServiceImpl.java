@@ -80,6 +80,8 @@ public class FileStorageServiceImpl implements FileStorageService {
         if (removeFiles != null && removeFiles.length > 0) {
             for (Long removeFile : removeFiles) {
                 uniFile = findById(removeFile);
+                System.out.println("uniFile");
+                System.out.println(uniFile);
                 uniFile.ifPresent(this :: fileDelete);
             }
         }
@@ -197,8 +199,6 @@ public class FileStorageServiceImpl implements FileStorageService {
                     .fileThumbnail(gcsThumbFileName)
                     .build();
 
-            File fileData = fileRepository.save(dbFile);
-
             // GCS Upload 원본 이미지파일 저장
             try {
                 cloudStorageHelper.uploadFile(
@@ -216,7 +216,7 @@ public class FileStorageServiceImpl implements FileStorageService {
                 e.printStackTrace();
             }
 
-            return fileRepository.save(fileData);
+            return fileRepository.save(dbFile);
         }
         catch (IOException e) {
             throw new SimpleException(

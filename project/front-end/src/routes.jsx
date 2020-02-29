@@ -6,7 +6,7 @@ import axios from "axios"
  **********************************************/
 export const SERVER_URL = "http://localhost:8080";
 // export const SERVER_URL = "http://35.185.227.111:8080";
-export const SERVER_FILE_URL = "https://storage.googleapis.com/jjunpro/"
+export const SERVER_FILE_URL = "https://storage.googleapis.com/pugjjig-storage/"
 
 /**********************************************
  ■ Version

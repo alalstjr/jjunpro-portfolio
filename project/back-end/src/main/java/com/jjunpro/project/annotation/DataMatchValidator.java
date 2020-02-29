@@ -2,8 +2,10 @@ package com.jjunpro.project.annotation;
 
 import com.jjunpro.project.context.AccountContext;
 import com.jjunpro.project.domain.Account;
+import com.jjunpro.project.domain.FoodMenu;
 import com.jjunpro.project.enums.ColumnType;
 import com.jjunpro.project.repository.AccountRepository;
+import com.jjunpro.project.repository.SellerRepository;
 import com.jjunpro.project.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +23,8 @@ public class DataMatchValidator implements ConstraintValidator<DataMatch, String
 
     private final AccountRepository accountRepository;
     private final AccountService    accountService;
+
+    private final SellerRepository sellerRepository;
 
     /*
      * initialize() 메소드는 어노테이션으로 받은 값을 해당 필드에 초기화 선언을 합니다.
@@ -80,7 +84,6 @@ public class DataMatchValidator implements ConstraintValidator<DataMatch, String
                         result = true;
                     }
                 }
-
                 break;
 
             case EMAIL:
@@ -99,6 +102,7 @@ public class DataMatchValidator implements ConstraintValidator<DataMatch, String
                         }
                     }
                 }
+                break;
 
             case USERNAME:
                 byUserId = accountRepository.findByUsername(value);
@@ -106,16 +110,45 @@ public class DataMatchValidator implements ConstraintValidator<DataMatch, String
                 if (byUserId.isPresent()) {
                     result = true;
                 }
+                break;
 
             case STOID:
                 /* User Account 정보에 들어있는 Store 정보가 수정하려는 Store 정보와 일치하는지 체크합니다. */
-                if (userDetails != null && userDetails
+                if (userDetails != null && !userDetails
                         .getAccount()
                         .getStore()
                         .getStoId()
                         .equals(value)) {
                     result = true;
                 }
+                break;
+
+            case FOODMENU:
+                Optional<FoodMenu> foodMenuData = sellerRepository.findById(Long.parseLong(value));
+
+                result = foodMenuData.isEmpty() || userDetails == null || userDetails
+                        .getAccount()
+                        .getStore() == null || !userDetails
+                        .getAccount()
+                        .getStore()
+                        .getFoodMenu()
+                        .contains(foodMenuData.get());
+
+                //                if (foodMenuData.isPresent() && userDetails != null && userDetails
+                //                        .getAccount()
+                //                        .getStore()
+                //                        .getFoodMenu().isEmpty() && userDetails
+                //                        .getAccount()
+                //                        .getStore()
+                //                        .getFoodMenu()
+                //                        .contains(foodMenuData.get())) {
+                //                    result = false;
+                //                }
+                //                else {
+                //                    result = true;
+                //                }
+
+                break;
         }
 
         if (result) {

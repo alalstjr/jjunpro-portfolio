@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -17,6 +18,8 @@ public class QSubMenu extends EntityPathBase<SubMenu> {
 
     private static final long serialVersionUID = 1358800113L;
 
+    private static final PathInits INITS = PathInits.DIRECT2;
+
     public static final QSubMenu subMenu = new QSubMenu("subMenu");
 
     public final QBaseEntity _super = new QBaseEntity(this);
@@ -26,6 +29,8 @@ public class QSubMenu extends EntityPathBase<SubMenu> {
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
+
+    public final QFoodMenu foodMenu;
 
     //inherited
     public final NumberPath<Long> id = _super.id;
@@ -41,15 +46,24 @@ public class QSubMenu extends EntityPathBase<SubMenu> {
     public final BooleanPath publicStatus = _super.publicStatus;
 
     public QSubMenu(String variable) {
-        super(SubMenu.class, forVariable(variable));
+        this(SubMenu.class, forVariable(variable), INITS);
     }
 
     public QSubMenu(Path<? extends SubMenu> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QSubMenu(PathMetadata metadata) {
-        super(SubMenu.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QSubMenu(PathMetadata metadata, PathInits inits) {
+        this(SubMenu.class, metadata, inits);
+    }
+
+    public QSubMenu(Class<? extends SubMenu> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.foodMenu = inits.isInitialized("foodMenu") ? new QFoodMenu(forProperty("foodMenu"), inits.get("foodMenu")) : null;
     }
 
 }

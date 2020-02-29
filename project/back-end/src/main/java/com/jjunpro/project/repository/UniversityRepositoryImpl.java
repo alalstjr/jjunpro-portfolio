@@ -41,7 +41,8 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                 .fetchOne();
 
         assert uniData != null;
-        return getUniversityPublic(
+        return
+                getUniversityPublic(
                 uniData,
                 account
         );

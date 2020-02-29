@@ -65,6 +65,12 @@ SQL > 연결 > 연결 ip 추가 총 2개가 들어가는데 각각
 
 ## 구글 클라우드 file & 이미지파일 업로드 경로 설정
 
+IAM 인증서 등록 필수
+https://console.cloud.google.com/iam-admin/serviceaccounts
+
+https://console.cloud.google.com/storage/browser
+버킷의 권한 해당 이메일로 등록해야 합니다.
+
 https://guitaryc.tistory.com/30
 
 java file upload CODE 

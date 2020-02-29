@@ -32,15 +32,15 @@ public class CommentServiceImpl implements CommentService {
 
         /* DB에 해당 댓글이 들어가는 DATA가 존재하는지 확인합니다. */
         if (universityData.isPresent()) {
-            /* University <= Comment 단방향 관계 */
-            dto.setUniversity(universityData.get());
+            /* Comment 을 저장합니다. */
             commentData = commentRepository.save(dto.toEntity());
 
-            /* 정상적으로 DATA가 전송이 되었는지 확인합니다. */
+            /* University <=> Comment 양방향 관계 */
             universityData
                     .get()
-                    .getComments()
-                    .add(commentData);
+                    .addComment(commentData);
+
+            /* University 을 저장합니다. */
             uniData = universityRepository.save(universityData.get());
 
             /*
@@ -50,7 +50,8 @@ public class CommentServiceImpl implements CommentService {
             if (uniData.getId() != null && ( !dto
                     .getAccount()
                     .getId()
-                    .equals(uniData
+                    .equals(universityData
+                            .get()
                             .getAccount()
                             .getId())
             )) {
@@ -71,7 +72,7 @@ public class CommentServiceImpl implements CommentService {
             }
         }
 
-        return commentRepository.findByPublicId(commentData.getId());
+        return commentRepository.findByPublicId(commentData != null ? commentData.getId() : null);
     }
 
     @Override
@@ -101,26 +102,10 @@ public class CommentServiceImpl implements CommentService {
             Long id,
             Account account
     ) {
-        /* 단방향 관계 */
+        /* 양방향 관계 */
         Optional<Comment> comment = commentRepository.findById(id);
-        Optional<University> university = universityRepository.findById(comment
-                .get()
-                .getUniversity()
-                .getId());
 
-        /* 삭제하는 댓글을 연결되어 있는 University 내부에서 삭제합니다. */
-        university
-                .get()
-                .getComments()
-                .remove(comment.get());
-
-        /* 댓글을 삭제한 University 정보를 저장합니다. */
-        universityRepository.save(university.get());
-
-        commentRepository.deleteData(
-                id,
-                account
-        );
+        comment.ifPresent(commentRepository :: delete);
     }
 
     @Override

@@ -14,6 +14,6 @@ public class CommentPublic {
     private String        content;
     private LocalDateTime modifiedDate;
     private Long          account_id;
-    private String account_nickname;
-    private File   account_photo;
+    private String        account_nickname;
+    private File          account_photo;
 }

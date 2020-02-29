@@ -149,9 +149,11 @@ class PugjjigView extends Component {
         }
     }
 
-
+    // BUG
     handleLikeUpdate = (preData, postData) => {
-        if (preData.uniLikeState !== undefined && postData.uniLikeState !== undefined) {
+        console.log(preData);
+        console.log(postData);
+        if (preData.id === postData.id && preData.uniLikeState !== undefined && postData.uniLikeState !== undefined) {
             if (preData.uniLikeState !== postData.uniLikeState) {
                 preData.uniLike = postData.uniLike;
                 preData.uniLikeState = postData.uniLikeState;
