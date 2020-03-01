@@ -12,15 +12,9 @@ public interface CommentService {
 
     CommentPublic save(CreateCommentDTO dto);
 
-    List<CommentPublic> findByCommentList(
-            Long uniId,
-            Account account
-    );
+    List<CommentPublic> findByCommentList(Long uniId, Account account);
 
-    void deleteData(
-            Long id,
-            Account account
-    );
+    void deleteData(Long id, Account account);
 
     Optional<Comment> findById(Long id);
 }

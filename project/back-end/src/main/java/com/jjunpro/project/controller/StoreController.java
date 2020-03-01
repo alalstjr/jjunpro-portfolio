@@ -29,38 +29,20 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class StoreController {
 
-    private final AccountUtil    accountUtil;
-    private final StoreService   storeService;
+    private final AccountUtil  accountUtil;
+    private final StoreService storeService;
 
     /**
      * GET University List DATA StoreId
      */
     @GetMapping("")
     public ResponseEntity<?> getStoreIdUniList(
-            @RequestParam
-                    String keyword,
-            @RequestParam("category")
-                    String category,
-            @RequestParam("offsetCount")
-                    int offsetCount,
-            @RequestParam("ifCateA")
-                    String ifCateA,
-            @RequestParam("ifCateB")
-                    String ifCateB,
+            @ModelAttribute SearchDTO searchDTO,
             HttpServletRequest request
     ) throws IOException {
         /* Account Info */
         Account accountData = accountUtil.accountJWT(request);
-
-        SearchDTO searchDTO = SearchDTO
-                .builder()
-                .category(category)
-                .keyword(keyword)
-                .offsetCount(offsetCount)
-                .ifCateA(ifCateA)
-                .ifCateB(ifCateB)
-                .accountData(accountData)
-                .build();
+        searchDTO.setAccount(accountData);
 
         List<UniversityPublic> result = storeService.findByStoreUniAll(searchDTO);
 
@@ -75,8 +57,7 @@ public class StoreController {
      */
     @GetMapping("/count/{keyword}")
     public ResponseEntity<Map<String, Long>> getUniCountStoId(
-            @PathVariable
-                    String keyword
+            @PathVariable String keyword
     ) {
         Long result = storeService.findByUniCount(keyword);
 

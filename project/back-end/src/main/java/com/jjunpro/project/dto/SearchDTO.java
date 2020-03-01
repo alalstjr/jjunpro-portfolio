@@ -42,4 +42,9 @@ public class SearchDTO {
         this.ifCateB = ifCateB;
         this.account = accountData;
     }
+
+    @Override
+    public String toString() {
+        return "SearchDTO{" + "category='" + category + '\'' + ", keyword='" + keyword + '\'' + ", offsetCount=" + offsetCount + ", account=" + account + ", ifCateA='" + ifCateA + '\'' + ", ifCateB='" + ifCateB + '\'' + '}';
+    }
 }

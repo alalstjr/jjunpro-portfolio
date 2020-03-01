@@ -11,10 +11,7 @@ import java.util.List;
  */
 public interface UniversityRepositoryDSL {
 
-    UniversityPublic findByPublicId(
-            Long id,
-            Account account
-    );
+    UniversityPublic findByPublicId(Long id, Account account);
 
     List<UniversityPublic> findByUniversityListWhereSearchDto(SearchDTO searchDTO);
 
@@ -22,8 +19,5 @@ public interface UniversityRepositoryDSL {
 
     Long findByIdUniCount(String uniName);
 
-    void deleteData(
-            Long id,
-            Account accountData
-    );
+    void deleteData(Long id, Account accountData);
 }

@@ -25,15 +25,9 @@ public interface UniversityService {
 
     UniversityPublic updateUniversity(UniversityDTO dto);
 
-    UpdateUniLikeDTO updateUniversityLike(
-            Long id,
-            Account account
-    );
+    UpdateUniLikeDTO updateUniversityLike(Long id, Account account);
 
-    UniversityPublic findByPublicId(
-            Long id,
-            Account account
-    );
+    UniversityPublic findByPublicId(Long id, Account account);
 
     Optional<University> findById(Long id);
 
@@ -43,8 +37,5 @@ public interface UniversityService {
 
     Long findByIdUniCount(String uniName);
 
-    void deleteData(
-            University university,
-            Account accountData
-    );
+    void deleteData(University university, Account accountData);
 }

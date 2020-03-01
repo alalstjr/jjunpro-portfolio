@@ -38,9 +38,7 @@ public class CommentController {
      */
     @PostMapping("")
     public ResponseEntity<CommentPublic> insertComment(
-            @Valid
-            @RequestBody
-                    CreateCommentDTO dto,
+            @Valid @RequestBody CreateCommentDTO dto,
             BindingResult bindingResult,
             Authentication authentication,
             HttpServletRequest request
@@ -72,8 +70,7 @@ public class CommentController {
      */
     @GetMapping("/{uniId}")
     public List<CommentPublic> getCommentListUniId(
-            @PathVariable
-                    Long uniId,
+            @PathVariable Long uniId,
             HttpServletRequest request
     ) throws IOException {
         /* Account Info */

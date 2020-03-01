@@ -12,9 +12,7 @@ public class AccountContext extends User {
 
     private Account account;
 
-    public AccountContext(
-            Account account
-    ) {
+    public AccountContext(Account account) {
         super(
                 account.getUsername(),
                 account.getPassword(),
@@ -25,10 +23,7 @@ public class AccountContext extends User {
         this.account = account;
     }
 
-    public AccountContext(
-            String username,
-            String role
-    ) {
+    public AccountContext(String username, String role) {
         super(
                 username,
                 "default password",

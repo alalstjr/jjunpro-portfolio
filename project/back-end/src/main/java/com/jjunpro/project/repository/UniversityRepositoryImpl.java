@@ -43,9 +43,9 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
         assert uniData != null;
         return
                 getUniversityPublic(
-                uniData,
-                account
-        );
+                        uniData,
+                        account
+                );
     }
 
     @Override
@@ -56,11 +56,13 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                         qUniversity.uniLike,
                         qAccount
                 )
-                .where(qUniversity.publicStatus
-                        .eq(true)
-                        .and(qUniversity.controlStatus.eq(false))
-                        .and(queryDslUtil.getSearchKeyword(searchDTO))
-                        .and(queryDslUtil.getSearchCate(searchDTO)))
+                .where(
+                        qUniversity.publicStatus
+                                .eq(true)
+                                .and(qUniversity.controlStatus.eq(false))
+                                .and(queryDslUtil.getSearchKeyword(searchDTO))
+                                .and(queryDslUtil.getSearchCate(searchDTO))
+                )
                 .orderBy(queryDslUtil.getSearchOrderBy(searchDTO))
                 .offset(8 * searchDTO.getOffsetCount())
                 .limit(8)
@@ -80,9 +82,11 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                         qUniversity.uniLike,
                         qAccount
                 )
-                .where(qUniversity.publicStatus
-                        .eq(true)
-                        .and(qUniversity.controlStatus.eq(false)))
+                .where(
+                        qUniversity.publicStatus
+                                .eq(true)
+                                .and(qUniversity.controlStatus.eq(false))
+                )
                 .orderBy(qUniversity.createdDate.desc())
                 .limit(9)
                 .transform(groupBy(qUniversity).as(list(qAccount)));
@@ -118,25 +122,15 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                 data.getUniTag(),
                 data.getUniStar(),
                 data.getModifiedDate(),
-                data
-                        .getAccount()
-                        .getId(),
-                data
-                        .getAccount()
-                        .getNickname(),
-                data
-                        .getAccount()
-                        .getUrlList(),
+                data.getAccount().getId(),
+                data.getAccount().getNickname(),
+                data.getAccount().getUrlList(),
                 uniLike.size(),
                 uniLike.contains(account),
                 data.getFiles(),
-                data
-                        .getAccount()
-                        .getPhoto(),
+                data.getAccount().getPhoto(),
                 storeService.findByStoreOne(data.getId()),
-                data
-                        .getComments()
-                        .size()
+                data.getComments().size()
         );
     }
 
@@ -155,9 +149,7 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
         /* University 삭제 */
         queryFactory
                 .delete(qUniversity)
-                .where(qUniversity.id
-                        .eq(id)
-                        .and(qUniversity.account.eq(accountData)))
+                .where(qUniversity.id.eq(id).and(qUniversity.account.eq(accountData)))
                 .execute();
     }
 
@@ -169,66 +161,24 @@ public class UniversityRepositoryImpl implements UniversityRepositoryDSL {
                 .entrySet()
                 .stream()
                 .map(u -> new UniversityPublic(
-                        u
-                                .getKey()
-                                .getId(),
-                        u
-                                .getKey()
-                                .getUniSubject(),
-                        u
-                                .getKey()
-                                .getUniAtmosphere(),
-                        u
-                                .getKey()
-                                .getUniPrice(),
-                        u
-                                .getKey()
-                                .getUniContent(),
-                        u
-                                .getKey()
-                                .getUniName(),
-                        u
-                                .getKey()
-                                .getUniTag(),
-                        u
-                                .getKey()
-                                .getUniStar(),
-                        u
-                                .getKey()
-                                .getModifiedDate(),
-                        u
-                                .getKey()
-                                .getAccount()
-                                .getId(),
-                        u
-                                .getKey()
-                                .getAccount()
-                                .getNickname(),
-                        u
-                                .getKey()
-                                .getAccount()
-                                .getUrlList(),
-                        u
-                                .getValue()
-                                .size(),
-                        u
-                                .getKey()
-                                .getUniLike()
-                                .contains(account),
-                        u
-                                .getKey()
-                                .getFiles(),
-                        u
-                                .getKey()
-                                .getAccount()
-                                .getPhoto(),
-                        storeService.findByStoreOne(u
-                                .getKey()
-                                .getId()),
-                        u
-                                .getKey()
-                                .getComments()
-                                .size()
+                        u.getKey().getId(),
+                        u.getKey().getUniSubject(),
+                        u.getKey().getUniAtmosphere(),
+                        u.getKey().getUniPrice(),
+                        u.getKey().getUniContent(),
+                        u.getKey().getUniName(),
+                        u.getKey().getUniTag(),
+                        u.getKey().getUniStar(),
+                        u.getKey().getModifiedDate(),
+                        u.getKey().getAccount().getId(),
+                        u.getKey().getAccount().getNickname(),
+                        u.getKey().getAccount().getUrlList(),
+                        u.getValue().size(),
+                        u.getKey().getUniLike().contains(account),
+                        u.getKey().getFiles(),
+                        u.getKey().getAccount().getPhoto(),
+                        storeService.findByStoreOne(u.getKey().getId()),
+                        u.getKey().getComments().size()
                 ))
                 .collect(Collectors.toList());
     }

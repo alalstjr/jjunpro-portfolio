@@ -46,9 +46,7 @@ public class UniversityController {
      */
     @PostMapping("")
     public ResponseEntity<UniversityPublic> createUniversity(
-            @Valid
-            @ModelAttribute
-                    UniversityDTO dto,
+            @Valid @ModelAttribute UniversityDTO dto,
             BindingResult bindingResult,
             Authentication authentication,
             HttpServletRequest request
@@ -71,8 +69,7 @@ public class UniversityController {
         if (dto.getId() == null) {
             /* CREATE */
             universityPublic = universityService.createUniversity(dto);
-        }
-        else {
+        } else {
             /* UPDATE */
             universityPublic = universityService.updateUniversity(dto);
         }
@@ -81,7 +78,6 @@ public class UniversityController {
         if (dto.getRemoveFiles() != null && dto.getRemoveFiles().length > 0) {
             fileStorageService.deleteFileFilter(dto.getRemoveFiles());
         }
-
 
         return new ResponseEntity<>(
                 universityPublic,
@@ -94,8 +90,7 @@ public class UniversityController {
      */
     @PostMapping("/like/{id}")
     public ResponseEntity<UpdateUniLikeDTO> UpdateUniLikeUniId(
-            @PathVariable
-                    Long id,
+            @PathVariable Long id,
             Authentication authentication
     ) {
         /* Account Info */
@@ -103,10 +98,7 @@ public class UniversityController {
 
         if (accountData.isPresent()) {
             return new ResponseEntity<>(
-                    universityService.updateUniversityLike(
-                            id,
-                            accountData.get()
-                    ),
+                    universityService.updateUniversityLike(id, accountData.get()),
                     HttpStatus.OK
             );
         }
@@ -119,30 +111,12 @@ public class UniversityController {
      */
     @GetMapping("/search")
     public ResponseEntity<?> getUniList(
-            @RequestParam("category")
-                    String category,
-            @RequestParam("keyword")
-                    String keyword,
-            @RequestParam("offsetCount")
-                    int offsetCount,
-            @RequestParam("ifCateA")
-                    String ifCateA,
-            @RequestParam("ifCateB")
-                    String ifCateB,
+            @ModelAttribute SearchDTO searchDTO,
             HttpServletRequest request
     ) throws IOException {
         /* Account Info */
         Account accountData = accountUtil.accountJWT(request);
-
-        SearchDTO searchDTO = SearchDTO
-                .builder()
-                .category(category)
-                .keyword(keyword)
-                .offsetCount(offsetCount)
-                .ifCateA(ifCateA)
-                .ifCateB(ifCateB)
-                .accountData(accountData)
-                .build();
+        searchDTO.setAccount(accountData);
 
         return new ResponseEntity<>(
                 universityService.findByUniversityListWhereSearchDto(searchDTO),
@@ -154,7 +128,8 @@ public class UniversityController {
      * GET University List DATA CreatedDate DESC
      */
     @GetMapping("")
-    public ResponseEntity<List<UniversityPublic>> getUniversityCreatedDate(HttpServletRequest request) throws IOException {
+    public ResponseEntity<List<UniversityPublic>> getUniversityCreatedDate(
+            HttpServletRequest request) throws IOException {
         /* Account Info */
         Account accountData = accountUtil.accountJWT(request);
 
@@ -171,17 +146,13 @@ public class UniversityController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<UniversityPublic> getUniversityUniId(
-            @PathVariable
-                    Long id,
+            @PathVariable Long id,
             HttpServletRequest request
     ) throws IOException {
         /* Account Info */
         Account accountData = accountUtil.accountJWT(request);
 
-        UniversityPublic result = universityService.findByPublicId(
-                id,
-                accountData
-        );
+        UniversityPublic result = universityService.findByPublicId(id, accountData);
 
         return new ResponseEntity<>(
                 result,
@@ -194,8 +165,7 @@ public class UniversityController {
      */
     @GetMapping("/count/{uniName}")
     public ResponseEntity<Map<String, String>> getUniCountUniId(
-            @PathVariable
-                    String uniName
+            @PathVariable String uniName
     ) {
         String result = universityService
                 .findByIdUniCount(uniName)
@@ -237,12 +207,8 @@ public class UniversityController {
             /* University 등록된 File 를 삭제합니다. */
             Optional<University> universityData = universityService.findById(id.getId());
 
-            if (universityData.isPresent() && universityData
-                    .get()
-                    .getFiles() != null) {
-                fileStorageService.filesDelete(universityData
-                        .get()
-                        .getFiles());
+            if (universityData.isPresent() && universityData.get().getFiles() != null) {
+                fileStorageService.filesDelete(universityData.get().getFiles());
             }
 
             /* University 를 삭제합니다. */
@@ -275,10 +241,7 @@ public class UniversityController {
 
                 /* { DB DATA } 업로드된 File 갯수를 조회 */
                 if (byId.isPresent()) {
-                    fileSizeDB = byId
-                            .get()
-                            .getFiles()
-                            .size();
+                    fileSizeDB = byId.get().getFiles().size();
                 }
             }
 

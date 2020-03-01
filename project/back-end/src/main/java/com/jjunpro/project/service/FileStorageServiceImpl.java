@@ -80,9 +80,7 @@ public class FileStorageServiceImpl implements FileStorageService {
         if (removeFiles != null && removeFiles.length > 0) {
             for (Long removeFile : removeFiles) {
                 uniFile = findById(removeFile);
-                System.out.println("uniFile");
-                System.out.println(uniFile);
-                uniFile.ifPresent(this :: fileDelete);
+                uniFile.ifPresent(this::fileDelete);
             }
         }
     }
@@ -97,8 +95,7 @@ public class FileStorageServiceImpl implements FileStorageService {
         if (files != null && fileSizeDB + files.length > _maxUploadCount) {
             try {
                 throw new SimpleException("파일은 최대 " + _maxUploadCount + "개 까지만 추가할 수 있습니다.");
-            }
-            catch (SimpleException e) {
+            } catch (SimpleException e) {
                 e.printStackTrace();
             }
         }
@@ -127,7 +124,8 @@ public class FileStorageServiceImpl implements FileStorageService {
          * 결과는 경로 비교에 편리합니다.
          * 예제로 Windows 구분 기호 ("\")가 간단한 슬래시로 바뀌 었음을 알 수 있습니다.
          */
-        final String fileOriName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+        final String fileOriName = StringUtils
+                .cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         final String fileType = fileOriName
                 .substring(fileOriName.lastIndexOf("."))
                 .replace(
@@ -211,14 +209,12 @@ public class FileStorageServiceImpl implements FileStorageService {
                         gcsThumbFileName,
                         _GCSID
                 );
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
             return fileRepository.save(dbFile);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new SimpleException(
                     "file " + fileOriName + " not save!!.",
                     e

@@ -52,7 +52,7 @@ public class AccountUtil {
      */
     public Account accountJWT(HttpServletRequest request) throws IOException {
         if (request.getHeader("Authorization") != null) {
-            String      tokenExtractor = headerTokenExtractor.extract(request.getHeader("Authorization"));
+            String      tokenExtractor = headerTokenExtractor.extract(request.getHeader("Authorization"), request);
             UserDetails userDetails    = jwtDecoder.decodeJwt(tokenExtractor);
 
             Optional<Account> byUsername = accountRepository.findByUsername(userDetails.getUsername());

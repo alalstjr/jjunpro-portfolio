@@ -184,6 +184,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtAuthenticationFilter jwtFilter() throws Exception {
         List<String> skipPath = new ArrayList<>();
 
+        /* Static 정보 접근 허용 */
+        skipPath.add("GET,/error");
+        skipPath.add("GET,/favicon.ico");
+        skipPath.add("GET,/static");
+        skipPath.add("GET,/static/**");
+
         skipPath.add("POST,/signin");
 
         skipPath.add("POST,/account");

@@ -11,10 +11,7 @@ public interface AlarmRepositoryDSL {
 
     void deleteData(Long id);
 
-    boolean findByDataIdAndAccount(
-            Long dataId,
-            Account account
-    );
+    boolean findByDataIdAndAccount(Long dataId, Account account);
 
     List<Alarm> findByAlarmWhereUserId(Account account);
 }

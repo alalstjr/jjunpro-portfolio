@@ -25,9 +25,7 @@ public class SellerController {
      */
     @PostMapping("")
     public ResponseEntity<Boolean> insertFoodMenu(
-            @Valid
-            @RequestBody
-                    FoodMenuDTO foodMenuDTO,
+            @Valid @RequestBody FoodMenuDTO foodMenuDTO,
             BindingResult bindingResult
     ) throws BindException {
         /* 유효성 검사 후 최종 반환합니다. */

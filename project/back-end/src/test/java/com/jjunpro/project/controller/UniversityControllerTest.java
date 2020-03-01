@@ -121,9 +121,7 @@ public class UniversityControllerTest {
         UniversityPublic university = universityUtil.getUniversityPublic(userDetails);
 
         mockMvc
-                .perform(post("/university/" + university
-                        .getId()
-                        .toString())
+                .perform(post("/university")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .header(
@@ -152,9 +150,7 @@ public class UniversityControllerTest {
                 .andDo(print());
 
         Optional<University> byId = universityRepository.findById(university.getId());
-        log.info("수정된 university -> " + byId
-                .get()
-                .toString());
+        log.info("수정된 university -> " + byId.get().toString());
     }
 
     @Test
@@ -308,7 +304,7 @@ public class UniversityControllerTest {
                 .andExpect(content().string(containsString("success")))
                 .andDo(print());
 
-        if(universityRepository.findById(university.getId()).isEmpty()) {
+        if (universityRepository.findById(university.getId()).isEmpty()) {
             log.info("임시 게시글 삭제완료");
         }
     }

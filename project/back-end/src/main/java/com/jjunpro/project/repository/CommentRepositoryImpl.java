@@ -18,7 +18,6 @@ public class CommentRepositoryImpl implements CommentRepositoryDSL {
     private QFile       qFile       = QFile.file;
 
     private final JPAQueryFactory      queryFactory;
-    private final UniversityRepository universityRepository;
 
     @Override
     public CommentPublic findByPublicId(Long id) {

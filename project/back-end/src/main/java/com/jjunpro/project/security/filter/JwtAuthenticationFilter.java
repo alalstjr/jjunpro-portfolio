@@ -43,7 +43,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
         // JWT 값을 담아주는 변수 TokenPayload
         String tokenPayload = request.getHeader("Authorization");
 
-        JwtPreProcessingToken preAuthorizationToken = new JwtPreProcessingToken(extractor.extract(tokenPayload));
+        JwtPreProcessingToken preAuthorizationToken = new JwtPreProcessingToken(extractor.extract(tokenPayload, request));
 
         return super
                 .getAuthenticationManager()

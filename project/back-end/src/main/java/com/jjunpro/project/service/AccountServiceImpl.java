@@ -57,31 +57,19 @@ public class AccountServiceImpl implements AccountService, UserDetailsService {
         Optional<Account> accountData = accountRepository.findById(dto.getId());
 
         if (accountData.isPresent()) {
-            accountData
-                    .get()
-                    .setNickname(dto.getNickname());
-            accountData
-                    .get()
-                    .setUrlList(dto.getUrlList());
+            accountData.get().setNickname(dto.getNickname());
+            accountData.get().setUrlList(dto.getUrlList());
 
             /* 업로드 되는 파일이 있는경우 수정 */
             if (dto.getFile() != null) {
-                accountData
-                        .get()
-                        .setPhoto(dto.getFileData());
+                accountData.get().setPhoto(dto.getFileData());
             }
 
             /* 이메일 정보가 없는경우 NULL 저장 */
-            if (dto.getEmail() != null && dto
-                    .getEmail()
-                    .trim()
-                    .length() == 0) {
+            if (dto.getEmail() != null && dto.getEmail().trim().length() == 0) {
                 dto.setEmail(null);
-            }
-            else {
-                accountData
-                        .get()
-                        .setEmail(dto.getEmail());
+            } else {
+                accountData.get().setEmail(dto.getEmail());
             }
 
             return accountRepository.save(accountData.get());

@@ -27,10 +27,7 @@ public class SellerServiceImpl implements SellerService {
             foodMenuDTO.setStore(storeData.get());
             FoodMenu save = sellerRepository.save(foodMenuDTO.toEntity());
 
-            storeData
-                    .get()
-                    .getFoodMenu()
-                    .add(save);
+            storeData.get().getFoodMenu().add(save);
             storeRepository.save(storeData.get());
 
             return save.getId();
@@ -43,11 +40,9 @@ public class SellerServiceImpl implements SellerService {
     public Boolean deleteFoodMenu(Long foodMenuId) {
         Optional<FoodMenu> foodMenuData = sellerRepository.findById(foodMenuId);
 
-        if(foodMenuData.isPresent()) {
-            Optional<Store> storeData = storeRepository.findById(foodMenuData
-                    .get()
-                    .getStore()
-                    .getId());
+        if (foodMenuData.isPresent()) {
+            Optional<Store> storeData = storeRepository
+                    .findById(foodMenuData.get().getStore().getId());
             storeData.ifPresent(store -> store
                     .getFoodMenu()
                     .remove(foodMenuData.get()));

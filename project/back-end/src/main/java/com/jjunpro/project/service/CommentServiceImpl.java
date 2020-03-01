@@ -36,9 +36,7 @@ public class CommentServiceImpl implements CommentService {
             commentData = commentRepository.save(dto.toEntity());
 
             /* University <=> Comment 양방향 관계 */
-            universityData
-                    .get()
-                    .addComment(commentData);
+            universityData.get().addComment(commentData);
 
             /* University 을 저장합니다. */
             uniData = universityRepository.save(universityData.get());
@@ -47,13 +45,8 @@ public class CommentServiceImpl implements CommentService {
              * 댓글이 정상적으로 작성이 됐고 댓글 작성자와 게시글 작성자가 다를경우
              * 알람 테이블에 추가
              * */
-            if (uniData.getId() != null && ( !dto
-                    .getAccount()
-                    .getId()
-                    .equals(universityData
-                            .get()
-                            .getAccount()
-                            .getId())
+            if (uniData.getId() != null && (!dto.getAccount().getId()
+                    .equals(universityData.get().getAccount().getId())
             )) {
                 AlarmDTO alearmDTO = AlarmDTO
                         .builder()
@@ -86,10 +79,7 @@ public class CommentServiceImpl implements CommentService {
         Optional<University> universityData = universityRepository.findById(uniId);
 
         if (universityData.isPresent()) {
-            if (!universityData
-                    .get()
-                    .getComments()
-                    .isEmpty()) {
+            if (!universityData.get().getComments().isEmpty()) {
                 result = commentRepository.findByCommentList(uniId);
             }
         }
@@ -105,7 +95,7 @@ public class CommentServiceImpl implements CommentService {
         /* 양방향 관계 */
         Optional<Comment> comment = commentRepository.findById(id);
 
-        comment.ifPresent(commentRepository :: delete);
+        comment.ifPresent(commentRepository::delete);
     }
 
     @Override

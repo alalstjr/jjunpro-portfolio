@@ -50,40 +50,20 @@ public class UniversityServiceImpl implements UniversityService {
 
             /* { DATA DB } 조회한 값을 DTO 값에 UPDATE 수정 */
             if (universityData.isPresent()) {
-                universityData
-                        .get()
-                        .setUniStar(dto.getUniStar());
-                universityData
-                        .get()
-                        .setUniSubject(dto.getUniSubject());
-                universityData
-                        .get()
-                        .setUniAtmosphere(dto.getUniAtmosphere());
-                universityData
-                        .get()
-                        .setUniPrice(dto.getUniPrice());
-                universityData
-                        .get()
-                        .setUniName(dto.getUniName());
-                universityData
-                        .get()
-                        .setUniTag(dto.getUniTag());
-                universityData
-                        .get()
-                        .setUniContent(dto.getUniContent());
+                universityData.get().setUniStar(dto.getUniStar());
+                universityData.get().setUniSubject(dto.getUniSubject());
+                universityData.get().setUniAtmosphere(dto.getUniAtmosphere());
+                universityData.get().setUniPrice(dto.getUniPrice());
+                universityData.get().setUniName(dto.getUniName());
+                universityData.get().setUniTag(dto.getUniTag());
+                universityData.get().setUniContent(dto.getUniContent());
 
                 /* 업로드 되는 파일이 있는경우 수정 */
-                if (dto.getFileData() != null && !dto
-                        .getFileData()
-                        .isEmpty()) {
-                    universityData
-                            .get()
-                            .setFiles(dto.getFileData());
+                if (dto.getFileData() != null && !dto.getFileData().isEmpty()) {
+                    universityData.get().setFiles(dto.getFileData());
                 }
 
-                List<File> updateFile = universityData
-                        .get()
-                        .getFiles();
+                List<File> updateFile = universityData.get().getFiles();
 
                 /* UPDATE 기존 file 에서 제거되는 file 이 있는경우 */
                 if (dto.getRemoveFiles() != null && dto.getRemoveFiles().length > 0) {
@@ -98,15 +78,11 @@ public class UniversityServiceImpl implements UniversityService {
 
                 /* UPDATE file 존재하는 경우와 아닌경우 */
                 if (dto.getFileData() == null) {
-                    universityData
-                            .get()
-                            .setFiles(updateFile);
+                    universityData.get().setFiles(updateFile);
                 }
 
                 return findByPublicId(
-                        universityRepository
-                                .save(universityData.get())
-                                .getId(),
+                        universityRepository.save(universityData.get()).getId(),
                         dto.getAccount()
                 );
             }
@@ -128,31 +104,19 @@ public class UniversityServiceImpl implements UniversityService {
 
         if (universityData.isPresent()) {
             /* 좋아요를 누른 유저가 universityData 내부에 존재하는지 확인합니다. */
-            if (universityData
-                    .get()
-                    .getUniLike()
-                    .contains(account)) {
+            if (universityData.get().getUniLike().contains(account)) {
                 /* universityData 내부에 유저의 정보를 삭제합니다. false */
-                universityData
-                        .get()
-                        .getUniLike()
-                        .remove(account);
-            }
-            else {
+                universityData.get().getUniLike().remove(account);
+            } else {
                 /* universityData 내부에 유정의 정보를 추가합니다. true */
-                universityData
-                        .get()
-                        .getUniLike()
-                        .add(account);
+                universityData.get().getUniLike().add(account);
                 uniLikeState = true;
             }
 
             /* Response DTO 설정 */
             University earlyUniversity = universityRepository.save(universityData.get());
             dto.setId(earlyUniversity.getId());
-            dto.setUniLike(earlyUniversity
-                    .getUniLike()
-                    .size());
+            dto.setUniLike(earlyUniversity.getUniLike().size());
             dto.setUniLikeState(uniLikeState);
         }
 
@@ -181,11 +145,7 @@ public class UniversityServiceImpl implements UniversityService {
             UniversityDTO dto,
             Integer i
     ) {
-        return result
-                .stream()
-                .filter(f -> !f
-                        .getId()
-                        .equals(dto.getRemoveFiles()[i]))
+        return result.stream().filter(f -> !f.getId().equals(dto.getRemoveFiles()[i]))
                 .collect(Collectors.toList());
     }
 
