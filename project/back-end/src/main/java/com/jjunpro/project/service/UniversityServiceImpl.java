@@ -58,11 +58,7 @@ public class UniversityServiceImpl implements UniversityService {
                 universityData.get().setUniTag(dto.getUniTag());
                 universityData.get().setUniContent(dto.getUniContent());
 
-                /* 업로드 되는 파일이 있는경우 수정 */
-                if (dto.getFileData() != null && !dto.getFileData().isEmpty()) {
-                    universityData.get().setFiles(dto.getFileData());
-                }
-
+                /* DATA DB 존재하는 파일 정보 */
                 List<File> updateFile = universityData.get().getFiles();
 
                 /* UPDATE 기존 file 에서 제거되는 file 이 있는경우 */
@@ -76,9 +72,17 @@ public class UniversityServiceImpl implements UniversityService {
                     }
                 }
 
+                /* 업로드 되는 파일이 있는경우 수정 */
+                if (dto.getFileData() != null && !dto.getFileData().isEmpty()) {
+                    universityData.get().setFiles(dto.getFileData());
+
+                }
+
                 /* UPDATE file 존재하는 경우와 아닌경우 */
                 if (dto.getFileData() == null) {
                     universityData.get().setFiles(updateFile);
+                } else {
+                    universityData.get().getFiles().addAll(updateFile);
                 }
 
                 return findByPublicId(
@@ -145,7 +149,11 @@ public class UniversityServiceImpl implements UniversityService {
             UniversityDTO dto,
             Integer i
     ) {
-        return result.stream().filter(f -> !f.getId().equals(dto.getRemoveFiles()[i]))
+        return result
+                .stream()
+                .filter(
+                        f -> !f.getId().equals(dto.getRemoveFiles()[i])
+                )
                 .collect(Collectors.toList());
     }
 

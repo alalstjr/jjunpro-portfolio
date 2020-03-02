@@ -144,3 +144,11 @@ gcloud builds submit --tag=gcr.io/spring-project-261615/spring:v2.1 .
 https://stackoverflow.com/questions/39820128/google-cloud-storage-image-public-link-to-img-src
 
 > https://storage.cloud.google.com/BUCKET/path/to/image.jpg하지만 올바른 링크는 https://storage.googleapis.com/BUCKET/path/to/image.jpg
+
+# react 경우 80 PORT 적용하는 방법
+
+kubectl run react --image=gcr.io/project-data-940721/react:v1.0.0 --port 80  
+
+kubectl expose deployment react --type=LoadBalancer --port 80 --target-port 3000
+
+80 PORT 선언해주고 TARGET 을 3000 으로 잡아줍니다.

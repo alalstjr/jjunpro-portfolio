@@ -5,13 +5,13 @@ import axios from "axios"
  ■ SERVER API URL
  **********************************************/
 export const SERVER_URL = "http://localhost:8080";
-// export const SERVER_URL = "http://35.185.227.111:8080";
+// export const SERVER_URL = "http://34.82.92.128:8080";
 export const SERVER_FILE_URL = "https://storage.googleapis.com/pugjjig-storage/"
 
 /**********************************************
  ■ Version
  **********************************************/
-export const FVersion = "Fv.0.3.5";
+export const FVersion = "Fv.1.0.0";
 
 /**********************************************
  ■ USER Authentication

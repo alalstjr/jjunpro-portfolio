@@ -50,14 +50,18 @@ public class CommentServiceImpl implements CommentService {
             )) {
                 AlarmDTO alearmDTO = AlarmDTO
                         .builder()
-                        .userId(uniData
-                                .getAccount()
-                                .getId())
+                        .userId(
+                                uniData
+                                        .getAccount()
+                                        .getId()
+                        )
                         .dataId(uniData.getId())
                         .dataContent(dto.getContent())
-                        .writeId(dto
-                                .getAccount()
-                                .getUsername())
+                        .writeId(
+                                dto
+                                        .getAccount()
+                                        .getUsername()
+                        )
                         .dataType(AlarmType.NOTICE)
                         .build();
 
