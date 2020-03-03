@@ -2,8 +2,9 @@ package com.jjunpro.project.annotation;
 
 import com.jjunpro.project.domain.Account;
 import com.jjunpro.project.util.AccountUtil;
+import java.lang.reflect.Field;
+import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -50,30 +51,46 @@ public class PasswordMatchValidator implements ConstraintValidator<PasswordMatch
             ConstraintValidatorContext context
     ) {
         boolean valid;
-        Object  passwordCheck    = null;
-        Object  passwordReCheck  = null;
-        Object  oldPasswordCheck = null;
 
-        try {
-            passwordCheck = BeanUtils.getProperty(
-                    value,
-                    _password
-            );
-            passwordReCheck = BeanUtils.getProperty(
-                    value,
-                    _passwordRe
-            );
-            oldPasswordCheck = _encoder ? BeanUtils.getProperty(
-                    value,
-                    _oldPassword
-            ) : null;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+        /*
+         * passwordCheck[0] : password
+         * passwordCheck[1] : passwordRe
+         * passwordCheck[2] : oldPassword
+         * */
+        final String[] passwordCheck = new String[3];
 
-        // 입력한 password || passwordRe 가 동일한지 확인합니다.
-        valid = passwordCheck == null && passwordReCheck == null || passwordCheck != null && passwordCheck.equals(passwordReCheck);
+        Field[] declaredFields = value.getClass().getDeclaredFields();
+        Arrays.stream(declaredFields).forEach(field -> {
+            field.setAccessible(true);
+
+            if (field.getName().equals("password")) {
+                try {
+                    passwordCheck[0] = (String) field.get(value);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (field.getName().equals("passwordRe")) {
+                try {
+                    passwordCheck[1] = (String) field.get(value);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (field.getName().equals("oldPassword")) {
+                try {
+                    passwordCheck[2] = (String) field.get(value);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        /* 입력한 password || passwordRe 가 동일한지 확인합니다. */
+        valid = passwordCheck[0] == null && passwordCheck[1] == null
+                || passwordCheck[0] != null && passwordCheck[0].equals(passwordCheck[1]);
 
         if (!valid) {
             context
@@ -84,12 +101,13 @@ public class PasswordMatchValidator implements ConstraintValidator<PasswordMatch
             return false;
         }
 
-        // 비밀번호 변경인 경우 oldPassword 가 동일한지 확인합니다.
+        /* 비밀번호 변경인 경우 oldPassword 가 동일한지 확인합니다. */
         if (_encoder) {
-            Optional<Account> accountData = accountUtill.accountInfo(securityContext.getAuthentication());
+            Optional<Account> accountData = accountUtill
+                    .accountInfo(securityContext.getAuthentication());
 
             valid = passwordEncoder.matches(
-                    oldPasswordCheck.toString(),
+                    passwordCheck[2],
                     accountData
                             .get()
                             .getPassword()

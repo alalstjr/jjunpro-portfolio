@@ -12,8 +12,8 @@ import com.jjunpro.project.repository.CommentRepository;
 import com.jjunpro.project.repository.UniversityRepository;
 import com.jjunpro.project.service.AccountService;
 import com.jjunpro.project.util.AccountUtil;
+import java.lang.reflect.Field;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -56,8 +56,8 @@ public class UserDataMatchValidator implements ConstraintValidator<UserDataMatch
             Object value,
             ConstraintValidatorContext context
     ) {
-        boolean valid   = true;
-        String  idCheck = null;
+        boolean valid = true;
+        Long  idCheck;
 
         UserDetails principal = (UserDetails) SecurityContextHolder
                 .getContext()
@@ -68,18 +68,16 @@ public class UserDataMatchValidator implements ConstraintValidator<UserDataMatch
         AccountContext userDetails = (AccountContext) accountService.loadUserByUsername(username);
 
         try {
-            idCheck = BeanUtils.getProperty(
-                    value,
-                    _id
-            );
-        }
-        catch (Exception e) {
-            e.printStackTrace();
+            Field declaredField = value.getClass().getDeclaredField(_id);
+            declaredField.setAccessible(true);
+            idCheck = (Long) declaredField.get(value);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
 
-        if (idCheck != null && !idCheck.isEmpty()) {
+        if (idCheck != null) {
             valid = this.dbDataMatch(
-                    Long.parseLong(idCheck),
+                    idCheck,
                     userDetails.getAccount(),
                     _domain
             );
@@ -96,9 +94,8 @@ public class UserDataMatchValidator implements ConstraintValidator<UserDataMatch
     }
 
     /**
-     * Domain 의 특정 { id } DATA 값이 DB 에 존재하는지 확인하는 메소드입니다.
-     * String checkDomain 값은 검색하는 Domain 의 이름값입니다.
-     * DATA 가 존재하지 않을경우 NULL 을 반환합니다.
+     * Domain 의 특정 { id } DATA 값이 DB 에 존재하는지 확인하는 메소드입니다. String checkDomain 값은 검색하는 Domain 의
+     * 이름값입니다. DATA 가 존재하지 않을경우 NULL 을 반환합니다.
      */
     public boolean dbDataMatch(
             Long id,
