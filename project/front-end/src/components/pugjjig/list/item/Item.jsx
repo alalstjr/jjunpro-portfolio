@@ -170,7 +170,7 @@ const Item = ({pugjjig, UpdateUniLikeUniId, openModal}) => (
             </ItemLocalWrap>
             <ItemTagWrap>
                 {
-                    pugjjig.uniTag !== "" ?
+                    (pugjjig.uniTag !== "" && pugjjig.uniTag !== null) ?
                         pugjjig.uniTag.split(",").map((tag, index) => (
                             <ItemTag key={index}>
                                 <Link to={`/pugjjig/tagSearch/${tag}`}>#{tag}</Link>

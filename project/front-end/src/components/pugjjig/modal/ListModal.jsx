@@ -37,7 +37,7 @@ class ListModal extends Component {
                                     <ModalCloseBtn onClick={() => closeModal("listModalState")}/>
                                     <List
                                         keyword={keyword}
-                                        category={"storeId"}
+                                        category={"stoId"}
                                         modalState={modalState}
                                     />
                                 </ListModalWrap>

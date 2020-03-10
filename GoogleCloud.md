@@ -103,9 +103,10 @@ https://antilibrary.org/1885
 https://console.cloud.google.com/net-services/dns/zones/spring-project?project=spring-project-261615&cloudshell=true
 
 # docker image 프로젝트 올리기 순서!
-> gcloud builds submit --tag=gcr.io/my-project-1518049226434/spring:v1 .
+> export PROJECT_ID=project-data-940721
+> gcloud builds submit --tag=gcr.io/$PROJECT_ID/spring:v1 .
 > gcloud container clusters create spring-cluster --num-nodes=2 --zone=us-west1-b
-> kubectl run spring --image=gcr.io/my-project-1518049226434/spring:v0.2.3 --port 8080
+> kubectl run spring --image=gcr.io/$PROJECT_ID/spring:v0.2.3 --port 8080
 > kubectl expose deployment spring --type=LoadBalancer --port 8080 --target-port 8080
 
 # loopback 오류
@@ -119,8 +120,8 @@ kubectl exec spring-c5b459757-mxcjb -c spring reboot
 kubectl delete service spring
 kubectl delete pod spring-c5b459757-mxcjb
 
-kubectl set image deployment/spring spring=gcr.io/spring-project-261615/spring:v1
-kubectl set image deployment/react react=gcr.io/spring-project-261615/react:v0.1.2
+kubectl set image deployment/spring spring=gcr.io/$PROJECT_ID/spring:v1
+kubectl set image deployment/react react=gcr.io/$PROJECT_ID/react:v0.1.2
 
 # 복제수 감소
 kubectl scale --replicas=0 deployment/spring

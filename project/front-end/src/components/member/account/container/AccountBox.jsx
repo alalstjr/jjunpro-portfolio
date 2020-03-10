@@ -58,7 +58,7 @@ class LoginBox extends Component {
                         </Fragment>
                 }
                 <SignUpBtn>
-                    <Link to="/square">리뷰검색</Link>
+                    <Link to="/square">리뷰모아보기</Link>
                 </SignUpBtn>
             </LoginWrap>
         )

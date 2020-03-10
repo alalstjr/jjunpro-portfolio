@@ -114,7 +114,7 @@ class List extends Component {
 
         // PugjjigSearchProvider 혹은 검색되는 대상에서 받아온 분류로 검색후 DB 검색
         switch (searchDTO.category) {
-            case "storeId" :
+            case "stoId" :
                 getUniListStoreId(searchDTO);
                 break;
 
@@ -166,7 +166,7 @@ class List extends Component {
         // Props Init
         const {
             // search value
-            keyword,
+            inputKeyword,
             category,
             ifCateA,
             ifCateB,
@@ -175,7 +175,7 @@ class List extends Component {
 
         // Search DTO 생성
         const searchDTO = {
-            keyword,
+            keyword : inputKeyword,
             category,
             offsetCount,
             ifCateA,
@@ -330,7 +330,7 @@ class List extends Component {
                             {pugjjigContent}
                         </InfiniteScroll>
                         :
-                        <NotPost>리뷰가 존재하지 않습니다.</NotPost>
+                        <NotPost>리뷰가 존재하지 않거나 불러오는 중입니다.</NotPost>
                 }
                 {/* Item Edit Select modal */}
                 <ItemEditModal
