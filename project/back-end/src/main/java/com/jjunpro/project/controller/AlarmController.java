@@ -1,5 +1,6 @@
 package com.jjunpro.project.controller;
 
+import com.jjunpro.project.annotation.BindValidator;
 import com.jjunpro.project.domain.Account;
 import com.jjunpro.project.domain.Alarm;
 import com.jjunpro.project.dto.AlarmDTO;
@@ -7,6 +8,7 @@ import com.jjunpro.project.service.AlarmService;
 import com.jjunpro.project.util.AccountUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindException;
@@ -19,7 +21,7 @@ import java.util.Optional;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/alarm")
+@RequestMapping(value = "/alarm")
 @RequiredArgsConstructor
 public class AlarmController {
 
@@ -51,17 +53,13 @@ public class AlarmController {
     /**
      * DELETE Alarm DATA
      */
+    @BindValidator
     @DeleteMapping("/{id}")
     public ResponseEntity<List<Alarm>> deleteAlarmId(
             @Valid AlarmDTO id,
             Authentication authentication,
             BindingResult bindingResult
-    ) throws BindException {
-        /* 유효성 검사 후 최종 반환합니다. */
-        if (bindingResult.hasErrors()) {
-            throw new BindException(bindingResult);
-        }
-
+    ) {
         List<Alarm> result = null;
 
         /* Account Info */

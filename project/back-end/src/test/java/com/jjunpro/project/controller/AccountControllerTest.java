@@ -1,8 +1,11 @@
 package com.jjunpro.project.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jjunpro.project.context.AccountContext;
 import com.jjunpro.project.domain.Account;
 import com.jjunpro.project.domain.Store;
+import com.jjunpro.project.dto.CreateAccountDTO;
+import com.jjunpro.project.dto.UpdateAccountPwdDTO;
 import com.jjunpro.project.repository.AccountRepository;
 import com.jjunpro.project.repository.StoreRepository;
 import com.jjunpro.project.service.AccountService;
@@ -53,9 +56,18 @@ public class AccountControllerTest {
     @Autowired
     AccountUtilTest accountUtil;
 
+    @Autowired
+    ObjectMapper objectMapper;
+
     @Test
     public void createAccount() throws Exception {
-        String userJson = "{\"username\":\"username\", \"nickname\":\"nickname\", \"password\":\"1234\", \"passwordRe\":\"1234\"}";
+        CreateAccountDTO dto = new CreateAccountDTO();
+        dto.setUsername("username");
+        dto.setNickname("nickname");
+        dto.setPassword("1234");
+        dto.setPasswordRe("1234");
+
+        String userJson = objectMapper.writeValueAsString(dto);
 
         mockMvc
                 .perform(post("/account")
@@ -138,12 +150,17 @@ public class AccountControllerTest {
         accountUtil.setAccount();
 
         AccountContext userDetails = (AccountContext) accountService.loadUserByUsername("username");
-        String userId = userDetails
+        Long userId = userDetails
                 .getAccount()
-                .getId()
-                .toString();
+                .getId();
 
-        String userJson = "{\"id\":" + userId + ", \"password\":\"update\", \"passwordRe\":\"update\", \"oldPassword\":\"1234\"}";
+        UpdateAccountPwdDTO updateAccountPwdDTO = new UpdateAccountPwdDTO();
+        updateAccountPwdDTO.setId(userId);
+        updateAccountPwdDTO.setOldPassword("1234");
+        updateAccountPwdDTO.setPassword("update");
+        updateAccountPwdDTO.setPasswordRe("update");
+
+        String userJson = objectMapper.writeValueAsString(updateAccountPwdDTO);
 
         mockMvc
                 .perform(post("/account/password/" + userDetails

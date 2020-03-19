@@ -1,5 +1,6 @@
 package com.jjunpro.project.annotation;
 
+import com.jjunpro.project.validator.PasswordMatchValidator;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.Documented;

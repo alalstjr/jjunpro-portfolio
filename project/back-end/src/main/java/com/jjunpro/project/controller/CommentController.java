@@ -1,5 +1,6 @@
 package com.jjunpro.project.controller;
 
+import com.jjunpro.project.annotation.BindValidator;
 import com.jjunpro.project.domain.Account;
 import com.jjunpro.project.dto.CommentDTO;
 import com.jjunpro.project.dto.CreateCommentDTO;
@@ -10,6 +11,7 @@ import com.jjunpro.project.util.AccountUtil;
 import com.jjunpro.project.util.IpUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindException;
@@ -24,7 +26,7 @@ import java.util.Optional;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/comment")
+@RequestMapping(value = "/comment")
 @RequiredArgsConstructor
 public class CommentController {
 
@@ -37,17 +39,13 @@ public class CommentController {
      * INSERT Comment DATA
      */
     @PostMapping("")
+    @BindValidator
     public ResponseEntity<CommentPublic> insertComment(
             @Valid @RequestBody CreateCommentDTO dto,
             BindingResult bindingResult,
             Authentication authentication,
             HttpServletRequest request
-    ) throws BindException {
-        /* 유효성 검사 후 최종 반환합니다. */
-        if (bindingResult.hasErrors()) {
-            throw new BindException(bindingResult);
-        }
-
+    ) {
         /* Account Info */
         Optional<Account> accountData = accountUtil.accountInfo(authentication);
 
@@ -93,17 +91,13 @@ public class CommentController {
     /**
      * DELETE Comment DATA id
      */
+    @BindValidator
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCommentId(
             @Valid CommentDTO id,
             BindingResult bindingResult,
             Authentication authentication
-    ) throws BindException {
-        /* 유효성 검사 후 최종 반환합니다. */
-        if (bindingResult.hasErrors()) {
-            throw new BindException(bindingResult);
-        }
-
+    ) {
         /* Account Info */
         Optional<Account> accountData = accountUtil.accountInfo(authentication);
 

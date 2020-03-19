@@ -1,5 +1,6 @@
-package com.jjunpro.project.annotation;
+package com.jjunpro.project.validator;
 
+import com.jjunpro.project.annotation.WordFilter;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 

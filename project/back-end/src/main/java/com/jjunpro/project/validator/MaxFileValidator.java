@@ -1,5 +1,6 @@
-package com.jjunpro.project.annotation;
+package com.jjunpro.project.validator;
 
+import com.jjunpro.project.annotation.MaxFile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;

@@ -1,5 +1,6 @@
 package com.jjunpro.project.controller;
 
+import com.jjunpro.project.annotation.BindValidator;
 import com.jjunpro.project.domain.Account;
 import com.jjunpro.project.domain.File;
 import com.jjunpro.project.dto.CreateAccountDTO;
@@ -13,6 +14,7 @@ import com.jjunpro.project.service.FileStorageService;
 import com.jjunpro.project.util.AccountUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,7 +27,8 @@ import java.util.Optional;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/account")
+// @RequestMapping(value = "/account", consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/account")
 @RequiredArgsConstructor
 public class AccountController {
 
@@ -36,18 +39,13 @@ public class AccountController {
     /**
      * INSERT Account DATA
      */
+    @BindValidator
     @PostMapping("")
     public ResponseEntity<?> createAccount(
             @Valid
-            @RequestBody
-                    CreateAccountDTO dto,
+            @RequestBody CreateAccountDTO dto,
             BindingResult bindingResult
-    ) throws BindException {
-        /* 유효성 검사 후 최종 반환합니다. */
-        if (bindingResult.hasErrors()) {
-            throw new BindException(bindingResult);
-        }
-
+    ) {
         /* 새로운 유저의 정보를 DB 에 저장합니다. */
         Account account = accountService.createAccount(dto);
 
@@ -60,18 +58,14 @@ public class AccountController {
     /**
      * UPDATE Account DATA
      */
+    @BindValidator
     @PostMapping("/{id}")
     public ResponseEntity<?> updateAccount(
             @Valid
             @ModelAttribute
                     UpdateAccountDTO dto,
             BindingResult bindingResult
-    ) throws BindException {
-        /* 유효성 검사 후 최종 반환합니다. */
-        if (bindingResult.hasErrors()) {
-            throw new BindException(bindingResult);
-        }
-
+    ) {
         /*
          * Account File Upload 과정설명 (PreFile = 이전파일, NewFile = 새로운파일)
          * 1. NewFile DB 등록
@@ -88,7 +82,7 @@ public class AccountController {
         this.fileUpload(dto);
 
         /* 이전에 업로드한 삭제 예정된 파일  */
-        if(dto.getFile() != null && !dto.getFile().isEmpty()) {
+        if (dto.getFile() != null && !dto.getFile().isEmpty()) {
             Optional<Account> accountData = accountService.findById(dto.getId());
             if (accountData.isPresent()) {
                 prPhoto = accountData
@@ -115,18 +109,14 @@ public class AccountController {
     /**
      * UPDATE AccountPassword DATA accountId
      */
+    @BindValidator
     @PostMapping("/password/{id}")
     public ResponseEntity<?> accountPwdUpdate(
             @Valid
             @RequestBody
                     UpdateAccountPwdDTO dto,
             BindingResult bindingResult
-    ) throws BindException {
-        /* 유효성 검사 후 최종 반환합니다. */
-        if (bindingResult.hasErrors()) {
-            throw new BindException(bindingResult);
-        }
-
+    ) {
         return new ResponseEntity<>(
                 accountService.updatePassword(dto),
                 HttpStatus.OK
@@ -147,6 +137,7 @@ public class AccountController {
         );
     }
 
+    @BindValidator
     @PostMapping("/seller")
     public ResponseEntity<Long> applySeller(
             @Valid
@@ -154,14 +145,9 @@ public class AccountController {
                     SellerDTO dto,
             BindingResult bindingResult,
             Authentication authentication
-    ) throws BindException {
-        /* 유효성 검사 후 최종 반환합니다. */
-        if (bindingResult.hasErrors()) {
-            throw new BindException(bindingResult);
-        }
-
+    ) {
         Optional<Account> account = accountUtil.accountInfo(authentication);
-        account.ifPresent(dto :: setAccount);
+        account.ifPresent(dto::setAccount);
 
         /* TEST 관리자의 체크없이 바로 권한 변경가능합니다. */
         return new ResponseEntity<>(

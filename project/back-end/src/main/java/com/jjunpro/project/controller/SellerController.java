@@ -5,6 +5,7 @@ import com.jjunpro.project.dto.FoodMenuValidDTO;
 import com.jjunpro.project.service.SellerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -14,7 +15,7 @@ import javax.validation.Valid;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/seller")
+@RequestMapping(value = "/seller", consumes = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class SellerController {
 

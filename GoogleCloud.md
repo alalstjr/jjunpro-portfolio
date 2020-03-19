@@ -11,9 +11,11 @@ kubectl expose deployment react --type=LoadBalancer --port 3000 --target-port 30
 
 ### 클러스터 작동 법
 
-> $ gcloud container clusters create demo-cluster --num-nodes=2 --zone=us-west1-b
+> gcloud container clusters create demo-cluster --num-nodes=2 --zone=us-west1-b
 > kubectl run demo --image=gcr.io/${PROJECT_ID}/demo:v1 --port 8080
 > kubectl get pods
+
+gcloud container clusters create spring-cluster --num-nodes=1 --zone=us-west1-a --machine-type=g1-small
 
 ## 클러스터 링크
 https://console.cloud.google.com/kubernetes/clusters/details/us-west1-b/demo-cluster?project=spring-project-261615&tab=details&persistent_volumes_tablesize=50&storage_class_tablesize=50&nodes_tablesize=50&node_pool_tablesize=10
@@ -144,7 +146,12 @@ gcloud builds submit --tag=gcr.io/spring-project-261615/spring:v2.1 .
 # 구글클라우드 저장소 이미지 url 안불러와 질때
 https://stackoverflow.com/questions/39820128/google-cloud-storage-image-public-link-to-img-src
 
-> https://storage.cloud.google.com/BUCKET/path/to/image.jpg하지만 올바른 링크는 https://storage.googleapis.com/BUCKET/path/to/image.jpg
+> https://storage.cloud.google.com/BUCKET/path/to/image.jpg
+하지만 올바른 링크는 https://storage.googleapis.com/BUCKET/path/to/image.jpg
+
+# 구글클라우드 저장소 이미지 권한으로 인해서 못불러올때
+
+권한 설정에서 allUsers 정보를 추가합니다.
 
 # react 경우 80 PORT 적용하는 방법
 

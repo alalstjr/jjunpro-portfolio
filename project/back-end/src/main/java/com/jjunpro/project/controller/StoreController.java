@@ -9,6 +9,7 @@ import com.jjunpro.project.service.StoreService;
 import com.jjunpro.project.util.AccountUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindException;
@@ -25,7 +26,7 @@ import java.util.Optional;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/store")
+@RequestMapping(value = "/store")
 @RequiredArgsConstructor
 public class StoreController {
 

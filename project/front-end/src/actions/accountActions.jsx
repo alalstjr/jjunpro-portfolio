@@ -48,7 +48,14 @@ export const insertAccount = (account) => async dispatch => {
     try {
         // 유저가 로그인 상태가 아니라면
         if (!localStorage.getItem("userInfo")) {
-            const res = await axios.post(`${SERVER_URL}/account`, account);
+
+            const config = {
+                headers: {
+                    'Accept': 'application/json'
+                }
+            };
+
+            const res = await axios.post(`${SERVER_URL}/account`, account, config);
 
             switch (res.status) {
                 case 201 :

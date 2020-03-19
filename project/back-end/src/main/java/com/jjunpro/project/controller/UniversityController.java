@@ -1,5 +1,6 @@
 package com.jjunpro.project.controller;
 
+import com.jjunpro.project.annotation.BindValidator;
 import com.jjunpro.project.domain.Account;
 import com.jjunpro.project.domain.File;
 import com.jjunpro.project.domain.University;
@@ -16,6 +17,7 @@ import com.jjunpro.project.util.AccountUtil;
 import com.jjunpro.project.util.IpUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindException;
@@ -32,7 +34,7 @@ import java.util.Optional;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/university")
+@RequestMapping(value = "/university")
 @RequiredArgsConstructor
 public class UniversityController {
 
@@ -44,18 +46,14 @@ public class UniversityController {
     /**
      * INSERT & UPDATE University DATA
      */
+    @BindValidator
     @PostMapping("")
     public ResponseEntity<UniversityPublic> createUniversity(
             @Valid @ModelAttribute UniversityDTO dto,
             BindingResult bindingResult,
             Authentication authentication,
             HttpServletRequest request
-    ) throws BindException {
-        /* 유효성 검사 후 최종 반환합니다. */
-        if (bindingResult.hasErrors()) {
-            throw new BindException(bindingResult);
-        }
-
+    ) {
         UniversityPublic universityPublic;
 
         dto.defaultSetting(
@@ -190,17 +188,13 @@ public class UniversityController {
     /**
      * DELETE University DATA uniId
      */
+    @BindValidator
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUniversityuniId(
             @Valid UniversityValidDTO id,
             Authentication authentication,
             BindingResult bindingResult
-    ) throws BindException {
-        /* 유효성 검사 후 최종 반환합니다. */
-        if (bindingResult.hasErrors()) {
-            throw new BindException(bindingResult);
-        }
-
+    ) {
         Optional<Account> accountData = accountUtil.accountInfo(authentication);
 
         if (accountData.isPresent()) {

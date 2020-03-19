@@ -1,5 +1,6 @@
-package com.jjunpro.project.annotation;
+package com.jjunpro.project.validator;
 
+import com.jjunpro.project.annotation.UserDataMatch;
 import com.jjunpro.project.context.AccountContext;
 import com.jjunpro.project.domain.Account;
 import com.jjunpro.project.domain.Alarm;

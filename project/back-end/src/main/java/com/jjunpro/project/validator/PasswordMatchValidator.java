@@ -1,5 +1,6 @@
-package com.jjunpro.project.annotation;
+package com.jjunpro.project.validator;
 
+import com.jjunpro.project.annotation.PasswordMatch;
 import com.jjunpro.project.domain.Account;
 import com.jjunpro.project.util.AccountUtil;
 import java.lang.reflect.Field;

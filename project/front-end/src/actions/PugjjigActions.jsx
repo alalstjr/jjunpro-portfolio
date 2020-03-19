@@ -348,7 +348,13 @@ export const getUniCountStoId = (keyword) => async dispatch => {
  ****************************************/
 export const getUniCountUniId = (uniName) => async dispatch => {
     try {
-        const res = await axios.get(`${SERVER_URL}/university/count/${uniName}`)
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+        
+        const res = await axios.get(`${SERVER_URL}/university/count/${uniName}`, config)
 
         switch (res.status) {
             case 200 :

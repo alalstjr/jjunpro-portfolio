@@ -2,6 +2,7 @@ package com.jjunpro.project.annotation;
 
 import com.jjunpro.project.enums.ColumnType;
 
+import com.jjunpro.project.validator.DataMatchValidator;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.Documented;
@@ -21,12 +22,12 @@ import static java.lang.annotation.ElementType.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = DataMatchValidator.class)
 public @interface DataMatch {
+
     String message() default "이미 존재하는 정보입니다.";
 
     ColumnType column();
 
-    Class<?>[] groups() default { };
+    Class<?>[] groups() default {};
 
-    Class<? extends Payload>[] payload() default { };
+    Class<? extends Payload>[] payload() default {};
 }
-
