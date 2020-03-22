@@ -1,10 +1,12 @@
 package com.jjunpro.project.dto;
 
-import com.jjunpro.project.annotation.*;
 import com.jjunpro.project.domain.Account;
 import com.jjunpro.project.domain.University;
 import com.jjunpro.project.enums.ColumnType;
 import com.jjunpro.project.enums.UserRole;
+import com.jjunpro.project.validator.DataMatch;
+import com.jjunpro.project.validator.PasswordMatch;
+import com.jjunpro.project.validator.WordFilter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

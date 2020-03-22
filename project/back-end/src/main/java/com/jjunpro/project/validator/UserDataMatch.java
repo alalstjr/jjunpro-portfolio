@@ -1,4 +1,4 @@
-package com.jjunpro.project.annotation;
+package com.jjunpro.project.validator;
 
 import com.jjunpro.project.enums.DomainType;
 

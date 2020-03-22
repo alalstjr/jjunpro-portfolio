@@ -1,12 +1,11 @@
 package com.jjunpro.project.dto;
 
-import com.jjunpro.project.annotation.DataMatch;
+import com.jjunpro.project.validator.DataMatch;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import static com.jjunpro.project.enums.ColumnType.FOODMENU;
-import static com.jjunpro.project.enums.ColumnType.STOID;
 
 @Getter
 @Setter

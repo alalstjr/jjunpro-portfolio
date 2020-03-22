@@ -1,6 +1,5 @@
 package com.jjunpro.project.validator;
 
-import com.jjunpro.project.annotation.SubMenuData;
 import com.jjunpro.project.domain.SubMenu;
 
 import javax.validation.ConstraintValidator;

@@ -1,6 +1,6 @@
 package com.jjunpro.project.dto;
 
-import com.jjunpro.project.annotation.UserExistence;
+import com.jjunpro.project.validator.UserExistence;
 import com.jjunpro.project.domain.Account;
 import com.jjunpro.project.domain.Comment;
 import com.jjunpro.project.domain.University;

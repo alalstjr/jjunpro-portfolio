@@ -1,7 +1,7 @@
 package com.jjunpro.project.dto;
 
-import com.jjunpro.project.annotation.DataMatch;
-import com.jjunpro.project.annotation.SubMenuData;
+import com.jjunpro.project.validator.DataMatch;
+import com.jjunpro.project.validator.SubMenuData;
 import com.jjunpro.project.domain.File;
 import com.jjunpro.project.domain.FoodMenu;
 import com.jjunpro.project.domain.Store;

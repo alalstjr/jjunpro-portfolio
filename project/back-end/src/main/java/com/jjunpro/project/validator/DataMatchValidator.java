@@ -1,6 +1,5 @@
 package com.jjunpro.project.validator;
 
-import com.jjunpro.project.annotation.DataMatch;
 import com.jjunpro.project.context.AccountContext;
 import com.jjunpro.project.domain.Account;
 import com.jjunpro.project.domain.FoodMenu;

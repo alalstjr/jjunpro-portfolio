@@ -1,6 +1,6 @@
 package com.jjunpro.project.controller;
 
-import com.jjunpro.project.annotation.BindValidator;
+import com.jjunpro.project.aspect.BindValidator;
 import com.jjunpro.project.domain.Account;
 import com.jjunpro.project.domain.File;
 import com.jjunpro.project.domain.University;
@@ -10,17 +10,14 @@ import com.jjunpro.project.dto.UniversityValidDTO;
 import com.jjunpro.project.dto.UpdateUniLikeDTO;
 import com.jjunpro.project.exception.SimpleException;
 import com.jjunpro.project.projection.UniversityPublic;
-import com.jjunpro.project.service.CommentService;
 import com.jjunpro.project.service.FileStorageService;
 import com.jjunpro.project.service.UniversityService;
 import com.jjunpro.project.util.AccountUtil;
 import com.jjunpro.project.util.IpUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,6 +1,5 @@
 package com.jjunpro.project.validator;
 
-import com.jjunpro.project.annotation.UserDataMatch;
 import com.jjunpro.project.context.AccountContext;
 import com.jjunpro.project.domain.Account;
 import com.jjunpro.project.domain.Alarm;
@@ -12,11 +11,8 @@ import com.jjunpro.project.repository.AlarmRepository;
 import com.jjunpro.project.repository.CommentRepository;
 import com.jjunpro.project.repository.UniversityRepository;
 import com.jjunpro.project.service.AccountService;
-import com.jjunpro.project.util.AccountUtil;
 import java.lang.reflect.Field;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 

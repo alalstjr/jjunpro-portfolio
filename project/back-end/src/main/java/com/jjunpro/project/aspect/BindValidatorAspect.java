@@ -13,7 +13,7 @@ import org.springframework.validation.BindingResult;
 @Component
 public class BindValidatorAspect {
 
-    @Around("@annotation(com.jjunpro.project.annotation.BindValidator)")
+    @Around("@annotation(com.jjunpro.project.aspect.BindValidator)")
     public Object validator(ProceedingJoinPoint joinPoint) throws Throwable {
         BindingResult bindingResult = null;
         String        parameterName;

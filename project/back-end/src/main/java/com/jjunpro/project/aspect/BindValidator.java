@@ -1,4 +1,4 @@
-package com.jjunpro.project.annotation;
+package com.jjunpro.project.aspect;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

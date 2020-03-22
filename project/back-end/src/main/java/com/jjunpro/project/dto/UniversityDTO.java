@@ -1,8 +1,7 @@
 package com.jjunpro.project.dto;
 
-import com.jjunpro.project.annotation.MaxFile;
-import com.jjunpro.project.annotation.UserDataMatch;
-import com.jjunpro.project.annotation.UserExistence;
+import com.jjunpro.project.validator.MaxFile;
+import com.jjunpro.project.validator.UserDataMatch;
 import com.jjunpro.project.domain.Account;
 import com.jjunpro.project.domain.Comment;
 import com.jjunpro.project.domain.File;
@@ -17,7 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.Column;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.HashSet;

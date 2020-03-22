@@ -1,7 +1,7 @@
 package com.jjunpro.project.dto;
 
-import com.jjunpro.project.annotation.UserDataMatch;
-import com.jjunpro.project.annotation.UserExistence;
+import com.jjunpro.project.validator.UserDataMatch;
+import com.jjunpro.project.validator.UserExistence;
 import com.jjunpro.project.enums.DomainType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
