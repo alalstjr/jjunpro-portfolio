@@ -2,7 +2,6 @@ package com.jjunpro.project.service;
 
 import com.jjunpro.project.context.AccountContext;
 import com.jjunpro.project.domain.Account;
-import com.jjunpro.project.domain.File;
 import com.jjunpro.project.domain.Store;
 import com.jjunpro.project.dto.*;
 import com.jjunpro.project.enums.AlarmType;

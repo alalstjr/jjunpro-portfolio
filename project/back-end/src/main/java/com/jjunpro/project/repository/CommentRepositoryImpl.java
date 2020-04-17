@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 public class CommentRepositoryImpl implements CommentRepositoryDSL {

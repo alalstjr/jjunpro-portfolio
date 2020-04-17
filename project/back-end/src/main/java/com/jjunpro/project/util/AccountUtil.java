@@ -1,17 +1,9 @@
 package com.jjunpro.project.util;
 
-import com.jjunpro.project.context.AccountContext;
 import com.jjunpro.project.domain.Account;
-import com.jjunpro.project.domain.Alarm;
-import com.jjunpro.project.domain.Comment;
-import com.jjunpro.project.domain.University;
 import com.jjunpro.project.repository.AccountRepository;
-import com.jjunpro.project.repository.AlarmRepository;
-import com.jjunpro.project.repository.CommentRepository;
-import com.jjunpro.project.repository.UniversityRepository;
 import com.jjunpro.project.security.jwt.HeaderTokenExtractor;
 import com.jjunpro.project.security.jwt.JwtDecoder;
-import com.jjunpro.project.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;

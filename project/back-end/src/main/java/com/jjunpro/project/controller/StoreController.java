@@ -1,28 +1,20 @@
 package com.jjunpro.project.controller;
 
 import com.jjunpro.project.domain.Account;
-import com.jjunpro.project.dto.SellerDTO;
 import com.jjunpro.project.dto.SearchDTO;
 import com.jjunpro.project.projection.UniversityPublic;
-import com.jjunpro.project.service.AccountService;
 import com.jjunpro.project.service.StoreService;
 import com.jjunpro.project.util.AccountUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.validation.BindException;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @CrossOrigin
 @RestController
