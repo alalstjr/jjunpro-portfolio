@@ -1,3 +1,19 @@
+--------------------
+# Development Document
+--------------------
+
+- Java Version : 11
+- DBMS         : PostgreSQL
+    - JPA ( Java Persistent API)
+- Spring       : 주 사용 Spring Boot
+    - 보안 - Spring Security
+    - 프록시 기반 AOP 사용
+    - 검증 - Spring Valid
+- Front-End    : ReactJS, StyledComponent
+- 로그인 인증     : JWToken
+- 서버 구동      : 구글클라우드 & Docker
+    - 서버비용 부족으로 인해 Home 서버 구동중..
+
 # 푹찍의 의미와 컨셉
 
 - 푹찍이란? 

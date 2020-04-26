@@ -4,9 +4,10 @@ import axios from "axios"
 /**********************************************
  ■ SERVER API URL
  **********************************************/
-// export const SERVER_URL = "http://localhost:8080";
-export const SERVER_URL = "http://34.64.228.236:8081";
-export const SERVER_FILE_URL = "https://storage.googleapis.com/jjunpro-storage/"
+export const SERVER_URL = "http://localhost:8081";
+export const SERVER_FILE_URL = "http://localhost:8081/file/";
+// export const SERVER_URL = "http://34.64.228.236:8081";
+// export const SERVER_FILE_URL = "https://storage.googleapis.com/jjunpro-storage/";
 
 /**********************************************
  ■ Version

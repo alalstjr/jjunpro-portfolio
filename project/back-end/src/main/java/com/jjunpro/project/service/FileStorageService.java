@@ -1,6 +1,7 @@
 package com.jjunpro.project.service;
 
 import com.jjunpro.project.domain.File;
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -14,15 +15,15 @@ import java.util.Optional;
  */
 public interface FileStorageService {
 
-    public Optional<File> findById(Long id);
+    Optional<File> findById(Long id);
 
-    public void fileDelete(File file);
+    void fileDelete(File file);
 
-    public void filesDelete(List<File> file);
+    void filesDelete(List<File> file);
 
-    public void deleteFileFilter(Long[] removeFiles);
+    void deleteFileFilter(Long[] removeFiles);
 
-    public List<File> uploadMultipleFiles(int fileSizeDB, MultipartFile[] files, String domain);
+    List<File> uploadMultipleFiles(int fileSizeDB, MultipartFile[] files, String domain);
 
-    public File uploadFile(MultipartFile file, String fileRouter);
+    File uploadFile(MultipartFile file, String fileRouter);
 }

@@ -202,6 +202,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         skipPath.add("GET,/comment/*");
 
+        skipPath.add("GET,/file/**");
+
         skipPath.add("GET,/store");
         skipPath.add("GET,/store/**");
 

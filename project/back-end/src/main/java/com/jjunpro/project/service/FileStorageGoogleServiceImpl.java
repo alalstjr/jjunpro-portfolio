@@ -2,33 +2,8 @@ package com.jjunpro.project.service;
 
 import com.jjunpro.project.common.CloudStorageHelper;
 import com.jjunpro.project.domain.File;
-import com.jjunpro.project.enums.DomainType;
-import com.jjunpro.project.exception.FileStorageException;
-import com.jjunpro.project.exception.MyFileNotFoundException;
 import com.jjunpro.project.exception.SimpleException;
-import com.jjunpro.project.properties.FileStorageProperties;
 import com.jjunpro.project.repository.FileRepository;
-import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import lombok.RequiredArgsConstructor;
-import org.imagelib.ImageLib;
-import org.imgscalr.Scalr;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -39,36 +14,30 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.imageio.ImageIO;
+import lombok.RequiredArgsConstructor;
+import org.imagelib.ImageLib;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
-@Service
-public class FileStorageServiceImpl implements FileStorageService {
+//@Service
+//@RequiredArgsConstructor
+public class FileStorageGoogleServiceImpl implements FileStorageService {
+
+    @Value("${google.id}")
+    private String _GCSID;
 
     @Value("${max-upload-count}")
     private Integer _maxUploadCount;
 
-    private final FileRepository fileRepository;
-    private final Path           fileStorageLocation;
-
-    @Autowired
-    public FileStorageServiceImpl(FileStorageProperties fileStorageProperties,
-            FileRepository fileRepository) {
-        this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir())
-                .toAbsolutePath().normalize();
-
-        this.fileRepository = fileRepository;
-
-        try {
-            /* 파일을 저장할 폴더를 생성합니다. */
-            Files.createDirectories(
-                    this.fileStorageLocation.resolve(DomainType.ACCOUNT.getValue()));
-            Files.createDirectories(
-                    this.fileStorageLocation.resolve(DomainType.UNIVERSITY.getValue()));
-        } catch (Exception ex) {
-            throw new FileStorageException(
-                    "Could not create the directory where the uploaded files will be stored.", ex);
-        }
-    }
-
+    private FileRepository     fileRepository;
+    private CloudStorageHelper cloudStorageHelper;
 
     @Override
     public Optional<File> findById(Long id) {
@@ -80,25 +49,18 @@ public class FileStorageServiceImpl implements FileStorageService {
         String fileUrl      = file.getFileOriginal();
         String thumbnailUrl = file.getFileThumbnail();
 
-        try {
-            /* 원본파일 삭제 */
-            Path filePath = this.fileStorageLocation
-                    .resolve(fileUrl).normalize();
-            Files.delete(filePath);
+        // GCS File Delete
+        cloudStorageHelper.deleteFile(
+                fileUrl,
+                _GCSID
+        );
+        cloudStorageHelper.deleteFile(
+                thumbnailUrl,
+                _GCSID
+        );
 
-            /* 썸네일 삭제 */
-            Path filePathThumb = this.fileStorageLocation
-                    .resolve(thumbnailUrl).normalize();
-            Files.delete(filePathThumb);
-
-            // DB File Delete
-            fileRepository.delete(file);
-        } catch (
-                MalformedURLException ex) {
-            throw new MyFileNotFoundException("File not found", ex);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // DB File Delete
+        fileRepository.delete(file);
     }
 
     @Override
@@ -233,22 +195,21 @@ public class FileStorageServiceImpl implements FileStorageService {
                     .fileThumbnail(gcsThumbFileName)
                     .build();
 
-            /* 대상 위치로 파일 복사(같은 이름으로 기존 파일 바꾸기) */
-            Path targetLocation = this.fileStorageLocation
-                    .resolve(gcsFileName);
-            Files.copy(
-                    file.getInputStream(),
-                    targetLocation,
-                    StandardCopyOption.REPLACE_EXISTING
-            );
-
-            Path targetLocationThumb = this.fileStorageLocation
-                    .resolve(gcsThumbFileName);
-            Files.copy(
-                    thumbnail,
-                    targetLocationThumb,
-                    StandardCopyOption.REPLACE_EXISTING
-            );
+            // GCS Upload 원본 이미지파일 저장
+            try {
+                cloudStorageHelper.uploadFile(
+                        file.getInputStream(),
+                        gcsFileName,
+                        _GCSID
+                );
+                cloudStorageHelper.uploadFile(
+                        thumbnail,
+                        gcsThumbFileName,
+                        _GCSID
+                );
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             return fileRepository.save(dbFile);
         } catch (IOException e) {
@@ -287,20 +248,5 @@ public class FileStorageServiceImpl implements FileStorageService {
         final String fileType = gcsFileName.substring(gcsFileName.lastIndexOf("."));
 
         return fileName + size + fileType;
-    }
-
-    public Resource loadFileAsResource(String fileName) {
-        try {
-            Path     filePath = this.fileStorageLocation.resolve(fileName).normalize();
-            Resource resource = new UrlResource(filePath.toUri());
-
-            if (resource.exists()) {
-                return resource;
-            } else {
-                throw new MyFileNotFoundException("File not found " + fileName);
-            }
-        } catch (MalformedURLException ex) {
-            throw new MyFileNotFoundException("File not found " + fileName, ex);
-        }
     }
 }

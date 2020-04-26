@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-@Component
+//@Component
 public class CloudStorageHelper {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
